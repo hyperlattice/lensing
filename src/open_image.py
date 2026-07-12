@@ -55,6 +55,77 @@ for card in header.cards:
 
 print("\nEnd of Header")
 
+# Output text file
+output_file = "q256_header.txt"
+
+with open(output_file, "w", encoding="utf-8") as f:
+
+    # Helper function to print to console AND save to file
+    def out(text=""):
+        print(text)
+        f.write(text + "\n")
+
+    # Print filename
+    out(f"Filename: {file}\n")
+
+    # Capture hdul.info() output
+    hdul.info(output=f)
+
+    # Also show it in the terminal
+    hdul.info()
+
+    out("\n")
+
+    # Section titles inserted before these keywords
+    sections = {
+        "SIMPLE": "Basic FITS Information",
+        "ROOTNAME": "Data Description",
+        "TARGNAME": "Target Information",
+        "PROPOSID": "Proposal Information",
+        "ORIENTAT": "Exposure Information",
+        "CAMERA": "Instrument Configuration",
+        "BACKEST1": "Background Keywords",
+        "PHOTMODE": "Photometry Keywords",
+        "MASKFILE": "CALNICA Calibration Files",
+        "MASKPDGR": "Calibration File Pedigree",
+    }
+
+    for card in header.cards:
+
+        # Print section heading
+        if card.keyword in sections:
+            out("=" * 60)
+            out(sections[card.keyword])
+            out("=" * 60)
+
+        # Preserve COMMENT and HISTORY formatting
+        if card.keyword == "COMMENT":
+            out(f"COMMENT  {card.value}")
+            continue
+
+        if card.keyword == "HISTORY":
+            out(f"HISTORY  {card.value}")
+            continue
+
+        keyword = card.keyword
+        value = card.value
+        comment = card.comment
+
+        # Print exactly like a FITS header
+        if comment:
+            out(f"{keyword:<8}= {repr(value):<30} / {comment}")
+        else:
+            out(f"{keyword:<8}= {repr(value)}")
+
+    out("\nEnd of Header")
+
+    image = fits.getdata(file)
+
+    out(f"Image shape: {image.shape}")
+    out(f"Data type: {image.dtype}")
+
+print(f"\nHeader saved to: {output_file}")
+
 image = fits.getdata(file)
 
 print("Image shape:", image.shape)
