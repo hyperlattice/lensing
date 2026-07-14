@@ -1,7 +1,7 @@
 from astropy.io import fits
 import matplotlib.pyplot as plt
 
-file = "Castles/Q2237/FIT/NIC2H/q256.fits"
+file = "castles/Q2237/FIT/NIC2H/q256.fits"
 
 hdul = fits.open(file)
 header = hdul[0].header
