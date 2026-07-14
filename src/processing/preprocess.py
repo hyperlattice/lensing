@@ -1,26 +1,10 @@
 from pathlib import Path
 from astropy.io import fits
 import matplotlib.pyplot as plt
-import numpy as np
+from numpy import np
 
-image_path = Path("data/raw/castles/Q2237/FIT/NIC2H/q256.fits")
-
-with fits.open(image_path) as hdul:
-    image = hdul[0].data
-
-print(image.shape)
-print(image.dtype)
-
-print("Minimum:", image.min())
-print("Maximum:", image.max())
-print("Mean:", image.mean())
-print("Median:", image.mean())
-
-print("NaNs:", np.isnan(image).sum())
-print("Infinite:", np.isinf(image).sum())
-
-plt.figure(figsize=(6,6))
-plt.imshow(image, origin="lower", cmap="plasma")
-plt.colorbar()
-
-plt.show()
+def remove_pixels(image):
+    """ 
+    Replace NaNs and infinite values with zero.
+    """
+    return np.nan_to_num(image, nan=0.0, posinf=0.0, neginf=0.0)
