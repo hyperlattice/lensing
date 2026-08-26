@@ -21,6 +21,12 @@ for fits_file in ROOT.rglob("*.fits"):
         "exposure": header.get("EXPTIME"),
         "pixel_scale": header.get("D001SCAL"),
         "observation_date": header.get("DATE-OBS"),
+        "CALSTAGE":
+        "BIASCORR":
+        "DARKCORR":
+        "FLATCORR":
+        "CRCORR":
+        "PHOTCORR":
         "notes": ""
     })
 
