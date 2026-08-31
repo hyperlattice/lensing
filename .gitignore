@@ -1,2 +1,10 @@
-Castles
+castles/
+normalized/
+__pycache__/
+
 tempCodeRunnerFile.py
+
+header_template.txt
+plan.md
+updated_plan.md
+logbook.md

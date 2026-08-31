@@ -5,11 +5,9 @@ from pathlib import Path
 ROOT = Path("data/raw/castles")
 OUTPUT = Path("data/labels/metadata.csv")
 
-
 def sample_id_from_path(path):
     relative = path.relative_to(ROOT)
     return "_".join(relative.with_suffix("").parts)
-
 
 def normalize_date(value):
     if value in (None, ""):

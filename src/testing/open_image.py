@@ -1,7 +1,21 @@
+"""
+File: open_image.py
+Author: Charlie Shao
+Date: 
+
+Contact Information:
+    charlieshao2010@gmail.com (personal)
+    349042127@gapps.yrdsb.ca (school)
+
+Description: This program opens a standard fits file image from the castles gravitational lensing dataset, 
+as well as printing the parameters and information about the file and the strong gravitational lens.
+"""
+
+
 from astropy.io import fits
 import matplotlib.pyplot as plt
 
-file = "castles/Q2237/FIT/NIC2H/q256.fits"
+file = "data/raw/castles/Q2237/FIT/NIC2H/q256.fits"
 
 hdul = fits.open(file)
 header = hdul[0].header
