@@ -14,6 +14,10 @@ A "usable sample" is defined as a record containing the following fields.
 | `lens_redshift` | Float | Conditional | Redshift of the foreground lens ($z_l$), required for simulation/ML labels. | `0.0395` |
 | `source_redshift`| Float | Conditional | Redshift of the background source ($z_s$), required for simulation/ML labels. | `1.695` |
 | `pixel_scale` | Float | **Required** | Angular size of one pixel. | `0.045` |
+| `orientation` | Float | Optional | Image orientation from `ORIENTAT`, in degrees. | `12.5` |
+| `photflam` | Float | Optional | FITS photometric flux calibration keyword. | `1.2e-19` |
+| `photfnu` | Float | Optional | FITS photometric flux calibration keyword. | `3.4e-7` |
+| `photzpt` | Float | Optional | FITS photometric zero point. | `25.0` |
 | `einstein_radius`| Float | Optional | The angular Einstein radius ($\theta_E$). | `1.2` |
 | `center_x` | Integer | Optional | X-coordinate of the lens center in pixels. | `128` |
 | `center_y` | Integer | Optional | Y-coordinate of the lens center in pixels. | `128` |

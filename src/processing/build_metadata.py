@@ -24,26 +24,43 @@ def calculate_pixel_scale(header):
     Calculates the pixel scale in arcseconds per pixel.
     Tries WCS CD matrix first, then falls back to known header keys.
     """
+    cd_keys = ["CD1_1", "CD1_2", "CD2_1", "CD2_2"]
+    cd_values = [header.get(key) for key in cd_keys]
+    if all(value is not None for value in cd_values):
+        matrix = np.asarray(cd_values, dtype=float).reshape(2, 2)
+        if np.isfinite(matrix).all():
+            axis_scales_deg = np.linalg.norm(matrix, axis=0)
+            if np.all(axis_scales_deg > 0):
+                return float(axis_scales_deg.mean() * 3600.0)
+
     try:
-        wcs = WCS(header)
-        # pixel_scale_matrix returns scale in degrees/pixel
-        # We take the norm of the first column (or average of diag) as the primary scale
-        scale_deg = np.sqrt(wcs.pixel_scale_matrix[0,0]**2 + wcs.pixel_scale_matrix[1,0]**2)
-        return scale_deg * 3600.0  # Convert deg to arcsec
+        wcs = WCS(header, fix=False)
+        matrix = np.asarray(wcs.pixel_scale_matrix, dtype=float)
+        if matrix.shape[0] >= 2 and matrix.shape[1] >= 2 and np.isfinite(matrix).all():
+            axis_scales_deg = np.linalg.norm(matrix[:2, :2], axis=0)
+            if np.all(axis_scales_deg > 0):
+                return float(axis_scales_deg.mean() * 3600.0)
     except Exception:
-        # Fallback to common CASTLES/FITS keys
-        for key in ["D001SCAL", "CDELT1", "PIXSCALE"]:
-            val = header.get(key)
-            if val:
-                # Most of these are already in arcsec or deg.
-                # This is a simplification; in a real pipeline we'd check units.
-                return float(val) if float(val) > 0.001 else float(val) * 3600.0
+        pass
+
+    cdelt_values = [header.get("CDELT1"), header.get("CDELT2")]
+    if all(value is not None for value in cdelt_values):
+        values = np.abs(np.asarray(cdelt_values, dtype=float))
+        if np.isfinite(values).all() and np.all(values > 0):
+            return float(values.mean() * 3600.0)
+
+    for key in ["D001SCAL", "PIXSCALE"]:
+        value = header.get(key)
+        if value is not None and np.isfinite(float(value)) and float(value) > 0:
+            return float(value)
     return None
 
 rows = []
 
 for fits_file in ROOT.rglob("*.fits"):
-    header = fits.getheader(fits_file)
+    with fits.open(fits_file) as hdul:
+        header = hdul[0].header
+        image_shape = hdul[0].data.shape
     lens_name = fits_file.parts[-4]
     relative_path = fits_file.relative_to(Path("."))
 
@@ -64,14 +81,23 @@ for fits_file in ROOT.rglob("*.fits"):
         "exposure": header.get("EXPTIME"),
         "bunit": header.get("BUNIT"),
         "pixel_scale": px_scale,
-        "original_height": fits.getdata(fits_file).shape[-2],
-        "original_width": fits.getdata(fits_file).shape[-1],
+        "original_height": image_shape[-2],
+        "original_width": image_shape[-1],
         "crval1": header.get("CRVAL1"),
         "crval2": header.get("CRVAL2"),
+        "crpix1": header.get("CRPIX1"),
+        "crpix2": header.get("CRPIX2"),
+        "ctype1": header.get("CTYPE1"),
+        "ctype2": header.get("CTYPE2"),
         "cd1_1": header.get("CD1_1"),
         "cd1_2": header.get("CD1_2"),
         "cd2_1": header.get("CD2_1"),
         "cd2_2": header.get("CD2_2"),
+        "orientation": header.get("ORIENTAT"),
+        "photflam": header.get("PHOTFLAM"),
+        "photfnu": header.get("PHOTFNU"),
+        "photzpt": header.get("PHOTZPT"),
+        "photmode": header.get("PHOTMODE"),
         "observation_date": normalize_date(header.get("DATE-OBS")),
         "calstage": header.get("CALSTAGE"),
         "biascorr": header.get("BIASCORR"),
