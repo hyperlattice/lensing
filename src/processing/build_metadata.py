@@ -52,6 +52,7 @@ for fits_file in ROOT.rglob("*.fits"):
 
     rows.append({
         "sample_id": sample_id_from_path(fits_file),
+        "lens_id": lens_name,
         "raw_path": relative_path.as_posix(),
         "lens": lens_name,
         "image": fits_file.name,
@@ -63,6 +64,8 @@ for fits_file in ROOT.rglob("*.fits"):
         "exposure": header.get("EXPTIME"),
         "bunit": header.get("BUNIT"),
         "pixel_scale": px_scale,
+        "original_height": fits.getdata(fits_file).shape[-2],
+        "original_width": fits.getdata(fits_file).shape[-1],
         "crval1": header.get("CRVAL1"),
         "crval2": header.get("CRVAL2"),
         "cd1_1": header.get("CD1_1"),

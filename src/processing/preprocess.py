@@ -8,6 +8,9 @@ import pandas as pd
 METADATA_PATH = Path("data/labels/metadata.csv")
 OUTPUT_DIR = Path("data/processed/normalized")
 MANIFEST_PATH = Path("data/labels/processed_metadata.csv")
+ENRICHED_METADATA_PATH = Path("data/labels/metadata_enriched.csv")
+
+TARGET_SHAPE = (256, 256)
 
 LOWER_PERCENTILE = 1.0
 UPPER_PERCENTILE = 99.0
@@ -33,22 +36,43 @@ def percentile_normalize(image, lower=LOWER_PERCENTILE, upper=UPPER_PERCENTILE):
     return normalized.astype(np.float32), low, high
 
 
+def center_crop_or_pad(image, target_shape=TARGET_SHAPE):
+    """Center-crop or zero-pad an image to the canonical shape."""
+    target_height, target_width = target_shape
+    output = np.zeros(target_shape, dtype=np.float32)
+    source_height, source_width = image.shape[-2:]
+    source_y_start = max((source_height - target_height) // 2, 0)
+    source_x_start = max((source_width - target_width) // 2, 0)
+    source_y_end = min(source_y_start + target_height, source_height)
+    source_x_end = min(source_x_start + target_width, source_width)
+    copy_height = source_y_end - source_y_start
+    copy_width = source_x_end - source_x_start
+    target_y_start = max((target_height - source_height) // 2, 0)
+    target_x_start = max((target_width - source_width) // 2, 0)
+    output[target_y_start:target_y_start + copy_height, target_x_start:target_x_start + copy_width] = image[
+        source_y_start:source_y_end, source_x_start:source_x_end
+    ]
+    return output
+
+
 def preprocess_image(path):
     raw = load_fits_image(path)
     cleaned = remove_bad_pixels(raw)
-    normalized, clip_low, clip_high = percentile_normalize(cleaned)
+    standardized = center_crop_or_pad(cleaned)
+    normalized, clip_low, clip_high = percentile_normalize(standardized)
 
     return {
         "raw": raw,
         "cleaned": cleaned,
-        "normalized": normalized,
+        "normalized": normalized.astype(np.float32),
         "clip_low": clip_low,
         "clip_high": clip_high,
     }
 
 
 def main():
-    metadata = pd.read_csv(METADATA_PATH)
+    metadata_path = ENRICHED_METADATA_PATH if ENRICHED_METADATA_PATH.exists() else METADATA_PATH
+    metadata = pd.read_csv(metadata_path)
 
     required_columns = {"sample_id", "raw_path"}
     missing_columns = required_columns.difference(metadata.columns)
@@ -73,8 +97,12 @@ def main():
 
         rows.append({
             "sample_id": row.sample_id,
+            "lens_id": getattr(row, "lens_id", row.lens),
             "raw_path": raw_path.as_posix(),
             "processed_path": output_path.as_posix(),
+            "lens_redshift": getattr(row, "lens_redshift", np.nan),
+            "source_redshift": getattr(row, "source_redshift", np.nan),
+            "pixel_scale": getattr(row, "pixel_scale", np.nan),
             "original_shape": "x".join(str(value) for value in raw.shape),
             "processed_shape": "x".join(str(value) for value in normalized.shape),
             "raw_min": float(np.nanmin(raw)),

@@ -14,9 +14,13 @@ def enrich_metadata():
     df_meta = pd.read_csv(METADATA_PATH)
     df_catalog = pd.read_csv(CATALOG_PATH)
 
-    # Merge image metadata with scientific labels on the 'lens' column
-    # We use a left join to keep every image, even if its lens isn't in the catalog
-    df_enriched = pd.merge(df_meta, df_catalog, on="lens", how="left")
+    df_meta["lens_id"] = df_meta.get("lens_id", df_meta["lens"])
+    df_catalog = df_catalog.rename(columns={"lens": "lens_id"})
+    # Keep every image, including systems whose scientific labels are incomplete.
+    df_enriched = pd.merge(df_meta, df_catalog, on="lens_id", how="left")
+    df_enriched["metadata_status"] = "complete"
+    missing_labels = df_enriched[["lens_redshift", "source_redshift"]].isna().any(axis=1)
+    df_enriched.loc[missing_labels, "metadata_status"] = "missing_redshift"
 
     ENRICHED_OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     df_enriched.to_csv(ENRICHED_OUTPUT, index=False)

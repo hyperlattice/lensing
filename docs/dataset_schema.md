@@ -7,15 +7,16 @@ A "usable sample" is defined as a record containing the following fields.
 
 | Field Name | Data Type | Requirement | Description | Example Value |
 | :--- | :--- | :--- | :--- | :--- |
-| `sample_id` | String | **Required** | Unique identifier for the lens system. | `"Q2237+030"` |
-| `raw_path` | Path | **Required** | Absolute path to the original `.fits` file. | `/data/raw/q2237.fits` |
-| `processed_path` | Path | **Required** | Path to the standardized `.npy` array. | `/data/proc/q2237.npy` |
-| `lens_redshift` | Float | **Required** | Redshift of the foreground lens ($z_l$). | `0.0395` |
-| `source_redshift`| Float | **Required** | Redshift of the background source ($z_s$). | `1.695` |
+| `sample_id` | String | **Required** | Unique identifier for an image. | `"Q2237_FIT_NIC2H_q256"` |
+| `lens_id` | String | **Required** | Identifier shared by every image from one lens system. | `"Q2237"` |
+| `raw_path` | Path | **Required** | Repository-relative path to the original `.fits` file. | `data/raw/castles/Q2237/FIT/NIC2H/q256.fits` |
+| `processed_path` | Path | **Required** | Repository-relative path to the standardized `.npy` array. | `data/processed/normalized/Q2237_FIT_NIC2H_q256.npy` |
+| `lens_redshift` | Float | Conditional | Redshift of the foreground lens ($z_l$), required for simulation/ML labels. | `0.0395` |
+| `source_redshift`| Float | Conditional | Redshift of the background source ($z_s$), required for simulation/ML labels. | `1.695` |
 | `pixel_scale` | Float | **Required** | Angular size of one pixel. | `0.045` |
 | `einstein_radius`| Float | Optional | The angular Einstein radius ($\theta_E$). | `1.2` |
-| `center_x` | Integer | **Required** | X-coordinate of the lens center in pixels. | `128` |
-| `center_y` | Integer | **Required** | Y-coordinate of the lens center in pixels. | `128` |
+| `center_x` | Integer | Optional | X-coordinate of the lens center in pixels. | `128` |
+| `center_y` | Integer | Optional | Y-coordinate of the lens center in pixels. | `128` |
 | `instrument` | String | Optional | Telescope/Camera used (for PSF lookup). | `"HST-WFC3"` |
 | `mask_path` | Path | Optional | Path to the associated bad-pixel mask. | `/data/proc/q2237_mask.npy` |
 
@@ -34,12 +35,13 @@ To prevent calculation errors, the following units are mandatory across all scri
 The `src/data/dataset.py` loader must enforce the following constraints. Samples failing these checks should be logged as "Broken" and excluded from training.
 
 ### 3.1 Integrity Constraints
-- **Non-Nullity:** `sample_id`, `raw_path`, `processed_path`, `lens_redshift`, `source_redshift`, and `pixel_scale` must be present.
+- **Non-Nullity:** `sample_id`, `lens_id`, `raw_path`, `processed_path`, and `pixel_scale` must be present.
 - **Path Existence:** `raw_path` and `processed_path` must point to existing files on disk.
-- **Shape Consistency:** All files at `processed_path` must resolve to NumPy arrays of shape `(256, 256)` and dtype `float32`.
+- **Shape Consistency:** All files at `processed_path` must resolve to finite NumPy arrays of shape `(256, 256)` and dtype `float32`.
+- **Path Convention:** Paths are relative to the repository root and use `/` separators.
 
 ### 3.2 Physical Constraints
-- **Redshift Logic:** $0 < \text{lens\_redshift} < \text{source\_redshift}$.
+- **Redshift Logic:** When both labels are available, $0 < \text{lens\_redshift} < \text{source\_redshift}$.
 - **Positive Scale:** $\text{pixel\_scale} > 0$.
 - **Coordinate Bounds:** $0 \le \text{center\_x} < \text{width}$ and $0 \le \text{center\_y} < \text{height}$.
 
