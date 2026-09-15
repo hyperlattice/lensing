@@ -1,0 +1,20 @@
+{
+  "data_product": "observed_science",
+  "failure_class_counts": {
+    "none": 2
+  },
+  "identifiable_count": 2,
+  "limitation": "Observation-mode fits condition on saved point positions while varying mass parameters; identifiability diagnostics are local Jacobian checks, not posterior uncertainty coverage.",
+  "manifest_path": "data/simulations/sim-p100-v1/manifest.csv",
+  "max_theta_E_relative_error": 0.09777573936547769,
+  "mean_reduced_chi2": 1.0026933550834656,
+  "mean_runtime_seconds": 1.5650957999750972,
+  "method": "bounded SIE pixel objective with fixed source shape/brightness and variable source position",
+  "optimizer_success_count": 2,
+  "passed": true,
+  "psf_scale": 1.1,
+  "results_path": "results/reports/fit-sie-grid-v1/p100_psf_ten_percent_wide/recovery.csv",
+  "source_adjustments": {},
+  "subset_count": 2,
+  "variance_product": "expected_variance"
+}

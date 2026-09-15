@@ -1,0 +1,85 @@
+{
+  "accepted_parent_count": 1000,
+  "artifact_bytes": 2573791870,
+  "artifact_count": 21009,
+  "checksum_manifest_path": "data/simulations/sim-eng1000-v1/checksums.sha256",
+  "config_path": "configs/simulation_engineering_v1.yaml",
+  "config_sha256": "4d2b7a35c3ecc5725ba7c2e287b2d2ad815eabb6aafb6c0af5b9915d93886b1c",
+  "gates": {
+    "ancestry_split_validation": true,
+    "no_rejections": true,
+    "noise_seed_unique": true,
+    "parameter_seed_unique": true,
+    "requested_count_accepted": true,
+    "simulation_validation": true,
+    "strict_loader_validation": true,
+    "unique_parent_ids": true,
+    "unique_sample_ids": true
+  },
+  "input_product": "processed_path",
+  "limitations": [
+    "The release uses analytic sources and Gaussian PSFs, not empirical HST morphologies or PSFs.",
+    "Noise is independent Poisson plus read noise and omits correlated detector/resampling effects.",
+    "Uniform engineering priors are not a calibrated lens-population selection function.",
+    "P100 is retained separately as a stress suite and is not part of these splits."
+  ],
+  "manifest_path": "data/simulations/sim-eng1000-v1/manifest.csv",
+  "manifest_sha256": "189c1351e768c6a6563c2af3243419df92d39f14a9670ff6385b693405e06a44",
+  "observation_count": 1000,
+  "passed": true,
+  "primary_target": "theta_E_arcsec",
+  "release_id": "sim-eng1000-v1",
+  "release_type": "simulation_engineering",
+  "requested_parent_count": 1000,
+  "runtime_seconds": 773.5722723999643,
+  "runtime_seconds_before_checksum": 651.919064799964,
+  "split_counts": {
+    "test": 150,
+    "train": 700,
+    "validation": 150
+  },
+  "split_report": {
+    "effective_group_count": 1000,
+    "fractions": {
+      "test": 0.15000000000000005,
+      "train": 0.7,
+      "validation": 0.15
+    },
+    "group_columns": [
+      "split_group_id",
+      "parent_system_id",
+      "source_template_id",
+      "background_template_id"
+    ],
+    "leakage_detected": false,
+    "manifest_path": "data/simulations/sim-eng1000-v1/manifest.csv",
+    "sample_count": 1000,
+    "seed": 4201,
+    "split_counts": {
+      "test": {
+        "effective_groups": 150,
+        "observations": 150,
+        "parents": 150
+      },
+      "train": {
+        "effective_groups": 700,
+        "observations": 700,
+        "parents": 700
+      },
+      "validation": {
+        "effective_groups": 150,
+        "observations": 150,
+        "parents": 150
+      }
+    }
+  },
+  "validation": {
+    "count": 1000,
+    "error_count": 0,
+    "errors": [],
+    "manifest_path": "data/simulations/sim-eng1000-v1/manifest.csv",
+    "parent_count": 1000,
+    "passed": true,
+    "residual_tolerance_arcsec": 1e-10
+  }
+}

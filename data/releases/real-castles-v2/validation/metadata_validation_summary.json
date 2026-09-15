@@ -1,0 +1,39 @@
+{
+  "catalog_path": "data/releases/real-castles-v2/lens_catalog.csv",
+  "eligibility_counts": {
+    "preprocessing": 137,
+    "real_comparison": 127
+  },
+  "fatal_classes": [
+    "duplicate_catalog_key",
+    "duplicate_sample_id",
+    "invalid_redshift_order",
+    "invalid_scale",
+    "missing_processed_path",
+    "missing_raw_path"
+  ],
+  "fatal_rows": 0,
+  "issue_counts": {
+    "ambiguous_redshift": 6,
+    "model_unsuitable": 4,
+    "unknown_unit": 37
+  },
+  "lens_systems": 69,
+  "metadata_path": "data/releases/real-castles-v2/manifest.csv",
+  "missingness_counts": {
+    "bunit": 37,
+    "detector": 0,
+    "filter": 0,
+    "filter_name": 0,
+    "image_unit": 37,
+    "instrument": 0,
+    "pixel_scale": 0,
+    "telescope": 17,
+    "wcs_status": 0
+  },
+  "rows": 137,
+  "status_counts": {
+    "pass": 91,
+    "review": 46
+  }
+}

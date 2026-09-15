@@ -1,0 +1,138 @@
+sample_id,lens_id,instrument,status,issue_classes,issues,fatal_classes,eligible_for
+APM08279_FIT_NIC1H_q128,APM08279,NICMOS,pass,,,,preprocessing;real_comparison
+B0218_FIT_NIC2H_q256new,B0218,NICMOS,pass,,,,preprocessing;real_comparison
+B0445_FIT_AWFCI_q128,B0445,ACS,pass,,,,preprocessing;real_comparison
+B0445_FIT_AWFCV_q128,B0445,ACS,pass,,,,preprocessing;real_comparison
+B0445_FIT_NIC2H_q256,B0445,NICMOS,pass,,,,preprocessing;real_comparison
+B0631_FIT_AWFCI_q128,B0631,ACS,review,ambiguous_redshift,ambiguous_redshift: catalog preserves alternative redshifts,,preprocessing
+B0631_FIT_AWFCV_q128,B0631,ACS,review,ambiguous_redshift,ambiguous_redshift: catalog preserves alternative redshifts,,preprocessing
+B0631_FIT_NIC2H_q256,B0631,NICMOS,review,ambiguous_redshift,ambiguous_redshift: catalog preserves alternative redshifts,,preprocessing
+B0712_FIT_NIC1H_q128,B0712,NICMOS,pass,,,,preprocessing;real_comparison
+B0739_FIT_NIC2H_q128,B0739,NICMOS,pass,,,,preprocessing;real_comparison
+B0739_FIT_WFPC2I_q128,B0739,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+B0850_FIT_AWFCI_q128,B0850,ACS,review,ambiguous_redshift,ambiguous_redshift: catalog preserves alternative redshifts,,preprocessing
+B0850_FIT_AWFCV_q128,B0850,ACS,review,ambiguous_redshift,ambiguous_redshift: catalog preserves alternative redshifts,,preprocessing
+B0850_FIT_NIC2H_q128,B0850,NICMOS,review,ambiguous_redshift,ambiguous_redshift: catalog preserves alternative redshifts,,preprocessing
+B1030_FIT_NIC2H_q256,B1030,NICMOS,pass,,,,preprocessing;real_comparison
+B1030_FIT_WFPC2I0_q128,B1030,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+B1030_FIT_WFPC2V0_q128,B1030,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+B1127_FIT_NIC2H_q256,B1127,NICMOS,pass,,,,preprocessing;real_comparison
+B1127_FIT_WFPC2I0_q64,B1127,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+B1127_FIT_WFPC2V0_q64,B1127,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+B1152_FIT_NIC2H_q256,B1152,NICMOS,pass,,,,preprocessing;real_comparison
+B1152_FIT_WFPC2I_q128,B1152,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+B1152_FIT_WFPC2V_q128,B1152,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+B1359_FIT_WFPC2I_q128,B1359,WFPC2,review,model_unsuitable;unknown_unit,model_unsuitable: excluded from the single-SIE experiment;unknown_unit: image unit is unavailable or unverified,,preprocessing
+B1422_FIT_NIC2H_q256,B1422,NICMOS,pass,,,,preprocessing;real_comparison
+B1555_FIT_NIC2H_q128,B1555,NICMOS,pass,,,,preprocessing;real_comparison
+B1600_FIT_NIC2H_q256,B1600,NICMOS,pass,,,,preprocessing;real_comparison
+B1608_FIT_NIC2H_q128,B1608,NICMOS,pass,,,,preprocessing;real_comparison
+B1933_FIT_NIC1H_q128,B1933,NICMOS,pass,,,,preprocessing;real_comparison
+B1938_FIT_NIC2H_q128,B1938,NICMOS,pass,,,,preprocessing;real_comparison
+B2045_FIT_NIC2H_q256,B2045,NICMOS,pass,,,,preprocessing;real_comparison
+B2045_FIT_WFPC2I_q128,B2045,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+B2045_FIT_WFPC2V_q128,B2045,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+B2108_FIT_AWFCI_q256,B2108,ACS,pass,,,,preprocessing;real_comparison
+B2108_FIT_AWFCV_q256,B2108,ACS,pass,,,,preprocessing;real_comparison
+B2108_FIT_NIC2H_q256,B2108,NICMOS,pass,,,,preprocessing;real_comparison
+B2114_FIT_NIC1H_q128,B2114,NICMOS,pass,,,,preprocessing;real_comparison
+B2319_FIT_NIC2H_q256,B2319,NICMOS,pass,,,,preprocessing;real_comparison
+CFRS03_FIT_AWFCI_q128,CFRS03,ACS,pass,,,,preprocessing;real_comparison
+CFRS03_FIT_AWFCV_q128,CFRS03,ACS,pass,,,,preprocessing;real_comparison
+CFRS03_FIT_NIC2H_q256,CFRS03,NICMOS,pass,,,,preprocessing;real_comparison
+CTQ414_FIT_NIC2H_q256,CTQ414,NICMOS,pass,,,,preprocessing;real_comparison
+FSC10214_FIT_WFPC2I_q128,FSC10214,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+H1413_FIT_EEF_q256,H1413,NICMOS,pass,,,,preprocessing;real_comparison
+HE0047_FIT_AWFCI_q128,HE0047,ACS,pass,,,,preprocessing;real_comparison
+HE0047_FIT_AWFCV_q128,HE0047,ACS,pass,,,,preprocessing;real_comparison
+HE0047_FIT_NIC2H_q256,HE0047,NICMOS,pass,,,,preprocessing;real_comparison
+HE0230_FIT_WFPC2I_q128,HE0230,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+HE0435_FIT_NIC2H_q256,HE0435,NICMOS,pass,,,,preprocessing;real_comparison
+HE0512_FIT_NIC2H_q256,HE0512,NICMOS,pass,,,,preprocessing;real_comparison
+HE0512_FIT_WFPC2I_q128,HE0512,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+HE0512_FIT_WFPC2V_q128,HE0512,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+HE1104_FIT_NIC2H2_q256,HE1104,NICMOS,pass,,,,preprocessing;real_comparison
+HE2149_FIT_NIC2H_q256,HE2149,NICMOS,pass,,,,preprocessing;real_comparison
+HE2149_FIT_WFPC2I_q128new,HE2149,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+HE2149_FIT_WFPC2V_q128new,HE2149,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+HS0810_FIT_AWFCI_q128,HS0810,ACS,pass,,,,preprocessing;real_comparison
+HS0810_FIT_AWFCV_q128,HS0810,ACS,pass,,,,preprocessing;real_comparison
+HS0810_FIT_NIC2H_q256,HS0810,NICMOS,pass,,,,preprocessing;real_comparison
+HS0818_FIT_NIC2H_q256,HS0818,NICMOS,pass,,,,preprocessing;real_comparison
+HS0818_FIT_WFPC2I_q256,HS0818,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+HS0818_FIT_WFPC2V_q256,HS0818,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+HST01247_FIT_NIC2H_q128,HST01247,NICMOS,pass,,,,preprocessing;real_comparison
+HST01247_FIT_WFPC2I_q64,HST01247,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+HST01247_FIT_WFPC2V_q64,HST01247,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+HST12531_FIT_WFPC2V_q128,HST12531,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+HST14113_FIT_WFPC2R_q64,HST14113,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+HST14164_FIT_WFPC2I_q64,HST14164,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+J1004_FIT_AWFCI_q128,J1004,ACS,pass,,,,preprocessing;real_comparison
+J1004_FIT_AWFCV_q128,J1004,ACS,pass,,,,preprocessing;real_comparison
+J1004_FIT_NIC2H_q256,J1004,NICMOS,pass,,,,preprocessing;real_comparison
+LBQS1333_FIT_NIC2H_q256,LBQS1333,NICMOS,pass,,,,preprocessing;real_comparison
+MG0414_FIT_NIC2H_q256,MG0414,NICMOS,pass,,,,preprocessing;real_comparison
+MG1131_FIT_NIC2H_q256,MG1131,NICMOS,pass,,,,preprocessing;real_comparison
+MG1549_FIT_NIC2H_q512,MG1549,NICMOS,pass,,,,preprocessing;real_comparison
+MG2016_FIT_NIC2H_q512,MG2016,NICMOS,pass,,,,preprocessing;real_comparison
+PG1115_FIT_NIC2H1_q256new,PG1115,NICMOS,pass,,,,preprocessing;real_comparison
+PKS1830_FIT_NIC2H_q128new,PKS1830,NICMOS,pass,,,,preprocessing;real_comparison
+PKS1830_FIT_NIC2K_q128new,PKS1830,NICMOS,pass,,,,preprocessing;real_comparison
+PKS1830_FIT_WFPC2I1_q128,PKS1830,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+PMN0134_FIT_NIC2H_q256,PMN0134,NICMOS,pass,,,,preprocessing;real_comparison
+PMN0134_FIT_WFPC2I_q128,PMN0134,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+PMN1632_FIT_NIC2H_q256,PMN1632,NICMOS,pass,,,,preprocessing;real_comparison
+PMN1838_FIT_NIC2H_q256,PMN1838,NICMOS,pass,,,,preprocessing;real_comparison
+PMN1838_FIT_WFPC2I_q128new,PMN1838,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+PMN1838_FIT_WFPC2V_q128new,PMN1838,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+PMN2004_FIT_NIC2H_q256,PMN2004,NICMOS,pass,,,,preprocessing;real_comparison
+PMN2004_FIT_WFPC2I_q128,PMN2004,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+PMN2004_FIT_WFPC2V_q128,PMN2004,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+PSS2322_FIT_AWFCI_q128,PSS2322,ACS,pass,,,,preprocessing;real_comparison
+PSS2322_FIT_AWFCV_q128,PSS2322,ACS,pass,,,,preprocessing;real_comparison
+PSS2322_FIT_NIC2H_q256,PSS2322,NICMOS,pass,,,,preprocessing;real_comparison
+Q0047_FIT_NIC2H_q256,Q0047,NICMOS,pass,,,,preprocessing;real_comparison
+Q0047_FIT_WFPC2I0_q128,Q0047,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+Q0047_FIT_WFPC2V_q128,Q0047,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+Q0957_FIT_NIC2H_q512,Q0957,NICMOS,pass,,,,preprocessing;real_comparison
+Q1009_FIT_NIC2H_q256new,Q1009,NICMOS,pass,,,,preprocessing;real_comparison
+Q1009_FIT_WFPC2I_q128new2,Q1009,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+Q1009_FIT_WFPC2V_q128new2,Q1009,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+Q1355_FIT_AWFCI_q128,Q1355,ACS,pass,,,,preprocessing;real_comparison
+Q1355_FIT_AWFCV_q128,Q1355,ACS,pass,,,,preprocessing;real_comparison
+Q1355_FIT_NIC2H_q256,Q1355,NICMOS,pass,,,,preprocessing;real_comparison
+Q2237_FIT_NIC2H_q256,Q2237,NICMOS,pass,,,,preprocessing;real_comparison
+RXJ0911_FIT_NIC2H1_q256,RXJ0911,NICMOS,pass,,,,preprocessing;real_comparison
+RXJ0921_FIT_NIC2H_q256,RXJ0921,NICMOS,pass,,,,preprocessing;real_comparison
+RXJ0921_FIT_WFPC2V_q256,RXJ0921,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+RXJ1131_FIT_AWFCV_q256,RXJ1131,ACS,pass,,,,preprocessing;real_comparison
+RXJ1131_FIT_NIC2H_q256,RXJ1131,NICMOS,pass,,,,preprocessing;real_comparison
+SBS0909_FIT_NIC2H_q256,SBS0909,NICMOS,pass,,,,preprocessing;real_comparison
+SBS0909_FIT_WFPC2I0_q128,SBS0909,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+SBS0909_FIT_WFPC2V0_q128,SBS0909,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+SBS1520_FIT_WFPC2V_q128,SBS1520,WFPC2,review,unknown_unit,unknown_unit: image unit is unavailable or unverified,,preprocessing;real_comparison
+SDSS0246_FIT_AWFCI_q128,SDSS0246,ACS,pass,,,,preprocessing;real_comparison
+SDSS0246_FIT_AWFCV_q128,SDSS0246,ACS,pass,,,,preprocessing;real_comparison
+SDSS0246_FIT_NIC2H_q256,SDSS0246,NICMOS,pass,,,,preprocessing;real_comparison
+SDSS0903_FIT_AWFCI_q256,SDSS0903,ACS,pass,,,,preprocessing;real_comparison
+SDSS0903_FIT_AWFCV_q256,SDSS0903,ACS,pass,,,,preprocessing;real_comparison
+SDSS0903_FIT_NIC2H_q256,SDSS0903,NICMOS,pass,,,,preprocessing;real_comparison
+SDSS0924_FIT_AWFCI_q128,SDSS0924,ACS,pass,,,,preprocessing;real_comparison
+SDSS0924_FIT_AWFCV_q256,SDSS0924,ACS,pass,,,,preprocessing;real_comparison
+SDSS0924_FIT_NIC2H_q256,SDSS0924,NICMOS,pass,,,,preprocessing;real_comparison
+SDSS1004_FIT_AWFCI_q512,SDSS1004,ACS,review,model_unsuitable,model_unsuitable: excluded from the single-SIE experiment,,preprocessing
+SDSS1004_FIT_AWFCV_q512,SDSS1004,ACS,review,model_unsuitable,model_unsuitable: excluded from the single-SIE experiment,,preprocessing
+SDSS1004_FIT_NIC2H_q512,SDSS1004,NICMOS,review,model_unsuitable,model_unsuitable: excluded from the single-SIE experiment,,preprocessing
+SDSS1138_FIT_AWFCI_q128,SDSS1138,ACS,pass,,,,preprocessing;real_comparison
+SDSS1138_FIT_AWFCV_q128,SDSS1138,ACS,pass,,,,preprocessing;real_comparison
+SDSS1138_FIT_NIC2H_q256,SDSS1138,NICMOS,pass,,,,preprocessing;real_comparison
+SDSS1155_FIT_AWFCI_q256,SDSS1155,ACS,pass,,,,preprocessing;real_comparison
+SDSS1155_FIT_AWFCV_q256,SDSS1155,ACS,pass,,,,preprocessing;real_comparison
+SDSS1155_FIT_NIC2H_q256,SDSS1155,NICMOS,pass,,,,preprocessing;real_comparison
+SDSS1226_FIT_AWFCI_q256,SDSS1226,ACS,pass,,,,preprocessing;real_comparison
+SDSS1226_FIT_AWFCV_q256,SDSS1226,ACS,pass,,,,preprocessing;real_comparison
+SDSS1226_FIT_NIC2H_q256,SDSS1226,NICMOS,pass,,,,preprocessing;real_comparison
+WFI2026_FIT_NIC2H_q256,WFI2026,NICMOS,pass,,,,preprocessing;real_comparison
+WFI2033_FIT_AWFCI_q256,WFI2033,ACS,pass,,,,preprocessing;real_comparison
+WFI2033_FIT_AWFCV_q256,WFI2033,ACS,pass,,,,preprocessing;real_comparison
+WFI2033_FIT_NIC2H_q256,WFI2033,NICMOS,pass,,,,preprocessing;real_comparison

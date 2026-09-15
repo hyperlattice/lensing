@@ -1,0 +1,4 @@
+comparison_id,sample_id,lens_id,expected_image_count,detected_peak_count,astrometric_radius_arcsec,diagnostic_scale_arcsec,reference_radius_arcsec,reference_uncertainty_arcsec,reference_kind,reference_url,relative_difference,within_configured_15_percent
+real-comparison-v1,B0218_FIT_NIC2H_q256new,B0218,2,2,0.14811928494756393,0.01896473110257765,0.1581,,CASTLES_SIE_critical_radius_b,https://lweb.cfa.harvard.edu/castles/models.html,0.06312912746638873,True
+real-comparison-v1,HE0435_FIT_NIC2H_q256,HE0435,4,4,1.2005991534704692,0.08859469104396975,1.21,,CASTLES_Size_over_2_screening_proxy,https://lweb.cfa.harvard.edu/castles/,0.007769294652504769,True
+real-comparison-v1,Q2237_FIT_NIC2H_q256,Q2237,4,4,0.8792441691373967,0.05584863073631576,0.85,0.01,CASTLES_SIE_critical_radius_b,https://lweb.cfa.harvard.edu/castles/models.html,0.034404904867525524,True

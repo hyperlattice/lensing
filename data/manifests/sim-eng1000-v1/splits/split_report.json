@@ -1,0 +1,35 @@
+{
+  "effective_group_count": 1000,
+  "fractions": {
+    "test": 0.15000000000000005,
+    "train": 0.7,
+    "validation": 0.15
+  },
+  "group_columns": [
+    "split_group_id",
+    "parent_system_id",
+    "source_template_id",
+    "background_template_id"
+  ],
+  "leakage_detected": false,
+  "manifest_path": "data/simulations/sim-eng1000-v1/manifest.csv",
+  "sample_count": 1000,
+  "seed": 4201,
+  "split_counts": {
+    "test": {
+      "effective_groups": 150,
+      "observations": 150,
+      "parents": 150
+    },
+    "train": {
+      "effective_groups": 700,
+      "observations": 700,
+      "parents": 700
+    },
+    "validation": {
+      "effective_groups": 150,
+      "observations": 150,
+      "parents": 150
+    }
+  }
+}

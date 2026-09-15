@@ -1,0 +1,70 @@
+{
+  "readiness_id": "pre-ml-readiness-v1",
+  "ready_for_ml_planning": true,
+  "ready_for_synthetic_in_domain_baseline": true,
+  "ready_for_observational_mass_claims": false,
+  "primary_target": {
+    "field": "theta_E_arcsec",
+    "unit": "arcsec",
+    "available": 1000,
+    "total": 1000
+  },
+  "primary_input": {
+    "field": "processed_path",
+    "shape": [256, 256],
+    "dtype": "float32",
+    "pixel_scale_arcsec": 0.05
+  },
+  "engineering_release": {
+    "release_id": "sim-eng1000-v1",
+    "manifest_sha256": "189c1351e768c6a6563c2af3243419df92d39f14a9670ff6385b693405e06a44",
+    "parents": 1000,
+    "observations": 1000,
+    "accepted": 1000,
+    "rejected": 0,
+    "validation_errors": 0,
+    "split_counts": {"train": 700, "validation": 150, "test": 150},
+    "ancestry_leakage": false,
+    "artifact_count": 21009,
+    "artifact_bytes": 2573791870,
+    "runtime_seconds": 773.5722723999643
+  },
+  "real_release": {
+    "release_id": "real-castles-v2",
+    "manifest_sha256": "1849ab21013ce282ec6fe98af7f24b767925e8045beec30c155d5c319c903d2e",
+    "systems": 69,
+    "observations": 137,
+    "fatal_rows": 0,
+    "review_rows": 46,
+    "strict_product_errors": 0
+  },
+  "classical_recovery": {
+    "scenario_count": 6,
+    "fit_count": 13,
+    "optimizer_success_count": 13,
+    "locally_identifiable_count": 13,
+    "noiseless_control_max_theta_E_relative_error": 0.00032996042361939864,
+    "noisy_max_theta_E_relative_error": 0.11710038583829552,
+    "scientific_gate_passed": true
+  },
+  "real_comparison": {
+    "systems": 3,
+    "agreement_count": 3,
+    "maximum_relative_difference": 0.06312912746638873,
+    "passed": true,
+    "claim": "exploratory astrometric scale comparison only"
+  },
+  "deferred_ml_choices": [
+    "architecture",
+    "loss and posterior representation",
+    "optimizer and schedule",
+    "augmentation",
+    "single-target versus multi-target training"
+  ],
+  "blocking_gaps_for_real_claims": [
+    "empirical PSF and detector uncertainty products",
+    "real-system model-suitability review",
+    "realistic source morphology and calibrated population priors",
+    "blind real benchmark and posterior coverage"
+  ]
+}

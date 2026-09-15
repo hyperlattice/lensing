@@ -1,0 +1,136 @@
+{
+  "agreement_count": 3,
+  "claim_boundary": "Exploratory peak astrometry reproduces the scale of preselected real lenses. This is not a calibrated pixel-level mass fit, posterior, or unbiased accuracy estimate.",
+  "comparison_id": "real-comparison-v1",
+  "config_path": "configs/real_comparison_v1.yaml",
+  "limitations": [
+    "The three systems were preselected and are not a population-level validation sample.",
+    "Brightest-peak selection assumes the lensed images outrank lens-galaxy and field peaks.",
+    "The diagnostic scale combines radial scatter with a half-pixel floor; it is not a confidence interval.",
+    "HE0435 uses CASTLES Size/2 as a screening proxy rather than a like-for-like SIE critical radius.",
+    "Real products have a toy variance model and no empirical PSF, so likelihood-based claims are deferred."
+  ],
+  "maximum_relative_difference": 0.06312912746638873,
+  "method": "smoothed_peak_astrometry_monopole_radius",
+  "passed": true,
+  "system_count": 3,
+  "systems": [
+    {
+      "astrometric_radius_arcsec": 0.14811928494756393,
+      "comparison_id": "real-comparison-v1",
+      "detected_peak_count": 2,
+      "diagnostic_scale_arcsec": 0.01896473110257765,
+      "expected_image_count": 2,
+      "lens_id": "B0218",
+      "measurement": {
+        "center_x_pixel": 128.0,
+        "center_y_pixel": 128.5,
+        "diagnostic_scale_arcsec": 0.01896473110257765,
+        "peak_values": [
+          1.9765249730909065,
+          1.1948001616476378
+        ],
+        "peak_x_pixels": [
+          125.0,
+          131.0
+        ],
+        "peak_y_pixels": [
+          131.0,
+          126.0
+        ],
+        "pixel_scale_arcsec": 0.0379294622051553,
+        "radial_scatter_arcsec": 0.0,
+        "radius_arcsec": 0.14811928494756393
+      },
+      "reference_kind": "CASTLES_SIE_critical_radius_b",
+      "reference_radius_arcsec": 0.1581,
+      "reference_uncertainty_arcsec": null,
+      "reference_url": "https://lweb.cfa.harvard.edu/castles/models.html",
+      "relative_difference": 0.06312912746638873,
+      "sample_id": "B0218_FIT_NIC2H_q256new",
+      "within_configured_15_percent": true
+    },
+    {
+      "astrometric_radius_arcsec": 1.2005991534704692,
+      "comparison_id": "real-comparison-v1",
+      "detected_peak_count": 4,
+      "diagnostic_scale_arcsec": 0.08859469104396975,
+      "expected_image_count": 4,
+      "lens_id": "HE0435",
+      "measurement": {
+        "center_x_pixel": 126.62627507916461,
+        "center_y_pixel": 85.30427200020034,
+        "diagnostic_scale_arcsec": 0.08859469104396975,
+        "peak_values": [
+          1.895882578448012,
+          1.23406225272432,
+          1.2176071156159023,
+          0.9533814505107883
+        ],
+        "peak_x_pixels": [
+          157.0,
+          117.0,
+          93.0,
+          135.0
+        ],
+        "peak_y_pixels": [
+          70.0,
+          58.0,
+          91.0,
+          114.0
+        ],
+        "pixel_scale_arcsec": 0.037825822877703,
+        "radial_scatter_arcsec": 0.08859469104396975,
+        "radius_arcsec": 1.2005991534704692
+      },
+      "reference_kind": "CASTLES_Size_over_2_screening_proxy",
+      "reference_radius_arcsec": 1.21,
+      "reference_uncertainty_arcsec": null,
+      "reference_url": "https://lweb.cfa.harvard.edu/castles/",
+      "relative_difference": 0.007769294652504769,
+      "sample_id": "HE0435_FIT_NIC2H_q256",
+      "within_configured_15_percent": true
+    },
+    {
+      "astrometric_radius_arcsec": 0.8792441691373967,
+      "comparison_id": "real-comparison-v1",
+      "detected_peak_count": 4,
+      "diagnostic_scale_arcsec": 0.05584863073631576,
+      "expected_image_count": 4,
+      "lens_id": "Q2237",
+      "measurement": {
+        "center_x_pixel": 126.27447862195815,
+        "center_y_pixel": 128.80247669267874,
+        "diagnostic_scale_arcsec": 0.05584863073631576,
+        "peak_values": [
+          11.85186046257465,
+          7.5343278846675625,
+          6.398799407481149,
+          4.957253441448522
+        ],
+        "peak_x_pixels": [
+          144.0,
+          103.0,
+          138.0,
+          117.0
+        ],
+        "peak_y_pixels": [
+          146.0,
+          121.0,
+          110.0,
+          148.0
+        ],
+        "pixel_scale_arcsec": 0.037929487919384,
+        "radial_scatter_arcsec": 0.05584863073631576,
+        "radius_arcsec": 0.8792441691373967
+      },
+      "reference_kind": "CASTLES_SIE_critical_radius_b",
+      "reference_radius_arcsec": 0.85,
+      "reference_uncertainty_arcsec": 0.01,
+      "reference_url": "https://lweb.cfa.harvard.edu/castles/models.html",
+      "relative_difference": 0.034404904867525524,
+      "sample_id": "Q2237_FIT_NIC2H_q256",
+      "within_configured_15_percent": true
+    }
+  ]
+}

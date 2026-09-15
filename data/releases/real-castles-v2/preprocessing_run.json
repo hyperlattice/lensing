@@ -1,0 +1,16 @@
+{
+  "accepted_count": 137,
+  "code_version": "2.0.0",
+  "config_hash": "42bfbd09a4867ecced7b5dd8e910ec2932d9972ef7390862e77e8e046c9c8b50",
+  "config_path": "configs/preprocessing_v2.yaml",
+  "dry_run": false,
+  "failed_count": 0,
+  "failures": [],
+  "input_root": "data/releases/real-castles-v2",
+  "manifest_path": "data/releases/real-castles-v2/manifest.csv",
+  "metadata_path": "data/releases/real-castles-v2/metadata_enriched.csv",
+  "output_root": "data/releases/real-castles-v2/products/normalized",
+  "overwrite": false,
+  "planned_count": 137,
+  "run_id": "preprocess-42bfbd09a486"
+}

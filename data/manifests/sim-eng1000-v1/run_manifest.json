@@ -1,0 +1,29 @@
+{
+  "backend": {
+    "available": true,
+    "detail": null,
+    "name": "lenstronomy",
+    "python": "3.13.6",
+    "version": "1.14.2"
+  },
+  "config_hash": "4d2b7a35c3ecc5725ba7c2e287b2d2ad815eabb6aafb6c0af5b9915d93886b1c",
+  "config_path": "configs/simulation_engineering_v1.yaml",
+  "count_accepted": 1000,
+  "count_attempted": 1000,
+  "count_rejected": 0,
+  "count_requested": 1000,
+  "generator_version": "0.1.0",
+  "manifest_path": "manifest.csv",
+  "noise_policy": "Poisson in electrons plus Gaussian read noise before background subtraction",
+  "output_root": "data/simulations/sim-eng1000-v1",
+  "point_amplitude_rounding_decimals": 3,
+  "point_position_rounding_decimals": 8,
+  "point_source_rendering": "bilinear_pixel_deposition_then_analytic_gaussian_control_convolution",
+  "preview_index_path": null,
+  "rejection_log_path": "rejection_log.csv",
+  "rejections": [],
+  "run_id": "sim-eng1000-v1",
+  "seed": 11001,
+  "simulation_id": "sim-eng1000-v1",
+  "simulation_stage": "engineering_release"
+}

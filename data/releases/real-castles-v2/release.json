@@ -1,0 +1,81 @@
+{
+  "catalog_rows": 69,
+  "enriched_rows": 137,
+  "lens_count": 69,
+  "limitations": [
+    "The local CASTLES products do not provide empirical PSF, ERR, or DQ extensions.",
+    "The variance fallback is toy_unprofiled and is not a calibrated detector likelihood.",
+    "WFPC2 units and all real-system model suitability require purpose-specific review."
+  ],
+  "manifest_path": "data/releases/real-castles-v2/manifest.csv",
+  "manifest_sha256": "1849ab21013ce282ec6fe98af7f24b767925e8045beec30c155d5c319c903d2e",
+  "metadata_rows": 137,
+  "metadata_validation": {
+    "catalog_path": "data/releases/real-castles-v2/lens_catalog.csv",
+    "eligibility_counts": {
+      "preprocessing": 137,
+      "real_comparison": 127
+    },
+    "fatal_classes": [
+      "duplicate_catalog_key",
+      "duplicate_sample_id",
+      "invalid_redshift_order",
+      "invalid_scale",
+      "missing_processed_path",
+      "missing_raw_path"
+    ],
+    "fatal_rows": 0,
+    "issue_counts": {
+      "ambiguous_redshift": 6,
+      "model_unsuitable": 4,
+      "unknown_unit": 37
+    },
+    "lens_systems": 69,
+    "metadata_path": "data/releases/real-castles-v2/manifest.csv",
+    "missingness_counts": {
+      "bunit": 37,
+      "detector": 0,
+      "filter": 0,
+      "filter_name": 0,
+      "image_unit": 37,
+      "instrument": 0,
+      "pixel_scale": 0,
+      "telescope": 17,
+      "wcs_status": 0
+    },
+    "rows": 137,
+    "status_counts": {
+      "pass": 91,
+      "review": 46
+    }
+  },
+  "observation_count": 137,
+  "passed": true,
+  "preprocessing": {
+    "accepted_count": 137,
+    "code_version": "2.0.0",
+    "config_hash": "42bfbd09a4867ecced7b5dd8e910ec2932d9972ef7390862e77e8e046c9c8b50",
+    "config_path": "configs/preprocessing_v2.yaml",
+    "dry_run": false,
+    "failed_count": 0,
+    "failures": [],
+    "input_root": "data/releases/real-castles-v2",
+    "manifest_path": "data/releases/real-castles-v2/manifest.csv",
+    "metadata_path": "data/releases/real-castles-v2/metadata_enriched.csv",
+    "output_root": "data/releases/real-castles-v2/products/normalized",
+    "overwrite": false,
+    "planned_count": 137,
+    "run_id": "preprocess-42bfbd09a486"
+  },
+  "preview_error_count": 0,
+  "release_id": "real-castles-v2",
+  "release_type": "real_castles_preprocessing_v2",
+  "runtime_seconds": 52.007420299982186,
+  "split_counts": {
+    "test": 19,
+    "train": 94,
+    "validation": 24
+  },
+  "strict_product_error_count": 0,
+  "strict_product_errors": []
+}
