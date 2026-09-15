@@ -4,6 +4,8 @@ __pycache__/
 .pytest_cache/
 .pytest-work/
 data/simulations/
+data/releases/*/products/
+data/releases/*/previews/
 
 tempCodeRunnerFile.py
 

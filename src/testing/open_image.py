@@ -1,31 +1,17 @@
-"""
-File: open_image.py
-Author: Charlie Shao
-Date: 
+"""Interactive FITS header and image inspector.
 
-Contact Information:
-    charlieshao2010@gmail.com (personal)
-    349042127@gapps.yrdsb.ca (school)
-
-Description: This program opens a standard fits file image from the castles gravitational lensing dataset, 
-as well as printing the parameters and information about the file and the strong gravitational lens.
+This module is side-effect free on import. Run it directly to print a header,
+optionally save that text, and display the image.
 """
 
+import argparse
+from pathlib import Path
 
 from astropy.io import fits
 import matplotlib.pyplot as plt
 
-file = "data/raw/castles/Q2237/FIT/NIC2H/q256.fits"
 
-hdul = fits.open(file)
-header = hdul[0].header
-
-# Print HDU summary
-print(f"Filename: {file}\n")
-hdul.info()
-
-# Section titles inserted before these keywords
-sections = {
+SECTIONS = {
     "SIMPLE": "Basic FITS Information",
     "ROOTNAME": "Data Description",
     "TARGNAME": "Target Information",
@@ -38,115 +24,50 @@ sections = {
     "MASKPDGR": "Calibration File Pedigree",
 }
 
-print("\n")
 
-for card in header.cards:
+def format_header(path):
+    path = Path(path)
+    lines = [f"Filename: {path}", ""]
+    with fits.open(path) as hdul:
+        lines.append(f"HDU count: {len(hdul)}")
+        for index, hdu in enumerate(hdul):
+            lines.append(f"HDU {index}: name={hdu.name!r}, shape={getattr(hdu.data, 'shape', None)}")
+        lines.append("")
+        for card in hdul[0].header.cards:
+            if card.keyword in SECTIONS:
+                lines.extend(["=" * 60, SECTIONS[card.keyword], "=" * 60])
+            if card.keyword in {"COMMENT", "HISTORY"}:
+                lines.append(f"{card.keyword:<8} {card.value}")
+            elif card.comment:
+                lines.append(f"{card.keyword:<8}= {card.value!r:<30} / {card.comment}")
+            else:
+                lines.append(f"{card.keyword:<8}= {card.value!r}")
+        lines.append("\nEnd of Header")
+    return "\n".join(lines)
 
-    # Print section heading
-    if card.keyword in sections:
-        print("=" * 60)
-        print(sections[card.keyword])
-        print("=" * 60)
 
-    # Preserve COMMENT and HISTORY formatting
-    if card.keyword == "COMMENT":
-        print(f"COMMENT  {card.value}")
-        continue
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("path", nargs="?", default="data/raw/castles/Q2237/FIT/NIC2H/q256.fits")
+    parser.add_argument("--output", default=None, help="optional text output path")
+    parser.add_argument("--no-show", action="store_true")
+    args = parser.parse_args()
 
-    if card.keyword == "HISTORY":
-        print(f"HISTORY  {card.value}")
-        continue
+    rendered = format_header(args.path)
+    print(rendered)
+    if args.output:
+        output = Path(args.output)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(rendered + "\n", encoding="utf-8")
+    if not args.no_show:
+        image = fits.getdata(args.path)
+        figure, axis = plt.subplots(figsize=(8, 8))
+        artist = axis.imshow(image, origin="lower", cmap="plasma")
+        figure.colorbar(artist, ax=axis, label="Brightness")
+        axis.set_title(args.path)
+        plt.show()
+    return 0
 
-    keyword = card.keyword
-    value = card.value
-    comment = card.comment
 
-    # Print exactly like a FITS header
-    if comment:
-        print(f"{keyword:<8}= {repr(value):<30} / {comment}")
-    else:
-        print(f"{keyword:<8}= {repr(value)}")
-
-print("\nEnd of Header")
-
-# Output text file
-output_file = "q256_header.txt"
-
-with open(output_file, "w", encoding="utf-8") as f:
-
-    # Helper function to print to console AND save to file
-    def out(text=""):
-        print(text)
-        f.write(text + "\n")
-
-    # Print filename
-    out(f"Filename: {file}\n")
-
-    # Capture hdul.info() output
-    hdul.info(output=f)
-
-    # Also show it in the terminal
-    hdul.info()
-
-    out("\n")
-
-    # Section titles inserted before these keywords
-    sections = {
-        "SIMPLE": "Basic FITS Information",
-        "ROOTNAME": "Data Description",
-        "TARGNAME": "Target Information",
-        "PROPOSID": "Proposal Information",
-        "ORIENTAT": "Exposure Information",
-        "CAMERA": "Instrument Configuration",
-        "BACKEST1": "Background Keywords",
-        "PHOTMODE": "Photometry Keywords",
-        "MASKFILE": "CALNICA Calibration Files",
-        "MASKPDGR": "Calibration File Pedigree",
-    }
-
-    for card in header.cards:
-
-        # Print section heading
-        if card.keyword in sections:
-            out("=" * 60)
-            out(sections[card.keyword])
-            out("=" * 60)
-
-        # Preserve COMMENT and HISTORY formatting
-        if card.keyword == "COMMENT":
-            out(f"COMMENT  {card.value}")
-            continue
-
-        if card.keyword == "HISTORY":
-            out(f"HISTORY  {card.value}")
-            continue
-
-        keyword = card.keyword
-        value = card.value
-        comment = card.comment
-
-        # Print exactly like a FITS header
-        if comment:
-            out(f"{keyword:<8}= {repr(value):<30} / {comment}")
-        else:
-            out(f"{keyword:<8}= {repr(value)}")
-
-    out("\nEnd of Header")
-
-    image = fits.getdata(file)
-
-    out(f"Image shape: {image.shape}")
-    out(f"Data type: {image.dtype}")
-
-print(f"\nHeader saved to: {output_file}")
-
-image = fits.getdata(file)
-
-print("Image shape:", image.shape)
-print("Data type:", image.dtype)
-
-plt.figure(figsize=(8, 8))
-plt.imshow(image, origin="lower", cmap="plasma")
-plt.colorbar(label="Brightness")
-plt.title(file)
-plt.show()
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,0 +1,80 @@
+schema_version: "2.0"
+simulation_version: "0.1.0"
+
+backend:
+  name: lenstronomy
+  version: "1.14.2"
+  numba_jit: local_default_disabled_for_reproducible_release
+
+conventions:
+  coordinate_order: [x_arcsec, y_arcsec]
+  image_index_order: [y_pixel, x_pixel]
+  angle_unit: arcsec
+  orientation_unit: radian
+  axis_ratio: minor_over_major
+  ellipticity_parameterization: "e=(1-q)/(1+q), e1=e*cos(2*phi), e2=e*sin(2*phi)"
+
+models:
+  primary_lens: SIE
+  source_light: SERSIC_ELLIPSE
+  point_source: UNLENSED
+  psf: GAUSSIAN
+
+grid:
+  shape: [256, 256]
+  pixel_scale_arcsec: 0.05
+  center: [0.0, 0.0]
+
+preprocessing:
+  normalization_method: none
+  lower_percentile: 1.0
+  upper_percentile: 99.0
+  background_sigma_clip: 4.0
+  background_max_iterations: 5
+  background_min_valid_pixels: 64
+  noise_floor: 0.000001
+
+pilot:
+  # These ranges are intentionally unchanged from the validated P60 stage.
+  # P100 remains a separate out-of-distribution stress suite.
+  sie_extended:
+    theta_E_arcsec: [0.5, 2.0]
+    q: [0.5, 0.95]
+    lens_center_offset_arcsec: [-0.2, 0.2]
+    source_position_arcsec: [-0.35, 0.35]
+    source_q: [0.4, 1.0]
+    source_n: [0.5, 4.0]
+    source_re_arcsec: [0.05, 0.3]
+    source_amp: [0.5, 2.0]
+    supersampling_factor: 2
+  observation:
+    lens_light_q: [0.5, 1.0]
+    lens_light_n: [1.0, 4.0]
+    lens_light_re_arcsec: [0.15, 0.6]
+    lens_light_amp: [0.02, 0.2]
+    point_source_amp: [0.2, 1.0]
+  observation_effects:
+    psf_fwhm_arcsec: [0.1, 0.2]
+    background_rate: [0.01, 0.05]
+    read_noise_electrons: [1.0, 3.0]
+    exposure_time: [80.0, 120.0]
+    detectable_amplitude_threshold: 0.05
+
+release:
+  release_id: sim-eng1000-v1
+  parent_count: 1000
+  observation_count_per_parent: 1
+  seed: 11001
+  split_seed: 4201
+  split_fractions:
+    train: 0.70
+    validation: 0.15
+    test: 0.15
+  primary_target: theta_E_arcsec
+  secondary_targets: [q, phi_rad, e1, e2]
+  stress_suite: data/simulations/sim-p100-v1
+  source_policy: unique_analytic_source_per_parent
+  background_policy: unique_analytic_background_per_parent
+  psf_policy: unique_analytic_gaussian_draw_per_parent
+  write_truth_parameters: true
+  write_reproducibility_record: true

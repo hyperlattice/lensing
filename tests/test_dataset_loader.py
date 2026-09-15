@@ -65,3 +65,49 @@ def test_structured_loader_validates_products_and_separates_truth(tmp_path):
     assert "theta_E_arcsec" not in sample["inputs"]["metadata"]
     assert "q" not in sample["inputs"]["metadata"]
     assert "parent_system_id" not in sample["inputs"]["metadata"]
+    assert "sample_id" not in sample["inputs"]["metadata"]
+    assert sample["inputs"]["metadata"]["pixel_scale"] == 0.05
+
+
+def test_loader_selects_release_split_domain_eligibility_and_targets(tmp_path):
+    release = tmp_path / "release"
+    splits = release / "splits"
+    splits.mkdir(parents=True)
+    raw = release / "raw.fits"
+    raw.write_bytes(b"fixture")
+    image = np.ones((256, 256), dtype=np.float32)
+    image_path = release / "image.npy"
+    np.save(image_path, image)
+    row = {
+        "sample_id": "sample-1",
+        "lens_id": "lens-1",
+        "raw_path": "raw.fits",
+        "processed_path": "image.npy",
+        "pixel_scale": 0.05,
+        "domain": "simulated",
+        "eligible_for": "simulation;ml",
+        "theta_E_arcsec": 1.2,
+        "q": 0.7,
+        "source_amp": 2.0,
+        "theta_E_target_available": True,
+        "mass_target_available": False,
+    }
+    pd.DataFrame([row]).to_csv(release / "manifest.csv", index=False)
+    pd.DataFrame([{**row, "split": "train", "effective_group_id": "group-1"}]).to_csv(
+        splits / "train.csv", index=False
+    )
+
+    dataset = LensDataset(
+        release,
+        split="train",
+        domain="simulated",
+        eligible_for="ml",
+        target_fields=["theta_E_arcsec", "q"],
+    )
+    sample = dataset.get_sample(0)
+
+    assert len(dataset) == 1
+    assert sample["targets"]["theta_E_arcsec"] == 1.2
+    assert sample["targets"]["q"] == 0.7
+    assert "q" not in sample["inputs"]["metadata"]
+    assert "source_amp" not in sample["inputs"]["metadata"]
