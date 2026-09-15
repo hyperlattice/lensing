@@ -1,0 +1,12 @@
+{
+  "limitation": "This subset does not establish identifiability, robustness to source-model mismatch, or a production likelihood. Observation-mode fits condition on saved point positions while varying mass parameters.",
+  "manifest_path": "data/simulations/sim-p100-v1/manifest.csv",
+  "max_theta_E_relative_error": 0.05311351977086855,
+  "mean_reduced_chi2": 1.003036618232727,
+  "mean_runtime_seconds": 4.872077299980447,
+  "method": "bounded SIE pixel objective with fixed source shape/brightness and variable source position",
+  "optimizer_success_count": 2,
+  "passed": true,
+  "results_path": "results/reports/fit-sie-p100-noisy/recovery.csv",
+  "subset_count": 2
+}

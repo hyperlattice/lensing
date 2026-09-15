@@ -1,6 +1,9 @@
 castles/
 normalized/
 __pycache__/
+.pytest_cache/
+.pytest-work/
+data/simulations/
 
 tempCodeRunnerFile.py
 

@@ -1,0 +1,112 @@
+{
+  "detectable_multiplicity_counts": {
+    "2.0": 54,
+    "4.0": 26
+  },
+  "disk_bytes": 230499632,
+  "limitations": [
+    "The Gaussian PSF is an analytic control profile, not an empirical CASTLES/HST kernel.",
+    "Noise uses a toy independent-pixel model with sampled exposure/background/read-noise parameters.",
+    "The pilot is an angular engineering dataset; no calibrated physical mass likelihood is claimed.",
+    "The cumulative release contains stage increments with different model complexity and should retain release_stage in evaluation."
+  ],
+  "manifest_path": "data/simulations/sim-p100-cumulative-v1/manifest.csv",
+  "multiplicity_counts": {
+    "2.0": 54,
+    "4.0": 26
+  },
+  "noise": {
+    "mean_predicted_pixel_std": 0.03078456712620599,
+    "mean_residual_mean": 1.0812200404762532e-05,
+    "mean_residual_std": 0.03079134849693549,
+    "noise_policy": "Poisson in electrons plus Gaussian read noise before background subtraction",
+    "sample_count": 70,
+    "status": "measured_engineering_moment"
+  },
+  "parameter_ranges": {
+    "gamma1": {
+      "max": 0.0716702555186758,
+      "min": -0.0704139013462618
+    },
+    "gamma2": {
+      "max": 0.0731152264169064,
+      "min": -0.0735555565157142
+    },
+    "psf_fwhm_arcsec": {
+      "max": 0.2462795739585624,
+      "min": 0.080698097841726
+    },
+    "q": {
+      "max": 1.0,
+      "min": 0.4742665396177782
+    },
+    "supersampling_factor": {
+      "max": 2.0,
+      "min": 1.0
+    },
+    "theta_E_arcsec": {
+      "max": 1.9976185071725707,
+      "min": 0.5154976352339409
+    }
+  },
+  "parent_count": 100,
+  "rejection_count": 0,
+  "release_id": "sim-p100-cumulative-v1",
+  "sample_count": 100,
+  "stage_counts": {
+    "sim-p10-v1": 10,
+    "sim-p100-v1": 40,
+    "sim-p30-v1": 20,
+    "sim-p60-v1": 30
+  },
+  "stage_records": [
+    {
+      "count_accepted": 10,
+      "count_rejected": 0,
+      "count_requested": 10,
+      "parent_count": 10,
+      "sample_count": 10,
+      "stage_root": "data/simulations/sim-p10-v1"
+    },
+    {
+      "count_accepted": 20,
+      "count_rejected": 0,
+      "count_requested": 20,
+      "parent_count": 20,
+      "sample_count": 20,
+      "stage_root": "data/simulations/sim-p30-v1"
+    },
+    {
+      "count_accepted": 30,
+      "count_rejected": 0,
+      "count_requested": 30,
+      "parent_count": 30,
+      "sample_count": 30,
+      "stage_root": "data/simulations/sim-p60-v1"
+    },
+    {
+      "count_accepted": 40,
+      "count_rejected": 0,
+      "count_requested": 40,
+      "parent_count": 40,
+      "sample_count": 40,
+      "stage_root": "data/simulations/sim-p100-v1"
+    }
+  ],
+  "supersampling_convergence": {
+    "factor_one": 1,
+    "factor_two": 2,
+    "relative_l2_change": 0.018191667273640633,
+    "sample_id": "sim-p30-v1-0001",
+    "status": "measured_single_control"
+  },
+  "validation": {
+    "count": 100,
+    "error_count": 0,
+    "errors": [],
+    "manifest_path": "data/simulations/sim-p100-cumulative-v1/manifest.csv",
+    "parent_count": 100,
+    "passed": true,
+    "residual_tolerance_arcsec": 1e-10
+  }
+}

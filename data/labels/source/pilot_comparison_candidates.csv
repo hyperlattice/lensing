@@ -1,0 +1,4 @@
+candidate_id,lens_id,candidate_status,inclusion_evidence,required_review
+pilot-real-01,B0218,review,"Complete lens/source redshift in curated source; positive CASTLES Size/2 screening estimate; not in the initial cluster/multiple-deflector exclusion screen.","Verify image morphology, foreground structure, PSF/noise products, and single-SIE suitability."
+pilot-real-02,Q2237,review,"Complete lens/source redshift in curated source; positive CASTLES Size/2 screening estimate; not in the initial cluster/multiple-deflector exclusion screen.","Verify ring/extended-source treatment, lens light, PSF/noise products, and single-SIE suitability."
+pilot-real-03,HE0435,review,"Complete lens/source redshift in curated source; positive CASTLES Size/2 screening estimate; not in the initial cluster/multiple-deflector exclusion screen.","Verify image morphology, environment, PSF/noise products, and single-SIE suitability."

@@ -1,0 +1,12 @@
+{
+  "limitation": "This subset does not establish identifiability, shear recovery, realistic calibrated noise, or robustness to source-model mismatch.",
+  "manifest_path": "data/simulations/sim-p100-v1/manifest.csv",
+  "max_theta_E_relative_error": 1.3688191105452251e-08,
+  "mean_reduced_chi2": 8.24228762124793e-18,
+  "mean_runtime_seconds": 6.105288200007635,
+  "method": "bounded SIE pixel objective with fixed source shape/brightness and variable source position",
+  "optimizer_success_count": 2,
+  "passed": true,
+  "results_path": "results/reports/fit-sie-p100/recovery.csv",
+  "subset_count": 2
+}

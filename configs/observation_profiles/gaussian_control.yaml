@@ -1,0 +1,11 @@
+profile_id: gaussian-control-v1
+psf:
+  model: gaussian
+  sigma_pixels: 1.0
+  size: 9
+  pixel_scale_arcsec_per_pixel: 0.05
+  source: analytic_gaussian_control
+  unit: normalized
+noise:
+  status: toy_unprofiled
+  correlation_assumption: independent_pixels_approximation

@@ -1,0 +1,12 @@
+{
+  "count": 10,
+  "limitation": "This controlled recovery uses analytic image positions rather than a noisy pixel likelihood.",
+  "manifest_path": "data/simulations/sim-p10-v1/manifest.csv",
+  "max_relative_error": 2.280741637502626e-16,
+  "max_residual_arcsec": 3.510833468576701e-16,
+  "method": "fixed-source-and-astrometry SIS lens-equation reference fit",
+  "pass_count": 10,
+  "passed": true,
+  "relative_tolerance": 0.01,
+  "results_path": "results/reports/fit-sis-p10/recovery.csv"
+}
