@@ -71,6 +71,18 @@ The release ladder has distinct purposes: P10 is an analytic SIS control, P30 in
 - `modeling/fit_lens.py` first checks exact SIS recovery, then fits selected SIE/SIE+shear pixel scenes with bounded least squares. It saves residual maps, objective/convergence/runtime information, truth errors, local Jacobian rank/condition, boundary flags, and failure classes. `fit_sie_recovery_grid` runs fixed noiseless, low/high-SNR, stress, PSF-mismatch, and source-mismatch conditions.
 - `modeling/real_comparison.py` detects the brightest preselected lensed-image peaks, measures half-separation for a double or a best-fit monopole circle for a quad, and compares that angular scale with a compatible CASTLES reference. It is intentionally not a full lens fit.
 
+## Machine-learning baseline
+
+- `ml/data.py` wraps the frozen `LensDataset` splits as PyTorch tensors, computes training-only normalization, and returns no provenance or simulator nuisance parameters to the model.
+- `ml/model.py` defines the 248,409-parameter four-block convolutional regressor.
+- `ml/engine.py` contains deterministic seeding, device selection, data loading, training, checkpointing support, and prediction collection.
+- `ml/metrics.py` computes angular, relative, bias, R², and train-mean baseline metrics without an additional metrics dependency.
+- `ml/plots.py` creates noninteractive learning-curve and residual diagnostics.
+- `ml/train.py` trains on 700 parents, selects a checkpoint using only 150 validation parents, and records release/split hashes and normalization.
+- `ml/evaluate.py` verifies those hashes before evaluating a frozen split and writes overall, subgroup, and worst-case evidence.
+
+`configs/ml_baseline_v1.yaml` is the first fixed experiment. The run procedure and interpretation guide are in `docs/ml_quickstart.md`.
+
 ## Configuration, artifacts, and tests
 
 - `configs/preprocessing_v2.yaml` freezes real preprocessing.

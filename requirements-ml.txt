@@ -1,0 +1,3 @@
+# CPU and CUDA builds use the same public Python package name. The selected
+# wheel depends on the configured PyTorch package index and local platform.
+torch>=2.8,<3

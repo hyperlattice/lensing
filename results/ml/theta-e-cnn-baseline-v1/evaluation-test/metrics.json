@@ -1,0 +1,183 @@
+{
+  "checkpoint_path": "results/ml/theta-e-cnn-baseline-v1/best.pt",
+  "checkpoint_sha256": "7e0a0975d862298fe351ec2069f1ce6696b81afd3ff595c417dfdf4a157db725",
+  "checkpoint_validation_metrics": {
+    "bias_arcsec": -0.0030745681126912437,
+    "count": 150,
+    "mae_arcsec": 0.08835809866587321,
+    "mean_relative_error": 0.08440549804261221,
+    "median_absolute_error_arcsec": 0.07040035724639893,
+    "median_relative_error": 0.05707701425377365,
+    "r2": 0.9284602440459375,
+    "rmse_arcsec": 0.1163192384207774
+  },
+  "device": "cpu",
+  "experiment_id": "theta-e-cnn-baseline-v1",
+  "interpretation": "The CNN lowers MAE by 77.2% relative to the train-mean baseline. Test MAE differs from the checkpoint validation MAE by -0.0007 arcsec. These numbers measure only the frozen synthetic distribution and do not establish real-HST accuracy.",
+  "largest_absolute_error_examples": [
+    {
+      "image_count_detectable": 2,
+      "image_count_physical": 2,
+      "psf_fwhm_arcsec": 0.1563670735188774,
+      "relative_error": 1.0060427278087583,
+      "residual_arcsec": 0.6890062689781189,
+      "sample_id": "sim-eng1000-v1-0379",
+      "theta_E_arcsec_predicted": 1.3738740682601929,
+      "theta_E_arcsec_true": 0.684867799282074
+    },
+    {
+      "image_count_detectable": 1,
+      "image_count_physical": 2,
+      "psf_fwhm_arcsec": 0.1438717620548989,
+      "relative_error": 1.0218117849008146,
+      "residual_arcsec": 0.6436161994934082,
+      "sample_id": "sim-eng1000-v1-0803",
+      "theta_E_arcsec_predicted": 1.2734936475753784,
+      "theta_E_arcsec_true": 0.6298774480819702
+    },
+    {
+      "image_count_detectable": 2,
+      "image_count_physical": 2,
+      "psf_fwhm_arcsec": 0.1886797834386321,
+      "relative_error": 0.3038304027634963,
+      "residual_arcsec": -0.38710975646972656,
+      "sample_id": "sim-eng1000-v1-0145",
+      "theta_E_arcsec_predicted": 0.8869884014129639,
+      "theta_E_arcsec_true": 1.2740981578826904
+    },
+    {
+      "image_count_detectable": 4,
+      "image_count_physical": 4,
+      "psf_fwhm_arcsec": 0.1382234562510967,
+      "relative_error": 0.17606402330906737,
+      "residual_arcsec": -0.27390730381011963,
+      "sample_id": "sim-eng1000-v1-0848",
+      "theta_E_arcsec_predicted": 1.2818182706832886,
+      "theta_E_arcsec_true": 1.5557255744934082
+    },
+    {
+      "image_count_detectable": 2,
+      "image_count_physical": 2,
+      "psf_fwhm_arcsec": 0.1447942054480099,
+      "relative_error": 0.2308705021423397,
+      "residual_arcsec": -0.27111589908599854,
+      "sample_id": "sim-eng1000-v1-0123",
+      "theta_E_arcsec_predicted": 0.9032043218612671,
+      "theta_E_arcsec_true": 1.1743202209472656
+    }
+  ],
+  "mae_improvement_over_mean": 0.771510957597699,
+  "metrics": {
+    "bias_arcsec": -0.00899094541867574,
+    "count": 150,
+    "mae_arcsec": 0.08762061317761739,
+    "mean_relative_error": 0.0851898457946005,
+    "median_absolute_error_arcsec": 0.06241554021835327,
+    "median_relative_error": 0.04931596090713057,
+    "r2": 0.9127359013585268,
+    "rmse_arcsec": 0.1292288008591063
+  },
+  "release_manifest_sha256": "189c1351e768c6a6563c2af3243419df92d39f14a9670ff6385b693405e06a44",
+  "sample_count": 150,
+  "scientific_scope": "in-domain synthetic evaluation only; no real-data claim",
+  "split": "test",
+  "split_manifest_sha256": "c549c09c618a2bcb03d87b5dfc5e8a323cdf42a86c52d2e138939cf0cbaaa65a",
+  "subgroup_metrics": {
+    "image_count_detectable": {
+      "2": {
+        "bias_arcsec": -0.011846883777986494,
+        "count": 114,
+        "mae_arcsec": 0.09031758235211958,
+        "mean_relative_error": 0.0878008233181356,
+        "median_absolute_error_arcsec": 0.07023373246192932,
+        "median_relative_error": 0.054753677067421916,
+        "r2": 0.9172392619600597,
+        "rmse_arcsec": 0.12728364728961314
+      },
+      "4": {
+        "bias_arcsec": -0.014827472322127399,
+        "count": 34,
+        "mae_arcsec": 0.060755652539870315,
+        "mean_relative_error": 0.047427450581927655,
+        "median_absolute_error_arcsec": 0.04928353428840637,
+        "median_relative_error": 0.031009519625525596,
+        "r2": 0.9565698138649427,
+        "rmse_arcsec": 0.08133339766811881
+      }
+    },
+    "image_count_physical": {
+      "2": {
+        "bias_arcsec": -0.006147204793017843,
+        "count": 115,
+        "mae_arcsec": 0.09512887467508731,
+        "mean_relative_error": 0.09592265776668064,
+        "median_absolute_error_arcsec": 0.07067179679870605,
+        "median_relative_error": 0.05550409739851744,
+        "r2": 0.9004274257442265,
+        "rmse_arcsec": 0.1402225025397247
+      },
+      "4": {
+        "bias_arcsec": -0.014827472322127399,
+        "count": 34,
+        "mae_arcsec": 0.060755652539870315,
+        "mean_relative_error": 0.047427450581927655,
+        "median_absolute_error_arcsec": 0.04928353428840637,
+        "median_relative_error": 0.031009519625525596,
+        "r2": 0.9565698138649427,
+        "rmse_arcsec": 0.08133339766811881
+      }
+    },
+    "psf_width_quartile": {
+      "Q1": {
+        "bias_arcsec": -0.0032301717682888635,
+        "count": 38,
+        "mae_arcsec": 0.06433696966422231,
+        "mean_relative_error": 0.05337756931330823,
+        "median_absolute_error_arcsec": 0.054618000984191895,
+        "median_relative_error": 0.03477780717899162,
+        "r2": 0.9638078185892274,
+        "rmse_arcsec": 0.07953603813974644
+      },
+      "Q2": {
+        "bias_arcsec": -0.005122627760912921,
+        "count": 37,
+        "mae_arcsec": 0.090036564582103,
+        "mean_relative_error": 0.08699138932913313,
+        "median_absolute_error_arcsec": 0.07231318950653076,
+        "median_relative_error": 0.04955783257161988,
+        "r2": 0.9347522018313315,
+        "rmse_arcsec": 0.11338026334869626
+      },
+      "Q3": {
+        "bias_arcsec": -0.012942583174318881,
+        "count": 37,
+        "mae_arcsec": 0.11364512669073569,
+        "mean_relative_error": 0.12223509233732617,
+        "median_absolute_error_arcsec": 0.06407451629638672,
+        "median_relative_error": 0.05550409739851744,
+        "r2": 0.7610985639458833,
+        "rmse_arcsec": 0.1863185760611723
+      },
+      "Q4": {
+        "bias_arcsec": -0.014670591605337043,
+        "count": 38,
+        "mae_arcsec": 0.08321222506071392,
+        "mean_relative_error": 0.07917761614803598,
+        "median_absolute_error_arcsec": 0.06686335802078247,
+        "median_relative_error": 0.052061201869441215,
+        "r2": 0.9439168060297962,
+        "rmse_arcsec": 0.11522819528152016
+      }
+    }
+  },
+  "train_mean_baseline_metrics": {
+    "bias_arcsec": -0.04177023943016431,
+    "count": 150,
+    "mae_arcsec": 0.3834784034122024,
+    "mean_relative_error": 0.36437558117354485,
+    "median_absolute_error_arcsec": 0.3863167557691485,
+    "median_relative_error": 0.2733095448138274,
+    "r2": -0.009116978017999156,
+    "rmse_arcsec": 0.43945283180761824
+  }
+}

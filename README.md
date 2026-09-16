@@ -87,6 +87,18 @@ python -B -m src.testing.validate_simulations data/simulations/sim-eng1000-v1/ma
 
 The release checksum ledger is `data/simulations/sim-eng1000-v1/checksums.sha256`; its tracked audit copy is under `data/manifests/sim-eng1000-v1`.
 
+## First machine-learning baseline
+
+Install PyTorch and run the frozen image-only Einstein-radius experiment:
+
+```powershell
+python -m pip install -r requirements-ml.txt
+python -m src.ml.train --config configs/ml_baseline_v1.yaml
+python -m src.ml.evaluate --checkpoint results/ml/theta-e-cnn-baseline-v1/best.pt --split test
+```
+
+The first CPU run reached test MAE `0.0876` arcsec, median relative error `4.93%`, and R² `0.9127` on the in-domain synthetic test split. See the [ML quickstart](docs/ml_quickstart.md) to reproduce the run and interpret every output. These metrics do not establish accuracy on real observations.
+
 ## Scientific boundary
 
 The engineering simulations use analytic Sersic sources, Gaussian PSFs, scalar backgrounds, independent Poisson/read noise, and hand-set uniform priors. The real release lacks empirical PSF, ERR, and DQ products and currently uses a toy variance fallback. The project is ready for an ML experiment plan and synthetic in-domain baselines, but not for observational mass claims or population-level validation.

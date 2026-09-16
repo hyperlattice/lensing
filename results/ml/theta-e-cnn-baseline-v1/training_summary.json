@@ -1,0 +1,55 @@
+{
+  "best_epoch": 19,
+  "checkpoint_path": "results/ml/theta-e-cnn-baseline-v1/best.pt",
+  "device": "cpu",
+  "epochs_completed": 20,
+  "experiment_id": "theta-e-cnn-baseline-v1",
+  "mean_baseline_metrics": {
+    "bias_arcsec": 0.007006404640778889,
+    "count": 150,
+    "mae_arcsec": 0.38029328574829663,
+    "mean_relative_error": 0.3726601357047157,
+    "median_absolute_error_arcsec": 0.3904198408126831,
+    "median_relative_error": 0.30157753162607437,
+    "r2": -0.0002595582188049672,
+    "rmse_arcsec": 0.43494483501791387
+  },
+  "runtime_seconds": 130.03270459995838,
+  "scientific_scope": "in-domain synthetic validation only; test and real data not accessed",
+  "split_manifest_sha256": {
+    "test": "c549c09c618a2bcb03d87b5dfc5e8a323cdf42a86c52d2e138939cf0cbaaa65a",
+    "train": "dade8d9ef54f1c6bfc74c089a937e48fc836e258b65b37bc21379d4c78f488d3",
+    "validation": "0eb44e8034f9508fceb3c60bfd2d3a2766c4ac40d5f742d1a359a0c7559ed672"
+  },
+  "statistics": {
+    "image_mean": 0.0008202404782396704,
+    "image_std": 0.028225236289913906,
+    "pixel_count": 45875200,
+    "release_manifest": "data/simulations/sim-eng1000-v1/manifest.csv",
+    "release_manifest_sha256": "189c1351e768c6a6563c2af3243419df92d39f14a9670ff6385b693405e06a44",
+    "sample_count": 700,
+    "source_split": "train",
+    "source_split_manifest": "data/simulations/sim-eng1000-v1/splits/train.csv",
+    "source_split_manifest_sha256": "dade8d9ef54f1c6bfc74c089a937e48fc836e258b65b37bc21379d4c78f488d3",
+    "target_field": "theta_E_arcsec",
+    "target_mean": 1.2483499255205244,
+    "target_std": 0.42370747484876414
+  },
+  "status": "trained_validation_only",
+  "test_samples_accessed": 0,
+  "torch_version": "2.8.0+cpu",
+  "train_samples": 700,
+  "trainable_parameters": 248409,
+  "validation_mae_improvement_over_mean": 0.767658010337962,
+  "validation_metrics": {
+    "bias_arcsec": -0.0030745681126912437,
+    "count": 150,
+    "mae_arcsec": 0.08835809866587321,
+    "mean_relative_error": 0.08440549804261221,
+    "median_absolute_error_arcsec": 0.07040035724639893,
+    "median_relative_error": 0.05707701425377365,
+    "r2": 0.9284602440459375,
+    "rmse_arcsec": 0.1163192384207774
+  },
+  "validation_samples": 150
+}
