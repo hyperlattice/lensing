@@ -10,6 +10,15 @@ results/ml/**/best.pt
 
 tempCodeRunnerFile.py
 
+# Private project notes, local secrets, and non-shareable working material.
 private/
+**/private/
+*.private
+*.private.*
+*.secret
+*.secret.*
+.env
+.env.*
+!.env.example
 
 q256_header.txt
