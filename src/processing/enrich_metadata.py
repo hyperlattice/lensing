@@ -3,9 +3,9 @@ from pathlib import Path
 import pandas as pd
 
 
-METADATA_PATH = Path("data/labels/metadata.csv")
-CATALOG_PATH = Path("data/labels/lens_catalog.csv")
-ENRICHED_OUTPUT = Path("data/labels/metadata_enriched.csv")
+METADATA_PATH = Path("data/labels/derived/metadata.csv")
+CATALOG_PATH = Path("data/labels/derived/lens_catalog.csv")
+ENRICHED_OUTPUT = Path("data/labels/derived/metadata_enriched.csv")
 
 
 def _canonical_lens_id(dataframe, label):

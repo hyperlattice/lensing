@@ -7,8 +7,9 @@ machine-learning loaders. The machine-readable field registry is in
 
 ## 1. Contract and identity
 
-Every manifest is a UTF-8 CSV with one row per observation. Paths are relative
-to the repository root and use `/` separators. A row is identified by
+Every manifest is a UTF-8 CSV with one row per observation. Paths use `/`
+separators and are relative to the repository root for top-level manifests or
+to the release root for a self-contained release manifest. A row is identified by
 `sample_id`; `lens_id` identifies the physical lens system and is shared by
 all of its observations. `domain` is exactly `real` or `simulated`.
 
@@ -21,9 +22,9 @@ The required fields for every row are:
 | `domain` | enum | - | forbidden | `real` or `simulated` |
 | `schema_version` | string | - | forbidden | exactly `2.0` |
 | `dataset_version` | string | - | forbidden | nonempty release/config identifier |
-| `raw_path` | path | repository-relative POSIX | forbidden | existing FITS artifact |
-| `science_path` | path | repository-relative POSIX | forbidden | selected science product |
-| `processed_path` | path | repository-relative POSIX | forbidden | existing standardized array |
+| `raw_path` | path | relative POSIX | forbidden | existing FITS artifact |
+| `science_path` | path | relative POSIX | forbidden | selected science product |
+| `processed_path` | path | relative POSIX | forbidden | existing standardized array |
 | `image_unit` | string | declared unit | use `unknown` if unverified | never silently infer a calibrated unit |
 | `calibration_status` | enum | - | use `unknown` if unverified | `pass`, `review`, `fail`, or `unknown` |
 | `original_shape` | `HEIGHTxWIDTH` string | px | forbidden | agrees with the selected science array |
@@ -213,7 +214,7 @@ schema_version: '2.0'
 dataset_version: real-dev-v2
 raw_path: data/raw/castles/Q2237/FIT/NIC2H/q256.fits
 science_path: data/raw/castles/Q2237/FIT/NIC2H/q256.fits
-processed_path: data/processed/normalized/Q2237_FIT_NIC2H_q256.npy
+processed_path: data/releases/real-castles-v2/products/normalized/Q2237_FIT_NIC2H_q256.npy
 image_unit: unknown
 calibration_status: unknown
 original_shape: 256x256
@@ -243,9 +244,9 @@ dataset_version: sim-p10-v1
 simulation_id: sim-p10-v1
 parent_system_id: parent-0001
 split_group_id: parent-0001
-raw_path: data/raw/simulations/sim-p10-v1/sim-p10-0001.fits
-science_path: data/processed/simulations/sim-p10-v1/science/sim-p10-0001.npy
-processed_path: data/processed/simulations/sim-p10-v1/normalized/sim-p10-0001.npy
+raw_path: raw/sim-p10-v1-0001.fits
+science_path: science/sim-p10-v1-0001.npy
+processed_path: normalized/sim-p10-v1-0001.npy
 image_unit: relative_flux
 calibration_status: pass
 original_shape: 256x256
@@ -268,5 +269,5 @@ simulator_name: lenstronomy
 simulator_version: pinned-version
 parameter_seed: 1001
 noise_seed: 2001
-parameters_path: data/labels/simulations/sim-p10-v1/parameters/sim-p10-0001.json
+parameters_path: parameters/sim-p10-v1-0001.json
 ```

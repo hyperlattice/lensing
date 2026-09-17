@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import time
 from pathlib import Path
@@ -22,9 +23,12 @@ from src.ml.engine import (
     train_one_epoch,
     write_json,
 )
-from src.ml.metrics import improvement_fraction, mean_baseline_metrics, regression_metrics
+from src.ml.metrics import (
+    improvement_fraction, mean_baseline_metrics, regression_metrics, target_bin_metrics, validate_bin_edges,
+)
 from src.ml.model import EinsteinRadiusCNN
 from src.ml.plots import plot_predictions, plot_training_history
+from src.ml.provenance import config_sha256, environment_record, source_provenance
 
 
 DEFAULT_CONFIG = Path("configs/ml_baseline_v1.yaml")
@@ -62,9 +66,24 @@ def train_experiment(
     max_validation_samples=None,
 ):
     started = time.perf_counter()
+    config = copy.deepcopy(config)
+    config["output"] = Path(output_override or config["output"]).as_posix()
+    for field in ("epochs", "batch_size", "patience"):
+        if isinstance(config[field], bool) or not isinstance(config[field], int) or config[field] < 1:
+            raise ValueError(f"{field} must be a positive integer")
+    if config["target_field"] != "theta_E_arcsec":
+        raise ValueError("This baseline supports only theta_E_arcsec")
+    bin_edges = validate_bin_edges(config.get("target_bin_edges_arcsec", [0.5, 1.0, 1.5, 2.0]))
+    config["target_bin_edges_arcsec"] = bin_edges
+    controls = {"max_train_samples": max_train_samples, "max_validation_samples": max_validation_samples}
+    for field, value in controls.items():
+        if value is not None and (isinstance(value, bool) or not isinstance(value, int) or value < 1):
+            raise ValueError(f"{field} must be a positive integer")
+    provenance = source_provenance()
     seed_everything(config["seed"])
     device = select_device(device_request)
     output_dir = require_output_directory(output_override or config["output"], overwrite=overwrite)
+    write_json(output_dir / "resolved_config.json", config)
     release = Path(config["release"])
     raw_training = TorchLensDataset(
         release,
@@ -147,6 +166,8 @@ def train_experiment(
                 {
                     "format_version": 1,
                     "experiment_id": config["experiment_id"],
+                    "seed": config["seed"],
+                    "config_sha256": config_sha256(config),
                     "model_state": model.state_dict(),
                     "model_config": model.model_config,
                     "statistics": statistics,
@@ -184,6 +205,8 @@ def train_experiment(
     predictions["residual_arcsec"] = (
         predictions["theta_E_arcsec_predicted"] - predictions["theta_E_arcsec_true"]
     )
+    predictions["absolute_error_arcsec"] = predictions["residual_arcsec"].abs()
+    predictions["relative_error"] = predictions["absolute_error_arcsec"] / predictions["theta_E_arcsec_true"].abs()
     predictions.to_csv(output_dir / "validation_predictions.csv", index=False)
     plot_predictions(
         best_validation["targets"],
@@ -193,6 +216,14 @@ def train_experiment(
     )
     summary = {
         "experiment_id": config["experiment_id"],
+        "parent_baseline_id": config.get("parent_baseline_id"),
+        "seed": config["seed"],
+        "config_sha256": config_sha256(config),
+        "run_controls": controls,
+        "environment": environment_record(device),
+        "provenance": provenance,
+        "release_id": release.name,
+        "release_manifest_sha256": statistics["release_manifest_sha256"],
         "status": "trained_validation_only",
         "device": str(device),
         "torch_version": str(torch.__version__),
@@ -205,17 +236,21 @@ def train_experiment(
         "statistics": statistics,
         "split_manifest_sha256": split_manifest_sha256,
         "validation_metrics": best_metrics,
+        "validation_target_bins": target_bin_metrics(
+            best_validation["targets"], best_validation["predictions"], bin_edges
+        ),
         "mean_baseline_metrics": baseline,
         "validation_mae_improvement_over_mean": improvement_fraction(
             best_metrics["mae_arcsec"], baseline["mae_arcsec"]
         ),
         "checkpoint_path": checkpoint_path.as_posix(),
+        "checkpoint_sha256": file_sha256(checkpoint_path),
+        "validation_predictions_sha256": file_sha256(output_dir / "validation_predictions.csv"),
         "runtime_seconds": time.perf_counter() - started,
         "scientific_scope": "in-domain synthetic validation only; test and real data not accessed",
     }
     write_json(output_dir / "normalization.json", statistics)
     write_json(output_dir / "training_summary.json", summary)
-    write_json(output_dir / "resolved_config.json", config)
     return summary
 
 

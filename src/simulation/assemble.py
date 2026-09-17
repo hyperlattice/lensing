@@ -11,6 +11,7 @@ from typing import Any, Iterable
 
 import pandas as pd
 
+from src.layout import DEFAULT_PREVIEW_ROOT, preview_directory
 from src.processing.preview_dataset import create_previews
 
 
@@ -44,6 +45,7 @@ def assemble_pilot_release(
     release_id: str = "sim-p100-cumulative-v1",
     overwrite: bool = False,
     create_preview: bool = True,
+    preview_root: str | Path = DEFAULT_PREVIEW_ROOT,
 ) -> dict[str, Any]:
     """Copy stage artifacts and combine their manifests without renaming parents."""
 
@@ -96,14 +98,15 @@ def assemble_pilot_release(
 
     preview_index_path = None
     if create_preview:
+        preview_output = preview_directory("simulated", release_id, root=preview_root)
         preview_index = create_previews(
             root=output_root / "raw",
-            output=output_root / "previews",
+            output=preview_output,
             manifest_path=None,
             dpi=100,
             contact_sheet=True,
         )
-        preview_index_path = "previews/preview_index.csv"
+        preview_index_path = (preview_output / "preview_index.csv").as_posix()
         preview_errors = int((preview_index["status"] != "ok").sum())
     else:
         preview_errors = 0
@@ -136,6 +139,7 @@ def main() -> int:
     parser.add_argument("--release-id", default="sim-p100-cumulative-v1")
     parser.add_argument("--overwrite", action="store_true")
     parser.add_argument("--no-preview", action="store_true")
+    parser.add_argument("--preview-root", default=str(DEFAULT_PREVIEW_ROOT))
     args = parser.parse_args()
     summary = assemble_pilot_release(
         args.stage_root,
@@ -143,6 +147,7 @@ def main() -> int:
         release_id=args.release_id,
         overwrite=args.overwrite,
         create_preview=not args.no_preview,
+        preview_root=args.preview_root,
     )
     print(json.dumps(summary, indent=2, sort_keys=True))
     return 0 if summary["count_rejected_in_stages"] == 0 and summary["preview_error_count"] == 0 else 1

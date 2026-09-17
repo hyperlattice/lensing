@@ -12,6 +12,7 @@ from pathlib import Path
 import pandas as pd
 
 from src.data.dataset import LensDataset
+from src.layout import DEFAULT_PREVIEW_ROOT, preview_directory
 from src.modeling.fit_lens import fit_sie_recovery_grid
 from src.modeling.real_comparison import run_real_comparison
 from src.processing.build_catalog import build_catalog
@@ -78,6 +79,7 @@ def prepare_real_release(
     seed=4201,
     overwrite=False,
     make_previews=True,
+    preview_root=DEFAULT_PREVIEW_ROOT,
 ):
     """Build and validate a self-contained versioned real-data release."""
 
@@ -117,15 +119,18 @@ def prepare_real_release(
     dataset = LensDataset(manifest_path, root=Path("."))
     strict_errors = dataset.validate_all(require_products=True)
     preview_errors = 0
+    preview_index_path = None
     if make_previews:
+        preview_output = preview_directory("actual", release_id, root=preview_root)
         preview_index = create_previews(
             root=raw_root,
-            output=release_dir / "previews",
+            output=preview_output,
             manifest_path=metadata_path,
             dpi=120,
             contact_sheet=True,
         )
         preview_errors = int((preview_index["status"] != "ok").sum())
+        preview_index_path = (preview_output / "preview_index.csv").as_posix()
 
     release = {
         "release_id": release_id,
@@ -142,6 +147,7 @@ def prepare_real_release(
         "metadata_validation": metadata_summary,
         "strict_product_error_count": len(strict_errors),
         "strict_product_errors": strict_errors,
+        "preview_index_path": preview_index_path,
         "preview_error_count": preview_errors,
         "runtime_seconds": time.perf_counter() - started,
         "limitations": [
@@ -329,6 +335,7 @@ def main():
     real.add_argument("--seed", type=int, default=4201)
     real.add_argument("--overwrite", action="store_true")
     real.add_argument("--no-preview", action="store_true")
+    real.add_argument("--preview-root", default=str(DEFAULT_PREVIEW_ROOT))
 
     simulate = commands.add_parser("simulate", help="generate one simulation stage")
     simulate.add_argument("--stage", choices=("sis", "sie", "observation", "stress"), required=True)
@@ -339,6 +346,7 @@ def main():
     simulate.add_argument("--config", default="configs/simulation_pilot_v1.yaml")
     simulate.add_argument("--overwrite", action="store_true")
     simulate.add_argument("--no-preview", action="store_true")
+    simulate.add_argument("--preview-root", default=str(DEFAULT_PREVIEW_ROOT))
 
     assemble = commands.add_parser("assemble", help="assemble simulation stages")
     assemble.add_argument("--stage-root", action="append", required=True)
@@ -346,6 +354,7 @@ def main():
     assemble.add_argument("--release-id", required=True)
     assemble.add_argument("--overwrite", action="store_true")
     assemble.add_argument("--no-preview", action="store_true")
+    assemble.add_argument("--preview-root", default=str(DEFAULT_PREVIEW_ROOT))
 
     validate = commands.add_parser("validate", help="validate a complete release")
     validate.add_argument("manifest")
@@ -395,6 +404,7 @@ def main():
             seed=args.seed,
             overwrite=args.overwrite,
             make_previews=not args.no_preview,
+            preview_root=args.preview_root,
         )
     elif args.command == "simulate":
         generators = {
@@ -411,6 +421,7 @@ def main():
             config_path=args.config,
             overwrite=args.overwrite,
             create_preview=not args.no_preview,
+            preview_root=args.preview_root,
         )
     elif args.command == "assemble":
         result = assemble_pilot_release(
@@ -419,6 +430,7 @@ def main():
             release_id=args.release_id,
             overwrite=args.overwrite,
             create_preview=not args.no_preview,
+            preview_root=args.preview_root,
         )
     elif args.command == "validate":
         result = validate_release(args.manifest, root=args.root, output=args.output)

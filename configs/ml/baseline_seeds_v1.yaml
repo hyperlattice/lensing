@@ -1,0 +1,8 @@
+schema_version: 1
+experiment_id: theta-e-cnn-seeds-v1
+parent_baseline_id: theta-e-cnn-baseline-v1
+base_config: configs/ml_baseline_v1.yaml
+output: results/ml/theta-e-cnn-seeds-v1
+seeds: [12001, 12002, 12003]
+# Fixed before training from the engineering proposal range [0.5, 2.0].
+target_bin_edges_arcsec: [0.5, 1.0, 1.5, 2.0]

@@ -15,6 +15,7 @@ import pandas as pd
 import yaml
 from astropy.io import fits
 
+from src.layout import DEFAULT_PREVIEW_ROOT, preview_directory
 from src.processing.preprocess import preprocess_image
 from src.processing.preview_dataset import create_previews
 from src.simulation.models import backend_status
@@ -43,6 +44,19 @@ def _write_json(path: Path, value: Any) -> None:
 
 def _relative(path: Path, root: Path) -> str:
     return path.relative_to(root).as_posix()
+
+
+def _create_simulation_previews(raw_root: Path, simulation_id: str, preview_root) -> tuple[Any, Path]:
+    """Write visual QC artifacts outside the self-contained simulation release."""
+    output = preview_directory("simulated", simulation_id, root=preview_root)
+    index = create_previews(
+        root=raw_root,
+        output=output,
+        manifest_path=None,
+        dpi=100,
+        contact_sheet=True,
+    )
+    return index, output
 
 
 def _seed_pair(seed: int, index: int) -> tuple[int, int]:
@@ -200,6 +214,7 @@ def generate_sis_controls(
     config_path: str | Path = DEFAULT_CONFIG,
     overwrite: bool = False,
     create_preview: bool = True,
+    preview_root: str | Path = DEFAULT_PREVIEW_ROOT,
 ) -> dict[str, Any]:
     """Generate P10 into a self-contained artifact directory."""
 
@@ -226,7 +241,6 @@ def generate_sis_controls(
             "noise",
             "parameters",
             "diagnostics",
-            "previews",
         )
     }
     for directory in directories.values():
@@ -346,13 +360,10 @@ def generate_sis_controls(
         writer.writerows(rejections)
 
     preview_index = None
+    preview_output = None
     if create_preview and rows:
-        preview_index = create_previews(
-            root=directories["raw"],
-            output=directories["previews"],
-            manifest_path=None,
-            dpi=100,
-            contact_sheet=True,
+        preview_index, preview_output = _create_simulation_previews(
+            directories["raw"], simulation_id, preview_root
         )
 
     run_manifest = {
@@ -369,7 +380,7 @@ def generate_sis_controls(
         "output_root": output_root.as_posix(),
         "manifest_path": _relative(manifest_path, output_root),
         "rejection_log_path": _relative(rejection_path, output_root),
-        "preview_index_path": None if preview_index is None else "previews/preview_index.csv",
+        "preview_index_path": None if preview_output is None else (preview_output / "preview_index.csv").as_posix(),
         "backend_reference": backend_status().to_dict(),
         "noise_policy": "noiseless image; positive numerical variance floor only",
         "rejections": rejections,
@@ -479,6 +490,7 @@ def generate_sie_extended(
     config_path: str | Path = DEFAULT_CONFIG,
     overwrite: bool = False,
     create_preview: bool = True,
+    preview_root: str | Path = DEFAULT_PREVIEW_ROOT,
 ) -> dict[str, Any]:
     """Generate the twenty additional P30 SIE/extended-source systems."""
 
@@ -509,7 +521,6 @@ def generate_sie_extended(
             "noise",
             "parameters",
             "diagnostics",
-            "previews",
         )
     }
     for directory in directories.values():
@@ -640,13 +651,10 @@ def generate_sie_extended(
         writer.writeheader()
         writer.writerows(rejections)
     preview_index = None
+    preview_output = None
     if create_preview and rows:
-        preview_index = create_previews(
-            root=directories["raw"],
-            output=directories["previews"],
-            manifest_path=None,
-            dpi=100,
-            contact_sheet=True,
+        preview_index, preview_output = _create_simulation_previews(
+            directories["raw"], simulation_id, preview_root
         )
     run_manifest = {
         "run_id": simulation_id,
@@ -662,7 +670,7 @@ def generate_sie_extended(
         "output_root": output_root.as_posix(),
         "manifest_path": "manifest.csv",
         "rejection_log_path": "rejection_log.csv",
-        "preview_index_path": None if preview_index is None else "previews/preview_index.csv",
+        "preview_index_path": None if preview_output is None else (preview_output / "preview_index.csv").as_posix(),
         "backend": backend_status().to_dict(),
         "noise_policy": "noiseless image; positive numerical variance floor only",
         "supersampling_factor": int(config["pilot"]["sie_extended"]["supersampling_factor"]),
@@ -681,6 +689,7 @@ def generate_stress_pilot(
     config_path: str | Path = DEFAULT_CONFIG,
     overwrite: bool = False,
     create_preview: bool = True,
+    preview_root: str | Path = DEFAULT_PREVIEW_ROOT,
 ) -> dict[str, Any]:
     """Generate the forty-system P100 SIE-plus-shear stress increment."""
 
@@ -692,6 +701,7 @@ def generate_stress_pilot(
         config_path=config_path,
         overwrite=overwrite,
         create_preview=create_preview,
+        preview_root=preview_root,
         parameter_drawer=draw_stress_parameters,
         stage_name="stress_increment",
     )
@@ -823,6 +833,7 @@ def generate_observation_pilot(
     config_path: str | Path = DEFAULT_CONFIG,
     overwrite: bool = False,
     create_preview: bool = True,
+    preview_root: str | Path = DEFAULT_PREVIEW_ROOT,
     parameter_drawer: Callable[[int, int, dict[str, Any]], dict[str, Any]] = draw_observation_parameters,
     stage_name: str = "observation",
 ) -> dict[str, Any]:
@@ -856,7 +867,6 @@ def generate_observation_pilot(
         "psf",
         "parameters",
         "diagnostics",
-        "previews",
     )
     directories = {name: output_root / name for name in directory_names}
     for directory in directories.values():
@@ -1073,13 +1083,10 @@ def generate_observation_pilot(
         writer.writeheader()
         writer.writerows(rejections)
     preview_index = None
+    preview_output = None
     if create_preview and rows:
-        preview_index = create_previews(
-            root=directories["raw"],
-            output=directories["previews"],
-            manifest_path=None,
-            dpi=100,
-            contact_sheet=True,
+        preview_index, preview_output = _create_simulation_previews(
+            directories["raw"], simulation_id, preview_root
         )
     run_manifest = {
         "run_id": simulation_id,
@@ -1096,7 +1103,7 @@ def generate_observation_pilot(
         "output_root": output_root.as_posix(),
         "manifest_path": "manifest.csv",
         "rejection_log_path": "rejection_log.csv",
-        "preview_index_path": None if preview_index is None else "previews/preview_index.csv",
+        "preview_index_path": None if preview_output is None else (preview_output / "preview_index.csv").as_posix(),
         "backend": backend_status().to_dict(),
         "noise_policy": "Poisson in electrons plus Gaussian read noise before background subtraction",
         "point_source_rendering": "bilinear_pixel_deposition_then_analytic_gaussian_control_convolution",
@@ -1118,6 +1125,7 @@ def main() -> int:
     parser.add_argument("--config", default=str(DEFAULT_CONFIG))
     parser.add_argument("--overwrite", action="store_true")
     parser.add_argument("--no-preview", action="store_true")
+    parser.add_argument("--preview-root", default=str(DEFAULT_PREVIEW_ROOT))
     args = parser.parse_args()
     generators = {
         "sis": generate_sis_controls,
@@ -1142,6 +1150,7 @@ def main() -> int:
         config_path=args.config,
         overwrite=args.overwrite,
         create_preview=not args.no_preview,
+        preview_root=args.preview_root,
     )
     print(json.dumps(summary, indent=2, sort_keys=True))
     return 0 if summary["count_rejected"] == 0 else 1

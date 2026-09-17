@@ -24,11 +24,46 @@ def regression_metrics(targets, predictions):
         "mae_arcsec": float(absolute.mean()),
         "rmse_arcsec": float(np.sqrt(np.square(residuals).mean())),
         "median_absolute_error_arcsec": float(np.median(absolute)),
+        "p90_absolute_error_arcsec": float(np.percentile(absolute, 90)),
+        "p95_absolute_error_arcsec": float(np.percentile(absolute, 95)),
         "mean_relative_error": float(relative.mean()),
         "median_relative_error": float(np.median(relative)),
         "bias_arcsec": float(residuals.mean()),
         "r2": None if r2 is None or not math.isfinite(r2) else float(r2),
     }
+
+
+def target_bin_metrics(targets, predictions, edges):
+    """Report fixed radius bins, including empty bins and out-of-range samples.
+
+    Interior bins are left-closed/right-open; the final bin includes its upper
+    edge. Edges must be chosen in the experiment config, never from test data.
+    """
+    targets = np.asarray(targets, dtype=np.float64)
+    predictions = np.asarray(predictions, dtype=np.float64)
+    regression_metrics(targets, predictions)  # Validate before slicing.
+    edges = validate_bin_edges(edges)
+    groups = []
+    masks = [(None, edges[0], targets < edges[0])]
+    for index, (lower, upper) in enumerate(zip(edges[:-1], edges[1:])):
+        upper_mask = targets <= upper if index == len(edges) - 2 else targets < upper
+        masks.append((lower, upper, (targets >= lower) & upper_mask))
+    masks.append((edges[-1], None, targets > edges[-1]))
+    for lower, upper, mask in masks:
+        groups.append({
+            "lower_arcsec": lower,
+            "upper_arcsec": upper,
+            "count": int(mask.sum()),
+            "metrics": regression_metrics(targets[mask], predictions[mask]) if mask.any() else None,
+        })
+    return groups
+
+
+def validate_bin_edges(edges):
+    edges = np.asarray(edges, dtype=np.float64)
+    if edges.ndim != 1 or len(edges) < 2 or not np.isfinite(edges).all() or not (np.diff(edges) > 0).all():
+        raise ValueError("target bin edges must be finite, strictly increasing, and contain at least two values")
+    return edges.tolist()
 
 
 def mean_baseline_metrics(train_target_mean, targets):

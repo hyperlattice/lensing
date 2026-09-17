@@ -96,6 +96,8 @@ class TorchLensDataset(Dataset):
 def compute_training_statistics(dataset):
     """Compute global image and scalar-target statistics from one split."""
 
+    if dataset.split != "train":
+        raise ValueError("Normalization statistics must come from the train split")
     image_sum = 0.0
     image_square_sum = 0.0
     pixel_count = 0

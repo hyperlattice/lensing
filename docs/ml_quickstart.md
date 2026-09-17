@@ -1,6 +1,8 @@
-# Machine-learning baseline quickstart
+# Machine-learning quickstart
 
 This guide trains and evaluates the first image-only model for `theta_E_arcsec`. It assumes the frozen `sim-eng1000-v1` release already exists under `data/simulations`.
+
+For ongoing development, use the [multi-seed workflow](#7-run-the-development-benchmark-across-seeds) below. The original test result is already recorded; future model selection uses validation and the planning notebook calls for a new independent final holdout.
 
 ## 1. Install the ML dependency
 
@@ -102,3 +104,63 @@ The error is not uniform. Test doubles have 0.0951″ MAE, while quads have 0.06
 It shows that a compact CNN can recover much of the Einstein-radius signal in held-out simulations drawn from the same engineering proposal. It does not show that the model is calibrated, causal, robust outside the proposal, or accurate on real HST data.
 
 Do not apply this checkpoint to `real-castles-v2` as a scientific measurement. The real observations have different PSFs, variance quality, source morphology, calibration, and selection effects. The next safe work is synthetic ablation and robustness testing, followed by an explicitly designed simulation-to-real study.
+
+## 7. Run the development benchmark across seeds
+
+Phase 1 of [the planning notebook](../notebooks/ml_implementation_plan_v1.ipynb) is implemented. Run all commands from the repository root. The versioned registry is `configs/ml/registry_v1.yaml`; `configs/ml/baseline_seeds_v1.yaml` fixes seeds `12001`, `12002`, and `12003`, reuses the original CNN/Huber training configuration, and declares radius-bin edges before training.
+
+A quick check runs two epochs with up to 32 training and 16 validation examples per seed:
+
+```powershell
+python -m src.ml.experiments --experiment theta-e-cnn-seeds-v1 --smoke
+```
+
+This writes to `results/ml/theta-e-cnn-seeds-v1-smoke` and labels the report `smoke_only`. It verifies the workflow but does not measure model quality.
+
+The full three-seed benchmark uses 700 training and 150 validation examples for each seed:
+
+```powershell
+python -m src.ml.experiments --experiment theta-e-cnn-seeds-v1
+```
+
+For a fresh repeat, choose a new output directory:
+
+```powershell
+python -m src.ml.experiments --experiment theta-e-cnn-seeds-v1 --output results/ml/theta-e-cnn-seeds-v1-repeat
+```
+
+The runner never loads test images or calculates test metrics. It hashes the release and all split manifests to record their identity. The model still receives only normalized images; normalization uses the training split, and validation MAE selects the checkpoint independently for each seed. All seeds are reported; a particularly lucky seed is not the benchmark result.
+
+## 8. Read the seed comparison
+
+Open these files in `results/ml/theta-e-cnn-seeds-v1`:
+
+| File | What it tells you |
+|---|---|
+| `report.md` | Per-seed results, averages, seed variation, radius-bin bias, and interpretation |
+| `seed_comparison.png` | MAE/RMSE/P95 for each seed and systematic errors versus true radius |
+| `per_seed_metrics.csv` | Exact validation metrics, best epochs, and runtimes |
+| `validation_target_bins.csv` | Counts and errors for every seed and fixed radius bin |
+| `aggregate_validation.json` | Machine-readable summary, run records, hashes, and environments |
+| `resolved_suite.json` | Frozen suite settings, base config, source hashes, and release identity |
+| `seed-12001/`, `seed-12002/`, `seed-12003/` | Individual checkpoints, normalization, resolved configs, training histories, predictions, and plots |
+
+P90 and P95 are absolute-error thresholds that contain 90% and 95% of the validation examples. A good mean MAE can coexist with a poor P95, so inspect both. Radius-bin bias shows whether small or large lenses are systematically overestimated or underestimated. The default bins are `[0.5, 1.0)`, `[1.0, 1.5)`, and `[1.5, 2.0]` arcsec; out-of-range and empty groups remain visible in the CSV/JSON.
+
+The headline is the arithmetic mean of the individual seeds' validation MAEs with their **sample standard deviation** (`ddof=1`). This spread measures sensitivity to initialization, dropout, and training order on one fixed data split. It is not a confidence interval, an ensemble score, or variation over different data splits. Compare future models on the same seeds and examine paired changes; a gain smaller than the baseline seed variation is inconclusive. Three seeds alone do not establish significance.
+
+Every training run now records the seed, resolved-config hash, release/split hashes, checkpoint and prediction hashes, Python/package versions, device and CPU-thread details, Git revision, and hashes of the Python source. Checkpoints remain ignored by Git.
+
+The first full three-seed benchmark completed with validation MAEs of `0.08836`, `0.08587`, and `0.10206` arcsec: a mean of `0.09210` with sample standard deviation `0.00872` arcsec. Mean P95 was `0.23782` arcsec. It took about seven minutes on CPU, and seed 12001 exactly reproduced the original validation predictions. All three seeds overestimated small radii and underestimated large radii; mean bin biases were `+0.0466` arcsec for `[0.5, 1.0)` and `-0.0507` arcsec for `[1.5, 2.0]`. These are the reference findings for future comparisons. See [the recorded report](../results/ml/theta-e-cnn-seeds-v1/report.md).
+
+## 9. Resume and preserve experiments
+
+An occupied output directory is protected. To verify and reuse completed seeds:
+
+```powershell
+python -m src.ml.experiments --experiment theta-e-cnn-seeds-v1 --resume
+```
+
+Add the same `--output`, `--device`, and `--smoke` options if they were used originally. Resume requires matching configurations, environment, source, data identities, and checkpoint/prediction hashes. Missing seed directories are trained; completed seeds are reused. An interrupted seed with incomplete artifacts is rejected: preserve it in another directory and resume, or start the suite with a new `--output`. Resume works at completed-seed boundaries and does not restore partially trained optimizer state.
+
+The first implementation milestone covers the registry, seed runner, aggregation, tail errors, and radius-bin diagnostics. Input-channel adapters, loss/architecture comparisons, robustness studies, and uncertainty remain the subsequent notebook phases.

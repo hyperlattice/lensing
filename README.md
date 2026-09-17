@@ -1,20 +1,73 @@
 # Lensing
 
-This repository builds an auditable strong-gravitational-lens dataset for angular mass-model inference. The pre-ML pipeline is complete: it preprocesses the local CASTLES observations, generates deterministic SIE simulations, validates classical recovery, creates ancestry-safe splits, and exposes a truth-isolated loader. No machine-learning architecture or training policy is selected here.
+This repository builds an auditable workflow for strong-gravitational-lens
+images. It prepares actual CASTLES observations, generates controlled
+simulations, validates both against one manifest contract, performs classical
+recovery checks, and trains an initial image-only model for the simulated
+Einstein radius `theta_E_arcsec`.
 
-Current frozen artifacts:
+The project currently supports reproducible synthetic experiments. It does not
+yet support calibrated mass measurements or validated performance on real HST
+observations.
 
-- `real-castles-v2`: 137 observations from 69 lens systems; structural preprocessing passed, with calibration limitations retained as review states.
-- `sim-eng1000-v1`: 1,000 independent simulated parents; 700/150/150 train/validation/test; zero rejected rows and zero validation errors.
-- P10/P30/P60/P100: staged analytic, extended-source, noisy-observation, and stress controls.
-- Classical recovery: 13/13 optimizer successes across six conditions; noiseless `theta_E` error below 0.033%, with low-SNR degradation reported separately.
-- Real demonstration: three preselected systems agree with compatible astrometric/model radii within 6.4%, explicitly not a calibrated posterior or blind population test.
+## Repository map
 
-See [the codebase guide](docs/codebase_guide.md), [dataset contract](docs/dataset_schema.md), and [ML handoff](docs/ml_handoff_v1.md) for the full design and current boundary.
+```text
+configs/       Versioned preprocessing, simulation, comparison, and ML settings
+data/          Raw inputs, curated labels, releases, and compact audit manifests
+docs/          Dataset contract, codebase guide, ML handoff, and quickstarts
+notebooks/     Planning and explanation notebooks
+results/       Derived reports, ML artifacts, and domain-separated previews
+src/           Reproducible pipeline implementation
+tests/         Automated unit and integration tests
+```
+
+Each working area has its own guide: [source code](src/README.md),
+[data](data/README.md), [configuration](configs/README.md),
+[results](results/README.md), [documentation](docs/README.md), and
+[notebooks](notebooks/README.md).
+
+## Data and previews
+
+Actual observations and simulations are deliberately separate.
+
+| Purpose | Canonical location |
+|---|---|
+| Raw actual FITS observations | `data/raw/castles/` |
+| Curated actual-observation labels | `data/labels/source/` |
+| Derived actual metadata and catalogs | `data/labels/derived/` |
+| Frozen actual preprocessing release | `data/releases/real-castles-v2/` |
+| Generated simulation releases | `data/simulations/<release>/` |
+| Tracked engineering-release audit mirror | `data/manifests/sim-eng1000-v1/` |
+| Actual-observation review previews | `results/previews/actual/<release>/` |
+| Simulated review previews | `results/previews/simulated/<release>/` |
+
+Dataset releases keep their products beside their manifests because those
+manifests contain release-relative paths. New review images go in
+`results/previews/` and never become model inputs. Large raw data, arrays,
+previews, and model checkpoints are ignored by Git; manifests, reports,
+configurations, and source tables are versioned.
+
+## Current project state
+
+- `real-castles-v2`: 137 observations from 69 lens systems after structural
+  preprocessing, with calibration and variance limitations recorded.
+- `sim-eng1000-v1`: 1,000 independent simulated parents split into 700 train,
+  150 validation, and 150 test parents without ancestry leakage.
+- P10, P30, P60, and P100 are staged controls. P100 is a separate stress suite
+  and is never training data.
+- Classical recovery completed 13 of 13 fixed optimization cases. The
+  noiseless control recovered `theta_E` within 0.033%.
+- The initial CNN achieved 0.0876 arcsec MAE on the frozen synthetic test
+  split. Its three-seed validation benchmark measured 0.09210 +/- 0.00872
+  arcsec MAE; the second value is seed-to-seed sample standard deviation.
+
+Read [the codebase guide](docs/codebase_guide.md) for the architecture and
+[the ML quickstart](docs/ml_quickstart.md) for model execution and results.
 
 ## Setup
 
-Use Python 3.11 or newer in a virtual environment. The recorded release was built with Python 3.13.6.
+Use Python 3.11 or newer; the recorded release used Python 3.13.6.
 
 ```powershell
 python -m venv .venv
@@ -23,31 +76,43 @@ python -m pip install -r requirements.txt
 python -m pip install -r requirements-simulation.txt
 ```
 
-The real-data build requires the local CASTLES FITS tree at `data/raw/castles`. Large generated products under `data/simulations` and release product arrays are intentionally ignored by Git; their compact manifests and evidence are tracked.
+Install the ML dependency only when training models:
 
-## Unified commands
+```powershell
+python -m pip install -r requirements-ml.txt
+```
 
-Show every command:
+The actual-data workflow needs `data/raw/castles/`. Simulation stages need the
+pinned `lenstronomy` dependency from `requirements-simulation.txt`.
+
+## Main commands
+
+Show all project commands:
 
 ```powershell
 python -m src.pipeline --help
 ```
 
-Build the versioned real release:
+Build a new actual-observation release and its domain-separated previews:
 
 ```powershell
-python -m src.pipeline prepare-real --release-id real-castles-v2 --output data/releases/real-castles-v2
+python -m src.pipeline prepare-real --release-id real-castles-v3 --output data/releases/real-castles-v3
 ```
 
-Generate a small deterministic simulation for development:
+Generate a small simulation and validate its release:
 
 ```powershell
-python -m src.pipeline simulate --stage observation --output data/simulations/example-v1 --simulation-id example-v1 --count 10 --seed 6001 --config configs/simulation_pilot_v1.yaml --no-preview
+python -m src.pipeline simulate --stage observation --output data/simulations/example-v1 --simulation-id example-v1 --count 10 --seed 6001 --config configs/simulation_pilot_v1.yaml
 python -m src.pipeline validate data/simulations/example-v1/manifest.csv --root data/simulations/example-v1
 python -m src.pipeline make-splits data/simulations/example-v1/manifest.csv --output data/simulations/example-v1/splits --ancestry
 ```
 
-Reproduce the pre-ML evidence:
+Use `--preview-root some/path` to put review images elsewhere, or
+`--no-preview` when previews are not needed. Release directories are protected
+against accidental replacement; use a new ID or pass `--overwrite` only when
+you intentionally rebuild a release.
+
+Reproduce the recorded engineering evidence:
 
 ```powershell
 python -m src.pipeline fit-grid
@@ -55,9 +120,11 @@ python -m src.pipeline real-comparison
 python -m src.pipeline engineering-release
 ```
 
-Release directories are protected against accidental replacement. Use a new versioned ID for a new release; `--overwrite` must be explicit when intentionally rebuilding an existing location.
+## Load a split safely
 
-## Load a frozen split
+The loader exposes arrays and explicitly allowlisted observational metadata.
+Simulator truth, random seeds, ancestry, identifiers, and sidecar paths remain
+outside model inputs.
 
 ```python
 from src.data.dataset import LensDataset
@@ -76,29 +143,60 @@ image = sample["inputs"]["products"]["image"]
 theta_e = sample["targets"]["theta_E_arcsec"]
 ```
 
-`inputs.metadata` uses a positive allowlist. IDs, seeds, ancestry, source/lens truth, target parameters, and truth-sidecar paths remain only in top-level provenance and cannot silently become model features.
+See [the dataset schema](docs/dataset_schema.md) for the complete contract.
 
-## Verification
+## Machine learning
+
+Train the original image-only baseline using training and validation data:
 
 ```powershell
-python -B -m pytest -q -p no:cacheprovider --basetemp=.pytest-work
-python -B -m src.testing.validate_simulations data/simulations/sim-eng1000-v1/manifest.csv
+python -m src.ml.train --config configs/ml_baseline_v1.yaml
 ```
 
-The release checksum ledger is `data/simulations/sim-eng1000-v1/checksums.sha256`; its tracked audit copy is under `data/manifests/sim-eng1000-v1`.
-
-## First machine-learning baseline
-
-Install PyTorch and run the frozen image-only Einstein-radius experiment:
+After accepting the checkpoint using validation only, evaluate it once on the
+locked test split:
 
 ```powershell
-python -m pip install -r requirements-ml.txt
-python -m src.ml.train --config configs/ml_baseline_v1.yaml
 python -m src.ml.evaluate --checkpoint results/ml/theta-e-cnn-baseline-v1/best.pt --split test
 ```
 
-The first CPU run reached test MAE `0.0876` arcsec, median relative error `4.93%`, and R² `0.9127` on the in-domain synthetic test split. See the [ML quickstart](docs/ml_quickstart.md) to reproduce the run and interpret every output. These metrics do not establish accuracy on real observations.
+Measure seed variation before comparing new inputs, losses, or architectures:
+
+```powershell
+python -m src.ml.experiments --experiment theta-e-cnn-seeds-v1
+```
+
+The report is written to `results/ml/theta-e-cnn-seeds-v1/report.md`. Use
+`--smoke` for a wiring check, `--output` for a new repeat, and `--resume` to
+verify and reuse completed runs. The full procedure is in
+[the ML quickstart](docs/ml_quickstart.md); planned next phases are in
+[the ML planning notebook](notebooks/ml_implementation_plan_v1.ipynb).
+
+## Verification
+
+Run all automated tests:
+
+```powershell
+python -B -m pytest -q -p no:cacheprovider --basetemp=.pytest-work
+```
+
+Validate the local engineering release when its generated products are
+available:
+
+```powershell
+python -B -m src.testing.validate_simulations data/simulations/sim-eng1000-v1/manifest.csv
+```
+
+The engineering checksum ledger is in
+`data/simulations/sim-eng1000-v1/checksums.sha256`; its tracked audit copy is
+under `data/manifests/sim-eng1000-v1/`.
 
 ## Scientific boundary
 
-The engineering simulations use analytic Sersic sources, Gaussian PSFs, scalar backgrounds, independent Poisson/read noise, and hand-set uniform priors. The real release lacks empirical PSF, ERR, and DQ products and currently uses a toy variance fallback. The project is ready for an ML experiment plan and synthetic in-domain baselines, but not for observational mass claims or population-level validation.
+The engineering simulations use analytic Sersic sources, Gaussian control
+PSFs, scalar backgrounds, independent Poisson/read noise, and hand-set uniform
+priors. The actual release lacks empirical PSF, ERR, and DQ products and uses
+a labeled toy variance fallback. Results demonstrate in-domain synthetic
+learning and reproducible engineering behavior; they do not establish
+observational mass accuracy, calibrated uncertainty, or population-level
+performance.

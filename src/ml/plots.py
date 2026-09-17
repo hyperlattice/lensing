@@ -53,3 +53,27 @@ def plot_predictions(targets, predictions, output_path, *, title):
     figure.tight_layout()
     figure.savefig(output_path, dpi=160)
     plt.close(figure)
+
+
+def plot_seed_comparison(summaries, output_path):
+    """Show seed spread and radius-dependent bias on the same validation set."""
+    figure, axes = plt.subplots(1, 2, figsize=(12, 4))
+    positions = np.arange(len(summaries))
+    for offset, (metric, label) in enumerate((
+        ("mae_arcsec", "MAE"), ("rmse_arcsec", "RMSE"), ("p95_absolute_error_arcsec", "P95"),
+    )):
+        axes[0].bar(positions + (offset - 1) * 0.24, [run["validation_metrics"][metric] for run in summaries], width=0.24, label=label)
+    axes[0].set_xticks(positions, [str(run["seed"]) for run in summaries])
+    axes[0].set(xlabel="training seed", ylabel="absolute error (arcsec)", title="Validation errors across seeds")
+    for run in summaries:
+        bins = [row for row in run["validation_target_bins"] if row["metrics"] is not None and row["lower_arcsec"] is not None and row["upper_arcsec"] is not None]
+        centers = [(row["lower_arcsec"] + row["upper_arcsec"]) / 2 for row in bins]
+        axes[1].plot(centers, [row["metrics"]["bias_arcsec"] for row in bins], marker="o", label=str(run["seed"]))
+    axes[1].axhline(0, color="black", linestyle="--", linewidth=1)
+    axes[1].set(xlabel="true radius bin center (arcsec)", ylabel="prediction - truth (arcsec)", title="Radius-dependent validation bias")
+    for axis in axes:
+        axis.legend()
+        axis.grid(alpha=0.2)
+    figure.tight_layout()
+    figure.savefig(output_path, dpi=160)
+    plt.close(figure)

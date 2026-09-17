@@ -1,0 +1,201 @@
+{
+  "best_epoch": 15,
+  "checkpoint_path": "results/ml/theta-e-cnn-seeds-v1/seed-12002/best.pt",
+  "checkpoint_sha256": "a372a325abbc94c084ec56e9375abf590f0acd0becf70698e643a5704872caec",
+  "config_sha256": "0712365804d17104ae930068ac640d560b89194375c2b39514f0c47e5a9539a6",
+  "device": "cpu",
+  "environment": {
+    "cuda_version": null,
+    "device": "cpu",
+    "device_name": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel",
+    "machine": "AMD64",
+    "packages": {
+      "PyYAML": "6.0.2",
+      "matplotlib": "3.10.8",
+      "numpy": "2.3.5",
+      "pandas": "2.3.3",
+      "torch": "2.8.0"
+    },
+    "platform": "Windows",
+    "processor": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel",
+    "python": "3.13.6",
+    "torch_num_threads": 6
+  },
+  "epochs_completed": 20,
+  "experiment_id": "theta-e-cnn-seeds-v1-seed-12002",
+  "mean_baseline_metrics": {
+    "bias_arcsec": 0.007006404640778889,
+    "count": 150,
+    "mae_arcsec": 0.38029328574829663,
+    "mean_relative_error": 0.3726601357047157,
+    "median_absolute_error_arcsec": 0.3904198408126831,
+    "median_relative_error": 0.30157753162607437,
+    "p90_absolute_error_arcsec": 0.6636236652871013,
+    "p95_absolute_error_arcsec": 0.7064711252210035,
+    "r2": -0.0002595582188049672,
+    "rmse_arcsec": 0.43494483501791387
+  },
+  "parent_baseline_id": "theta-e-cnn-baseline-v1",
+  "provenance": {
+    "git_revision": "abab89f2f3b79c5f913fe40ea34713f7caf4c34d",
+    "source_sha256": {
+      "src/data/dataset.py": "7772ee36e9bec22e908313009382ded06c746f5a74fe3523e32192671c2673b3",
+      "src/data/schema.py": "19594a503b9c3e68d4f5a6be64efca24cebe77e013316e74914cb3a814549ff9",
+      "src/main.py": "728a1667ecc586e8d2d6e442a7faa123c002d30bb7195859cdefcb2d78b1cf51",
+      "src/ml/__init__.py": "8f84aae5e093143bc292a1e7b67536effd11643c6040d1768c221b96d0f836f8",
+      "src/ml/data.py": "2464d2bae1b94c31d1ccddfa44d355fa90e289a04a60ce65866328bc1983ee24",
+      "src/ml/engine.py": "3eca1acb404ce023d7a88aac01dcf708b0875e9740e37a9b36e4d48464bface1",
+      "src/ml/evaluate.py": "a2c990911fd9a3642928aae5e419c6072ddbb9e24aebfbfa631ad3f2cccd1d44",
+      "src/ml/experiments.py": "ca6388d15832c5627e08d866c34dea96deb67e7dfcff5a960dac802b2ca8354a",
+      "src/ml/metrics.py": "efddcdaaba69aa459ab0db017ab0c976d4388840909b87afa65bdccf8dc721f7",
+      "src/ml/model.py": "ccd4e44f7c0b68d5e5de95b1584e2745d4dc922bd4b7c7d6c3a913a75a1ac2df",
+      "src/ml/plots.py": "6c2ad347042f84169731a79995cfdeb6b31a3a9ef484eb920a33309f2746f06a",
+      "src/ml/provenance.py": "44c63bdc2b1ae439c8840299f21e0393835cf9304f5f0fa7e2d71e7176d310f0",
+      "src/ml/train.py": "c077af030049a23dfdb5cf9322c5ad7ba32cee7dc0bfb2d0a5716ffe4461d06c",
+      "src/modeling/__init__.py": "e4f54e7a576d34d434d17574f58220815b296f87def1a923d5ea32484493a263",
+      "src/modeling/fit_lens.py": "1c6c0eb7883abda74dee818433a4f8a1c20f61fc55178a74f6ac512f3a13f69b",
+      "src/modeling/real_comparison.py": "302e8f2b12f1d88c52732a02f81335832e4de5a06b23752fe99694fb4a5b023c",
+      "src/pipeline.py": "69f89ee9812daa0d8795f1ce10eefe6d0fc9787c96e5543f2d25fdb1795d9c5c",
+      "src/processing/background.py": "94b8e77571cddac0c8a5d3c1e526fa6b7097e153ca2f8b9f708309d29d767429",
+      "src/processing/build_catalog.py": "c5d574757652712abd128e1d7b1cdbe7b432f15019e6ae4d1a21801d6385065c",
+      "src/processing/build_metadata.py": "1016c6549d6419a448192a5fd52381e9d2be206fd080f286a6b60edb5868cbe8",
+      "src/processing/create_splits.py": "1ed5aa258fcfa536d9b0d8a916f4b5b6797e6510dd3db692db3fbc26ea4baad3",
+      "src/processing/enrich_metadata.py": "e50cb2604541f7b3bfa3c0145eb4a81ef5666cdf3c6091d23eaed24a12ef9b51",
+      "src/processing/geometry.py": "19c0734925a15e9a8403854e2dd7e8b57763684ac3de5d9c6315bee8617be9ac",
+      "src/processing/noise.py": "97b44548fc72599016d3bdc84ff2b2ddea7b2a411b1801510f4500257a418e0b",
+      "src/processing/normalization.py": "a0e15f719436ebe8d003bf9c6c930f05095e88ea8ac2800eda5ccae8bb6350a1",
+      "src/processing/preprocess.py": "58e31da01cce477b5dbd7fc9e4552e981cf747f76b41a9009a28dfb64589cd52",
+      "src/processing/preprocessing_config.py": "691ed08de0fb0f02f9c00f01ef3a1038fd2eaf471f6f109d14478a47e9507ac5",
+      "src/processing/preview_dataset.py": "73eccb4b1cc7c5b72f7a79911aa45ea547598fa99c074d6397efc22061805871",
+      "src/processing/psf.py": "fbae8f7d271bcfb9cf035121d296667bec383c007e1ceab7b98a0944bf4d483c",
+      "src/processing/validate_metadata.py": "2ff72673200e32155721c0b3e6d17aea99bdb98320386954de30f41db5c028d3",
+      "src/simulation/__init__.py": "9005659ef51c14429bfba80443ac39bb2434a55043d0d006e0cb8139eb01fd25",
+      "src/simulation/assemble.py": "7ce281a915689c187c7f82d17ed535b32f556d4d95fa39f3d12c663834ed7093",
+      "src/simulation/generate.py": "4f31f00eb90fb5ab1ebbe928f1c37b0ff0a5e476a9659f927fe18b05b4934bcb",
+      "src/simulation/models.py": "b9cb08fe8d6f38603e3e4a8103d98f8696ebc2d72eaf1b82af6a5572304d97c1",
+      "src/simulation/observation.py": "3bb4341fa6f87a3539f5af4bdc59850790452da551e2e54ddeb8e81f3eef8854",
+      "src/simulation/priors.py": "d124d0df39c49589ca2a5e2083c14a9a0a04c4371b826daaeba5ec56bf1d2a64",
+      "src/simulation/render.py": "80a152d4e0aa166a7d41ae9116c8d4457ede1de9b59f77f2d0dffa773d655f7e",
+      "src/simulation/smoke_test.py": "cd975819c620608656c310cd97e36f719891662834d1ccf0609ff55c6c56a99f",
+      "src/tempCodeRunnerFile.py": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6",
+      "src/testing/open_image.py": "b8468a38c4db1d7d9cd9bf071e789a90969cfae6492334f14fa53a4c9628293c",
+      "src/testing/preprocess_test.py": "bccebb51c1ddfe1aea8cd065687a35a59174b3e7793fd5afed3553555db76c25",
+      "src/testing/report_simulation_pilot.py": "cefb52aeddd41e4c27e121d9a23644084193ba8920fd11eed74f5c659799115c",
+      "src/testing/validate_dataset.py": "6ad3dacb6af6a2378312b7cb81a659db45ab0a38c8afb0768550ae914c4887db",
+      "src/testing/validate_simulations.py": "6c747d71617146b6169b0c825f3a3e3f27c5374e16ae1c7f9639edaf90c9b067"
+    }
+  },
+  "release_id": "sim-eng1000-v1",
+  "release_manifest_sha256": "189c1351e768c6a6563c2af3243419df92d39f14a9670ff6385b693405e06a44",
+  "run_controls": {
+    "max_train_samples": null,
+    "max_validation_samples": null
+  },
+  "runtime_seconds": 146.01906560000498,
+  "scientific_scope": "in-domain synthetic validation only; test and real data not accessed",
+  "seed": 12002,
+  "split_manifest_sha256": {
+    "test": "c549c09c618a2bcb03d87b5dfc5e8a323cdf42a86c52d2e138939cf0cbaaa65a",
+    "train": "dade8d9ef54f1c6bfc74c089a937e48fc836e258b65b37bc21379d4c78f488d3",
+    "validation": "0eb44e8034f9508fceb3c60bfd2d3a2766c4ac40d5f742d1a359a0c7559ed672"
+  },
+  "statistics": {
+    "image_mean": 0.0008202404782396704,
+    "image_std": 0.028225236289913906,
+    "pixel_count": 45875200,
+    "release_manifest": "data/simulations/sim-eng1000-v1/manifest.csv",
+    "release_manifest_sha256": "189c1351e768c6a6563c2af3243419df92d39f14a9670ff6385b693405e06a44",
+    "sample_count": 700,
+    "source_split": "train",
+    "source_split_manifest": "data/simulations/sim-eng1000-v1/splits/train.csv",
+    "source_split_manifest_sha256": "dade8d9ef54f1c6bfc74c089a937e48fc836e258b65b37bc21379d4c78f488d3",
+    "target_field": "theta_E_arcsec",
+    "target_mean": 1.2483499255205244,
+    "target_std": 0.42370747484876414
+  },
+  "status": "trained_validation_only",
+  "test_samples_accessed": 0,
+  "torch_version": "2.8.0+cpu",
+  "train_samples": 700,
+  "trainable_parameters": 248409,
+  "validation_mae_improvement_over_mean": 0.7741970546730332,
+  "validation_metrics": {
+    "bias_arcsec": 0.008487248023351034,
+    "count": 150,
+    "mae_arcsec": 0.0858713440100352,
+    "mean_relative_error": 0.08224963897800922,
+    "median_absolute_error_arcsec": 0.07005548477172852,
+    "median_relative_error": 0.0591717688811112,
+    "p90_absolute_error_arcsec": 0.18063789010047912,
+    "p95_absolute_error_arcsec": 0.2285544008016585,
+    "r2": 0.9331971718929872,
+    "rmse_arcsec": 0.11240231277345379
+  },
+  "validation_predictions_sha256": "6897761289ec940254bd68d97d6daeb75e229878655239dd802e59fc13c93ab4",
+  "validation_samples": 150,
+  "validation_target_bins": [
+    {
+      "count": 0,
+      "lower_arcsec": null,
+      "metrics": null,
+      "upper_arcsec": 0.5
+    },
+    {
+      "count": 51,
+      "lower_arcsec": 0.5,
+      "metrics": {
+        "bias_arcsec": 0.05232956830193015,
+        "count": 51,
+        "mae_arcsec": 0.08811101726457185,
+        "mean_relative_error": 0.12290952252536898,
+        "median_absolute_error_arcsec": 0.08269339799880981,
+        "median_relative_error": 0.1042727434786138,
+        "p90_absolute_error_arcsec": 0.18322724103927612,
+        "p95_absolute_error_arcsec": 0.2117052674293518,
+        "r2": 0.2995021633352749,
+        "rmse_arcsec": 0.1127767150739304
+      },
+      "upper_arcsec": 1.0
+    },
+    {
+      "count": 47,
+      "lower_arcsec": 1.0,
+      "metrics": {
+        "bias_arcsec": 0.006154284832325388,
+        "count": 47,
+        "mae_arcsec": 0.09900016860759005,
+        "mean_relative_error": 0.08308555875180586,
+        "median_absolute_error_arcsec": 0.0766763687133789,
+        "median_relative_error": 0.07252505081997647,
+        "p90_absolute_error_arcsec": 0.2017115235328674,
+        "p95_absolute_error_arcsec": 0.23633025884628292,
+        "r2": 0.2638381089112891,
+        "rmse_arcsec": 0.1218969742729536
+      },
+      "upper_arcsec": 1.5
+    },
+    {
+      "count": 52,
+      "lower_arcsec": 1.5,
+      "metrics": {
+        "bias_arcsec": -0.03240331090413607,
+        "count": 52,
+        "mae_arcsec": 0.07180830377798814,
+        "mean_relative_error": 0.041616133395628606,
+        "median_absolute_error_arcsec": 0.04872167110443115,
+        "median_relative_error": 0.026551468821507926,
+        "p90_absolute_error_arcsec": 0.1414415955543518,
+        "p95_absolute_error_arcsec": 0.1615895807743071,
+        "r2": 0.503061174102972,
+        "rmse_arcsec": 0.10266890652468338
+      },
+      "upper_arcsec": 2.0
+    },
+    {
+      "count": 0,
+      "lower_arcsec": 2.0,
+      "metrics": null,
+      "upper_arcsec": null
+    }
+  ]
+}

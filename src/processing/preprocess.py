@@ -18,10 +18,10 @@ from src.processing.noise import estimate_scalar_variance
 from src.processing.preprocessing_config import config_hash, load_config
 
 
-METADATA_PATH = Path("data/labels/metadata.csv")
-OUTPUT_DIR = Path("data/processed/normalized")
-MANIFEST_PATH = Path("data/labels/processed_metadata.csv")
-ENRICHED_METADATA_PATH = Path("data/labels/metadata_enriched.csv")
+METADATA_PATH = Path("data/labels/derived/metadata.csv")
+OUTPUT_DIR = Path("data/derived/actual/castles-development-v1/products/normalized")
+MANIFEST_PATH = Path("data/labels/derived/processed_metadata.csv")
+ENRICHED_METADATA_PATH = Path("data/labels/derived/metadata_enriched.csv")
 
 TARGET_SHAPE = (256, 256)
 

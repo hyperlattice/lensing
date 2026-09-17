@@ -3,9 +3,9 @@ from pathlib import Path
 import pandas as pd
 
 
-METADATA_PATH = Path("data/labels/metadata.csv")
+METADATA_PATH = Path("data/labels/derived/metadata.csv")
 SOURCE_PATH = Path("data/labels/source/lens_catalog_source.csv")
-CATALOG_OUTPUT = Path("data/labels/lens_catalog.csv")
+CATALOG_OUTPUT = Path("data/labels/derived/lens_catalog.csv")
 SOURCE_COLUMNS = {
     "lens_id",
     "lens_redshift",

@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 
 
-MANIFEST_PATH = Path("data/labels/processed_metadata.csv")
+MANIFEST_PATH = Path("data/labels/derived/processed_metadata.csv")
 REQUIRED_COLUMNS = {
     "sample_id", "lens_id", "raw_path", "processed_path", "pixel_scale",
 }

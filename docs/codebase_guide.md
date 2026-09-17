@@ -46,7 +46,7 @@ metadata         full provenance, including privileged truth; never pass this to
 - `psf.py` defines PSF kernels, validation, serialization, and convolution; current real files have no empirical PSF.
 - `preprocessing_config.py` loads and fingerprints the versioned preprocessing YAML.
 - `preprocess.py` orchestrates these pure components and writes product arrays, masks, sidecars, a manifest, and a run record.
-- `preview_dataset.py` creates per-observation previews and contact sheets for human QC.
+- `preview_dataset.py` creates per-observation previews and contact sheets for human QC. New previews are written under `results/previews/actual/<release>` or `results/previews/simulated/<release>`, outside dataset releases.
 - `validate_metadata.py` separates fatal structural errors from review-level scientific/calibration issues.
 - `create_splits.py` creates lens-level real splits and transitive ancestry-component simulation splits.
 
@@ -77,11 +77,13 @@ The release ladder has distinct purposes: P10 is an analytic SIS control, P30 in
 - `ml/model.py` defines the 248,409-parameter four-block convolutional regressor.
 - `ml/engine.py` contains deterministic seeding, device selection, data loading, training, checkpointing support, and prediction collection.
 - `ml/metrics.py` computes angular, relative, bias, R², and train-mean baseline metrics without an additional metrics dependency.
-- `ml/plots.py` creates noninteractive learning-curve and residual diagnostics.
-- `ml/train.py` trains on 700 parents, selects a checkpoint using only 150 validation parents, and records release/split hashes and normalization.
-- `ml/evaluate.py` verifies those hashes before evaluating a frozen split and writes overall, subgroup, and worst-case evidence.
+- `ml/plots.py` creates noninteractive learning-curve, residual, and multi-seed diagnostics.
+- `ml/train.py` trains on 700 parents, selects a checkpoint using only 150 validation parents, and records configuration, data, source, environment, and artifact hashes.
+- `ml/evaluate.py` verifies hashes before evaluating a frozen split and writes overall, subgroup, and worst-case evidence.
+- `ml/experiments.py` runs registered validation-only seed suites, verifies resumable artifacts, aggregates per-seed metrics, and produces the comparison report.
+- `ml/provenance.py` records package, device, Git, and source-file identity for every training run.
 
-`configs/ml_baseline_v1.yaml` is the first fixed experiment. The run procedure and interpretation guide are in `docs/ml_quickstart.md`.
+`configs/ml_baseline_v1.yaml` is the first fixed experiment. `configs/ml/registry_v1.yaml` registers the three-seed baseline benchmark. The run procedure and interpretation guide are in `docs/ml_quickstart.md`.
 
 ## Configuration, artifacts, and tests
 
@@ -89,13 +91,14 @@ The release ladder has distinct purposes: P10 is an analytic SIS control, P30 in
 - `configs/simulation_pilot_v1.yaml` freezes the staged controls.
 - `configs/simulation_engineering_v1.yaml` freezes the 1,000-parent release and split policy.
 - `configs/real_comparison_v1.yaml` freezes the real candidates before measurement.
-- `data/labels/source` holds curated source tables; derived label tables remain in `data/labels`.
-- `data/releases` holds real releases. Large product/previews are ignored, while their manifests and reports are tracked.
+- `data/labels/source` holds curated source tables; `data/labels/derived` holds rebuildable metadata and catalog outputs.
+- `data/releases` holds actual-observation releases. Large products are ignored, while manifests and reports are tracked.
 - `data/simulations` holds full generated simulations and is ignored because of size.
 - `data/manifests/sim-eng1000-v1` is the compact tracked audit mirror for the engineering release.
+- `results/previews/actual` and `results/previews/simulated` separate visual QC artifacts by domain and release.
 - `results/reports` holds classical-fit, real-comparison, and readiness evidence.
 - `tests` mirrors the modules with unit and integration checks. Tests use temporary paths and should not mutate production artifacts.
 
 ## Where the project is now
 
-All work through the pre-ML handoff is implemented and evidenced. The next legitimate phase is a separate ML plan using the frozen splits and target contract. Important open research work remains—empirical HST PSFs, detector/error products, realistic source morphologies, calibrated priors/selection functions, uncertainty coverage, and a blind real benchmark—but those are domain-fidelity improvements, not unfinished prerequisites hidden by the current engineering release.
+The pre-ML handoff and first CNN baseline are implemented and evidenced. The three-seed validation benchmark establishes the reference variation for upcoming input, loss, architecture, robustness, and uncertainty experiments. Important open research work remains—empirical HST PSFs, detector/error products, realistic source morphologies, calibrated priors/selection functions, uncertainty coverage, and a blind real benchmark—but those are domain-fidelity improvements, not unfinished prerequisites hidden by the current engineering release.

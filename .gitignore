@@ -6,6 +6,11 @@ __pycache__/
 data/simulations/
 data/releases/*/products/
 data/releases/*/previews/
+data/derived/actual/*/products/
+# Review images are regenerated from raw/release inputs. Keep their indexes and
+# reports only when deliberately staged as evidence.
+results/previews/actual/*/
+results/previews/simulated/*/
 results/ml/**/best.pt
 
 tempCodeRunnerFile.py

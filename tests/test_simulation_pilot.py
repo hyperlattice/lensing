@@ -1,5 +1,7 @@
 import hashlib
 
+from pathlib import Path
+
 import importlib.util
 
 import pytest
@@ -11,14 +13,21 @@ from src.testing.validate_simulations import validate_run
 def test_p10_generation_is_reproducible_and_complete(tmp_path):
     first = tmp_path / "first"
     second = tmp_path / "second"
-    first_summary = generate_sis_controls(first, count=2, seed=77, create_preview=True)
+    previews = tmp_path / "previews"
+    first_summary = generate_sis_controls(
+        first, count=2, seed=77, create_preview=True, preview_root=previews
+    )
     second_summary = generate_sis_controls(second, count=2, seed=77, create_preview=False)
 
     assert first_summary["count_accepted"] == 2
     assert first_summary["count_rejected"] == 0
     assert second_summary["count_rejected"] == 0
     assert validate_run(first / "manifest.csv")["passed"] is True
-    assert (first / "previews" / "contact_sheet.png").exists()
+    assert (previews / "simulated" / "sim-p10-v1" / "contact_sheet.png").exists()
+    assert Path(first_summary["preview_index_path"]) == (
+        previews / "simulated" / "sim-p10-v1" / "preview_index.csv"
+    )
+    assert not (first / "previews").exists()
     assert (first / "rejection_log.csv").exists()
 
     for index in range(1, 3):
@@ -37,12 +46,14 @@ def test_p60_observation_generation_is_reproducible_and_valid(monkeypatch, tmp_p
     monkeypatch.setenv("NUMBA_DISABLE_JIT", "1")
     first = tmp_path / "first"
     second = tmp_path / "second"
+    previews = tmp_path / "previews"
     first_summary = generate_observation_pilot(
         first,
         count=2,
         seed=6001,
         simulation_id="sim-p60-test",
         create_preview=True,
+        preview_root=previews,
     )
     second_summary = generate_observation_pilot(
         second,
@@ -56,7 +67,7 @@ def test_p60_observation_generation_is_reproducible_and_valid(monkeypatch, tmp_p
     assert first_summary["count_rejected"] == 0
     assert second_summary["count_rejected"] == 0
     assert validate_run(first / "manifest.csv")["passed"] is True
-    assert (first / "previews" / "contact_sheet.png").exists()
+    assert (previews / "simulated" / "sim-p60-test" / "contact_sheet.png").exists()
 
     for index in range(1, 3):
         sample = f"sim-p60-test-{index:04d}"

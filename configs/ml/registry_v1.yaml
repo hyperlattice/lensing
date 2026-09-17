@@ -1,0 +1,3 @@
+schema_version: 1
+experiments:
+  theta-e-cnn-seeds-v1: configs/ml/baseline_seeds_v1.yaml

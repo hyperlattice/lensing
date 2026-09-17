@@ -8,7 +8,7 @@ from astropy.wcs import WCS
 
 
 ROOT = Path("data/raw/castles")
-OUTPUT = Path("data/labels/metadata.csv")
+OUTPUT = Path("data/labels/derived/metadata.csv")
 
 
 def sample_id_from_path(path, root=ROOT):

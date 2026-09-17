@@ -8,8 +8,8 @@ import numpy as np
 import pandas as pd
 
 
-METADATA_PATH = Path("data/labels/metadata.csv")
-CATALOG_PATH = Path("data/labels/lens_catalog.csv")
+METADATA_PATH = Path("data/labels/derived/metadata.csv")
+CATALOG_PATH = Path("data/labels/derived/lens_catalog.csv")
 REPORT_DIR = Path("results/reports/metadata")
 REQUIRED_COLUMNS = {"sample_id", "raw_path", "pixel_scale"}
 FATAL_DEFAULT = {

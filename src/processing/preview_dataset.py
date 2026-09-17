@@ -7,10 +7,12 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from astropy.io import fits
 
+from src.layout import preview_directory
+
 
 ROOT = Path("data/raw/castles")
-OUTPUT = Path("results/preview")
-MANIFEST_PATH = Path("data/labels/metadata.csv")
+OUTPUT = preview_directory("actual", "castles-development-v1")
+MANIFEST_PATH = Path("data/labels/derived/metadata.csv")
 
 
 def _input_rows(root, manifest_path=None):

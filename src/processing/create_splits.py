@@ -5,8 +5,8 @@ from pathlib import Path
 import pandas as pd
 
 
-MANIFEST_PATH = Path("data/labels/processed_metadata.csv")
-OUTPUT_DIR = Path("data/splits")
+MANIFEST_PATH = Path("data/labels/derived/processed_metadata.csv")
+OUTPUT_DIR = Path("data/manifests/actual/castles-development-v1/splits")
 SPLIT_NAMES = ("train", "validation", "test")
 ANCESTRY_COLUMNS = (
     "split_group_id",
