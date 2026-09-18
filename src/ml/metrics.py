@@ -18,9 +18,14 @@ def regression_metrics(targets, predictions):
     absolute = np.abs(residuals)
     relative = absolute / np.maximum(np.abs(targets), np.finfo(np.float64).eps)
     denominator = float(np.square(targets - targets.mean()).sum())
+    slope = None if denominator == 0 else float(np.sum((targets - targets.mean()) * (predictions - predictions.mean())) / denominator)
     r2 = None if denominator == 0 else 1.0 - float(np.square(residuals).sum()) / denominator
     return {
         "count": int(len(targets)),
+        "fraction_within_005_arcsec": float(np.mean(absolute <= 0.05)),
+        "fraction_within_010_arcsec": float(np.mean(absolute <= 0.10)),
+        "prediction_vs_truth_slope": slope,
+        "prediction_vs_truth_intercept_arcsec": None if slope is None else float(predictions.mean() - slope * targets.mean()),
         "mae_arcsec": float(absolute.mean()),
         "rmse_arcsec": float(np.sqrt(np.square(residuals).mean())),
         "median_absolute_error_arcsec": float(np.median(absolute)),

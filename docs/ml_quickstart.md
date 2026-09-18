@@ -1,5 +1,48 @@
 # Machine-learning quickstart
 
+## Controlled Huber-delta experiments
+
+The first loss ablation is implemented. Both registered candidates inherit the
+original baseline config and override only `huber_delta`. They retain the
+20-epoch budget, image-only CNN, AdamW, fixed splits, and three seeds.
+
+```powershell
+python -B -m src.ml.experiments --experiment theta-e-huber-delta-025-v1 --smoke
+python -B -m src.ml.experiments --experiment theta-e-huber-delta-050-v1
+python -B -m src.ml.experiments --experiment theta-e-huber-delta-025-v1
+python -B -m src.ml.compare --reference results/ml/theta-e-cnn-seeds-v1 --candidate results/ml/theta-e-huber-delta-050-v1 --output results/ml/comparison-huber-050-v1
+python -B -m src.ml.compare --reference results/ml/theta-e-cnn-seeds-v1 --candidate results/ml/theta-e-huber-delta-025-v1 --output results/ml/comparison-huber-025-v1
+```
+
+Use a new `--output` for a fresh run; completed outputs are protected. Resume
+requires unchanged source and configuration. The comparison reads verified
+validation prediction tables and checks matching samples, targets, seeds, and
+release/split identities. It adds threshold fractions, the slope/intercept of
+predicted versus true radius, and prediction-range diagnostics to both old and
+new results without loading any images.
+
+The conservative gate requires MAE improvement of at least 0.01 arcsec, no
+increase in mean P95 or mean worst-bin absolute bias, and MAE improvement on
+every seed. It is a development rule, not a significance test. Fractions within
+0.05 and 0.10 arcsec are threshold measures for regression, not classification
+accuracy. The fitted slope/intercept diagnoses point-prediction bias; it is
+not uncertainty calibration.
+
+The recorded delta `0.5` suite reduced mean validation MAE by `0.00242` arcsec;
+delta `0.25` reduced it by `0.00675` arcsec and reduced mean P95 by `0.01894`
+arcsec. Neither passes the predeclared `0.01` arcsec MAE gate, so the original
+baseline remains selected. Read the paired reports in
+`results/ml/comparison-huber-050-v1/report.md` and
+`results/ml/comparison-huber-025-v1/report.md`. Use `--resume` when checking an
+existing suite output rather than replacing it.
+
+Standalone training configs can now specify `loss: {kind: mae}`, `mse`,
+`log_cosh`, or `loss: {kind: huber, delta: 0.25}`. Remove the legacy
+`huber_delta` field when using `loss`. The CNN factory accepts `kind: cnn` and
+configurable `dropout`; omitted values reproduce the existing architecture.
+Residual models, scheduler comparisons, extra input channels, and additional
+subgroup diagnostics remain subsequent milestones.
+
 This guide trains and evaluates the first image-only model for `theta_E_arcsec`. It assumes the frozen `sim-eng1000-v1` release already exists under `data/simulations`.
 
 For ongoing development, use the [multi-seed workflow](#7-run-the-development-benchmark-across-seeds) below. The original test result is already recorded; future model selection uses validation and the planning notebook calls for a new independent final holdout.

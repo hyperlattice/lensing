@@ -24,7 +24,7 @@ class ConvBlock(nn.Sequential):
 class EinsteinRadiusCNN(nn.Module):
     """Four downsampling blocks followed by a small spatial regression head."""
 
-    def __init__(self, channels=(8, 16, 32, 64), pooled_size=4, hidden_features=128):
+    def __init__(self, channels=(8, 16, 32, 64), pooled_size=4, hidden_features=128, dropout=0.1):
         super().__init__()
         channels = tuple(int(value) for value in channels)
         if len(channels) != 4 or any(value <= 0 for value in channels):
@@ -33,6 +33,7 @@ class EinsteinRadiusCNN(nn.Module):
             "channels": list(channels),
             "pooled_size": int(pooled_size),
             "hidden_features": int(hidden_features),
+            "dropout": float(dropout),
         }
         blocks = []
         input_channels = 1
@@ -46,7 +47,7 @@ class EinsteinRadiusCNN(nn.Module):
             nn.Flatten(),
             nn.Linear(flattened, int(hidden_features)),
             nn.SiLU(),
-            nn.Dropout(p=0.1),
+            nn.Dropout(p=dropout),
             nn.Linear(int(hidden_features), 1),
         )
 
@@ -58,3 +59,12 @@ class EinsteinRadiusCNN(nn.Module):
     @property
     def trainable_parameter_count(self):
         return sum(parameter.numel() for parameter in self.parameters() if parameter.requires_grad)
+
+
+def build_model(config):
+    """Load legacy CNN configs and explicitly named CNN variants alike."""
+    settings = dict(config)
+    kind = settings.pop("kind", "cnn")
+    if kind != "cnn":
+        raise ValueError(f"Unknown model: {kind}; supported: cnn")
+    return EinsteinRadiusCNN(**settings)

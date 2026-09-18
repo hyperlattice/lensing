@@ -45,8 +45,17 @@ def validate_suite(suite):
         raise ValueError(f"Suite config requires: {sorted(required)}")
     if suite["schema_version"] != 1:
         raise ValueError("Suite must use schema_version 1")
-    if set(suite).difference(required):
-        raise ValueError(f"Unknown suite fields: {sorted(set(suite).difference(required))}")
+    optional = {"change"}
+    if set(suite).difference(required | optional):
+        raise ValueError(f"Unknown suite fields: {sorted(set(suite).difference(required | optional))}")
+    if "change" in suite:
+        change = suite["change"]
+        if not isinstance(change, dict) or set(change) != {"field", "value"}:
+            raise ValueError("change requires exactly field and value")
+        if change["field"] != "huber_delta":
+            raise ValueError("First ablation supports only huber_delta")
+        from src.ml.losses import build_loss
+        build_loss({"kind": "huber", "delta": change["value"]})
     if not isinstance(suite["experiment_id"], str) or not re.fullmatch(r"[A-Za-z0-9_-]+", suite["experiment_id"]):
         raise ValueError("experiment_id must contain only letters, numbers, underscores, and hyphens")
     seeds = suite["seeds"]
@@ -146,6 +155,11 @@ def run_seed_suite(suite, *, output_override=None, device_request="auto", resume
     base = load_config(suite["base_config"])
     if base["experiment_id"] != suite["parent_baseline_id"]:
         raise ValueError("parent_baseline_id must match the base config experiment_id")
+    if "change" in suite:
+        change = suite["change"]
+        if base.get(change["field"]) == change["value"]:
+            raise ValueError("Ablation must change the declared field")
+        base[change["field"]] = change["value"]
     output = Path(output_override or (suite["output"] + "-smoke" if smoke else suite["output"]))
     suite["output"] = output.as_posix()
     controls = {"max_train_samples": 32 if smoke else None, "max_validation_samples": 16 if smoke else None}

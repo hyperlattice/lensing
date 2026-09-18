@@ -11,7 +11,6 @@ from pathlib import Path
 import pandas as pd
 import torch
 import yaml
-from torch import nn
 
 from src.ml.data import TorchLensDataset, compute_training_statistics, file_sha256
 from src.ml.engine import (
@@ -26,7 +25,8 @@ from src.ml.engine import (
 from src.ml.metrics import (
     improvement_fraction, mean_baseline_metrics, regression_metrics, target_bin_metrics, validate_bin_edges,
 )
-from src.ml.model import EinsteinRadiusCNN
+from src.ml.model import build_model
+from src.ml.losses import build_loss
 from src.ml.plots import plot_predictions, plot_training_history
 from src.ml.provenance import config_sha256, environment_record, source_provenance
 
@@ -73,6 +73,9 @@ def train_experiment(
             raise ValueError(f"{field} must be a positive integer")
     if config["target_field"] != "theta_E_arcsec":
         raise ValueError("This baseline supports only theta_E_arcsec")
+    loss_function = build_loss(config.get("loss", {"kind": "huber", "delta": config.get("huber_delta", 1.0)}))
+    if "loss" in config and "huber_delta" in config:
+        raise ValueError("Use loss or legacy huber_delta, not both")
     bin_edges = validate_bin_edges(config.get("target_bin_edges_arcsec", [0.5, 1.0, 1.5, 2.0]))
     config["target_bin_edges_arcsec"] = bin_edges
     controls = {"max_train_samples": max_train_samples, "max_validation_samples": max_validation_samples}
@@ -120,7 +123,7 @@ def train_experiment(
         seed=config["seed"],
         num_workers=config.get("num_workers", 0),
     )
-    model = EinsteinRadiusCNN(**config["model"]).to(device)
+    model = build_model(config["model"]).to(device)
     split_manifest_sha256 = {
         split: file_sha256(release / "splits" / f"{split}.csv")
         for split in ("train", "validation", "test")
@@ -130,7 +133,6 @@ def train_experiment(
         lr=float(config["learning_rate"]),
         weight_decay=float(config["weight_decay"]),
     )
-    loss_function = nn.HuberLoss(delta=float(config.get("huber_delta", 1.0)))
     history = []
     best_mae = float("inf")
     best_epoch = 0

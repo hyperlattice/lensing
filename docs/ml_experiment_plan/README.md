@@ -116,18 +116,19 @@ checkpoint-selection rule fixed.
 | ID | Loss | Reason |
 |---|---|---|
 | LO-00 | Huber, delta `1.0` | Recorded reference |
-| LO-01 | Huber, delta `0.5` | More robust beyond about `0.214` arcsec raw error |
-| LO-02 | Huber, delta `0.25` | More robust beyond about `0.107` arcsec raw error |
+| LO-01 | Huber, delta `0.5` | Linear regime beyond about `0.212` arcsec raw error |
+| LO-02 | Huber, delta `0.25` | Linear regime beyond about `0.106` arcsec raw error |
 | LO-03 | MAE/L1 | Directly emphasizes typical absolute error |
 | LO-04 | MSE | Emphasizes large failures |
 | LO-05 | log-cosh | Smooth robust alternative |
 
-Huber delta is applied after target normalization. With target standard
-deviation near `0.428` arcsec, the baseline delta of `1.0` transitions near
-`0.428` arcsec—larger than most current errors—so it is close to an MSE-like
+Huber delta is applied after target normalization. The recorded training-only
+target standard deviation is `0.423707` arcsec, so delta `1.0` transitions near
+`0.424` arcsec—larger than most current errors—so it is close to an MSE-like
 objective for typical cases. Tune delta before assuming a different loss is
 needed. Huber and Smooth L1 use quadratic behavior near zero and a linear
-outlier regime; their transition parameters are not interchangeable. See the
+outlier regime. At the same transition value, Huber is delta times Smooth L1;
+changing delta also changes the large-residual gradient magnitude. See the
 [PyTorch loss reference](https://docs.pytorch.org/docs/main/nn.html) and
 [Smooth L1 documentation](https://docs.pytorch.org/docs/main/generated/torch.nn.modules.loss.SmoothL1Loss.html).
 
@@ -257,14 +258,44 @@ symmetry.
 
 ## 8. Ready-to-start checklist
 
+Implementation update: the loss factory, backward-compatible CNN factory,
+dropout setting, threshold/calibration metrics, and paired validation reports
+are available. Two registered suites vary only Huber delta (0.5 and 0.25).
+They run directly against the original training schedule as the first bounded
+milestone; the broader Phase-A controls remain a subsequent experiment block.
+This makes explicit the initial loss-first exception to the phase order above.
+See `docs/ml_quickstart.md` for executable commands. Residual architectures,
+input adapters, scheduler configuration, and richer physical subgroup reports
+are planned rather than implemented in this milestone.
+
+### First completed loss results
+
+Both full suites used the original 700/150 train/validation split and seeds
+`12001`, `12002`, and `12003`; no test images were loaded.
+
+| Candidate | Mean validation MAE | Change from baseline | Mean P95 change | Conservative gate |
+|---|---:|---:|---:|---|
+| Baseline Huber delta `1.0` | `0.09210` arcsec | - | - | Reference |
+| Huber delta `0.5` | `0.08968` arcsec | `-0.00242` arcsec | `-0.00411` arcsec | Does not pass |
+| Huber delta `0.25` | `0.08535` arcsec | `-0.00675` arcsec | `-0.01894` arcsec | Does not pass |
+
+Delta `0.25` improved MAE on all three seeds and improved P90/P95, median
+absolute error, RMSE, and prediction-versus-truth slope. Its mean MAE gain is
+smaller than the predeclared `0.01` arcsec threshold, so `theta-e-cnn-seeds-v1`
+remains the selected baseline. It also increased the out-of-prior prediction
+fraction from `0.00667` to `0.01333`; inspect that diagnostic in future
+architecture and range-constraint work. The detailed paired reports are
+`results/ml/comparison-huber-050-v1/report.md` and
+`results/ml/comparison-huber-025-v1/report.md`.
+
 The first implementation can begin with no new scientific data or labels. It
 uses the frozen engineering release, three known seeds, and one target.
 
-- [ ] Add configuration validation and model/loss factories.
-- [ ] Add the new metrics and paired-candidate report.
-- [ ] Preserve exact compatibility with `theta-e-cnn-seeds-v1`.
-- [ ] Add tests and run a smoke suite.
-- [ ] Run the first full Huber-delta suite with unchanged image-only CNN.
+- [x] Add configuration validation and model/loss factories.
+- [x] Add the new metrics and paired-candidate report.
+- [x] Preserve exact compatibility with `theta-e-cnn-seeds-v1`.
+- [x] Add tests and run a smoke suite.
+- [x] Run the first full Huber-delta suites with unchanged image-only CNN.
 
 The recorded three-seed benchmark took roughly seven CPU minutes. A CUDA device
 is optional but useful for the larger ablation sequence; it is not required.

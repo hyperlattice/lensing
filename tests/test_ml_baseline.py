@@ -186,6 +186,10 @@ def test_seed_suite_trains_validation_only_resumes_and_rejects_changed_artifacts
     assert (output / "seed_comparison.png").exists()
     assert (output / "report.md").exists()
     assert len(pd.read_csv(output / "per_seed_metrics.csv")) == 2
+    from src.ml.compare import compare_suites
+    comparison = compare_suites(output, output, tmp_path / "comparison")
+    assert comparison["passes_gate"] is False
+    assert comparison["metrics"]["mae_arcsec"]["delta"] == 0
     assert not (tmp_path / "original-baseline").exists()
 
     def no_training(*args, **kwargs):

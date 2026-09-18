@@ -1,0 +1,14 @@
+{
+  "image_mean": 0.0008455907895246195,
+  "image_std": 0.026695446223729775,
+  "pixel_count": 2097152,
+  "release_manifest": "data/simulations/sim-eng1000-v1/manifest.csv",
+  "release_manifest_sha256": "189c1351e768c6a6563c2af3243419df92d39f14a9670ff6385b693405e06a44",
+  "sample_count": 32,
+  "source_split": "train",
+  "source_split_manifest": "data/simulations/sim-eng1000-v1/splits/train.csv",
+  "source_split_manifest_sha256": "dade8d9ef54f1c6bfc74c089a937e48fc836e258b65b37bc21379d4c78f488d3",
+  "target_field": "theta_E_arcsec",
+  "target_mean": 1.2274672669895013,
+  "target_std": 0.39704311438995393
+}

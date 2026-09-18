@@ -14,7 +14,7 @@ import torch
 from src.ml.data import TorchLensDataset
 from src.ml.engine import collect_predictions, make_loader, require_output_directory, select_device, write_json
 from src.ml.metrics import improvement_fraction, mean_baseline_metrics, regression_metrics
-from src.ml.model import EinsteinRadiusCNN
+from src.ml.model import build_model
 from src.ml.plots import plot_predictions
 
 
@@ -107,7 +107,7 @@ def evaluate_checkpoint(
         seed=0,
         num_workers=num_workers,
     )
-    model = EinsteinRadiusCNN(**checkpoint["model_config"]).to(device)
+    model = build_model(checkpoint["model_config"]).to(device)
     model.load_state_dict(checkpoint["model_state"])
     result = collect_predictions(model, loader, device, checkpoint["statistics"])
     metrics = regression_metrics(result["targets"], result["predictions"])
