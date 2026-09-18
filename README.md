@@ -65,7 +65,9 @@ configurations, and source tables are versioned.
 Read [the codebase guide](docs/codebase_guide.md) for the architecture and
 [the ML quickstart](docs/ml_quickstart.md) for model execution and results.
 The controlled one-target improvement roadmap is in
-[the ML experiment plan](docs/ml_experiment_plan/README.md).
+[the ML experiment plan](docs/ml_experiment_plan/README.md), and the comparison
+of candidate architectures, physics hybrids, and posterior models is in the
+[one-parameter model landscape](docs/ml_model_landscape/README.md).
 
 ## Setup
 

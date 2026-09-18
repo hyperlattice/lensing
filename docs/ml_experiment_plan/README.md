@@ -5,6 +5,10 @@ model. It applies only to the simulated Einstein-radius target
 `theta_E_arcsec`. It does not authorize real-observation training, physical
 mass inference, or multi-parameter prediction.
 
+The broader model-family assessment, including radial models, equivariant
+networks, physics-constrained hybrids, uncertainty models, and
+simulation-based inference, is in `docs/ml_model_landscape/README.md`.
+
 ## 1. Starting point
 
 The recorded reference is `theta-e-cnn-seeds-v1`:
