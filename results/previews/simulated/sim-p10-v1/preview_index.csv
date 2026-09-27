@@ -1,0 +1,11 @@
+sample_id,raw_path,preview_path,status,error,contact_sheet_path
+sim-p10-v1-0001,data/simulations/sim-p10-v1/raw/sim-p10-v1-0001.fits,data/simulations/sim-p10-v1/previews/sim-p10-v1-0001.png,ok,,data/simulations/sim-p10-v1/previews/contact_sheet.png
+sim-p10-v1-0002,data/simulations/sim-p10-v1/raw/sim-p10-v1-0002.fits,data/simulations/sim-p10-v1/previews/sim-p10-v1-0002.png,ok,,data/simulations/sim-p10-v1/previews/contact_sheet.png
+sim-p10-v1-0003,data/simulations/sim-p10-v1/raw/sim-p10-v1-0003.fits,data/simulations/sim-p10-v1/previews/sim-p10-v1-0003.png,ok,,data/simulations/sim-p10-v1/previews/contact_sheet.png
+sim-p10-v1-0004,data/simulations/sim-p10-v1/raw/sim-p10-v1-0004.fits,data/simulations/sim-p10-v1/previews/sim-p10-v1-0004.png,ok,,data/simulations/sim-p10-v1/previews/contact_sheet.png
+sim-p10-v1-0005,data/simulations/sim-p10-v1/raw/sim-p10-v1-0005.fits,data/simulations/sim-p10-v1/previews/sim-p10-v1-0005.png,ok,,data/simulations/sim-p10-v1/previews/contact_sheet.png
+sim-p10-v1-0006,data/simulations/sim-p10-v1/raw/sim-p10-v1-0006.fits,data/simulations/sim-p10-v1/previews/sim-p10-v1-0006.png,ok,,data/simulations/sim-p10-v1/previews/contact_sheet.png
+sim-p10-v1-0007,data/simulations/sim-p10-v1/raw/sim-p10-v1-0007.fits,data/simulations/sim-p10-v1/previews/sim-p10-v1-0007.png,ok,,data/simulations/sim-p10-v1/previews/contact_sheet.png
+sim-p10-v1-0008,data/simulations/sim-p10-v1/raw/sim-p10-v1-0008.fits,data/simulations/sim-p10-v1/previews/sim-p10-v1-0008.png,ok,,data/simulations/sim-p10-v1/previews/contact_sheet.png
+sim-p10-v1-0009,data/simulations/sim-p10-v1/raw/sim-p10-v1-0009.fits,data/simulations/sim-p10-v1/previews/sim-p10-v1-0009.png,ok,,data/simulations/sim-p10-v1/previews/contact_sheet.png
+sim-p10-v1-0010,data/simulations/sim-p10-v1/raw/sim-p10-v1-0010.fits,data/simulations/sim-p10-v1/previews/sim-p10-v1-0010.png,ok,,data/simulations/sim-p10-v1/previews/contact_sheet.png

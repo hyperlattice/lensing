@@ -1,0 +1,10 @@
+{
+  "clip_high": 0.021973669622093468,
+  "clip_low": -0.0008505657489877195,
+  "invertible": false,
+  "method": "masked_percentile",
+  "offset": -0.0008505657489877195,
+  "scale": 0.02282423537108119,
+  "status": "pass",
+  "valid_pixels": 4096
+}

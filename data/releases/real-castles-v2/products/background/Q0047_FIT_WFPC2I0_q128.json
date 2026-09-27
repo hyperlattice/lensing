@@ -1,0 +1,8 @@
+{
+  "method": "robust_scalar_sigma_clip",
+  "scale": 0.0005944311844330514,
+  "source_pixels": 1040,
+  "status": "pass",
+  "valid_pixels": 15344,
+  "value": 0.00033896544482558966
+}
