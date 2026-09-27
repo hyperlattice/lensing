@@ -1,0 +1,24 @@
+{
+  "array_indexing": "image[y, x]",
+  "coordinate_origin": "zero_based_pixel_centers",
+  "original_shape": [
+    128,
+    128
+  ],
+  "output_to_input_offset_xy": [
+    -64,
+    -64
+  ],
+  "source_x_end": 128,
+  "source_x_start": 0,
+  "source_y_end": 128,
+  "source_y_start": 0,
+  "target_shape": [
+    256,
+    256
+  ],
+  "target_x_end": 192,
+  "target_x_start": 64,
+  "target_y_end": 192,
+  "target_y_start": 64
+}

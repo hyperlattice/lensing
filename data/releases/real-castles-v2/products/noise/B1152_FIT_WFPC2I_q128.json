@@ -1,0 +1,7 @@
+{
+  "correlation_assumption": "independent_pixels_approximation",
+  "method": "toy_scalar_background",
+  "status": "toy_unprofiled",
+  "unit": "(unknown)^2",
+  "valid_pixels": 16384
+}
