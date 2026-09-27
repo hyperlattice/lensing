@@ -1,0 +1,3 @@
+sample_count,reference_sample_count,parent_count,paired_delta_mae_arcsec,parent_bootstrap_95_low_arcsec,parent_bootstrap_95_high_arcsec
+100,700,150,0.10928475287225514,0.09109286090069346,0.12769324768914117
+300,700,150,0.02171811395221287,0.01351593952377637,0.029871718953053163

@@ -1,0 +1,75 @@
+schema_version: 1
+experiment_id: WEEK11-INDEPENDENT-BLIND-HOLDOUT
+protocol: docs/reliability_study/protocol_v1.11.md
+release: data/simulations/reliability-blind-holdout-v1
+output: results/reports/reliability_v1/blind_holdout_week11
+generation:
+  conditions:
+    - canonical
+    - pixel-scale-004
+    - pixel-scale-006
+    - exposure-half
+    - read-noise-double
+  pixel_scale_arcsec: [0.04, 0.05, 0.06]
+  native_shape_by_pixel_scale:
+    "0.04": [320, 320]
+    "0.05": [256, 256]
+    "0.06": [214, 214]
+  generator:
+    count: 150
+    seed: 11031
+    simulation_id: reliability-blind-holdout-v1-root
+    config: configs/simulation_engineering_v1.yaml
+  counterfactual_selection_seed: 11031
+  counterfactual_generator_only_split: validation
+interventions:
+  - intervention_id: canonical
+    family: canonical
+    overrides: {}
+  - intervention_id: pixel-scale-004
+    family: pixel_scale
+    overrides:
+      pixel_scale_arcsec: 0.04
+      shape: [320, 320]
+  - intervention_id: pixel-scale-006
+    family: pixel_scale
+    overrides:
+      pixel_scale_arcsec: 0.06
+      shape: [214, 214]
+  - intervention_id: exposure-half
+    family: exposure
+    overrides:
+      exposure_time:
+        multiply: 0.5
+  - intervention_id: read-noise-double
+    family: read_noise
+    overrides:
+      read_noise_electrons:
+        multiply: 2.0
+models:
+  domain_randomized:
+    - checkpoint: results/ml/reliability-domain-randomized-v1/seed-12001/best.pt
+      normalization: results/ml/reliability-domain-randomized-v1/seed-12001/normalization.json
+    - checkpoint: results/ml/reliability-domain-randomized-v1/seed-12002/best.pt
+      normalization: results/ml/reliability-domain-randomized-v1/seed-12002/normalization.json
+    - checkpoint: results/ml/reliability-domain-randomized-v1/seed-12003/best.pt
+      normalization: results/ml/reliability-domain-randomized-v1/seed-12003/normalization.json
+  canonical_baseline:
+    - checkpoint: results/ml/theta-e-cnn-seeds-v1/seed-12001/best.pt
+      normalization: results/ml/theta-e-cnn-seeds-v1/seed-12001/normalization.json
+    - checkpoint: results/ml/theta-e-cnn-seeds-v1/seed-12002/best.pt
+      normalization: results/ml/theta-e-cnn-seeds-v1/seed-12002/normalization.json
+    - checkpoint: results/ml/theta-e-cnn-seeds-v1/seed-12003/best.pt
+      normalization: results/ml/theta-e-cnn-seeds-v1/seed-12003/normalization.json
+evaluation:
+  batch_size: 16
+  torch_num_threads: 6
+  bootstrap_resamples: 10000
+  bootstrap_seed: 6031
+  prediction_file: holdout_predictions_before_scoring.csv
+  inference_started_marker: holdout_inference_started.json
+  scored_file: holdout_scored_predictions.csv
+  once_marker: holdout_evaluation_complete.json
+  refuse_existing_scored_run: true
+  historical_test_access: false
+  real_label_access: false

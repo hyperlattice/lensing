@@ -1,0 +1,252 @@
+{
+  "bootstrap_resamples": 10000,
+  "bootstrap_seed": 6031,
+  "cnn_checkpoint_hashes": {
+    "results/ml/theta-e-cnn-seeds-v1/seed-12001/best.pt": "0c72a4caf7a39a87e8fd4887f1ada35b0a1e7ae62fccfe11034bac8e2ea03d6d",
+    "results/ml/theta-e-cnn-seeds-v1/seed-12002/best.pt": "a372a325abbc94c084ec56e9375abf590f0acd0becf70698e643a5704872caec",
+    "results/ml/theta-e-cnn-seeds-v1/seed-12003/best.pt": "facc0d948d9fbfb562ad4582502f19cc04786ed49948c2ffe62bde4b2f31b4c4"
+  },
+  "condition_count_including_canonical": 11,
+  "config_sha256": "990780dbedb081536a57784f5959597af4c8b661747c4752d12729f76e6f8b75",
+  "detectable_multiplicity_definitions": [
+    "renderer point-amplitude threshold 0.05",
+    "observed PSF-matched peak count at S/N >= 5"
+  ],
+  "experiment_id": "WEEK5-SOURCE-PHYSICS",
+  "failure_mechanism_map_path": "results/reports/reliability_v1/source_physics/failure_mechanism_ranking.csv",
+  "historical_test_split_accessed": false,
+  "mass_family_alternative_available": false,
+  "multiplicity_agreement": [
+    {
+      "amplitude_threshold_agreement_fraction": 1.0,
+      "intervention_id": "canonical",
+      "mean_amplitude_detectable": 2.52,
+      "mean_observed_peaks": 2.22,
+      "mean_physical_roots": 2.52,
+      "observed_peak_agreement_fraction": 0.58,
+      "parent_count": 150
+    },
+    {
+      "amplitude_threshold_agreement_fraction": 0.9933333333333333,
+      "intervention_id": "shear-gamma1-005",
+      "mean_amplitude_detectable": 2.54,
+      "mean_observed_peaks": 2.2333333333333334,
+      "mean_physical_roots": 2.546666666666667,
+      "observed_peak_agreement_fraction": 0.5666666666666667,
+      "parent_count": 150
+    },
+    {
+      "amplitude_threshold_agreement_fraction": 0.9933333333333333,
+      "intervention_id": "shear-gamma2-005",
+      "mean_amplitude_detectable": 2.6066666666666665,
+      "mean_observed_peaks": 2.2333333333333334,
+      "mean_physical_roots": 2.6133333333333333,
+      "observed_peak_agreement_fraction": 0.5666666666666667,
+      "parent_count": 150
+    },
+    {
+      "amplitude_threshold_agreement_fraction": 1.0,
+      "intervention_id": "source-n-050",
+      "mean_amplitude_detectable": 2.52,
+      "mean_observed_peaks": 2.0533333333333332,
+      "mean_physical_roots": 2.52,
+      "observed_peak_agreement_fraction": 0.58,
+      "parent_count": 150
+    },
+    {
+      "amplitude_threshold_agreement_fraction": 1.0,
+      "intervention_id": "source-n-500",
+      "mean_amplitude_detectable": 2.52,
+      "mean_observed_peaks": 2.2733333333333334,
+      "mean_physical_roots": 2.52,
+      "observed_peak_agreement_fraction": 0.56,
+      "parent_count": 150
+    },
+    {
+      "amplitude_threshold_agreement_fraction": 1.0,
+      "intervention_id": "source-re-double",
+      "mean_amplitude_detectable": 2.52,
+      "mean_observed_peaks": 2.5933333333333333,
+      "mean_physical_roots": 2.52,
+      "observed_peak_agreement_fraction": 0.5133333333333333,
+      "parent_count": 150
+    },
+    {
+      "amplitude_threshold_agreement_fraction": 1.0,
+      "intervention_id": "source-re-half",
+      "mean_amplitude_detectable": 2.52,
+      "mean_observed_peaks": 2.066666666666667,
+      "mean_physical_roots": 2.52,
+      "observed_peak_agreement_fraction": 0.5666666666666667,
+      "parent_count": 150
+    },
+    {
+      "amplitude_threshold_agreement_fraction": 0.9933333333333333,
+      "intervention_id": "source-x-minus",
+      "mean_amplitude_detectable": 2.38,
+      "mean_observed_peaks": 2.026666666666667,
+      "mean_physical_roots": 2.3866666666666667,
+      "observed_peak_agreement_fraction": 0.52,
+      "parent_count": 150
+    },
+    {
+      "amplitude_threshold_agreement_fraction": 1.0,
+      "intervention_id": "source-x-plus",
+      "mean_amplitude_detectable": 2.3733333333333335,
+      "mean_observed_peaks": 1.9266666666666667,
+      "mean_physical_roots": 2.3733333333333335,
+      "observed_peak_agreement_fraction": 0.4666666666666667,
+      "parent_count": 150
+    },
+    {
+      "amplitude_threshold_agreement_fraction": 0.9933333333333333,
+      "intervention_id": "source-y-minus",
+      "mean_amplitude_detectable": 2.473333333333333,
+      "mean_observed_peaks": 2.1333333333333333,
+      "mean_physical_roots": 2.48,
+      "observed_peak_agreement_fraction": 0.56,
+      "parent_count": 150
+    },
+    {
+      "amplitude_threshold_agreement_fraction": 0.9933333333333333,
+      "intervention_id": "source-y-plus",
+      "mean_amplitude_detectable": 2.3866666666666667,
+      "mean_observed_peaks": 2.006666666666667,
+      "mean_physical_roots": 2.3933333333333335,
+      "observed_peak_agreement_fraction": 0.5733333333333334,
+      "parent_count": 150
+    }
+  ],
+  "multiplicity_scored_parent_condition_rows": 1650,
+  "multiplicity_scoring_join": "parent_sample_id + intervention_id, followed by target consistency check at 1e-5 arcsec",
+  "outputs": [
+    "cnn_predictions.csv",
+    "cnn_metrics_per_seed.csv",
+    "cnn_paired_predictions.csv",
+    "cnn_paired_effects.csv",
+    "radius_bin_effects.csv",
+    "cnn_summary_metrics.csv",
+    "observed_multiplicity_before_scoring.csv",
+    "physical_detectable_observed_multiplicity.csv",
+    "multiplicity_scored.csv",
+    "multiplicity_summary.csv",
+    "multiplicity_agreement.csv",
+    "failure_mechanism_ranking.csv",
+    "paired_effects.png",
+    "multiplicity_comparison.png"
+  ],
+  "paired_effects": [
+    {
+      "bootstrap_95_high_arcsec": 0.020670993874470394,
+      "bootstrap_95_low_arcsec": 0.00018260078628857932,
+      "effect_practically_small": false,
+      "intervention_id": "source-n-050",
+      "mean_absolute_paired_prediction_shift_arcsec": 0.041707945267359416,
+      "paired_delta_mae_arcsec": 0.009711671272913617,
+      "parent_count": 150,
+      "practically_important_increase_supported": false
+    },
+    {
+      "bootstrap_95_high_arcsec": -0.0023602991733286138,
+      "bootstrap_95_low_arcsec": -0.018640720996591777,
+      "effect_practically_small": false,
+      "intervention_id": "source-n-500",
+      "mean_absolute_paired_prediction_shift_arcsec": 0.03711863107151455,
+      "paired_delta_mae_arcsec": -0.01030226296848721,
+      "parent_count": 150,
+      "practically_important_increase_supported": false
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.022212669564618,
+      "bootstrap_95_low_arcsec": 0.0041018871035840765,
+      "effect_practically_small": false,
+      "intervention_id": "source-re-half",
+      "mean_absolute_paired_prediction_shift_arcsec": 0.04491591652234395,
+      "paired_delta_mae_arcsec": 0.012856328619851008,
+      "parent_count": 150,
+      "practically_important_increase_supported": true
+    },
+    {
+      "bootstrap_95_high_arcsec": -0.0059360161225001035,
+      "bootstrap_95_low_arcsec": -0.02597546829779943,
+      "effect_practically_small": false,
+      "intervention_id": "source-re-double",
+      "mean_absolute_paired_prediction_shift_arcsec": 0.047383547094133165,
+      "paired_delta_mae_arcsec": -0.015614418453640406,
+      "parent_count": 150,
+      "practically_important_increase_supported": false
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.0374495174553659,
+      "bootstrap_95_low_arcsec": 0.0007990798486603647,
+      "effect_practically_small": false,
+      "intervention_id": "source-x-minus",
+      "mean_absolute_paired_prediction_shift_arcsec": 0.10097139755884807,
+      "paired_delta_mae_arcsec": 0.01851016097598606,
+      "parent_count": 150,
+      "practically_important_increase_supported": true
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.03982294298211733,
+      "bootstrap_95_low_arcsec": 0.009313739975293478,
+      "effect_practically_small": false,
+      "intervention_id": "source-x-plus",
+      "mean_absolute_paired_prediction_shift_arcsec": 0.09883221719000074,
+      "paired_delta_mae_arcsec": 0.02475640018781026,
+      "parent_count": 150,
+      "practically_important_increase_supported": true
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.030552358657121654,
+      "bootstrap_95_low_arcsec": 0.0013252653479576102,
+      "effect_practically_small": false,
+      "intervention_id": "source-y-minus",
+      "mean_absolute_paired_prediction_shift_arcsec": 0.09339000079366896,
+      "paired_delta_mae_arcsec": 0.015473591883977258,
+      "parent_count": 150,
+      "practically_important_increase_supported": true
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.025501779817872567,
+      "bootstrap_95_low_arcsec": -0.0037964768343501606,
+      "effect_practically_small": false,
+      "intervention_id": "source-y-plus",
+      "mean_absolute_paired_prediction_shift_arcsec": 0.08610172496901619,
+      "paired_delta_mae_arcsec": 0.010812260707219442,
+      "parent_count": 150,
+      "practically_important_increase_supported": false
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.01826541527443462,
+      "bootstrap_95_low_arcsec": -0.00594357865386539,
+      "effect_practically_small": false,
+      "intervention_id": "shear-gamma1-005",
+      "mean_absolute_paired_prediction_shift_arcsec": 0.07145133839713204,
+      "paired_delta_mae_arcsec": 0.0062830360730489095,
+      "parent_count": 150,
+      "practically_important_increase_supported": false
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.01639044871595171,
+      "bootstrap_95_low_arcsec": -0.0015170272621843543,
+      "effect_practically_small": false,
+      "intervention_id": "shear-gamma2-005",
+      "mean_absolute_paired_prediction_shift_arcsec": 0.05669866469171313,
+      "paired_delta_mae_arcsec": 0.007476999362309774,
+      "parent_count": 150,
+      "practically_important_increase_supported": false
+    }
+  ],
+  "parent_manifest_sha256": "189c1351e768c6a6563c2af3243419df92d39f14a9670ff6385b693405e06a44",
+  "physical_multiplicity_definition": "number of point-source image roots returned by the renderer",
+  "practical_effect_arcsec": 0.01,
+  "protocol": "docs/reliability_study/protocol_v1.5.md",
+  "protocol_sha256": "9daeb427fa51bc7ae55d256f5be91fbccd1d378e6ec76b3fa819f7cff7c51f2c",
+  "release_manifest_sha256": "244c963ca0ecec601ee3c24a3f3a729e715240641409e4c8a0db925cdae8d836",
+  "reproducibility_hashes": {
+    "audit_code": "fb0992eae9396bffb0bf3a4708496eb71acda38deb1f92c93394ef7ea02f1b60",
+    "config": "990780dbedb081536a57784f5959597af4c8b661747c4752d12729f76e6f8b75"
+  },
+  "source_family_alternative_available": false,
+  "source_parent_count": 150
+}

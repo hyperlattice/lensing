@@ -1,0 +1,48 @@
+{
+  "failure_catalog_rows": 750,
+  "failure_rows_over_005_arcsec": 430,
+  "failure_rows_over_010_arcsec": 232,
+  "manuscript_section_order": [
+    "Abstract",
+    "Introduction",
+    "Methods",
+    "Results",
+    "Limitations",
+    "Discussion",
+    "Conclusion"
+  ],
+  "package_id": "RELIABILITY-STUDY-FINAL-V1",
+  "scope": "Synthetic prior/renderer and preregistered stress conditions; CASTLES analysis is descriptive observable coverage only.",
+  "week10_real_labels_or_predictions_used": false,
+  "week10_real_lens_system_count": 69,
+  "week10_real_observation_count": 137,
+  "week11_checkpoint_count": 6,
+  "week11_condition_mae_arcsec": {
+    "canonical_baseline": {
+      "canonical": 0.08277236229981876,
+      "exposure-half": 0.11503618199261441,
+      "pixel-scale-004": 0.16956852552542756,
+      "pixel-scale-006": 0.12781036255372824,
+      "read-noise-double": 0.11550540152150612
+    },
+    "domain_randomized": {
+      "canonical": 0.06547754968405145,
+      "exposure-half": 0.09358258049811356,
+      "pixel-scale-004": 0.11584701673744639,
+      "pixel-scale-006": 0.0861557991363287,
+      "read-noise-double": 0.08791635388494974
+    }
+  },
+  "week11_four_stress_paired_mae_delta_arcsec": -0.03610468033410948,
+  "week11_four_stress_parent_bootstrap_95_ci_arcsec": [
+    -0.04273628291823041,
+    -0.02941948809448354
+  ],
+  "week11_historical_test_accessed": false,
+  "week11_observation_count": 750,
+  "week11_parent_count": 150,
+  "week11_post_holdout_tuning": false,
+  "week11_real_data_labels_accessed": false,
+  "week11_release_id": "reliability-blind-holdout-v1",
+  "week11_target_join_count": 1
+}

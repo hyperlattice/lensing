@@ -1,0 +1,62 @@
+{
+  "condition_shape": {
+    "canonical": [
+      256,
+      256
+    ],
+    "exposure-half": [
+      256,
+      256
+    ],
+    "pixel-scale-004": [
+      320,
+      320
+    ],
+    "pixel-scale-006": [
+      214,
+      214
+    ],
+    "read-noise-double": [
+      256,
+      256
+    ]
+  },
+  "final_split_role": "holdout",
+  "freeze_manifest_sha256": "01a2c64e81cd9813f22988293f6aa992ade8fa8c67bdd652e8da218c3706da79",
+  "historical_test_accessed": false,
+  "model_hashes": {
+    "canonical_baseline": {
+      "12001": {
+        "checkpoint_sha256": "0c72a4caf7a39a87e8fd4887f1ada35b0a1e7ae62fccfe11034bac8e2ea03d6d",
+        "normalization_sha256": "a153c283e93caebe82af1d14021fcc325ed4419a78d553f56ffc84e98554e3bf"
+      },
+      "12002": {
+        "checkpoint_sha256": "a372a325abbc94c084ec56e9375abf590f0acd0becf70698e643a5704872caec",
+        "normalization_sha256": "a153c283e93caebe82af1d14021fcc325ed4419a78d553f56ffc84e98554e3bf"
+      },
+      "12003": {
+        "checkpoint_sha256": "facc0d948d9fbfb562ad4582502f19cc04786ed49948c2ffe62bde4b2f31b4c4",
+        "normalization_sha256": "a153c283e93caebe82af1d14021fcc325ed4419a78d553f56ffc84e98554e3bf"
+      }
+    },
+    "domain_randomized": {
+      "12001": {
+        "checkpoint_sha256": "9740261ab166481c1ac1e45af69bac9fc62c71faa520d29b9ab4a5d35260100d",
+        "normalization_sha256": "02e9416d3a79f977b4318ae9e3f62563465c17806229b0fa13700c0f41c59a56"
+      },
+      "12002": {
+        "checkpoint_sha256": "be1a1d43d98b237b7ae7def57334a8d3432dde5cd2f211f8abf09c2f7f49fda7",
+        "normalization_sha256": "02e9416d3a79f977b4318ae9e3f62563465c17806229b0fa13700c0f41c59a56"
+      },
+      "12003": {
+        "checkpoint_sha256": "0a8d5b4b77f47526458a50aa3647814937ae78e4fecda1f51af6b6685cbca26d",
+        "normalization_sha256": "02e9416d3a79f977b4318ae9e3f62563465c17806229b0fa13700c0f41c59a56"
+      }
+    }
+  },
+  "observation_count": 750,
+  "parent_count": 150,
+  "preflight_passed": true,
+  "real_data_labels_accessed": false,
+  "release_manifest_sha256": "b2d66af01e86d118b41003a0d2f41b0aab259fce2458643dc91c46830a58ad0c"
+}

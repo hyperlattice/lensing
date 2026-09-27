@@ -85,6 +85,33 @@ The release ladder has distinct purposes: P10 is an analytic SIS control, P30 in
 
 `configs/ml_baseline_v1.yaml` is the first fixed experiment. `configs/ml/registry_v1.yaml` registers the three-seed baseline benchmark. The run procedure and interpretation guide are in `docs/ml_quickstart.md`.
 
+## Reliability-study workflows
+
+The reliability study adds phase-specific analyses around the baseline while
+keeping model inputs, parent identity, and holdout use explicit:
+
+- `ml/pixel_scale_audit.py`, `ml/observation_systematics_audit.py`, and
+  `ml/source_physics_audit.py` estimate matched validation-parent effects for
+  their named interventions.
+- `ml/reliability_week6.py` compares simple baselines and audits shortcuts and
+  training-set size; `ml/reliability_week7.py` evaluates the independently
+  implemented SIE equation path.
+- `ml/reliability_week8.py` builds and evaluates the targeted-randomization
+  intervention. `modeling/hybrid_initialization.py` and
+  `modeling/domain_gap_week10.py` implement the Week 9 fit-initialization and
+  Week 10 domain-coverage analyses.
+- `ml/reliability_week11.py` implements the new-parent blind holdout. Its
+  source files and inputs are listed in
+  `docs/reliability_study/week11_freeze_manifest.json`; the evaluation is
+  exactly-once and is not a routine rerun command.
+- `scripts/build_reliability_final_package.py` assembles tables and prose from
+  saved evidence. It does not run model inference.
+
+The phase protocols, status records, and final research card are indexed in
+[`docs/reliability_study/README.md`](reliability_study/README.md). The temporal
+script names are retained to match the frozen experiment records. New study
+code should use topic-based names and a new versioned protocol/configuration.
+
 ## Configuration, artifacts, and tests
 
 - `configs/preprocessing_v2.yaml` freezes real preprocessing.
@@ -99,6 +126,14 @@ The release ladder has distinct purposes: P10 is an analytic SIS control, P30 in
 - `results/reports` holds classical-fit, real-comparison, and readiness evidence.
 - `tests` mirrors the modules with unit and integration checks. Tests use temporary paths and should not mutate production artifacts.
 
-## Where the project is now
+## Current scientific scope
 
-The pre-ML handoff and first CNN baseline are implemented and evidenced. The three-seed validation benchmark establishes the reference variation for upcoming input, loss, architecture, robustness, and uncertainty experiments. Important open research work remains—empirical HST PSFs, detector/error products, realistic source morphologies, calibrated priors/selection functions, uncertainty coverage, and a blind real benchmark—but those are domain-fidelity improvements, not unfinished prerequisites hidden by the current engineering release.
+The project has a completed reliability study through its Week 12 analysis
+package. Its final evidence supports conclusions about the tested synthetic
+prior, renderer, and nuisance conditions. The CASTLES comparison is descriptive
+and does not establish real-image parameter accuracy. Empirical HST PSFs,
+detector/error products, realistic source populations, calibrated priors,
+uncertainty coverage, and a blinded real benchmark remain open research work.
+See the [research card](reliability_study/final/model_research_card.md) and
+[reproducibility statement](reliability_study/final/reproducibility_statement.md)
+for claims and limitations.

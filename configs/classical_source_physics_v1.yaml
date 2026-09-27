@@ -1,0 +1,30 @@
+experiment_id: WEEK5-CLASSICAL-POINT-GEOMETRY
+protocol: docs/reliability_study/protocol_v1.5.md
+validation_release: data/simulations/reliability-source-physics-v1
+training_release: data/simulations/sim-eng1000-v1
+cnn_predictions: results/reports/reliability_v1/source_physics/cnn_predictions.csv
+validation_interventions:
+  canonical: canonical
+  source_n_050: source-n-050
+  source_n_500: source-n-500
+  source_re_half: source-re-half
+  source_re_double: source-re-double
+  source_x_minus: source-x-minus
+  source_x_plus: source-x-plus
+  source_y_minus: source-y-minus
+  source_y_plus: source-y-plus
+  shear_gamma1_005: shear-gamma1-005
+  shear_gamma2_005: shear-gamma2-005
+peak_detection:
+  threshold_snr: 5.0
+  center_smoothing_sigma_arcsec: 0.15
+  lens_center_search_radius_arcsec: 0.35
+  central_exclusion_radius_arcsec: 0.25
+  outer_detection_radius_arcsec: 2.25
+  minimum_peak_separation_arcsec: 0.30
+  maximum_peaks: 4
+lens_equation:
+  max_function_evaluations: 50
+bootstrap:
+  resamples: 10000
+  seed: 6031

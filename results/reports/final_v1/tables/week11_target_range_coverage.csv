@@ -1,0 +1,11 @@
+model_group,condition,training_theta_E_min_arcsec,training_theta_E_max_arcsec,outside_training_range_count,outside_training_range_fraction
+canonical_baseline,canonical,0.500737206848946,1.999537725519252,6,0.04
+domain_randomized,canonical,0.500737206848946,1.999537725519252,4,0.0266666666666666
+canonical_baseline,exposure-half,0.500737206848946,1.999537725519252,3,0.02
+domain_randomized,exposure-half,0.500737206848946,1.999537725519252,3,0.02
+canonical_baseline,pixel-scale-004,0.500737206848946,1.999537725519252,1,0.0066666666666666
+domain_randomized,pixel-scale-004,0.500737206848946,1.999537725519252,1,0.0066666666666666
+canonical_baseline,pixel-scale-006,0.500737206848946,1.999537725519252,0,0.0
+domain_randomized,pixel-scale-006,0.500737206848946,1.999537725519252,0,0.0
+canonical_baseline,read-noise-double,0.500737206848946,1.999537725519252,2,0.0133333333333333
+domain_randomized,read-noise-double,0.500737206848946,1.999537725519252,3,0.02

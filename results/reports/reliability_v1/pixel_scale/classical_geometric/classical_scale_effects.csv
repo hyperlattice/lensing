@@ -1,0 +1,3 @@
+comparison,stratum,intervention_id,parent_count,mean_delta_mae_arcsec,bootstrap_95_low_arcsec,bootstrap_95_high_arcsec
+classical_shifted_minus_canonical_mae,low,pixel-scale-004,150,0.01608183967662003,-0.008346991866378077,0.041397176522616104
+classical_shifted_minus_canonical_mae,high,pixel-scale-006,150,-0.006309689805078559,-0.034823271388997865,0.021923266244859428

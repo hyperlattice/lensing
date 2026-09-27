@@ -1,0 +1,31 @@
+condition,comparison,metric,effect_definition,mean,low,high,parent_count
+canonical,training_mean vs ML,function_evaluations,comparator minus ML cost; positive favors ML,0.1703703703703704,-0.5111111111111111,0.8518518518518517,45
+canonical,training_mean vs ML,runtime_seconds,comparator minus ML cost; positive favors ML,0.01330353407603171,-7.999969889944621e-05,0.037396857857001364,45
+canonical,peak_radius_median vs ML,function_evaluations,comparator minus ML cost; positive favors ML,-0.8296296296296297,-1.5777777777777782,-0.19240740740741005,45
+canonical,peak_radius_median vs ML,runtime_seconds,comparator minus ML cost; positive favors ML,-0.0006049074025617732,-0.002422072556068156,0.0011105250856726992,45
+canonical,ML vs training_mean,theta_E_abs_error_arcsec,ML minus comparator MAE; positive means ML is worse,0.0005929140507347256,-0.0019560906269392264,0.0034580294818851755,45
+canonical,ML vs peak_radius_median,theta_E_abs_error_arcsec,ML minus comparator MAE; positive means ML is worse,0.00024023208145505863,-0.0004391851875088835,0.0011598028658068972,45
+pixel-scale-004,training_mean vs ML,function_evaluations,comparator minus ML cost; positive favors ML,0.2307692307692306,-0.6324786324786326,1.2051282051282053,39
+pixel-scale-004,training_mean vs ML,runtime_seconds,comparator minus ML cost; positive favors ML,0.0007245282186832053,-0.0021919783556029913,0.003842496757050299,39
+pixel-scale-004,peak_radius_median vs ML,function_evaluations,comparator minus ML cost; positive favors ML,-0.358974358974359,-1.0427350427350426,0.29059829059829057,39
+pixel-scale-004,peak_radius_median vs ML,runtime_seconds,comparator minus ML cost; positive favors ML,-0.0020400897478366343,-0.00435393172083422,-6.887310271103395e-05,39
+pixel-scale-004,ML vs training_mean,theta_E_abs_error_arcsec,ML minus comparator MAE; positive means ML is worse,-0.0008062306421536684,-0.003473182319935498,0.001086586032309467,39
+pixel-scale-004,ML vs peak_radius_median,theta_E_abs_error_arcsec,ML minus comparator MAE; positive means ML is worse,0.0009230124084201846,-0.0002212975611735699,0.002533369787304907,39
+pixel-scale-006,training_mean vs ML,function_evaluations,comparator minus ML cost; positive favors ML,0.5510204081632653,-0.20408163265306123,1.4421768707482991,49
+pixel-scale-006,training_mean vs ML,runtime_seconds,comparator minus ML cost; positive favors ML,0.0004354462726041674,-0.0023995289933031448,0.003711962421443683,49
+pixel-scale-006,peak_radius_median vs ML,function_evaluations,comparator minus ML cost; positive favors ML,-0.40816326530612246,-1.1768707482993197,0.33333333333333337,49
+pixel-scale-006,peak_radius_median vs ML,runtime_seconds,comparator minus ML cost; positive favors ML,-0.0026435619085507637,-0.005513344560258824,-0.00010958624032380551,49
+pixel-scale-006,ML vs training_mean,theta_E_abs_error_arcsec,ML minus comparator MAE; positive means ML is worse,0.0001691438573009351,-0.0031179576281273897,0.0032210402875214755,48
+pixel-scale-006,ML vs peak_radius_median,theta_E_abs_error_arcsec,ML minus comparator MAE; positive means ML is worse,-0.0011476570113716804,-0.007084546334130938,0.0030045628567272253,48
+exposure-half,training_mean vs ML,function_evaluations,comparator minus ML cost; positive favors ML,0.8602150537634409,-0.7311827956989246,3.4516129032258065,31
+exposure-half,training_mean vs ML,runtime_seconds,comparator minus ML cost; positive favors ML,0.0044161290285848484,-0.0020464344287193523,0.015188343592222158,31
+exposure-half,peak_radius_median vs ML,function_evaluations,comparator minus ML cost; positive favors ML,-0.13978494623655915,-0.8924731182795699,0.8279569892473118,31
+exposure-half,peak_radius_median vs ML,runtime_seconds,comparator minus ML cost; positive favors ML,0.0007343322541865079,-0.0020854330787520325,0.004302663193553707,31
+exposure-half,ML vs training_mean,theta_E_abs_error_arcsec,ML minus comparator MAE; positive means ML is worse,-0.0075583065273889935,-0.022626573680853485,1.3190012609431843e-08,31
+exposure-half,ML vs peak_radius_median,theta_E_abs_error_arcsec,ML minus comparator MAE; positive means ML is worse,-0.008229280070596104,-0.02401686822094916,4.835849427673711e-05,31
+read-noise-double,training_mean vs ML,function_evaluations,comparator minus ML cost; positive favors ML,0.2843137254901962,-0.34313725490196073,0.9509803921568628,34
+read-noise-double,training_mean vs ML,runtime_seconds,comparator minus ML cost; positive favors ML,-0.0006322833337346295,-0.0029393950495218385,0.0015212791760146195,34
+read-noise-double,peak_radius_median vs ML,function_evaluations,comparator minus ML cost; positive favors ML,0.16666666666666674,-0.7352941176470588,1.1568627450980393,34
+read-noise-double,peak_radius_median vs ML,runtime_seconds,comparator minus ML cost; positive favors ML,0.0008735068761013138,-0.002372621288112202,0.004790759621434575,34
+read-noise-double,ML vs training_mean,theta_E_abs_error_arcsec,ML minus comparator MAE; positive means ML is worse,0.0012414878846099557,0.0001621826278596155,0.0026469078683123127,34
+read-noise-double,ML vs peak_radius_median,theta_E_abs_error_arcsec,ML minus comparator MAE; positive means ML is worse,-0.0044253636108302396,-0.016273538176901317,0.002189919207760633,34

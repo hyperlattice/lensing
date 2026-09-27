@@ -1,0 +1,16 @@
+condition,error_band,observation_count
+canonical,within_0.05_arcsec,77
+canonical,over_0.05_to_0.10_arcsec,47
+canonical,over_0.10_arcsec,26
+pixel-scale-004,within_0.05_arcsec,48
+pixel-scale-004,over_0.05_to_0.10_arcsec,35
+pixel-scale-004,over_0.10_arcsec,67
+pixel-scale-006,within_0.05_arcsec,58
+pixel-scale-006,over_0.05_to_0.10_arcsec,44
+pixel-scale-006,over_0.10_arcsec,48
+exposure-half,within_0.05_arcsec,69
+exposure-half,over_0.05_to_0.10_arcsec,35
+exposure-half,over_0.10_arcsec,46
+read-noise-double,within_0.05_arcsec,68
+read-noise-double,over_0.05_to_0.10_arcsec,37
+read-noise-double,over_0.10_arcsec,45

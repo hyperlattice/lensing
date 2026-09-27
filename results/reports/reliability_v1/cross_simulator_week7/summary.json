@@ -1,0 +1,73 @@
+{
+  "bootstrap_resamples": 10000,
+  "bootstrap_seed": 6031,
+  "claim_limit": "Tests an independent SIE deflection/root/rasterization path; not a fully independent simulator or evidence of real-domain robustness.",
+  "condition_count": 2,
+  "control_gates_passed": true,
+  "experiment_id": "WEEK7-INDEPENDENT-SIE-LENS-EQUATION",
+  "historical_test_accessed": false,
+  "model_seeds": [
+    12001,
+    12002,
+    12003
+  ],
+  "paired_effects": [
+    {
+      "condition": "independent-canonical",
+      "mean_absolute_paired_prediction_shift_arcsec": 3.019385292399621e-07,
+      "mean_prediction_shift_arcsec": -2.553386104428876e-07,
+      "paired_delta_mae_arcsec": -5.832605588819275e-07,
+      "paired_delta_mae_bootstrap_95_high_arcsec": 3.2183980367016396e-09,
+      "paired_delta_mae_bootstrap_95_low_arcsec": -1.7520654698839838e-06,
+      "parent_count": 150,
+      "practical_effect_arcsec": 0.01,
+      "prediction_shift_bootstrap_95_high_arcsec": 2.2851996659378142e-08,
+      "prediction_shift_bootstrap_95_low_arcsec": -8.085381299779149e-07,
+      "reference_seed_averaged_mae_arcsec": 0.0873541558047298,
+      "seed_averaged_mae_arcsec": 0.08735388086977357
+    },
+    {
+      "condition": "independent-exposure-half",
+      "mean_absolute_paired_prediction_shift_arcsec": 2.863163879303818e-07,
+      "mean_prediction_shift_arcsec": 2.8270184169522227e-07,
+      "paired_delta_mae_arcsec": -2.6472770702815983e-07,
+      "paired_delta_mae_bootstrap_95_high_arcsec": -6.747194182995156e-10,
+      "paired_delta_mae_bootstrap_95_low_arcsec": -7.88774955599795e-07,
+      "parent_count": 150,
+      "practical_effect_arcsec": 0.01,
+      "prediction_shift_bootstrap_95_high_arcsec": 8.058123930703586e-07,
+      "prediction_shift_bootstrap_95_low_arcsec": 1.9717981930437537e-08,
+      "reference_seed_averaged_mae_arcsec": 0.1323422570645105,
+      "seed_averaged_mae_arcsec": 0.13234199169153835
+    }
+  ],
+  "practical_effect_arcsec": 0.01,
+  "prediction_file_written_before_label_join": true,
+  "protocol": "docs/reliability_study/protocol_v1.7.md",
+  "protocol_sha256": "37ca6f839a0f68c67c6cc6e0cffa0254b1496d4e06c0b7f59591a8772c5713e6",
+  "real_data_labels_accessed": false,
+  "release": "data/simulations/reliability-independent-sie-v1",
+  "release_integrity": {
+    "condition_row_counts": {
+      "independent-canonical": 150,
+      "independent-exposure-half": 150
+    },
+    "historical_test_accessed": false,
+    "manifest_sha256": "802c5704b6146770fa54faa3ee3b957bc307dc16850db76e4b2cd1803ac6d18b",
+    "parent_count": 150,
+    "protocol_sha256": "37ca6f839a0f68c67c6cc6e0cffa0254b1496d4e06c0b7f59591a8772c5713e6",
+    "release": "data/simulations/reliability-independent-sie-v1",
+    "row_count": 300,
+    "schema_validation_passed": true,
+    "source_release": "data/simulations/sim-eng1000-v1",
+    "source_validation_manifest_sha256": "0eb44e8034f9508fceb3c60bfd2d3a2766c4ac40d5f742d1a359a0c7559ed672",
+    "strict_loader_passed": true
+  },
+  "release_manifest_sha256": "802c5704b6146770fa54faa3ee3b957bc307dc16850db76e4b2cd1803ac6d18b",
+  "shared_components": [
+    "Lenstronomy SERSIC_ELLIPSE surface brightness",
+    "project Gaussian PSF and deterministic convolution",
+    "detector noise model and preprocessing"
+  ],
+  "validation_parent_count": 150
+}

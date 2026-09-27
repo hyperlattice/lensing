@@ -1,0 +1,13 @@
+condition,metric,effect_definition,parent_count,mean,bootstrap_95_low,bootstrap_95_high,bootstrap_resamples,bootstrap_seed
+canonical,delta_abs_error_randomized_minus_baseline_arcsec,domain_randomized ensemble minus canonical baseline ensemble,150,-0.0172948126157673,-0.0253466165753871,-0.0095405075936401,10000,6031
+canonical,prediction_shift_randomized_minus_baseline_arcsec,domain_randomized ensemble minus canonical baseline ensemble,150,0.0162013832212159,0.0062227767927857,0.0262032149597201,10000,6031
+pixel-scale-004,delta_abs_error_randomized_minus_baseline_arcsec,domain_randomized ensemble minus canonical baseline ensemble,150,-0.0537215087879811,-0.0676503797792242,-0.0403379729032978,10000,6031
+pixel-scale-004,prediction_shift_randomized_minus_baseline_arcsec,domain_randomized ensemble minus canonical baseline ensemble,150,0.0509133891990235,0.0350840801111371,0.0667198450811851,10000,6031
+pixel-scale-006,delta_abs_error_randomized_minus_baseline_arcsec,domain_randomized ensemble minus canonical baseline ensemble,150,-0.0416545634173995,-0.0507391958434031,-0.0326013138643578,10000,6031
+pixel-scale-006,prediction_shift_randomized_minus_baseline_arcsec,domain_randomized ensemble minus canonical baseline ensemble,150,-0.0098543399229256,-0.021478497329282,0.0020399838377903,10000,6031
+exposure-half,delta_abs_error_randomized_minus_baseline_arcsec,domain_randomized ensemble minus canonical baseline ensemble,150,-0.0214536014945008,-0.0317717901659709,-0.0107850147863455,10000,6031
+exposure-half,prediction_shift_randomized_minus_baseline_arcsec,domain_randomized ensemble minus canonical baseline ensemble,150,0.0227964436263286,0.0102069659807373,0.0350385946844554,10000,6031
+read-noise-double,delta_abs_error_randomized_minus_baseline_arcsec,domain_randomized ensemble minus canonical baseline ensemble,150,-0.0275890476365563,-0.0406288247614682,-0.0153731868916776,10000,6031
+read-noise-double,prediction_shift_randomized_minus_baseline_arcsec,domain_randomized ensemble minus canonical baseline ensemble,150,0.0269616882516639,0.0131184846755007,0.0409403977319715,10000,6031
+four_stress_composite,delta_abs_error_randomized_minus_baseline_arcsec,domain_randomized ensemble minus canonical baseline ensemble,150,-0.0361046803341094,-0.0427362829182304,-0.0294194880944835,10000,6031
+four_stress_composite,prediction_shift_randomized_minus_baseline_arcsec,domain_randomized ensemble minus canonical baseline ensemble,150,0.0227042952885226,0.0135142439911736,0.03161876673269,10000,6031

@@ -1,0 +1,51 @@
+{
+  "condition_count": 5,
+  "config_sha256": "ca71f51851cbbd65834858ff09b31de1b33effee7f4ead98bd2564c037b5a7aa",
+  "detected_peak_count_distribution": {
+    "0": 93,
+    "1": 693,
+    "2": 870,
+    "3": 186,
+    "4": 408
+  },
+  "experiment_id": "WEEK9-HYBRID-INITIALIZATION",
+  "fit_row_count": 6750,
+  "historical_test_accessed": false,
+  "limitations": [
+    "The classical control is an observation-only SIS/SIE point-image geometry fit, not a full pixel-likelihood fit.",
+    "Two-image cases use a closed-form SIS fit and cannot show optimizer initialization speed differences.",
+    "Speed comparisons use only systems with three or four detected peaks; peak detection is itself observation dependent.",
+    "The fit is a validation development comparison on the tested synthetic conditions, not a blind holdout or real-domain benchmark."
+  ],
+  "ml_speedup_supports_95_interval_above_zero_vs_training_mean_all_conditions": false,
+  "observation_product_hash_count": 3750,
+  "observation_products_manifest_sha256": "361ffaa23bc2be3bc5b60f6124d42b15abc752bb095657a396c1f0dce242f7aa",
+  "optimizer_fit_row_count_ge3": 1782,
+  "predictions_path": "results\\reports\\reliability_v1\\hybrid_week9\\hybrid_fit_predictions_before_scoring.csv",
+  "predictions_sha256": "3e845276bdf488387bbedd7684532930cf895e322a9de481737ad8d93890bd3b",
+  "predictions_written_before_target_join": true,
+  "protocol": "docs/reliability_study/protocol_v1.9.md",
+  "protocol_sha256": "6034178767b06242d329bc888212830bcfd9d3fa3dfa4f20204739c51685b4b8",
+  "real_data_labels_accessed": false,
+  "scored_path": "results\\reports\\reliability_v1\\hybrid_week9\\hybrid_fit_scored_validation.csv",
+  "seed_count": 3,
+  "start_count": 3,
+  "training_mean_theta_E_arcsec": 1.2483499255205244,
+  "training_split_sha256": "dade8d9ef54f1c6bfc74c089a937e48fc836e258b65b37bc21379d4c78f488d3",
+  "truth_sidecar_used_for_detection_initialization_or_fitting": false,
+  "unique_parent_count": 150,
+  "validation_condition_manifest_sha256": {
+    "canonical": "6ba5354ec6b4e7726c1eef6485badc740cb0f478a556ea982ddc19259bafb170",
+    "exposure-half": "f8125d639c1f707500ee83c8eb06cc0fe5b454240b6e37fc2ba99dbdcdbc5875",
+    "pixel-scale-004": "27c17769f5f87c26c61d54b55bb7ff68ec41dcaa3f78eafb0773c38965617929",
+    "pixel-scale-006": "8ccf585e9c6880e1ce830c05b9bb88a1460b5d4ecd8e02999ed87d8bff7a1aaa",
+    "read-noise-double": "3f49c261b61cf36b175bdc32f1b5abfdd54cf2725d1ed63f4cebe33b1901b66c"
+  },
+  "validation_parent_count": 150,
+  "week8_checkpoint_hashes": {
+    "12001": "9740261ab166481c1ac1e45af69bac9fc62c71faa520d29b9ab4a5d35260100d",
+    "12002": "be1a1d43d98b237b7ae7def57334a8d3432dde5cd2f211f8abf09c2f7f49fda7",
+    "12003": "0a8d5b4b77f47526458a50aa3647814937ae78e4fecda1f51af6b6685cbca26d"
+  },
+  "week8_prediction_file_sha256": "7fab465bbad3653384ae9380a3b42f0a689cdbd65f58c66647e11b963cce0454"
+}

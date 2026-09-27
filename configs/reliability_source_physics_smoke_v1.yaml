@@ -1,0 +1,77 @@
+schema_version: 1
+benchmark_version: reliability-counterfactual-v1
+parent_manifest: data/simulations/sim-eng1000-v1/manifest.csv
+split_manifests:
+  train: data/simulations/sim-eng1000-v1/splits/train.csv
+  validation: data/simulations/sim-eng1000-v1/splits/validation.csv
+selection_seed: 6031
+max_parents_per_split:
+  train: 2
+  validation: 2
+require_canonical: true
+model_checkpoints:
+- results/ml/theta-e-cnn-seeds-v1/seed-12001/best.pt
+- results/ml/theta-e-cnn-seeds-v1/seed-12002/best.pt
+- results/ml/theta-e-cnn-seeds-v1/seed-12003/best.pt
+metrics:
+  bootstrap_resamples: 10000
+  bootstrap_seed: 6031
+  practical_effect_arcsec: 0.01
+interventions:
+- intervention_id: canonical
+  family: canonical
+  overrides: {}
+- intervention_id: source-n-050
+  family: source_profile
+  overrides:
+    source_n:
+      value: 0.5
+- intervention_id: source-n-500
+  family: source_profile
+  overrides:
+    source_n:
+      value: 5.0
+- intervention_id: source-re-half
+  family: source_size
+  overrides:
+    source_re_arcsec:
+      multiply: 0.5
+- intervention_id: source-re-double
+  family: source_size
+  overrides:
+    source_re_arcsec:
+      multiply: 2.0
+- intervention_id: source-x-minus
+  family: source_position
+  overrides:
+    source_x_arcsec:
+      add: -0.15
+- intervention_id: source-x-plus
+  family: source_position
+  overrides:
+    source_x_arcsec:
+      add: 0.15
+- intervention_id: source-y-minus
+  family: source_position
+  overrides:
+    source_y_arcsec:
+      add: -0.15
+- intervention_id: source-y-plus
+  family: source_position
+  overrides:
+    source_y_arcsec:
+      add: 0.15
+- intervention_id: shear-gamma1-005
+  family: external_shear
+  overrides:
+    gamma1:
+      value: 0.05
+    gamma2:
+      value: 0.0
+- intervention_id: shear-gamma2-005
+  family: external_shear
+  overrides:
+    gamma1:
+      value: 0.0
+    gamma2:
+      value: 0.05

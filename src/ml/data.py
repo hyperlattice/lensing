@@ -36,6 +36,8 @@ class TorchLensDataset(Dataset):
         target_field="theta_E_arcsec",
         statistics=None,
         max_samples=None,
+        sample_ids=None,
+        expected_shape=(256, 256),
     ):
         self.release = Path(release)
         self.split = str(split)
@@ -47,13 +49,31 @@ class TorchLensDataset(Dataset):
             domain="simulated",
             eligible_for="ml",
             target_fields={self.target_field},
+            expected_shape=expected_shape,
         )
+        if sample_ids is not None and max_samples is not None:
+            raise ValueError("Use explicit sample_ids or max_samples, not both")
         count = len(self.dataset)
         if max_samples is not None:
             count = min(count, int(max_samples))
-        if count <= 0:
+        if sample_ids is not None:
+            requested_ids = [str(value) for value in sample_ids]
+            if not requested_ids:
+                raise ValueError(f"Split {self.split!r} contains no selected samples")
+            if len(requested_ids) != len(set(requested_ids)):
+                raise ValueError("Explicit sample_ids contains duplicates")
+            available = {
+                str(sample_id): index
+                for index, sample_id in enumerate(self.dataset.metadata["sample_id"].astype(str))
+            }
+            unknown = sorted(set(requested_ids).difference(available))
+            if unknown:
+                raise ValueError(f"Explicit sample_ids are absent from split {self.split!r}: {unknown[:5]}")
+            self.indices = [available[sample_id] for sample_id in requested_ids]
+        elif count > 0:
+            self.indices = list(range(count))
+        else:
             raise ValueError(f"Split {self.split!r} contains no usable samples")
-        self.indices = list(range(count))
         self.statistics = statistics
         if statistics is not None:
             required = {"image_mean", "image_std", "target_mean", "target_std"}

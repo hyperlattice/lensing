@@ -1,0 +1,39 @@
+schema_version: 1
+experiment_id: H1-PIXEL-SCALE
+parent_manifest: data/simulations/sim-eng1000-v1/manifest.csv
+split_manifests:
+  train: data/simulations/sim-eng1000-v1/splits/train.csv
+  validation: data/simulations/sim-eng1000-v1/splits/validation.csv
+selection_seed: 6031
+max_parents_per_split:
+  train: 0
+  validation: 150
+field_of_view_center_to_center_arcsec: 12.75
+pixel_scale_grid_arcsec_per_pixel:
+  canonical: 0.05
+  low: 0.04
+  high: 0.06
+interventions:
+  - intervention_id: canonical
+    family: canonical
+    overrides: {}
+  - intervention_id: pixel-scale-004
+    family: pixel_scale
+    overrides:
+      pixel_scale_arcsec: 0.04
+      shape: [320, 320]
+  - intervention_id: pixel-scale-006
+    family: pixel_scale
+    overrides:
+      pixel_scale_arcsec: 0.06
+      shape: [214, 214]
+model_checkpoints:
+  - results/ml/theta-e-cnn-seeds-v1/seed-12001/best.pt
+  - results/ml/theta-e-cnn-seeds-v1/seed-12002/best.pt
+  - results/ml/theta-e-cnn-seeds-v1/seed-12003/best.pt
+metrics:
+  primary: paired_delta_mae_arcsec
+  bootstrap_resamples: 10000
+  bootstrap_seed: 6031
+  practical_effect_arcsec: 0.01
+  noise_seed_policy: reuse_parent_seed

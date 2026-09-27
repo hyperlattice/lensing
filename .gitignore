@@ -1,19 +1,59 @@
+# Python bytecode, virtual environments, and build outputs.
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+env/
+*.egg-info/
+build/
+dist/
+
+# Test and analysis tool caches. Pytest uses several named temporary roots in
+# this repository, so cover every .pytest-* directory rather than one run name.
+.pytest_cache/
+.pytest-*/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.mypy_cache/
+.ruff_cache/
+
+# Local datasets and generated image products. Manifests and source tables are
+# intentionally left trackable as compact provenance records.
 castles/
 normalized/
-__pycache__/
-.pytest_cache/
-.pytest-work/
 data/simulations/
 data/releases/*/products/
 data/releases/*/previews/
 data/derived/actual/*/products/
-# Review images are regenerated from raw/release inputs. Keep their indexes and
-# reports only when deliberately staged as evidence.
+
+# Human review previews are regenerated from versioned inputs. Their indexes
+# and written reports remain eligible for version control.
 results/previews/actual/*/
 results/previews/simulated/*/
-results/ml/**/best.pt
 
+# Model binaries are reproducible artifacts; retain their configs, hashes,
+# metrics, predictions, and reports instead.
+*.pt
+*.pth
+*.ckpt
+
+# Notebook checkpoint folders and local editor/operating-system files.
+.ipynb_checkpoints/
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
 tempCodeRunnerFile.py
+
+# Transient command output.
+*.log
 
 # Private project notes, local secrets, and non-shareable working material.
 private/
@@ -26,4 +66,5 @@ private/
 .env.*
 !.env.example
 
+# Local FITS header scratch files.
 q256_header.txt

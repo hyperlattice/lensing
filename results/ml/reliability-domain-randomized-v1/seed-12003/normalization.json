@@ -1,0 +1,14 @@
+{
+  "image_mean": 0.0007251088888874154,
+  "image_std": 0.04583716670028525,
+  "pixel_count": 95242748,
+  "release_manifest": "data/simulations/reliability-domain-randomized-v1/manifest.csv",
+  "release_manifest_sha256": "c6ed4c198a615745c342556f9d6050b93a10268a11aae227aad7097f66513fe4",
+  "sample_count": 1400,
+  "source_split": "train",
+  "source_split_manifest": "data/simulations/reliability-domain-randomized-v1/splits/train.csv",
+  "source_split_manifest_sha256": "39810355e31f03b30e8015b1d0439cd4a320fc8b1890eb12b92dc68af0484ae2",
+  "target_field": "theta_E_arcsec",
+  "target_mean": 1.2483499255205244,
+  "target_std": 0.42370747484876414
+}

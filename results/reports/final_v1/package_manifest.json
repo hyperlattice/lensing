@@ -1,0 +1,31 @@
+{
+  "builder_sha256": "562de0b118be5aaf9118f6f373baf3f461e1eb5d30cf86b07fa62b4c6f18a711",
+  "built_at_utc": "2026-09-26T18:35:59.955953+00:00",
+  "inputs_manifest_sha256": "e8d075d5fed70affc83dcc5fd8bca175478e1dc3c58081652956e5f8a8931016",
+  "manifest_version": 1,
+  "outputs_sha256": {
+    "docs/reliability_study/final/claim_evidence_map.md": "8b7283c1d390719803c45d1f2737e68a49ed6589c654cd004ee1da2d4c39bfaa",
+    "docs/reliability_study/final/manuscript_draft.md": "c08ccd055c55fcde644b1d4a1563ce13f0b165872c18fb889e69f0ee9dfc1cb4",
+    "docs/reliability_study/final/model_research_card.md": "9294bfeff381a8d027831e29d609abbf304e897ecebc797c3eb78244c946e7be",
+    "docs/reliability_study/final/reproducibility_statement.md": "3f1c0dbf9ac70d4b8c1c5135f3a804ec5365674c411ca15f232f1ec525a8ef04",
+    "docs/reliability_study/week12_final_package_status.md": "65cba8f469862e1c9e8e93dd046af97716625809d9c8f62b7b7eaa413e4f753a",
+    "results/reports/final_v1/analysis_summary.json": "541ac6971f818ecf3f5921d3d8633a7241c9f1b5905d292239660cfed01d09ef",
+    "results/reports/final_v1/figures/week11_ensemble_mae.png": "82ade539e9fc49219e4d2f9873b9eefe90bfee14f3ef0e36478cf1bbaa9b75de",
+    "results/reports/final_v1/figures/week11_error_distribution.png": "c0b947c9b36a188d1faa40e70a3168e225f4981029d0b774caccc176c729690f",
+    "results/reports/final_v1/figures/week11_paired_effects.png": "991e77ac71986801b5dbe9707a7c383af46c31d429e81b846e06d5b10d241911",
+    "results/reports/final_v1/input_manifest.json": "e8d075d5fed70affc83dcc5fd8bca175478e1dc3c58081652956e5f8a8931016",
+    "results/reports/final_v1/tables/claim_evidence_map.csv": "b89ed3592faf7e383951198fc99b5abb22ec0a033887196480ea635fad6135af",
+    "results/reports/final_v1/tables/domain_gap_coverage.csv": "bc19e6df28146049a9f2ece402fe2bc32c664a3af2051668fa681d2210b4e242",
+    "results/reports/final_v1/tables/failure_case_catalog.csv": "3e8ca2f89992840b3a254f57b7777ee8bcaa8f0f03590263b7cbca36a9428482",
+    "results/reports/final_v1/tables/failure_counts_by_condition.csv": "5948387aeca468fccb3020737a8335d24d9e14b41c158985c0a3759780fba642",
+    "results/reports/final_v1/tables/learning_curve.csv": "5bbc066417f25ec59e82ca9a79f64d0eb5eea3dc89d5d6d95943311e3b40204c",
+    "results/reports/final_v1/tables/study_paired_effect_ledger.csv": "9bc2431acefcab3bd7fea81e926229ab55c93c5545615113b7edc9bc887dfacb",
+    "results/reports/final_v1/tables/week11_ensemble_metrics.csv": "5234cc2bd3f1236263c58e713836a8e65853bb91d135b04b745d3419c3659832",
+    "results/reports/final_v1/tables/week11_largest_30_errors.csv": "e775882c1ccbe5ec5bd84ea70b6dbe92ac3de1b4b8c863973af29e70ba03f655",
+    "results/reports/final_v1/tables/week11_paired_effects.csv": "4ed740c6347a008a27b9d4893142b7b5dd6a2ed36c7e0f5a1d3f05d6dbebe90a",
+    "results/reports/final_v1/tables/week11_seed_metrics.csv": "7fb1ced29faf100096631588ec7b6eb52d76dce130fae08d7b60c817894e2861",
+    "results/reports/final_v1/tables/week11_target_range_coverage.csv": "e91cffce5ee3f4e7029fc4dbb6f9e4ab65377cadfd5e1f9ebee350a694ecbb4f"
+  },
+  "package_id": "RELIABILITY-STUDY-FINAL-V1",
+  "week11_exact_once_marker_sha256": "2e3dadacecebee50ea676b9a8d37b327e70a04c056bc873f8588bca7f6bfae79"
+}

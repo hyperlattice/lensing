@@ -15,17 +15,21 @@ observations.
 ```text
 configs/       Versioned preprocessing, simulation, comparison, and ML settings
 data/          Raw inputs, curated labels, releases, and compact audit manifests
-docs/          Dataset contract, codebase guide, ML handoff, and quickstarts
+docs/          Dataset contract, codebase guide, research protocols, and results guidance
 notebooks/     Planning and explanation notebooks
 results/       Derived reports, ML artifacts, and domain-separated previews
-src/           Reproducible pipeline implementation
-tests/         Automated unit and integration tests
+src/            Reproducible pipeline implementation
+tests/          Automated unit and integration tests
+CONTRIBUTING.md Coding, documentation, and research reproducibility conventions
+pyproject.toml  Shared pytest configuration
+.editorconfig   Shared text-file and indentation conventions
 ```
 
 Each working area has its own guide: [source code](src/README.md),
 [data](data/README.md), [configuration](configs/README.md),
 [results](results/README.md), [documentation](docs/README.md), and
-[notebooks](notebooks/README.md).
+[notebooks](notebooks/README.md). Contributor conventions are in
+[CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Data and previews
 
@@ -68,6 +72,8 @@ The controlled one-target improvement roadmap is in
 [the ML experiment plan](docs/ml_experiment_plan/README.md), and the comparison
 of candidate architectures, physics hybrids, and posterior models is in the
 [one-parameter model landscape](docs/ml_model_landscape/README.md).
+The completed reliability study and its frozen holdout evidence are indexed in
+[the reliability-study guide](docs/reliability_study/README.md).
 
 ## Setup
 

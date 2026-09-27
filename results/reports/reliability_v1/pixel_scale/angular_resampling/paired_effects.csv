@@ -1,0 +1,5 @@
+intervention_id,input_strategy,parent_count,paired_mean_delta_mae_arcsec,bootstrap_95_low_arcsec,bootstrap_95_high_arcsec,mean_absolute_prediction_shift_arcsec,practically_important_increase_supported,effect_practically_small
+pixel-scale-004,angular_resampled,150,0.006964784065882366,-0.004165187286006078,0.0185554010272026,0.05640421748161316,False,False
+pixel-scale-006,angular_resampled,150,-0.004288612339231704,-0.014340123153395121,0.005341810034381019,0.049720538854599,False,False
+pixel-scale-004,native,150,0.07068707651562162,0.051893630776140426,0.08998336819145414,0.14001660399966773,True,False
+pixel-scale-006,native,150,0.0488909477657742,0.03262600702709622,0.06471589092082448,0.11463545401891073,True,False

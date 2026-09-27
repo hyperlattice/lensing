@@ -1,0 +1,25 @@
+{
+  "batch_size": 16,
+  "epochs": 20,
+  "experiment_id": "reliability-domain-randomized-v1-seed-12003",
+  "huber_delta": 1.0,
+  "learning_rate": 0.001,
+  "model": {
+    "channels": [
+      8,
+      16,
+      32,
+      64
+    ],
+    "hidden_features": 128,
+    "pooled_size": 4
+  },
+  "num_workers": 0,
+  "output": "results/ml/reliability-domain-randomized-v1/seed-12003",
+  "parent_baseline_id": "theta-e-cnn-seeds-v1",
+  "patience": 6,
+  "release": "data/simulations/reliability-domain-randomized-v1",
+  "seed": 12003,
+  "target_field": "theta_E_arcsec",
+  "weight_decay": 0.0001
+}

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+import hashlib
 import json
 import time
 from pathlib import Path
@@ -63,6 +64,8 @@ def train_experiment(
     device_request="auto",
     overwrite=False,
     max_train_samples=None,
+    train_sample_ids=None,
+    sample_selection_id=None,
     max_validation_samples=None,
 ):
     started = time.perf_counter()
@@ -78,8 +81,29 @@ def train_experiment(
         raise ValueError("Use loss or legacy huber_delta, not both")
     bin_edges = validate_bin_edges(config.get("target_bin_edges_arcsec", [0.5, 1.0, 1.5, 2.0]))
     config["target_bin_edges_arcsec"] = bin_edges
-    controls = {"max_train_samples": max_train_samples, "max_validation_samples": max_validation_samples}
-    for field, value in controls.items():
+    if train_sample_ids is not None:
+        train_sample_ids = [str(value) for value in train_sample_ids]
+        if max_train_samples is not None:
+            raise ValueError("Use train_sample_ids or max_train_samples, not both")
+        if not train_sample_ids or len(train_sample_ids) != len(set(train_sample_ids)):
+            raise ValueError("train_sample_ids must be a nonempty list without duplicates")
+        sample_ids_sha256 = hashlib.sha256("\n".join(train_sample_ids).encode("utf-8")).hexdigest()
+        config["training_selection"] = {
+            "selection_id": str(sample_selection_id or "explicit_sample_ids"),
+            "sample_count": len(train_sample_ids),
+            "ordered_sample_ids_sha256": sample_ids_sha256,
+        }
+    else:
+        sample_ids_sha256 = None
+    controls = {
+        "max_train_samples": max_train_samples,
+        "max_validation_samples": max_validation_samples,
+        "train_sample_count": None if train_sample_ids is None else len(train_sample_ids),
+        "train_sample_ids_sha256": sample_ids_sha256,
+        "sample_selection_id": None if train_sample_ids is None else str(sample_selection_id or "explicit_sample_ids"),
+    }
+    for field in ("max_train_samples", "max_validation_samples", "train_sample_count"):
+        value = controls[field]
         if value is not None and (isinstance(value, bool) or not isinstance(value, int) or value < 1):
             raise ValueError(f"{field} must be a positive integer")
     provenance = source_provenance()
@@ -93,6 +117,7 @@ def train_experiment(
         split="train",
         target_field=config["target_field"],
         max_samples=max_train_samples,
+        sample_ids=train_sample_ids,
     )
     statistics = compute_training_statistics(raw_training)
     training = TorchLensDataset(
@@ -101,6 +126,7 @@ def train_experiment(
         target_field=config["target_field"],
         statistics=statistics,
         max_samples=max_train_samples,
+        sample_ids=train_sample_ids,
     )
     validation = TorchLensDataset(
         release,
@@ -192,6 +218,27 @@ def train_experiment(
     plot_training_history(history, output_dir / "training_curves.png")
     checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=True)
     model.load_state_dict(checkpoint["model_state"])
+    training_eval_loader = make_loader(
+        training,
+        batch_size=config["batch_size"],
+        shuffle=False,
+        seed=0,
+        num_workers=config.get("num_workers", 0),
+    )
+    best_training = collect_predictions(model, training_eval_loader, device, statistics)
+    training_metrics = regression_metrics(best_training["targets"], best_training["predictions"])
+    training_predictions = pd.DataFrame(
+        {
+            "sample_id": best_training["sample_ids"],
+            "theta_E_arcsec_true": best_training["targets"],
+            "theta_E_arcsec_predicted": best_training["predictions"],
+        }
+    )
+    training_predictions["residual_arcsec"] = (
+        training_predictions["theta_E_arcsec_predicted"] - training_predictions["theta_E_arcsec_true"]
+    )
+    training_predictions["absolute_error_arcsec"] = training_predictions["residual_arcsec"].abs()
+    training_predictions.to_csv(output_dir / "training_predictions.csv", index=False)
     best_validation = collect_predictions(model, validation_loader, device, statistics)
     best_metrics = regression_metrics(
         best_validation["targets"], best_validation["predictions"]
@@ -230,6 +277,8 @@ def train_experiment(
         "device": str(device),
         "torch_version": str(torch.__version__),
         "train_samples": len(training),
+        "training_metrics": training_metrics,
+        "training_predictions_sha256": file_sha256(output_dir / "training_predictions.csv"),
         "validation_samples": len(validation),
         "test_samples_accessed": 0,
         "best_epoch": best_epoch,

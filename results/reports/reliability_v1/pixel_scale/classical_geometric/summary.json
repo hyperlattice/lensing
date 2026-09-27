@@ -1,0 +1,44 @@
+{
+  "allowed_validation_manifest_columns": [
+    "sample_id",
+    "parent_sample_id",
+    "split",
+    "intervention_id",
+    "pixel_scale",
+    "psf_fwhm_arcsec",
+    "observed_science_path",
+    "variance_path",
+    "mask_path",
+    "coverage_mask_path",
+    "psf_path"
+  ],
+  "classical_scale_effects_path": "results/reports/reliability_v1/pixel_scale/classical_geometric/classical_scale_effects.csv",
+  "cnn_reference_sha256": "e85ee347f5fe808c018ab3f0f410d6eba8409879879e969565d2e0f9d0df846f",
+  "experiment_id": "H1-CLASSICAL-POINT-GEOMETRY",
+  "fallback_theta_E_arcsec_training_mean": 1.2483499255205244,
+  "historical_test_split_accessed": false,
+  "limitations": [
+    "This is an image-derived point-image geometry baseline, not a full pixel-likelihood SIE fit.",
+    "The mass center is estimated from central light and the point-image astrometry is approximated with SIS for doubles and SIE for three/four detections.",
+    "The fallback is the training-set mean; report fallback frequency and do not interpret fallback rows as successful classical fits.",
+    "The released variance map and Gaussian control PSF are synthetic products; real-domain performance is not established."
+  ],
+  "method": "PSF-matched point-image detection followed by analytic SIS/SIE image-position fitting",
+  "paired_predictions_path": "results/reports/reliability_v1/pixel_scale/classical_geometric/paired_predictions.csv",
+  "parameters_sidecars_or_position_diagnostics_loaded": false,
+  "prediction_sha256": "90ff5b6a729ff9d3f0e5f371a60ae2cb79102c3bb2e3dbb25051181d957cdde6",
+  "scale_metrics_path": "results/reports/reliability_v1/pixel_scale/classical_geometric/scale_metrics.csv",
+  "source_hashes": {
+    "training_split_manifest": "dade8d9ef54f1c6bfc74c089a937e48fc836e258b65b37bc21379d4c78f488d3",
+    "validation_canonical_manifest": "6ba5354ec6b4e7726c1eef6485badc740cb0f478a556ea982ddc19259bafb170",
+    "validation_high_manifest": "8ccf585e9c6880e1ce830c05b9bb88a1460b5d4ecd8e02999ed87d8bff7a1aaa",
+    "validation_low_manifest": "27c17769f5f87c26c61d54b55bb7ff68ec41dcaa3f78eafb0773c38965617929"
+  },
+  "validation_parent_count": 150,
+  "validation_scales": [
+    "canonical",
+    "low",
+    "high"
+  ],
+  "validation_truth_loaded_only_after_prediction_write": true
+}

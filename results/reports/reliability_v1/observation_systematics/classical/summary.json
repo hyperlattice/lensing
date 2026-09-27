@@ -1,0 +1,234 @@
+{
+  "cnn_prediction_sha256": "7c3397ea56869e273cea75b8a36c06cfa65a1f004eab07efe7c2c3cf3330d02e",
+  "condition_metrics": [
+    {
+      "classical_bias_arcsec": 0.06400070921903264,
+      "classical_mae_arcsec": 0.20071371621900685,
+      "classical_minus_cnn_bootstrap_95_high_arcsec": 0.1469259432730958,
+      "classical_minus_cnn_bootstrap_95_low_arcsec": 0.07239788588329125,
+      "classical_minus_cnn_delta_mae_arcsec": 0.10861680560986756,
+      "classical_rmse_arcsec": 0.3139615866658407,
+      "cnn_mae_arcsec_seed_average": 0.0920969106091393,
+      "fallback_count": 44,
+      "fallback_fraction": 0.29333333333333333,
+      "fit_count": 106,
+      "intervention_id": "canonical",
+      "mean_detected_image_count": 2.22,
+      "parent_count": 150
+    },
+    {
+      "classical_bias_arcsec": 0.09273546736212647,
+      "classical_mae_arcsec": 0.19628277151231124,
+      "classical_minus_cnn_bootstrap_95_high_arcsec": 0.13936086128182834,
+      "classical_minus_cnn_bootstrap_95_low_arcsec": 0.06765154970754791,
+      "classical_minus_cnn_delta_mae_arcsec": 0.10326092900611453,
+      "classical_rmse_arcsec": 0.3078954724901394,
+      "cnn_mae_arcsec_seed_average": 0.09302184250619673,
+      "fallback_count": 38,
+      "fallback_fraction": 0.25333333333333335,
+      "fit_count": 112,
+      "intervention_id": "psf-width-075",
+      "mean_detected_image_count": 2.2466666666666666,
+      "parent_count": 150
+    },
+    {
+      "classical_bias_arcsec": 0.06929979614013583,
+      "classical_mae_arcsec": 0.19245062275782301,
+      "classical_minus_cnn_bootstrap_95_high_arcsec": 0.13495363789341475,
+      "classical_minus_cnn_bootstrap_95_low_arcsec": 0.0659228034883327,
+      "classical_minus_cnn_delta_mae_arcsec": 0.09926149557751164,
+      "classical_rmse_arcsec": 0.29630153643396107,
+      "cnn_mae_arcsec_seed_average": 0.09318912718031136,
+      "fallback_count": 43,
+      "fallback_fraction": 0.2866666666666667,
+      "fit_count": 107,
+      "intervention_id": "psf-width-125",
+      "mean_detected_image_count": 2.1933333333333334,
+      "parent_count": 150
+    },
+    {
+      "classical_bias_arcsec": 0.08858726915940883,
+      "classical_mae_arcsec": 0.2074002422747162,
+      "classical_minus_cnn_bootstrap_95_high_arcsec": 0.15495211365732692,
+      "classical_minus_cnn_bootstrap_95_low_arcsec": 0.08208697610932768,
+      "classical_minus_cnn_delta_mae_arcsec": 0.11783133604696867,
+      "classical_rmse_arcsec": 0.3188519558077255,
+      "cnn_mae_arcsec_seed_average": 0.08956890622774756,
+      "fallback_count": 43,
+      "fallback_fraction": 0.2866666666666667,
+      "fit_count": 107,
+      "intervention_id": "noise-repeat-1",
+      "mean_detected_image_count": 2.1866666666666665,
+      "parent_count": 150
+    },
+    {
+      "classical_bias_arcsec": 0.06076421743235677,
+      "classical_mae_arcsec": 0.20327717103501056,
+      "classical_minus_cnn_bootstrap_95_high_arcsec": 0.14733784785150425,
+      "classical_minus_cnn_bootstrap_95_low_arcsec": 0.07355352611264221,
+      "classical_minus_cnn_delta_mae_arcsec": 0.10992631406856804,
+      "classical_rmse_arcsec": 0.31376229329203603,
+      "cnn_mae_arcsec_seed_average": 0.09335085696644249,
+      "fallback_count": 47,
+      "fallback_fraction": 0.31333333333333335,
+      "fit_count": 103,
+      "intervention_id": "noise-repeat-2",
+      "mean_detected_image_count": 2.1666666666666665,
+      "parent_count": 150
+    },
+    {
+      "classical_bias_arcsec": 0.10078613658150665,
+      "classical_mae_arcsec": 0.2353590258107647,
+      "classical_minus_cnn_bootstrap_95_high_arcsec": 0.13612218346605878,
+      "classical_minus_cnn_bootstrap_95_low_arcsec": 0.05944005493054107,
+      "classical_minus_cnn_delta_mae_arcsec": 0.09696923032198337,
+      "classical_rmse_arcsec": 0.33528802818529124,
+      "cnn_mae_arcsec_seed_average": 0.13838979548878136,
+      "fallback_count": 65,
+      "fallback_fraction": 0.43333333333333335,
+      "fit_count": 85,
+      "intervention_id": "exposure-half",
+      "mean_detected_image_count": 1.82,
+      "parent_count": 150
+    },
+    {
+      "classical_bias_arcsec": 0.08538002740169624,
+      "classical_mae_arcsec": 0.2166509359309912,
+      "classical_minus_cnn_bootstrap_95_high_arcsec": 0.1274658366652737,
+      "classical_minus_cnn_bootstrap_95_low_arcsec": 0.054053370356492894,
+      "classical_minus_cnn_delta_mae_arcsec": 0.08956988426345995,
+      "classical_rmse_arcsec": 0.31948798797440925,
+      "cnn_mae_arcsec_seed_average": 0.12708105166753128,
+      "fallback_count": 59,
+      "fallback_fraction": 0.3933333333333333,
+      "fit_count": 91,
+      "intervention_id": "read-noise-double",
+      "mean_detected_image_count": 1.9466666666666668,
+      "parent_count": 150
+    },
+    {
+      "classical_bias_arcsec": 0.07213646761795811,
+      "classical_mae_arcsec": 0.17959385183072427,
+      "classical_minus_cnn_bootstrap_95_high_arcsec": 0.11666010011583704,
+      "classical_minus_cnn_bootstrap_95_low_arcsec": 0.04740013041423443,
+      "classical_minus_cnn_delta_mae_arcsec": 0.08166028632008047,
+      "classical_rmse_arcsec": 0.2866077015604043,
+      "cnn_mae_arcsec_seed_average": 0.09793356551064379,
+      "fallback_count": 36,
+      "fallback_fraction": 0.24,
+      "fit_count": 114,
+      "intervention_id": "lens-light-zero",
+      "mean_detected_image_count": 2.2533333333333334,
+      "parent_count": 150
+    },
+    {
+      "classical_bias_arcsec": 0.0692384772327272,
+      "classical_mae_arcsec": 0.19360818594703758,
+      "classical_minus_cnn_bootstrap_95_high_arcsec": 0.14326766993880888,
+      "classical_minus_cnn_bootstrap_95_low_arcsec": 0.07197206283387066,
+      "classical_minus_cnn_delta_mae_arcsec": 0.10676110052409792,
+      "classical_rmse_arcsec": 0.3027196437763975,
+      "cnn_mae_arcsec_seed_average": 0.08684708542293969,
+      "fallback_count": 44,
+      "fallback_fraction": 0.29333333333333333,
+      "fit_count": 106,
+      "intervention_id": "lens-light-double",
+      "mean_detected_image_count": 2.18,
+      "parent_count": 150
+    }
+  ],
+  "experiment_id": "WEEK4-CLASSICAL-POINT-GEOMETRY",
+  "fitted_conditions": [
+    "canonical",
+    "psf-width-075",
+    "psf-width-125",
+    "noise-repeat-1",
+    "noise-repeat-2",
+    "exposure-half",
+    "read-noise-double",
+    "lens-light-zero",
+    "lens-light-double"
+  ],
+  "full_pixel_likelihood": false,
+  "historical_test_split_accessed": false,
+  "paired_classical_effects": [
+    {
+      "bootstrap_95_high_arcsec": 0.017563140176431225,
+      "bootstrap_95_low_arcsec": -0.027105931479288654,
+      "classical_paired_delta_mae_arcsec": -0.004430944706695591,
+      "intervention_id": "psf-width-075",
+      "parent_count": 150
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.015415133862120973,
+      "bootstrap_95_low_arcsec": -0.03376354709546202,
+      "classical_paired_delta_mae_arcsec": -0.008263093461183821,
+      "intervention_id": "psf-width-125",
+      "parent_count": 150
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.029573509421059647,
+      "bootstrap_95_low_arcsec": -0.016474877774841492,
+      "classical_paired_delta_mae_arcsec": 0.006686526055709381,
+      "intervention_id": "noise-repeat-1",
+      "parent_count": 150
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.023355331905519004,
+      "bootstrap_95_low_arcsec": -0.018543744481176648,
+      "classical_paired_delta_mae_arcsec": 0.0025634548160036906,
+      "intervention_id": "noise-repeat-2",
+      "parent_count": 150
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.06392073763308312,
+      "bootstrap_95_low_arcsec": 0.005328336240538627,
+      "classical_paired_delta_mae_arcsec": 0.03464530959175789,
+      "intervention_id": "exposure-half",
+      "parent_count": 150
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.03656452211038748,
+      "bootstrap_95_low_arcsec": -0.004180371904935765,
+      "classical_paired_delta_mae_arcsec": 0.015937219711984387,
+      "intervention_id": "read-noise-double",
+      "parent_count": 150
+    },
+    {
+      "bootstrap_95_high_arcsec": -0.0017261058620585924,
+      "bootstrap_95_low_arcsec": -0.0426969039037269,
+      "classical_paired_delta_mae_arcsec": -0.02111986438828256,
+      "intervention_id": "lens-light-zero",
+      "parent_count": 150
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.00912707986432577,
+      "bootstrap_95_low_arcsec": -0.025064042791139638,
+      "classical_paired_delta_mae_arcsec": -0.0071055302719692645,
+      "intervention_id": "lens-light-double",
+      "parent_count": 150
+    }
+  ],
+  "point_image_approximation": true,
+  "protocol": "docs/reliability_study/protocol_v1.4.md",
+  "protocol_sha256": "db8ddbcd0265bd56fc1338635cc44b3201fe544ae0602035b16111f919b8d17c",
+  "release_manifest_sha256": "61fc3294c4492a9164edd7a8050860257655c4d079df45ce11fee3192cf3cd55",
+  "reproducibility_hashes": {
+    "classical_audit_code": "8ba0a8d910ea1826a664eb88a3d78d3446161f908f0d664a44bc298010c484d4",
+    "classical_config": "74163fcf3030b6d234ce2e4ae90bb43ed948aa5eaefda063fd7bb5572150995b",
+    "classical_estimator_code": "fd1da226e4bf2221ee5a20c41741370773f5551c5ed3b043d12ca3a58800e079"
+  },
+  "training_mean_fallback_theta_E_arcsec": 1.2483499255205244,
+  "training_split_manifest_sha256": "dade8d9ef54f1c6bfc74c089a937e48fc836e258b65b37bc21379d4c78f488d3",
+  "validation_split_manifest_sha256": {
+    "canonical": "6ba5354ec6b4e7726c1eef6485badc740cb0f478a556ea982ddc19259bafb170",
+    "exposure-half": "f8125d639c1f707500ee83c8eb06cc0fe5b454240b6e37fc2ba99dbdcdbc5875",
+    "lens-light-double": "a3c9f7bbedca1e3abd822ae69d26d729900af30711bdd7a4c71fc1b6fb699ede",
+    "lens-light-zero": "35174594ebb62c409a4100702aef88932eb519001f264029783366045fb88179",
+    "noise-repeat-1": "093a58ae5e26c592f3e25ff3e9377eb662953552dc30a40f8c26328fe61df019",
+    "noise-repeat-2": "117126d5d2626af3a916bf26a236acbe0475d04fb631e7f5e9e63aa076c01aa0",
+    "psf-width-075": "f1917642d9667f416a1226c5b1d484b92e7652ecd39401d0da648641db0cfc4b",
+    "psf-width-125": "072738ecca402f33f70065e18841642f91e559c6292dadb109643f94c865b7e9",
+    "read-noise-double": "3f49c261b61cf36b175bdc32f1b5abfdd54cf2725d1ed63f4cebe33b1901b66c"
+  }
+}

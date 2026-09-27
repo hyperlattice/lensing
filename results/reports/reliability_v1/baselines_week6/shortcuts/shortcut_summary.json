@@ -1,0 +1,78 @@
+{
+  "bootstrap_resamples": 10000,
+  "bootstrap_seed": 6031,
+  "canonical_prediction_max_abs_difference_arcsec": 1.3939931342576983e-07,
+  "checkpoint_sha256_by_seed": {
+    "12001": "0c72a4caf7a39a87e8fd4887f1ada35b0a1e7ae62fccfe11034bac8e2ea03d6d",
+    "12002": "a372a325abbc94c084ec56e9375abf590f0acd0becf70698e643a5704872caec",
+    "12003": "facc0d948d9fbfb562ad4582502f19cc04786ed49948c2ffe62bde4b2f31b4c4"
+  },
+  "historical_test_accessed": false,
+  "interventions": [
+    "canonical",
+    "rotate_ccw_90",
+    "brightness_half",
+    "brightness_double",
+    "central_disk_zero",
+    "arc_annulus_zero"
+  ],
+  "paired_effects": [
+    {
+      "effect_practically_small": true,
+      "intervention_id": "rotate_ccw_90",
+      "mean_absolute_paired_prediction_shift_arcsec": 0.04051429383046711,
+      "paired_delta_mae_arcsec": -0.0006785288382270305,
+      "parent_bootstrap_95_high_arcsec": 0.0060351505420227465,
+      "parent_bootstrap_95_low_arcsec": -0.007367181706768616,
+      "parent_count": 150,
+      "practically_important_increase_supported": false
+    },
+    {
+      "effect_practically_small": true,
+      "intervention_id": "brightness_half",
+      "mean_absolute_paired_prediction_shift_arcsec": 6.259918976805926e-05,
+      "paired_delta_mae_arcsec": -8.325330928755648e-06,
+      "parent_bootstrap_95_high_arcsec": 5.29581057404314e-06,
+      "parent_bootstrap_95_low_arcsec": -2.099439186626328e-05,
+      "parent_count": 150,
+      "practically_important_increase_supported": false
+    },
+    {
+      "effect_practically_small": true,
+      "intervention_id": "brightness_double",
+      "mean_absolute_paired_prediction_shift_arcsec": 3.047658570719733e-05,
+      "paired_delta_mae_arcsec": 3.931012832771124e-06,
+      "parent_bootstrap_95_high_arcsec": 1.0033604798121552e-05,
+      "parent_bootstrap_95_low_arcsec": -2.613350574996262e-06,
+      "parent_count": 150,
+      "practically_important_increase_supported": false
+    },
+    {
+      "effect_practically_small": false,
+      "intervention_id": "central_disk_zero",
+      "mean_absolute_paired_prediction_shift_arcsec": 0.013406041080911046,
+      "paired_delta_mae_arcsec": 0.007428488521935902,
+      "parent_bootstrap_95_high_arcsec": 0.011891485643894533,
+      "parent_bootstrap_95_low_arcsec": 0.003552864531168485,
+      "parent_count": 150,
+      "practically_important_increase_supported": false
+    },
+    {
+      "effect_practically_small": false,
+      "intervention_id": "arc_annulus_zero",
+      "mean_absolute_paired_prediction_shift_arcsec": 0.31267059710026357,
+      "paired_delta_mae_arcsec": 0.2632425294537799,
+      "parent_bootstrap_95_high_arcsec": 0.30216518496128886,
+      "parent_bootstrap_95_low_arcsec": 0.22461964192622694,
+      "parent_count": 150,
+      "practically_important_increase_supported": true
+    }
+  ],
+  "parent_count": 150,
+  "practical_effect_arcsec": 0.01,
+  "seed_ids": [
+    12001,
+    12002,
+    12003
+  ]
+}

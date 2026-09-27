@@ -1,0 +1,14 @@
+{
+  "canonical_bootstrap_95_high_arcsec": -0.0030899347277094907,
+  "canonical_delta_mae_arcsec": -0.0108980603229516,
+  "canonical_noninferiority_passed": true,
+  "conditional_scale_metadata_extension_required": false,
+  "mean_stress_delta_mae_arcsec": -0.029011449158454744,
+  "overall_mitigation_passed": true,
+  "practical_effect_arcsec": 0.01,
+  "stress_bootstrap_95_high_arcsec": -0.023050822412739706,
+  "stress_bootstrap_95_low_arcsec": -0.03511683765189613,
+  "stress_condition_count": 4,
+  "stress_parent_count": 150,
+  "stress_rule_passed": true
+}

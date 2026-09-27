@@ -1,0 +1,48 @@
+schema_version: 1
+experiment_id: WEEK9-HYBRID-INITIALIZATION
+protocol: docs/reliability_study/protocol_v1.9.md
+training_release: data/simulations/sim-eng1000-v1
+week8_release: data/simulations/reliability-domain-randomized-v1
+week8_predictions: results/reports/reliability_v1/mitigation/mitigation_predictions_before_scoring.csv
+week8_checkpoints:
+  - results/ml/reliability-domain-randomized-v1/seed-12001/best.pt
+  - results/ml/reliability-domain-randomized-v1/seed-12002/best.pt
+  - results/ml/reliability-domain-randomized-v1/seed-12003/best.pt
+validation_conditions:
+  canonical:
+    release: data/simulations/reliability-pixel-scale-v1-final
+    manifest: data/simulations/reliability-pixel-scale-v1-final/splits/validation__canonical.csv
+  pixel-scale-004:
+    release: data/simulations/reliability-pixel-scale-v1-final
+    manifest: data/simulations/reliability-pixel-scale-v1-final/splits/validation__pixel-scale-004.csv
+  pixel-scale-006:
+    release: data/simulations/reliability-pixel-scale-v1-final
+    manifest: data/simulations/reliability-pixel-scale-v1-final/splits/validation__pixel-scale-006.csv
+  exposure-half:
+    release: data/simulations/reliability-observation-systematics-v1
+    manifest: data/simulations/reliability-observation-systematics-v1/splits/validation__exposure-half.csv
+  read-noise-double:
+    release: data/simulations/reliability-observation-systematics-v1
+    manifest: data/simulations/reliability-observation-systematics-v1/splits/validation__read-noise-double.csv
+training_mean_source: data/simulations/sim-eng1000-v1/splits/train.csv
+peak_detection:
+  threshold_snr: 5.0
+  center_smoothing_sigma_arcsec: 0.15
+  lens_center_search_radius_arcsec: 0.35
+  central_exclusion_radius_arcsec: 0.25
+  outer_detection_radius_arcsec: 2.25
+  minimum_peak_separation_arcsec: 0.30
+  maximum_peaks: 4
+fit:
+  estimator: observation-only bounded SIS/SIE point-image geometry
+  theta_E_bounds_arcsec: [0.25, 2.25]
+  axis_ratio_bounds: [0.3, 1.0]
+  orientation_bounds_rad: [0.0, 3.141592653589793]
+  source_position_bounds_arcsec: [-0.5, 0.5]
+  max_function_evaluations: 50
+  starts: [training_mean, peak_radius_median, week8_ml_prediction]
+metrics:
+  bootstrap_resamples: 10000
+  bootstrap_seed: 6031
+  practical_effect_arcsec: 0.01
+output: results/reports/reliability_v1/hybrid_week9

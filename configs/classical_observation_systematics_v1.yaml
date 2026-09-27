@@ -1,0 +1,28 @@
+experiment_id: WEEK4-CLASSICAL-POINT-GEOMETRY
+protocol: docs/reliability_study/protocol_v1.4.md
+validation_release: data/simulations/reliability-observation-systematics-v1
+training_release: data/simulations/sim-eng1000-v1
+cnn_predictions: results/reports/reliability_v1/observation_systematics/cnn_predictions.csv
+validation_interventions:
+  canonical: canonical
+  psf_low: psf-width-075
+  psf_high: psf-width-125
+  noise_repeat_1: noise-repeat-1
+  noise_repeat_2: noise-repeat-2
+  exposure_half: exposure-half
+  read_noise_double: read-noise-double
+  lens_light_zero: lens-light-zero
+  lens_light_double: lens-light-double
+peak_detection:
+  threshold_snr: 5.0
+  center_smoothing_sigma_arcsec: 0.15
+  lens_center_search_radius_arcsec: 0.35
+  central_exclusion_radius_arcsec: 0.25
+  outer_detection_radius_arcsec: 2.25
+  minimum_peak_separation_arcsec: 0.30
+  maximum_peaks: 4
+lens_equation:
+  max_function_evaluations: 50
+bootstrap:
+  resamples: 10000
+  seed: 6031

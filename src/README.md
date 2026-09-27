@@ -11,14 +11,21 @@ configs are repository-relative.
 | `data/` | Manifest schema and the truth-isolated `LensDataset` loader. |
 | `processing/` | FITS metadata, catalog joins, geometry, masks, backgrounds, noise, normalization, preprocessing, previews, and split creation. |
 | `simulation/` | Priors, lens-model adapters, rendering, observation effects, release generation, and stage assembly. |
-| `modeling/` | Classical recovery fits and the bounded real-data angular comparison. |
-| `ml/` | PyTorch datasets, deterministic training, evaluation, metrics, plots, provenance, and registered experiments. |
+| `modeling/` | Classical recovery fits, the bounded real-data angular comparison, geometric controls, and the Week 9–10 study workflows. |
+| `ml/` | PyTorch datasets, deterministic training, evaluation, metrics, plots, provenance, and registered experiments. The `reliability_week*.py` modules implement phase-specific audit and holdout workflows. |
 | `testing/` | Command-line validation helpers for datasets and simulations. Unit and integration tests live in top-level `tests/`. |
 
 The dependency direction is deliberate: `data` defines the contract;
 `processing` and `simulation` create contract-compatible products;
 `modeling` and `ml` consume them. `pipeline.py` coordinates these modules but
 does not contain scientific calculations itself.
+
+The reliability-study modules retain their phase-based filenames because the
+frozen protocols, input hashes, and final package identify those exact paths.
+See [the study guide](../docs/reliability_study/README.md) before changing a
+workflow used by a reported phase. New analyses should use descriptive names
+based on their scientific purpose and receive a versioned configuration and
+protocol where appropriate.
 
 Use these entry points from the repository root:
 
@@ -30,5 +37,7 @@ python -m src.ml.experiments --experiment theta-e-cnn-seeds-v1
 
 When adding code, place reusable logic in the owning package, add a focused
 test under `tests/`, and keep command parsing at a module `main()` or in
-`src/pipeline.py`. Do not put large generated arrays, raw observations, model
-checkpoints, or interactive scratch work in `src`.
+`src/pipeline.py`. Add docstrings for scientific interfaces and inline comments
+for non-obvious numerical reasoning; see [contributor guidance](../CONTRIBUTING.md).
+Do not put large generated arrays, raw observations, model checkpoints, or
+interactive scratch work in `src`.

@@ -1,0 +1,35 @@
+{
+  "batch_size": 16,
+  "epochs": 20,
+  "experiment_id": "week6-learning-curve-n100-seed-12003",
+  "huber_delta": 1.0,
+  "learning_rate": 0.001,
+  "model": {
+    "channels": [
+      8,
+      16,
+      32,
+      64
+    ],
+    "hidden_features": 128,
+    "pooled_size": 4
+  },
+  "num_workers": 0,
+  "output": "results/reports/reliability_v1/baselines_week6/learning_curve/n100/seed-12003",
+  "patience": 6,
+  "release": "data/simulations/sim-eng1000-v1",
+  "seed": 12003,
+  "target_bin_edges_arcsec": [
+    0.5,
+    1.0,
+    1.5,
+    2.0
+  ],
+  "target_field": "theta_E_arcsec",
+  "training_selection": {
+    "ordered_sample_ids_sha256": "60163d01171c8939cbe31265b6364b90ee73e30f9642f4723c8e50a6beefc2d3",
+    "sample_count": 100,
+    "selection_id": "nested-n100-seed-6031"
+  },
+  "weight_decay": 0.0001
+}

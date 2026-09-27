@@ -1,0 +1,18 @@
+{
+  "experiment_id": "WEEK11-INDEPENDENT-BLIND-HOLDOUT",
+  "historical_test_accessed": false,
+  "inference_started_marker_sha256": "f91583cd3cc37200797c84035b632b2120e64bee96cd6433322d9854e6d0e6aa",
+  "post_holdout_tuning": false,
+  "prediction_hashes_before_target_join": {
+    "results\\reports\\reliability_v1\\blind_holdout_week11\\holdout_predictions_before_scoring.csv": "1a45536547d29985431173bcba68cffd985045dd207d57836f37d9e66788a08d",
+    "results\\reports\\reliability_v1\\blind_holdout_week11\\holdout_predictions_per_checkpoint_before_scoring.csv": "2810cf60c5c7ea588aa61b6bc3817792028796e7985d36d4168097a2ad06eca0"
+  },
+  "report_sha256": "9fbc371de73827f8c716a5f29ebf1cbc831fb8f3d3e4f6429254b7f1b5762a04",
+  "scored_once": true,
+  "scored_output_sha256": "667ceaa32ae1b6343753a2625a505cde8b7b78561a08e188aa221557fc2e4fa6",
+  "scored_per_checkpoint_sha256": "a54718b061b76cbc49fcc8898409784668f40f7bea1c1773b44f395bd1cf9a0c",
+  "summary_sha256": "2d9dde4dd037328979e0f68d29925e44b703896fa39f8b883968132c18e5997c",
+  "target_join_count": 1,
+  "target_join_source": "data\\simulations\\reliability-blind-holdout-v1\\manifest.csv",
+  "target_joined_at_unix": 1790447010.3029397
+}

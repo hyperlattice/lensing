@@ -1,0 +1,1237 @@
+{
+  "deflection_grid": [
+    {
+      "axis_ratio": 1.0,
+      "grid_point_count": 1681,
+      "max_component_difference_arcsec": 7.622265485451862e-09,
+      "phi_rad": 0.0
+    },
+    {
+      "axis_ratio": 1.0,
+      "grid_point_count": 1681,
+      "max_component_difference_arcsec": 7.622265263407257e-09,
+      "phi_rad": 0.3
+    },
+    {
+      "axis_ratio": 1.0,
+      "grid_point_count": 1681,
+      "max_component_difference_arcsec": 7.62259944053767e-09,
+      "phi_rad": 1.2
+    },
+    {
+      "axis_ratio": 1.0,
+      "grid_point_count": 1681,
+      "max_component_difference_arcsec": 7.622265263407257e-09,
+      "phi_rad": 2.6
+    },
+    {
+      "axis_ratio": 0.95,
+      "grid_point_count": 1681,
+      "max_component_difference_arcsec": 1.952829897788888e-09,
+      "phi_rad": 0.0
+    },
+    {
+      "axis_ratio": 0.95,
+      "grid_point_count": 1681,
+      "max_component_difference_arcsec": 1.952829897788888e-09,
+      "phi_rad": 0.3
+    },
+    {
+      "axis_ratio": 0.95,
+      "grid_point_count": 1681,
+      "max_component_difference_arcsec": 1.952830341878098e-09,
+      "phi_rad": 1.2
+    },
+    {
+      "axis_ratio": 0.95,
+      "grid_point_count": 1681,
+      "max_component_difference_arcsec": 1.952830119833493e-09,
+      "phi_rad": 2.6
+    },
+    {
+      "axis_ratio": 0.7,
+      "grid_point_count": 1681,
+      "max_component_difference_arcsec": 1.952830341878098e-09,
+      "phi_rad": 0.0
+    },
+    {
+      "axis_ratio": 0.7,
+      "grid_point_count": 1681,
+      "max_component_difference_arcsec": 1.952830341878098e-09,
+      "phi_rad": 0.3
+    },
+    {
+      "axis_ratio": 0.7,
+      "grid_point_count": 1681,
+      "max_component_difference_arcsec": 1.9528306749450053e-09,
+      "phi_rad": 1.2
+    },
+    {
+      "axis_ratio": 0.7,
+      "grid_point_count": 1681,
+      "max_component_difference_arcsec": 1.952830563922703e-09,
+      "phi_rad": 2.6
+    },
+    {
+      "axis_ratio": 0.5,
+      "grid_point_count": 1681,
+      "max_component_difference_arcsec": 1.952829675744283e-09,
+      "phi_rad": 0.0
+    },
+    {
+      "axis_ratio": 0.5,
+      "grid_point_count": 1681,
+      "max_component_difference_arcsec": 1.952829897788888e-09,
+      "phi_rad": 0.3
+    },
+    {
+      "axis_ratio": 0.5,
+      "grid_point_count": 1681,
+      "max_component_difference_arcsec": 1.9528300088111905e-09,
+      "phi_rad": 1.2
+    },
+    {
+      "axis_ratio": 0.5,
+      "grid_point_count": 1681,
+      "max_component_difference_arcsec": 1.952829897788888e-09,
+      "phi_rad": 2.6
+    }
+  ],
+  "experiment_id": "WEEK7-INDEPENDENT-SIE-LENS-EQUATION",
+  "gates": {
+    "deflection_passed": true,
+    "renderer_smoke_passed": true,
+    "root_count_passed": true,
+    "root_position_passed": true
+  },
+  "maximum_deflection_component_difference_arcsec": 7.62259944053767e-09,
+  "maximum_matched_root_separation_arcsec": 6.365856955159883e-09,
+  "passed": true,
+  "protocol": "docs/reliability_study/protocol_v1.7.md",
+  "protocol_sha256": "37ca6f839a0f68c67c6cc6e0cffa0254b1496d4e06c0b7f59591a8772c5713e6",
+  "renderer_smoke": [
+    {
+      "all_finite": true,
+      "clean_flux_ratio": 0.9999999245167006,
+      "clean_scene_max_abs_difference": 1.922403777832038e-09,
+      "clean_shape": [
+        256,
+        256
+      ],
+      "expected_scene_max_abs_difference": 1.862645149230957e-09,
+      "processed_max_abs_difference": 0.0,
+      "processed_shape": [
+        256,
+        256
+      ],
+      "root_count": 2,
+      "sample_id": "sim-eng1000-v1-0013"
+    },
+    {
+      "all_finite": true,
+      "clean_flux_ratio": 1.000000010419182,
+      "clean_scene_max_abs_difference": 4.555007152712287e-10,
+      "clean_shape": [
+        256,
+        256
+      ],
+      "expected_scene_max_abs_difference": 4.656612873077393e-10,
+      "processed_max_abs_difference": 0.0,
+      "processed_shape": [
+        256,
+        256
+      ],
+      "root_count": 2,
+      "sample_id": "sim-eng1000-v1-0023"
+    },
+    {
+      "all_finite": true,
+      "clean_flux_ratio": 0.9999999334367936,
+      "clean_scene_max_abs_difference": 4.713482833207383e-10,
+      "clean_shape": [
+        256,
+        256
+      ],
+      "expected_scene_max_abs_difference": 4.656612873077393e-10,
+      "processed_max_abs_difference": 0.0,
+      "processed_shape": [
+        256,
+        256
+      ],
+      "root_count": 4,
+      "sample_id": "sim-eng1000-v1-0025"
+    },
+    {
+      "all_finite": true,
+      "clean_flux_ratio": 0.9999999369502284,
+      "clean_scene_max_abs_difference": 4.6314495814880896e-10,
+      "clean_shape": [
+        256,
+        256
+      ],
+      "expected_scene_max_abs_difference": 4.656612873077393e-10,
+      "processed_max_abs_difference": 0.0,
+      "processed_shape": [
+        256,
+        256
+      ],
+      "root_count": 2,
+      "sample_id": "sim-eng1000-v1-0039"
+    }
+  ],
+  "root_control_rows": [
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.587013305787114e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0013"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.951978876566249e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0023"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 5.763536731221368e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0025"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.758850233324642e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0039"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 5.629798870717849e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0042"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.053503433379117e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0060"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.141871877362345e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0065"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 4.754175189787435e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0092"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 6.015216152165947e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0095"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.970529586503325e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0112"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.851250999998908e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0114"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.608782416906185e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0128"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.669231019942747e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0133"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.574667779608945e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0134"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.152624271946501e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0136"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 4.778073005308171e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0144"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.703183630136255e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0149"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.738582601177329e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0159"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.701335071599631e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0161"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.5409395189030505e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0164"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.662187630566504e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0166"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.551055175307483e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0170"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.975756359060829e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0171"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.454709387370932e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0172"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.4101560863133957e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0174"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.545532900038678e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0185"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.6452862133348534e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0206"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.4736401768793176e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0207"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 5.179604943486454e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0209"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 6.020937810682795e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0221"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.457677230296272e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0225"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.563918106078064e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0233"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.892834335533446e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0234"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 5.256640428435635e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0241"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 5.568288565032599e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0242"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.9016564047097765e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0246"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 4.84884902200998e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0255"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.6175736198493834e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0260"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 4.177471535502627e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0263"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.487975272550557e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0268"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.647149902869509e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0269"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 5.938106132791759e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0276"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.249421051863026e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0281"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 4.386202365781313e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0292"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 5.106069232304187e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0300"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.6018824484401725e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0305"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.891726779843428e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0319"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.868444660196317e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0323"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 5.388524876848759e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0326"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.662603491494557e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0327"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 5.417442991960904e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0331"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.915288892962901e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0333"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 5.115079015960341e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0339"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.4646447822376205e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0357"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.758090228001539e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0359"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.5463982218885515e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0361"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.903484190646529e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0387"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 5.019984807096256e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0394"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.156196277540127e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0401"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.410031071229183e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0404"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 6.201748202978764e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0405"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.775545787685579e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0406"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.559718592044324e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0413"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.548099070926386e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0416"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.762386278191575e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0428"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.078899614442079e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0430"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 2.5104877359783057e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0435"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.128365395310047e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0444"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.586259964461977e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0452"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 4.598974914968966e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0453"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.972708561836944e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0462"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.845234297286294e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0465"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 6.236423143575023e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0467"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 5.266350610312668e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0480"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 4.031142300790353e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0484"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.75536096893761e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0486"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.585576336738024e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0493"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.835333695027731e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0494"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 5.816892282014714e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0516"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.483376656342424e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0536"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 6.288943666409207e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0540"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 5.816276934328749e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0552"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 6.272770085080591e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0554"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.024278198643793e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0556"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.389940680135669e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0564"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.6582302857991405e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0569"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.57432911534729e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0584"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.409405393148324e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0594"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 2.9386504459443774e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0611"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.681530551743464e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0612"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.929798875059865e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0616"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.28619076808922e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0618"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.088342853025139e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0619"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 4.724997217942935e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0626"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 3.6719165390574634e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0629"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.473303723947315e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0634"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.5306391155506103e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0635"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.537292312406879e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0657"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.2445068148788965e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0660"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.724998980377292e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0675"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 4.034406050159069e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0681"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 4.815875713183996e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0683"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.5430495192025412e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0685"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 2.7614021913487205e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0690"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 1.8262306829082394e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0698"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.0811037847256545e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0699"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 4.680929563734548e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0704"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 6.365856955159883e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0717"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 5.290235621705825e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0722"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.97170510616769e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0730"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.1819233649861746e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0733"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.896706791193951e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0740"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.125505582529134e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0744"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.98338084378913e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0745"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.681593134104782e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0746"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 2.8211020889258544e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0747"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.405952508266091e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0754"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.593896449485234e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0757"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.420841249102259e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0776"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.84180198279152e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0790"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 6.298251915965561e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0798"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.709824694629602e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0807"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.868815895197618e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0819"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 2.8553715175919536e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0832"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 5.65132182332251e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0837"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 1.9658036466061788e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0853"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 6.041399437827411e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0855"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.884373782371557e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0858"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.51224060452757e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0859"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.3148577112314915e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0866"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 4.873122627395906e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0871"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.618718877448219e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0872"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.515097824017234e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0876"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 5.445139568299343e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0892"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 6.176218316242649e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0902"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.2722444176191514e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0912"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 6.000205135182747e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0915"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 4.989833126081543e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0925"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 5.4780985741688554e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0931"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 6.032106136582681e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0935"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.163658319479446e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0945"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 5.570775936595334e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0949"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.5621568292187645e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0958"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.935090246018005e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0966"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 4.232282660337588e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0970"
+    },
+    {
+      "independent_root_count": 4,
+      "maximum_matched_separation_arcsec": 5.075188741527477e-09,
+      "reference_root_count": 4,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0973"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.1530101254736884e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0979"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 3.911229044309761e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0989"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 6.116019570568433e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-0994"
+    },
+    {
+      "independent_root_count": 2,
+      "maximum_matched_separation_arcsec": 5.607704013055789e-09,
+      "reference_root_count": 2,
+      "root_count_match": true,
+      "sample_id": "sim-eng1000-v1-1000"
+    }
+  ],
+  "root_count_agreement_count": 150,
+  "root_count_agreement_fraction": 1.0,
+  "validation_parent_count": 150
+}

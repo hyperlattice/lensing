@@ -110,6 +110,7 @@ class LensDataset:
         domain=None,
         eligible_for=None,
         target_fields=None,
+        expected_shape=(256, 256),
     ):
         manifest_path = Path(manifest_path)
         if manifest_path.is_dir():
@@ -122,6 +123,9 @@ class LensDataset:
             manifest_path = split_path
         self.manifest_path = manifest_path
         self.root = manifest_root if root is None else Path(root)
+        self.expected_shape = None if expected_shape is None else tuple(int(value) for value in expected_shape)
+        if self.expected_shape is not None and (len(self.expected_shape) != 2 or min(self.expected_shape) <= 0):
+            raise ValueError("expected_shape must contain two positive dimensions or be None")
         self.metadata = pd.read_csv(self.manifest_path).reset_index(drop=True)
         missing = REQUIRED_COLUMNS.difference(self.metadata.columns)
         if missing:
@@ -183,8 +187,11 @@ class LensDataset:
         if array is None:
             return [f"{sample_id}: {field} is missing"]
         errors = []
-        if array.shape != (256, 256):
-            errors.append(f"{sample_id}: {field} shape is {array.shape}, expected (256, 256)")
+        if self.expected_shape is None:
+            if array.ndim != 2:
+                errors.append(f"{sample_id}: {field} must be two-dimensional, found shape {array.shape}")
+        elif array.shape != self.expected_shape:
+            errors.append(f"{sample_id}: {field} shape is {array.shape}, expected {self.expected_shape}")
         if dtype is not None and array.dtype != dtype:
             errors.append(f"{sample_id}: {field} dtype is {array.dtype}, expected {dtype}")
         if not np.isfinite(array).all():
@@ -212,8 +219,8 @@ class LensDataset:
                         errors.append(f"{sample_id}: missing {field} file")
                         continue
                     if field in {"mask_path", "coverage_mask_path", "background_mask_path"}:
-                        if array.shape != (256, 256) or array.dtype != bool:
-                            errors.append(f"{sample_id}: {field} must be bool with shape (256, 256)")
+                        if array.shape != image.shape or array.dtype != bool:
+                            errors.append(f"{sample_id}: {field} must be bool with the image shape {image.shape}")
                         continue
                     errors.extend(self._validate_image(array, sample_id, field))
                 variance = self._load_array(row, "variance_path", required=False)
@@ -234,8 +241,8 @@ class LensDataset:
                 else:
                     try:
                         geometry = json.loads(geometry_path.read_text(encoding="utf-8"))
-                        if tuple(geometry.get("target_shape", [])) != (256, 256):
-                            errors.append(f"{sample_id}: geometry target_shape does not match loader shape")
+                        if tuple(geometry.get("target_shape", [])) != image.shape:
+                            errors.append(f"{sample_id}: geometry target_shape does not match image shape")
                     except Exception as exc:
                         errors.append(f"{sample_id}: invalid geometry transform: {exc}")
         return errors

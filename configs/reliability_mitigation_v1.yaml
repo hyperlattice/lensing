@@ -1,0 +1,33 @@
+schema_version: 1
+experiment_id: WEEK8-TARGETED-RANDOMIZATION
+protocol: docs/reliability_study/protocol_v1.8.md
+source_release: data/simulations/sim-eng1000-v1
+randomized_release: data/simulations/reliability-domain-randomized-v1
+output: results/reports/reliability_v1/mitigation
+randomization:
+  seed: 6031
+  views_per_training_parent: 1
+  pixel_scale_arcsec: [0.04, 0.05, 0.06]
+  native_shape_by_pixel_scale:
+    "0.04": [320, 320]
+    "0.05": [256, 256]
+    "0.06": [214, 214]
+  exposure_time_multiplier: [0.5, 1.0]
+  read_noise_multiplier: [1.0, 2.0]
+training:
+  baseline_config: configs/ml_baseline_v1.yaml
+  seeds: [12001, 12002, 12003]
+  train_rows: 1400
+  independent_training_parents: 700
+evaluation:
+  validation_parents: 150
+  conditions:
+    - canonical
+    - pixel-scale-004
+    - pixel-scale-006
+    - exposure-half
+    - read-noise-double
+  stress_conditions: [pixel-scale-004, pixel-scale-006, exposure-half, read-noise-double]
+  bootstrap_resamples: 10000
+  bootstrap_seed: 6031
+  practical_effect_arcsec: 0.01

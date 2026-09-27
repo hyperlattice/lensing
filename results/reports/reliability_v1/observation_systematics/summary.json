@@ -1,0 +1,141 @@
+{
+  "alternate_psf_family_reason": "The validated observation renderer exposes analytic Gaussian PSFs only.",
+  "alternate_psf_family_tested": false,
+  "bootstrap_resamples": 10000,
+  "bootstrap_seed": 6031,
+  "cnn_checkpoint_hashes": {
+    "results/ml/theta-e-cnn-seeds-v1/seed-12001/best.pt": "0c72a4caf7a39a87e8fd4887f1ada35b0a1e7ae62fccfe11034bac8e2ea03d6d",
+    "results/ml/theta-e-cnn-seeds-v1/seed-12002/best.pt": "a372a325abbc94c084ec56e9375abf590f0acd0becf70698e643a5704872caec",
+    "results/ml/theta-e-cnn-seeds-v1/seed-12003/best.pt": "facc0d948d9fbfb562ad4582502f19cc04786ed49948c2ffe62bde4b2f31b4c4"
+  },
+  "condition_count_including_canonical": 11,
+  "experiment_id": "WEEK4-OBSERVATION-SYSTEMATICS",
+  "historical_test_split_accessed": false,
+  "output_files": [
+    "cnn_predictions.csv",
+    "cnn_paired_predictions.csv",
+    "cnn_paired_effects.csv",
+    "cnn_metrics_per_seed.csv",
+    "cnn_summary_metrics.csv",
+    "cnn_radius_bins.csv",
+    "cnn_multiplicity_subgroups.csv",
+    "simulator_observation_descriptors.csv",
+    "paired_effects.png"
+  ],
+  "paired_effects": [
+    {
+      "bootstrap_95_high_arcsec": 0.010448009828726448,
+      "bootstrap_95_low_arcsec": -0.007737723930014503,
+      "effect_practically_small": false,
+      "intervention_id": "psf-width-075",
+      "mean_absolute_paired_prediction_shift_arcsec": 0.03627125183741252,
+      "paired_delta_mae_arcsec": 0.0009249318970574279,
+      "parent_count": 150,
+      "practically_important_increase_supported": false
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.007881549312008742,
+      "bootstrap_95_low_arcsec": -0.006017166203922696,
+      "effect_practically_small": true,
+      "intervention_id": "psf-width-125",
+      "mean_absolute_paired_prediction_shift_arcsec": 0.03791404737366571,
+      "paired_delta_mae_arcsec": 0.0010922165711720784,
+      "parent_count": 150,
+      "practically_important_increase_supported": false
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.008322983576191795,
+      "bootstrap_95_low_arcsec": -0.012504510704014033,
+      "effect_practically_small": false,
+      "intervention_id": "noise-repeat-1",
+      "mean_absolute_paired_prediction_shift_arcsec": 0.046799798541598846,
+      "paired_delta_mae_arcsec": -0.0025280043813917367,
+      "parent_count": 150,
+      "practically_important_increase_supported": false
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.012630351023541545,
+      "bootstrap_95_low_arcsec": -0.00899000174469418,
+      "effect_practically_small": false,
+      "intervention_id": "noise-repeat-2",
+      "mean_absolute_paired_prediction_shift_arcsec": 0.04726921743816799,
+      "paired_delta_mae_arcsec": 0.0012539463573031959,
+      "parent_count": 150,
+      "practically_important_increase_supported": false
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.06485628172424104,
+      "bootstrap_95_low_arcsec": 0.029700723770591946,
+      "effect_practically_small": false,
+      "intervention_id": "exposure-half",
+      "mean_absolute_paired_prediction_shift_arcsec": 0.08908731857935588,
+      "paired_delta_mae_arcsec": 0.04629288487964207,
+      "parent_count": 150,
+      "practically_important_increase_supported": true
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.04505810296866627,
+      "bootstrap_95_low_arcsec": 0.0253689019050863,
+      "effect_practically_small": false,
+      "intervention_id": "read-noise-double",
+      "mean_absolute_paired_prediction_shift_arcsec": 0.053992028898662996,
+      "paired_delta_mae_arcsec": 0.034984141058391996,
+      "parent_count": 150,
+      "practically_important_increase_supported": true
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.015939086642530225,
+      "bootstrap_95_low_arcsec": -0.0031901352968480854,
+      "effect_practically_small": false,
+      "intervention_id": "lens-light-zero",
+      "mean_absolute_paired_prediction_shift_arcsec": 0.03459783646795485,
+      "paired_delta_mae_arcsec": 0.005836654901504517,
+      "parent_count": 150,
+      "practically_important_increase_supported": false
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.0002172641158103921,
+      "bootstrap_95_low_arcsec": -0.011087290803591412,
+      "effect_practically_small": false,
+      "intervention_id": "lens-light-double",
+      "mean_absolute_paired_prediction_shift_arcsec": 0.02642803894148933,
+      "paired_delta_mae_arcsec": -0.005249825186199612,
+      "parent_count": 150,
+      "practically_important_increase_supported": false
+    },
+    {
+      "bootstrap_95_high_arcsec": 1.9013113445705838e-05,
+      "bootstrap_95_low_arcsec": -5.021340317196315e-06,
+      "effect_practically_small": true,
+      "intervention_id": "normalization-affine",
+      "mean_absolute_paired_prediction_shift_arcsec": 5.800141228569879e-05,
+      "paired_delta_mae_arcsec": 7.393625047471789e-06,
+      "parent_count": 150,
+      "practically_important_increase_supported": false
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.013945162789689169,
+      "bootstrap_95_low_arcsec": -0.0023394087652365363,
+      "effect_practically_small": false,
+      "intervention_id": "normalization-percentile",
+      "mean_absolute_paired_prediction_shift_arcsec": 0.05089795125855339,
+      "paired_delta_mae_arcsec": 0.005865206850899591,
+      "parent_count": 150,
+      "practically_important_increase_supported": false
+    }
+  ],
+  "parent_manifest_sha256": "189c1351e768c6a6563c2af3243419df92d39f14a9670ff6385b693405e06a44",
+  "practical_effect_arcsec": 0.01,
+  "protocol": "docs/reliability_study/protocol_v1.4.md",
+  "protocol_sha256": "db8ddbcd0265bd56fc1338635cc44b3201fe544ae0602035b16111f919b8d17c",
+  "release": "data/simulations/reliability-observation-systematics-v1",
+  "release_manifest_sha256": "61fc3294c4492a9164edd7a8050860257655c4d079df45ce11fee3192cf3cd55",
+  "reproducibility_hashes": {
+    "classical_audit_code": "8ba0a8d910ea1826a664eb88a3d78d3446161f908f0d664a44bc298010c484d4",
+    "classical_config": "74163fcf3030b6d234ce2e4ae90bb43ed948aa5eaefda063fd7bb5572150995b",
+    "classical_estimator_code": "fd1da226e4bf2221ee5a20c41741370773f5551c5ed3b043d12ca3a58800e079",
+    "cnn_audit_code": "3f46effb18ba50a4525a059f14d04f8c51d832b1128c8b7f13b7239afd514263",
+    "counterfactual_config": "eab6a593e2d2572797efc982fc6145756ccfc9817e3fe027722919bfb1333ce2"
+  },
+  "source_parent_count": 150
+}

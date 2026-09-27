@@ -1,0 +1,107 @@
+{
+  "bootstrap_resamples": 10000,
+  "bootstrap_seed": 6031,
+  "decision": {
+    "canonical_bootstrap_95_high_arcsec": -0.0030899347277094907,
+    "canonical_delta_mae_arcsec": -0.0108980603229516,
+    "canonical_noninferiority_passed": true,
+    "conditional_scale_metadata_extension_required": false,
+    "mean_stress_delta_mae_arcsec": -0.029011449158454744,
+    "overall_mitigation_passed": true,
+    "practical_effect_arcsec": 0.01,
+    "stress_bootstrap_95_high_arcsec": -0.023050822412739706,
+    "stress_bootstrap_95_low_arcsec": -0.03511683765189613,
+    "stress_condition_count": 4,
+    "stress_parent_count": 150,
+    "stress_rule_passed": true
+  },
+  "experiment_id": "WEEK8-TARGETED-RANDOMIZATION",
+  "historical_test_accessed": false,
+  "paired_effects": [
+    {
+      "bootstrap_95_high_arcsec": -0.0030899347277094907,
+      "bootstrap_95_low_arcsec": -0.018852114269171348,
+      "condition": "canonical",
+      "mean_absolute_prediction_shift_arcsec": 0.046445265760548846,
+      "mean_prediction_shift_arcsec": 0.006096636356736487,
+      "paired_delta_mae_arcsec": -0.0108980603229516,
+      "parent_count": 150
+    },
+    {
+      "bootstrap_95_high_arcsec": -0.026337160320790615,
+      "bootstrap_95_low_arcsec": -0.0533437677626928,
+      "condition": "pixel-scale-004",
+      "mean_absolute_prediction_shift_arcsec": 0.08748827439886558,
+      "mean_prediction_shift_arcsec": 0.06348401063425098,
+      "paired_delta_mae_arcsec": -0.039848701020981814,
+      "parent_count": 150
+    },
+    {
+      "bootstrap_95_high_arcsec": -0.03324191271202802,
+      "bootstrap_95_low_arcsec": -0.05226436632728199,
+      "condition": "pixel-scale-006",
+      "mean_absolute_prediction_shift_arcsec": 0.06826255766687295,
+      "mean_prediction_shift_arcsec": -0.013241535751811563,
+      "paired_delta_mae_arcsec": -0.04274679258975582,
+      "parent_count": 150
+    },
+    {
+      "bootstrap_95_high_arcsec": -0.009866721173287345,
+      "bootstrap_95_low_arcsec": -0.02974105200638047,
+      "condition": "exposure-half",
+      "mean_absolute_prediction_shift_arcsec": 0.059057989453512975,
+      "mean_prediction_shift_arcsec": 0.024988559621031387,
+      "paired_delta_mae_arcsec": -0.019463927785645197,
+      "parent_count": 150
+    },
+    {
+      "bootstrap_95_high_arcsec": -0.0037321137142277594,
+      "bootstrap_95_low_arcsec": -0.024704258790444824,
+      "condition": "read-noise-double",
+      "mean_absolute_prediction_shift_arcsec": 0.06100098669388106,
+      "mean_prediction_shift_arcsec": 0.0064693730870718285,
+      "paired_delta_mae_arcsec": -0.013986375237436155,
+      "parent_count": 150
+    }
+  ],
+  "prediction_file_written_before_target_join": true,
+  "protocol": "docs/reliability_study/protocol_v1.8.md",
+  "protocol_sha256": "1ecf6cf4e3808d0a5f83682f62c6a5df76eaea07e7131f5ecc0b7b523a6ea300",
+  "real_data_labels_accessed": false,
+  "release_integrity": {
+    "ancestry_passed": true,
+    "exposure_multiplier_counts": {
+      "0.5": 332,
+      "1.0": 368
+    },
+    "historical_test_accessed": false,
+    "manifest_sha256": "c6ed4c198a615745c342556f9d6050b93a10268a11aae227aad7097f66513fe4",
+    "pixel_scale_counts": {
+      "0.04": 227,
+      "0.05": 226,
+      "0.06": 247
+    },
+    "randomization_assignment_sha256": "6ab19c83f59482a83d816435126174d71105f723b19cf4a9596a10a5fe2183bc",
+    "read_noise_multiplier_counts": {
+      "1.0": 340,
+      "2.0": 360
+    },
+    "release": "data/simulations/reliability-domain-randomized-v1",
+    "schema_validation_passed": true,
+    "source_train_split_sha256": "dade8d9ef54f1c6bfc74c089a937e48fc836e258b65b37bc21379d4c78f488d3",
+    "source_validation_split_sha256": "0eb44e8034f9508fceb3c60bfd2d3a2766c4ac40d5f742d1a359a0c7559ed672",
+    "strict_loader_passed": true,
+    "train_row_count": 1400,
+    "train_unique_parent_count": 700,
+    "validation_row_count": 150
+  },
+  "seeds": [
+    12001,
+    12002,
+    12003
+  ],
+  "training_parent_count": 700,
+  "training_release_manifest_sha256": "c6ed4c198a615745c342556f9d6050b93a10268a11aae227aad7097f66513fe4",
+  "training_row_count": 1400,
+  "validation_parent_count": 150
+}

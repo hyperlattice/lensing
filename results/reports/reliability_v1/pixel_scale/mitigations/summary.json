@@ -1,0 +1,154 @@
+{
+  "bootstrap_resamples": 10000,
+  "bootstrap_seed": 6031,
+  "effects_path": "results/reports/reliability_v1/pixel_scale/mitigations/paired_effects.csv",
+  "experiment_id": "H1-PIXEL-SCALE-MITIGATION",
+  "historical_test_split_accessed": false,
+  "mitigations": {
+    "metadata": {
+      "baseline_comparisons": [
+        {
+          "baseline_mae_arcsec": 0.0920969106091393,
+          "bootstrap_95_high_arcsec": -0.005167679607868194,
+          "bootstrap_95_low_arcsec": -0.021254014889399212,
+          "candidate_mae_arcsec": 0.07893349236912194,
+          "checkpoint_sha256_by_seed": "{\"12001\": \"3b830393b41b75454a613de8eb8dabe077da5763eb69e4c42955400bb21ad41f\", \"12002\": \"c618e2aaca6a5a4a4bb1d9254fa0801e3313438e439bc0ca94b87960c07dc229\", \"12003\": \"767fc54955401c942eeceffa591e07916c7dfd8e51cefb3717c6dd0c4246fbdf\"}",
+          "comparison": "candidate_minus_frozen_baseline",
+          "family": "metadata",
+          "intervention_id": "canonical",
+          "paired_delta_mae_arcsec": -0.01316341824001736,
+          "parent_count": 150
+        },
+        {
+          "baseline_mae_arcsec": 0.16278398712476091,
+          "bootstrap_95_high_arcsec": -0.05413105892472799,
+          "bootstrap_95_low_arcsec": -0.08810078981518746,
+          "candidate_mae_arcsec": 0.09186631759007767,
+          "checkpoint_sha256_by_seed": "{\"12001\": \"3b830393b41b75454a613de8eb8dabe077da5763eb69e4c42955400bb21ad41f\", \"12002\": \"c618e2aaca6a5a4a4bb1d9254fa0801e3313438e439bc0ca94b87960c07dc229\", \"12003\": \"767fc54955401c942eeceffa591e07916c7dfd8e51cefb3717c6dd0c4246fbdf\"}",
+          "comparison": "candidate_minus_frozen_baseline",
+          "family": "metadata",
+          "intervention_id": "pixel-scale-004",
+          "paired_delta_mae_arcsec": -0.07091766953468324,
+          "parent_count": 150
+        },
+        {
+          "baseline_mae_arcsec": 0.14098785837491348,
+          "bootstrap_95_high_arcsec": 0.032240298029449256,
+          "bootstrap_95_low_arcsec": 0.009401575118303305,
+          "candidate_mae_arcsec": 0.16185957007937957,
+          "checkpoint_sha256_by_seed": "{\"12001\": \"3b830393b41b75454a613de8eb8dabe077da5763eb69e4c42955400bb21ad41f\", \"12002\": \"c618e2aaca6a5a4a4bb1d9254fa0801e3313438e439bc0ca94b87960c07dc229\", \"12003\": \"767fc54955401c942eeceffa591e07916c7dfd8e51cefb3717c6dd0c4246fbdf\"}",
+          "comparison": "candidate_minus_frozen_baseline",
+          "family": "metadata",
+          "intervention_id": "pixel-scale-006",
+          "paired_delta_mae_arcsec": 0.02087171170446608,
+          "parent_count": 150
+        }
+      ],
+      "candidate_scale_penalties": [
+        {
+          "bootstrap_95_high_arcsec": 0.024442657778660448,
+          "bootstrap_95_low_arcsec": 0.0019623799953195765,
+          "comparison": "shifted_scale_minus_candidate_canonical",
+          "family": "metadata",
+          "intervention_id": "pixel-scale-004",
+          "paired_delta_mae_arcsec": 0.012932825220955744,
+          "parent_count": 150
+        },
+        {
+          "bootstrap_95_high_arcsec": 0.10132655123538442,
+          "bootstrap_95_low_arcsec": 0.06369449994961421,
+          "comparison": "shifted_scale_minus_candidate_canonical",
+          "family": "metadata",
+          "intervention_id": "pixel-scale-006",
+          "paired_delta_mae_arcsec": 0.08292607771025765,
+          "parent_count": 150
+        }
+      ],
+      "canonical_degradation_at_most_threshold": true,
+      "checkpoint_sha256_by_seed": {
+        "12001": "3b830393b41b75454a613de8eb8dabe077da5763eb69e4c42955400bb21ad41f",
+        "12002": "c618e2aaca6a5a4a4bb1d9254fa0801e3313438e439bc0ca94b87960c07dc229",
+        "12003": "767fc54955401c942eeceffa591e07916c7dfd8e51cefb3717c6dd0c4246fbdf"
+      },
+      "lowers_error_at_both_shifted_scales": false,
+      "utility_rule_passed": false
+    },
+    "pixel_target": {
+      "baseline_comparisons": [
+        {
+          "baseline_mae_arcsec": 0.0920969106091393,
+          "bootstrap_95_high_arcsec": -0.006104119837509105,
+          "bootstrap_95_low_arcsec": -0.022445164925259317,
+          "candidate_mae_arcsec": 0.07802656017803167,
+          "checkpoint_sha256_by_seed": "{\"12001\": \"71e41c47109d1c1a43a1d4f1c1ba1f9c2eddffd2403280afcc75bfb372c08b28\", \"12002\": \"ff8c38d7508e8b1ed64d23799f05ab4cbf2ce86b10957b9a1bc5044ac1c45bca\", \"12003\": \"a2677a0c23f0e120f5fe401eb6f2b62895e0b560eab86f8bc797cd069665b8cc\"}",
+          "comparison": "candidate_minus_frozen_baseline",
+          "family": "pixel_target",
+          "intervention_id": "canonical",
+          "paired_delta_mae_arcsec": -0.014070350431107619,
+          "parent_count": 150
+        },
+        {
+          "baseline_mae_arcsec": 0.16278398712476091,
+          "bootstrap_95_high_arcsec": -0.05655243479918071,
+          "bootstrap_95_low_arcsec": -0.0913136783602112,
+          "candidate_mae_arcsec": 0.08934762666852118,
+          "checkpoint_sha256_by_seed": "{\"12001\": \"71e41c47109d1c1a43a1d4f1c1ba1f9c2eddffd2403280afcc75bfb372c08b28\", \"12002\": \"ff8c38d7508e8b1ed64d23799f05ab4cbf2ce86b10957b9a1bc5044ac1c45bca\", \"12003\": \"a2677a0c23f0e120f5fe401eb6f2b62895e0b560eab86f8bc797cd069665b8cc\"}",
+          "comparison": "candidate_minus_frozen_baseline",
+          "family": "pixel_target",
+          "intervention_id": "pixel-scale-004",
+          "paired_delta_mae_arcsec": -0.07343636045623975,
+          "parent_count": 150
+        },
+        {
+          "baseline_mae_arcsec": 0.14098785837491348,
+          "bootstrap_95_high_arcsec": 0.07635594176483533,
+          "bootstrap_95_low_arcsec": 0.03311160491390679,
+          "candidate_mae_arcsec": 0.19571238273892608,
+          "checkpoint_sha256_by_seed": "{\"12001\": \"71e41c47109d1c1a43a1d4f1c1ba1f9c2eddffd2403280afcc75bfb372c08b28\", \"12002\": \"ff8c38d7508e8b1ed64d23799f05ab4cbf2ce86b10957b9a1bc5044ac1c45bca\", \"12003\": \"a2677a0c23f0e120f5fe401eb6f2b62895e0b560eab86f8bc797cd069665b8cc\"}",
+          "comparison": "candidate_minus_frozen_baseline",
+          "family": "pixel_target",
+          "intervention_id": "pixel-scale-006",
+          "paired_delta_mae_arcsec": 0.054724524364012574,
+          "parent_count": 150
+        }
+      ],
+      "candidate_scale_penalties": [
+        {
+          "bootstrap_95_high_arcsec": 0.021141374774916923,
+          "bootstrap_95_low_arcsec": 0.0012980905957373895,
+          "comparison": "shifted_scale_minus_candidate_canonical",
+          "family": "pixel_target",
+          "intervention_id": "pixel-scale-004",
+          "paired_delta_mae_arcsec": 0.011321066490489499,
+          "parent_count": 150
+        },
+        {
+          "bootstrap_95_high_arcsec": 0.14006278928040697,
+          "bootstrap_95_low_arcsec": 0.09621781907429232,
+          "comparison": "shifted_scale_minus_candidate_canonical",
+          "family": "pixel_target",
+          "intervention_id": "pixel-scale-006",
+          "paired_delta_mae_arcsec": 0.11768582256089441,
+          "parent_count": 150
+        }
+      ],
+      "canonical_degradation_at_most_threshold": true,
+      "checkpoint_sha256_by_seed": {
+        "12001": "71e41c47109d1c1a43a1d4f1c1ba1f9c2eddffd2403280afcc75bfb372c08b28",
+        "12002": "ff8c38d7508e8b1ed64d23799f05ab4cbf2ce86b10957b9a1bc5044ac1c45bca",
+        "12003": "a2677a0c23f0e120f5fe401eb6f2b62895e0b560eab86f8bc797cd069665b8cc"
+      },
+      "lowers_error_at_both_shifted_scales": false,
+      "utility_rule_passed": false
+    }
+  },
+  "paired_predictions_path": "results/reports/reliability_v1/pixel_scale/mitigations/paired_predictions.csv",
+  "per_seed_metrics_path": "results/reports/reliability_v1/pixel_scale/mitigations/per_seed_metrics.csv",
+  "practical_effect_arcsec": 0.01,
+  "seeds": [
+    12001,
+    12002,
+    12003
+  ],
+  "validation_parent_count": 150
+}

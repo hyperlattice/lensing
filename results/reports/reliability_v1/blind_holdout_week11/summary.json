@@ -1,0 +1,69 @@
+{
+  "condition_ensemble_mae_arcsec": {
+    "canonical_baseline": {
+      "canonical": 0.08277236229981876,
+      "exposure-half": 0.11503618199261441,
+      "pixel-scale-004": 0.16956852552542756,
+      "pixel-scale-006": 0.12781036255372824,
+      "read-noise-double": 0.11550540152150612
+    },
+    "domain_randomized": {
+      "canonical": 0.06547754968405145,
+      "exposure-half": 0.09358258049811356,
+      "pixel-scale-004": 0.11584701673744639,
+      "pixel-scale-006": 0.0861557991363287,
+      "read-noise-double": 0.08791635388494974
+    }
+  },
+  "conditions": [
+    "canonical",
+    "pixel-scale-004",
+    "pixel-scale-006",
+    "exposure-half",
+    "read-noise-double"
+  ],
+  "config_sha256": "b31cdd8fa55bed52401d0025efba703dc4f88e63ed2b160704e7a9a365d2d7fb",
+  "ensemble_prediction_count": 1500,
+  "equal_weight_four_stress_paired_mae_delta_95_ci_arcsec": [
+    -0.04273628291823041,
+    -0.02941948809448354
+  ],
+  "equal_weight_four_stress_paired_mae_delta_arcsec": -0.03610468033410948,
+  "evaluated_checkpoint_count": 6,
+  "evaluation_environment": {
+    "device": "cpu",
+    "python": "3.13.6",
+    "torch": "2.8.0+cpu",
+    "torch_num_threads": 6
+  },
+  "experiment_id": "WEEK11-INDEPENDENT-BLIND-HOLDOUT",
+  "freeze_manifest_sha256": "01a2c64e81cd9813f22988293f6aa992ade8fa8c67bdd652e8da218c3706da79",
+  "historical_test_accessed": false,
+  "inference_runtime_seconds": 9.882795699988492,
+  "inference_started_marker_sha256": "f91583cd3cc37200797c84035b632b2120e64bee96cd6433322d9854e6d0e6aa",
+  "limitations": [
+    "Evidence is limited to an independent holdout from the same synthetic parent prior and renderer.",
+    "Stress conditions are the four preselected Week 8 nuisance mismatches; no alternate full renderer or real images are represented.",
+    "The result cannot establish simulation-to-CASTLES transfer or calibrated HST detector behavior."
+  ],
+  "observation_count": 750,
+  "parent_count": 150,
+  "per_checkpoint_prediction_count": 4500,
+  "post_holdout_tuning_or_checkpoint_selection": false,
+  "prediction_hashes_before_target_join": {
+    "results\\reports\\reliability_v1\\blind_holdout_week11\\holdout_predictions_before_scoring.csv": "1a45536547d29985431173bcba68cffd985045dd207d57836f37d9e66788a08d",
+    "results\\reports\\reliability_v1\\blind_holdout_week11\\holdout_predictions_per_checkpoint_before_scoring.csv": "2810cf60c5c7ea588aa61b6bc3817792028796e7985d36d4168097a2ad06eca0"
+  },
+  "predictions_written_before_target_join": true,
+  "protocol": "docs/reliability_study/protocol_v1.11.md",
+  "protocol_sha256": "45021815dcdafb5c19bbd22f6abc57064ed279af55ee619279fa4a982b8b8e60",
+  "real_data_labels_accessed": false,
+  "release_id": "reliability-blind-holdout-v1",
+  "release_manifest_sha256": "b2d66af01e86d118b41003a0d2f41b0aab259fce2458643dc91c46830a58ad0c",
+  "target_joined_once": true,
+  "target_source": "new holdout manifest only, after prediction hashes were written",
+  "training_target_range_arcsec": [
+    0.500737206848946,
+    1.999537725519252
+  ]
+}

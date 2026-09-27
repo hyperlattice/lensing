@@ -1,0 +1,12 @@
+feature,synthetic_p01,synthetic_p99,synthetic_min,synthetic_max,real_fraction_within_synthetic_p01_p99,measurement_semantics_match,coverage_rating,limitation
+pixel_scale_arcsec,0.04,0.06,0.04,0.06,0.5255474452554745,True,weakly represented,Same WCS-derived angular scale in both domains; synthetic pixel scale was randomized over three levels.
+processed_field_of_view_x_arcsec,12.75,12.78,12.75,12.78,0.0656934306569343,True,unsupported,Processed-image center-to-center width times pixel scale; this represents the angular field in the retained model input.
+processed_field_of_view_y_arcsec,12.75,12.78,12.75,12.78,0.0656934306569343,True,unsupported,Processed-image center-to-center height times pixel scale; this represents the angular field in the retained model input.
+intensity_robust_range_q99_q01,0.0758366367254406,0.5841762265771625,0.0642392478883266,0.6845363378524781,0.0,False,weakly represented,Image products use different calibration and normalization semantics; range is descriptive only.
+central_concentration_abs_r05_over_r25,0.0332485800209891,0.0498428588673618,0.0284855862796896,0.1610682212486221,0.1094890510948905,False,weakly represented,Scale-free image proxy about the fixed cutout center; not lens-centered or a physical morphology label.
+instrument_filter,,,,,,False,unsupported,"CASTLES instrument/filter categories are measured, but the simulator has no instrument- or filter-specific rendering."
+psf_family_and_calibrated_width,,,,,,False,unsupported,Synthetic PSFs are analytic Gaussian controls; eligible real PSF products/proxies are absent.
+invalid_and_coverage_masks,,,,,,False,unsupported,Real normalized products have no retained invalid-pixel or coverage masks.
+calibrated_detector_background_and_noise,,,,,,False,unsupported,Synthetic variance/read-noise settings are toy controls and cannot calibrate HST detector noise.
+reviewed_image_multiplicity,,,,,,False,unsupported,No reviewed multiplicity field is available in the eligible real metadata release.
+source_and_lens_morphology_family,,,,,,False,weakly represented,The simulator covers analytic Sersic plus point-source light and SIE mass with optional shear; realistic diversity is not established by radial proxies.

@@ -1,0 +1,75 @@
+{
+  "bootstrap_resamples": 10000,
+  "bootstrap_seed": 6031,
+  "checkpoint_count": 3,
+  "checkpoint_sha256": {
+    "results/ml/theta-e-cnn-seeds-v1/seed-12001/best.pt": "0c72a4caf7a39a87e8fd4887f1ada35b0a1e7ae62fccfe11034bac8e2ea03d6d",
+    "results/ml/theta-e-cnn-seeds-v1/seed-12002/best.pt": "a372a325abbc94c084ec56e9375abf590f0acd0becf70698e643a5704872caec",
+    "results/ml/theta-e-cnn-seeds-v1/seed-12003/best.pt": "facc0d948d9fbfb562ad4582502f19cc04786ed49948c2ffe62bde4b2f31b4c4"
+  },
+  "effects": [
+    {
+      "bootstrap_95_high_arcsec": 0.0185554010272026,
+      "bootstrap_95_low_arcsec": -0.004165187286006078,
+      "effect_practically_small": false,
+      "input_strategy": "angular_resampled",
+      "intervention_id": "pixel-scale-004",
+      "mean_absolute_prediction_shift_arcsec": 0.05640421748161316,
+      "paired_mean_delta_mae_arcsec": 0.006964784065882366,
+      "parent_count": 150,
+      "practically_important_increase_supported": false
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.005341810034381019,
+      "bootstrap_95_low_arcsec": -0.014340123153395121,
+      "effect_practically_small": false,
+      "input_strategy": "angular_resampled",
+      "intervention_id": "pixel-scale-006",
+      "mean_absolute_prediction_shift_arcsec": 0.049720538854599,
+      "paired_mean_delta_mae_arcsec": -0.004288612339231704,
+      "parent_count": 150,
+      "practically_important_increase_supported": false
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.08998336819145414,
+      "bootstrap_95_low_arcsec": 0.051893630776140426,
+      "effect_practically_small": false,
+      "input_strategy": "native",
+      "intervention_id": "pixel-scale-004",
+      "mean_absolute_prediction_shift_arcsec": 0.14001660399966773,
+      "paired_mean_delta_mae_arcsec": 0.07068707651562162,
+      "parent_count": 150,
+      "practically_important_increase_supported": true
+    },
+    {
+      "bootstrap_95_high_arcsec": 0.06471589092082448,
+      "bootstrap_95_low_arcsec": 0.03262600702709622,
+      "effect_practically_small": false,
+      "input_strategy": "native",
+      "intervention_id": "pixel-scale-006",
+      "mean_absolute_prediction_shift_arcsec": 0.11463545401891073,
+      "paired_mean_delta_mae_arcsec": 0.0488909477657742,
+      "parent_count": 150,
+      "practically_important_increase_supported": true
+    }
+  ],
+  "experiment_id": "H1-PIXEL-SCALE",
+  "input_strategies": [
+    "native",
+    "angular_resampled"
+  ],
+  "intervention_ids": [
+    "canonical",
+    "pixel-scale-004",
+    "pixel-scale-006"
+  ],
+  "paired_effects_path": "results/reports/reliability_v1/pixel_scale/angular_resampling/paired_effects.csv",
+  "parent_count": 150,
+  "parent_manifest_sha256": "189c1351e768c6a6563c2af3243419df92d39f14a9670ff6385b693405e06a44",
+  "per_seed_metrics_path": "results/reports/reliability_v1/pixel_scale/angular_resampling/per_seed_metrics.csv",
+  "plot_path": "results/reports/reliability_v1/pixel_scale/angular_resampling/paired_scale_effects.png",
+  "practical_effect_arcsec": 0.01,
+  "predictions_path": "results/reports/reliability_v1/pixel_scale/angular_resampling/predictions.csv",
+  "scale_summary_path": "results/reports/reliability_v1/pixel_scale/angular_resampling/scale_summary.csv",
+  "split": "validation"
+}
