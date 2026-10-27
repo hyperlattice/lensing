@@ -1,0 +1,2 @@
+sample_id,lens_id,domain,pixel_scale,original_shape,image_unit,reference_radius_arcsec,reference_sigma_arcsec,reference_definition,reference_citation,accuracy_ready,status
+slacs1430-hst-pilot-v1,SDSSJ1430+4105,real,0.05,151x151,unknown,1.52,,published_SIE_radius_convention_unmapped,https://doi.org/10.1051/0004-6361/202451341,False,blocked

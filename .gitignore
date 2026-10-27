@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 .venv/
+.venv-crosssim/
+.venv-autolens/
+.python-crosssim/
+.cache-crosssim/
 venv/
 ENV/
 env/
@@ -27,6 +31,8 @@ htmlcov/
 castles/
 normalized/
 data/simulations/
+data/raw/external/
+data/external_reference_research/
 data/releases/*/products/
 data/releases/*/previews/
 data/derived/actual/*/products/

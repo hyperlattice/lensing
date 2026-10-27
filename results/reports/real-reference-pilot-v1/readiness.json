@@ -1,0 +1,61 @@
+{
+  "experiment_id": "real-reference-pilot-v1",
+  "sample_count": 1,
+  "accuracy_ready_count": 0,
+  "cnn_inference_run": false,
+  "samples": [
+    {
+      "sample_id": "slacs1430-hst-pilot-v1",
+      "lens_id": "SDSSJ1430+4105",
+      "domain": "real",
+      "pixel_scale": 0.05,
+      "original_shape": "151x151",
+      "image_unit": "unknown",
+      "reference_radius_arcsec": 1.52,
+      "reference_sigma_arcsec": null,
+      "reference_definition": "published_SIE_radius_convention_unmapped",
+      "reference_citation": "https://doi.org/10.1051/0004-6361/202451341",
+      "accuracy_ready": false,
+      "status": "blocked",
+      "structural_errors": [],
+      "blockers": [
+        "center_reviewed_required",
+        "calibration_reviewed_required",
+        "real_image_provenance_reviewed_required",
+        "reference_quality_reviewed_required",
+        "target_mapping_reviewed_required",
+        "individual_reference_uncertainty_required",
+        "verified_science_units_required"
+      ],
+      "comparison_references": [
+        {
+          "citation": "https://doi.org/10.1093/mnras/stad582",
+          "table_url": "https://academic.oup.com/view-large/401449642",
+          "table": 1,
+          "radius_arcsec": 1.481,
+          "uncertainty_lower_arcsec": 0.002,
+          "uncertainty_upper_arcsec": 0.002,
+          "definition": "effective_Einstein_radius_power_law_plus_shear",
+          "usage": "independent_comparison_only_not_SIE_target",
+          "quality_reviewed": false
+        }
+      ],
+      "headers": {
+        "science": {},
+        "noise": {},
+        "psf": {}
+      },
+      "asset_sha256": {
+        "science": "c0e1bc9652dab1c7b617abeebd59766f3266d5aad6e9dc02862afd2285b39530",
+        "noise": "e8649f1c2e1c8d91ccdf89ae0db44207c56afb514c09783153e3f80242d34512",
+        "psf": "3f0b2a2d1f0f689218bba17d847107534570d61e31cfc4ac0110173c7302053f"
+      },
+      "psf_input_sum": 0.9534107446670532,
+      "angular_pixel_extent_arcsec": [
+        7.550000000000001,
+        7.550000000000001
+      ]
+    }
+  ],
+  "config_sha256": "f4f41949206cfdc1df1a18cb5aeced29975ed93bd6bc5661c85554723504f640"
+}
