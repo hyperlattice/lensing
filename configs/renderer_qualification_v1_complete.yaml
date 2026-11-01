@@ -1,0 +1,20 @@
+experiment_id: renderer-qualification-v1
+stage: numerical_development_only
+source_config: configs/simulation_engineering_v1.yaml
+seed: 720101
+random_parent_count: 100
+integration_factors: [2, 4, 8]
+reference_factor: 8
+convergence_normalized_l1_tolerance: 0.005
+cross_engine_normalized_l1_tolerance: 0.00001
+profile_relative_tolerance: 0.000000001
+point_position_tolerance_arcsec: 0.00001
+point_amplitude_relative_tolerance: 0.001
+required_lenstronomy_version: 1.14.2
+required_autolens_version: 2026.10.26.1
+reference_output: data/simulations/renderer-qualification-v1-complete
+report_output: results/reports/renderer-qualification-v1
+geometries:
+  - {name: canonical, shape: [256, 256], pixel_scale_arcsec: 0.05}
+  - {name: finer, shape: [320, 320], pixel_scale_arcsec: 0.04}
+  - {name: coarser, shape: [213, 213], pixel_scale_arcsec: 0.06}

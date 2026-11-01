@@ -1,0 +1,26 @@
+experiment_id: theta-e-matched-budget-validation-v1
+status: source_validation_development_only
+training_root: results/ml/theta-e-matched-budget-v1
+output: results/reports/matched-budget-validation-v1
+seeds: [12001, 12002, 12003]
+batch_size: 16
+torch_threads: 6
+bootstrap_resamples: 10000
+bootstrap_seed: 6031
+canonical_truth: data/simulations/sim-eng1000-v1/splits/validation.csv
+conditions:
+  canonical:
+    release: data/simulations/sim-eng1000-v1
+    manifest: data/simulations/sim-eng1000-v1/splits/validation.csv
+  pixel-scale-004:
+    release: data/simulations/reliability-pixel-scale-v1-final
+    manifest: data/simulations/reliability-pixel-scale-v1-final/splits/validation__pixel-scale-004.csv
+  pixel-scale-006:
+    release: data/simulations/reliability-pixel-scale-v1-final
+    manifest: data/simulations/reliability-pixel-scale-v1-final/splits/validation__pixel-scale-006.csv
+  exposure-half:
+    release: data/simulations/reliability-observation-systematics-v1
+    manifest: data/simulations/reliability-observation-systematics-v1/splits/validation__exposure-half.csv
+  read-noise-double:
+    release: data/simulations/reliability-observation-systematics-v1
+    manifest: data/simulations/reliability-observation-systematics-v1/splits/validation__read-noise-double.csv

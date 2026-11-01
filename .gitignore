@@ -18,6 +18,7 @@ dist/
 # this repository, so cover every .pytest-* directory rather than one run name.
 .pytest_cache/
 .pytest-*/
+results/test-tmp/
 .coverage
 .coverage.*
 htmlcov/
@@ -74,3 +75,12 @@ private/
 
 # Local FITS header scratch files.
 q256_header.txt
+
+# Reviewer boundary: only the curated source under
+# submission/aaai27/reviewer_bundle/ is intended for workshop sharing. Raw
+# data, generated results, local author-kit files, and internal reports remain
+# private even when they are present in the working tree.
+results/
+data/
+docs/private/
+submission/aaai27/private/

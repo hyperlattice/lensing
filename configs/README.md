@@ -12,9 +12,12 @@ configuration to a new versioned name before changing a scientific setting.
 | `real_comparison_v1.yaml` | Preselected exploratory actual-observation comparison. |
 | `real_reference_pilot_v1.yaml` | Pinned external science/noise/PSF intake and separately governed observational references. |
 | `cross_simulator_development_v1.yaml` | Optional PyAutoLens controls and development rendering; no CNN scoring. |
+| `cross_simulator_development_v2.yaml` | Corrected Sersic mapping and gated alternate-renderer development release. |
 | `ml_baseline_v1.yaml` | First CNN training configuration. |
 | `ml/registry_v1.yaml` | Registry of multi-run ML experiment suites. |
 | `ml/baseline_seeds_v1.yaml` | Fixed three-seed validation benchmark. |
+| `ml/matched_budget_v1.yaml` | Source-only training with paired parent schedules and equal optimizer updates. |
+| `ml/matched_budget_validation_v1.yaml` | Descriptive source-validation stress scoring of the fixed-update checkpoints. |
 | `classical_*.yaml` | Frozen pixel-scale, observation-systematics, and source-physics classical controls. |
 | `reliability_*.yaml` | Versioned counterfactual, audit, mitigation, cross-simulator, hybrid, domain-gap, and blind-holdout study settings. |
 

@@ -52,6 +52,30 @@ surveys has been downloaded or declared ready.
 
 ## Alternate simulation layer
 
+The commands and adapter below describe the original v1 development record.
+Current implementation is `autolens_backend_v2.py` / `cross_simulator_v2.py`,
+with converted Sersic radius/intensity and matched Gaussian support. The new
+controls passed 36 profile cases, 4 image/point comparisons, 2 PSFs and 8
+detector settings; mass-deflection controls also pass. The v2 release has 16
+accepted observations and no rejections. All remain development-only.
+Evidence: `results/reports/cross-simulator-controls-v2/report.md`.
+An additional four-system supersampling convergence check passed its
+predeclared criterion; see `results/reports/cross-simulator-convergence-v1/report.md`.
+
+```powershell
+# Reference export uses the original Python environment, with JIT explicitly disabled by the script.
+python -B -m scripts.cross_simulator_controls_v2 export
+.venv-autolens\Scripts\python.exe -B -m scripts.cross_simulator_controls_v2 validate
+.venv-autolens\Scripts\python.exe -B -m src.simulation.cross_simulator_v2 generate --config configs/cross_simulator_development_v2.yaml
+```
+
+Those outputs already exist and the commands refuse overwrite. For later
+experiments use separately versioned paths/configs. The original central
+light-profile floor differs; broader center/parameter and integration
+convergence coverage and a strict final benchmark contract remain open. These scripts
+do not score CNNs. The independent matched-training workflow and its
+source-validation scoring are documented in `matched_training_protocol_v1.md`.
+
 Configuration: [`cross_simulator_development_v1.yaml`](../configs/cross_simulator_development_v1.yaml).
 Implementation: [`autolens_backend.py`](../src/simulation/autolens_backend.py)
 and [`cross_simulator.py`](../src/simulation/cross_simulator.py).
@@ -102,7 +126,8 @@ drop-in release for the existing strict ML loader.
 
 ## Remaining scientific gates
 
-Before a confirmatory cross-simulator experiment:
+The v2 controls above establish limited development-grid mass/light/image
+agreement. Before a confirmatory cross-simulator experiment:
 
 1. Validate mass normalization and coordinate conventions against the frozen
    Lenstronomy implementation as well as the analytic control.
