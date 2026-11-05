@@ -19,6 +19,7 @@ ALLOWED = {
     "reproducibility_checklist.md",
     "figures/equal_budget_mae_by_condition.png",
     "figures/equal_budget_paired_contrasts.png",
+    "figures/simulated_lens_examples_and_results.pdf",
 }
 
 

@@ -4,8 +4,8 @@
 
 - The primary question is whether source-only observation-condition variation
   improves a CNN Einstein-radius regressor under a matched training budget.
-- Arms are canonical (C), uniform variation (G), and failure-weighted variation
-  (R).
+- Arms are canonical (C), uniform variation (G), and difficult-condition
+  sampling (R).
 - All arms use the same architecture, initialization, optimizer, batch size,
   update count, and source-image exposure.
 - Ten paired training seeds are used, with 880 optimizer updates per fit and
@@ -19,7 +19,7 @@
 - The primary endpoint is parent-averaged four-stress MAE in arcseconds.
 - Bootstrap resampling is performed over independent parent systems, keeping
   observation-condition views grouped within each parent.
-- The R-versus-G contrast is reported as inconclusive rather than selected out.
+- The R-versus-G contrast is reported as inconclusive rather than omitted.
 - No real-image score, independent-simulator transfer claim, or published-model
   leaderboard comparison is included.
 

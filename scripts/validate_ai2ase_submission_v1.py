@@ -32,6 +32,7 @@ def main() -> int:
         PACKAGE / "reproducibility_checklist.md",
         PACKAGE / "figures" / "equal_budget_mae_by_condition.png",
         PACKAGE / "figures" / "equal_budget_paired_contrasts.png",
+        PACKAGE / "figures" / "simulated_lens_examples_and_results.pdf",
     ]
     missing = [str(path.relative_to(ROOT)) for path in required if not path.exists()]
     if missing:
