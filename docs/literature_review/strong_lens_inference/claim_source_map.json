@@ -1,0 +1,21 @@
+{
+  "date": "2026-11-04",
+  "claim_types": "External findings versus reviewer inferences are separated; local numerical results are not attributed to external literature.",
+  "claims": [
+    {"claim":"Fast CNN strong-lens parameter estimation has substantial precedent since 2017.","type":"external finding","sources":["hezaveh2017"]},
+    {"claim":"Lens light, colour, SNR and mass-light assumptions influence neural parameter inference.","type":"external finding","sources":["pearson2019","gawade2025"]},
+    {"claim":"Neural uncertainty calibration is an established evaluation problem in lensing.","type":"external finding","sources":["levasseur2017","gentile2023","poh2025"]},
+    {"claim":"An interim training prior can bias inference, and hierarchical correction requires adequate training support.","type":"external finding","sources":["wagner2021"]},
+    {"claim":"Small simulator mismatches can bias population-level neural lensing inference despite matched-distribution success.","type":"external finding; adjacent subhalo task","sources":["filipp2025"]},
+    {"claim":"Real-observation applications exist, but reference fits and selection limit ground-truth interpretation.","type":"external finding and appraisal","sources":["gentile2023","gawade2025","erickson2025","euclid_lemon"]},
+    {"claim":"PSF treatment and source modelling can cause discrepancies between otherwise sophisticated lens analyses.","type":"external finding","sources":["shajib2022","galan2024"]},
+    {"claim":"First-pass automated success and final success after rescue should be distinguished.","type":"reviewer reporting recommendation","sources":["etherington2022","tinylens2025"]},
+    {"claim":"Neural estimates can help initialize physical fitting.","type":"external finding","sources":["pearson2021","euclid_lemon"]},
+    {"claim":"SBC tests computation under a generative model; its sensitivity depends on diagnostics and does not prove observational realism.","type":"methodological finding and scope interpretation","sources":["talts2018","modrak2025"]},
+    {"claim":"Lens-finding selection can change the evaluated lens population.","type":"external finding; detection context","sources":["herle2024","collett2015"]},
+    {"claim":"A scalar Einstein radius is insufficient to establish dark-matter substructure or cosmological measurement.","type":"scientific scope inference","sources":["auger2010","vegetti2012","park2021","schneider2013","schneider2014"]},
+    {"claim":"Separate fresh noise, angular standardization and observation-condition variation before claiming a mechanism.","type":"reviewer proposed experiment based on local confounding","sources":["pearson2019","gawade2025","filipp2025"],"local_sources":["scripts/run_equal_budget_final_v1.py","src/ml/robustness_training_v1.py","submission/aaai27/reviewer_bundle/paper.tex"]},
+    {"claim":"The current manuscript reports a uniform-versus-fixed improvement but does not establish a failure-weighted advantage.","type":"local manuscript result; not independently rerun","sources":[],"local_sources":["submission/aaai27/reviewer_bundle/paper.tex","docs/equal_budget_final_v1.md"]},
+    {"claim":"A controlled mechanism-and-mismatch study is a plausible next framing, but novelty is not established by this review.","type":"reviewer recommendation","sources":["pearson2019","pearson2021","poh2025","gawade2025","euclid_lemon","filipp2025"]}
+  ]
+}

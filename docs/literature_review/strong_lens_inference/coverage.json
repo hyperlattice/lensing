@@ -1,0 +1,58 @@
+{
+  "search_cutoff": "2026-11-04",
+  "review_type": "single-reviewer comprehensive scoping and critical narrative review",
+  "target_unique_topical_references": 60,
+  "unique_topical_references": 60,
+  "shortfall": 0,
+  "year_range": [
+    2003,
+    2026
+  ],
+  "counts_by_publication_status": {
+    "journal article": 47,
+    "workshop paper": 3,
+    "preprint; no journal version verified": 4,
+    "conference paper": 4,
+    "journal version; arXiv access": 1,
+    "conference report; arXiv access": 1
+  },
+  "counts_by_access_depth": {
+    "abstract and bibliographic metadata": 48,
+    "selected full-text sections": 10,
+    "publisher software-paper landing page and bibliographic metadata": 2
+  },
+  "counts_by_relevance": {
+    "lensing-specific": 48,
+    "lensing selection/detection; adjacent to parameter inference": 3,
+    "general method": 9
+  },
+  "separate_records_not_counted_in_60": [
+    {
+      "type": "corrigendum",
+      "doi": "10.1051/0004-6361/202039574e",
+      "status": "identity verified; text not retrieved (403)"
+    },
+    {
+      "type": "official detector documentation",
+      "url": "https://etc.stsci.edu/etcstatic/users_guide/1_2_1_snr.html"
+    },
+    {
+      "type": "official detector documentation",
+      "url": "https://hst-docs.stsci.edu/drizzpac/chapter-3-description-of-the-drizzle-algorithm/3-3-weight-maps-and-correlated-noise"
+    },
+    {
+      "type": "workflow attribution; not topical evidence",
+      "doi": "10.48550/arXiv.2609.00065"
+    }
+  ],
+  "limits": [
+    "No complete bibliographic-database exports or reproducible ranked-search result denominator; no PRISMA counts claimed",
+    "Single-reviewer eligibility and appraisal; no independent duplicate screening",
+    "Selected full-text assessment is not a claim that 60 papers were read in full",
+    "Metadata verification does not establish claim support; use access depth and evidence notes",
+    "No quantitative meta-analysis: tasks, datasets, metrics, priors, instruments and reference standards differ",
+    "Publisher/arXiv correction flags checked opportunistically; no comprehensive retraction-status database audit",
+    "General methods, reviews and software are explicitly distinguished from direct empirical inference evidence",
+    "No experiments rerun; current-project numerical results attributed to local manuscript/report"
+  ]
+}

@@ -1,0 +1,6569 @@
+[
+  {
+    "id": "hezaveh2017",
+    "title": "Fast automated analysis of strong gravitational lenses with convolutional neural networks",
+    "authors": [
+      {
+        "family": "Hezaveh",
+        "given": "Yashar D."
+      },
+      {
+        "family": "Perreault Levasseur",
+        "given": "Laurence"
+      },
+      {
+        "family": "Marshall",
+        "given": "Philip J."
+      }
+    ],
+    "year": 2017,
+    "venue": "Nature",
+    "volume": "548",
+    "issue": "7669",
+    "pages_or_article": "555-557",
+    "doi": "10.1038/nature23463",
+    "arxiv": "1708.08842",
+    "url": "https://doi.org/10.1038/nature23463",
+    "theme": "amortized inference",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/1708.08842",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1038/nature23463",
+      "https://arxiv.org/abs/1708.08842"
+    ],
+    "dataset_and_design": "SIE parameter regression; synthetic training with observational augmentation; real-lens demonstration.",
+    "supported_finding": "Established fast CNN lens modelling.",
+    "main_limitation": "Demonstration is not broad survey-level calibration.",
+    "project_implication": "Use as historical baseline; augmentation is longstanding.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "levasseur2017",
+    "title": "Uncertainties in Parameters Estimated with Neural Networks: Application to Strong Gravitational Lensing",
+    "authors": [
+      {
+        "family": "Perreault Levasseur",
+        "given": "Laurence"
+      },
+      {
+        "family": "Hezaveh",
+        "given": "Yashar D."
+      },
+      {
+        "family": "Wechsler",
+        "given": "Risa H."
+      }
+    ],
+    "year": 2017,
+    "venue": "The Astrophysical Journal Letters",
+    "volume": "850",
+    "issue": "1",
+    "pages_or_article": "L7",
+    "doi": "10.3847/2041-8213/aa9704",
+    "arxiv": "1708.08843",
+    "url": "https://doi.org/10.3847/2041-8213/aa9704",
+    "theme": "uncertainty",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/1708.08843",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.3847/2041-8213/aa9704",
+      "https://arxiv.org/abs/1708.08843"
+    ],
+    "dataset_and_design": "Synthetic SIE plus shear and magnification; approximate Bayesian dropout.",
+    "supported_finding": "Assessed marginal coverage and tuned dropout for uncertainty calibration.",
+    "main_limitation": "Calibration evaluated under the simulation setup.",
+    "project_implication": "Compare calibration, not just residual accuracy.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "pearson2019",
+    "title": "The use of convolutional neural networks for modelling large optically-selected strong galaxy-lens samples",
+    "authors": [
+      {
+        "family": "Pearson",
+        "given": "James"
+      },
+      {
+        "family": "Li",
+        "given": "Nan"
+      },
+      {
+        "family": "Dye",
+        "given": "Simon"
+      }
+    ],
+    "year": 2019,
+    "venue": "Monthly Notices of the Royal Astronomical Society",
+    "volume": "488",
+    "issue": "1",
+    "pages_or_article": "991-1004",
+    "doi": "10.1093/mnras/stz1750",
+    "arxiv": "",
+    "url": "https://doi.org/10.1093/mnras/stz1750",
+    "theme": "amortized inference",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://doi.org/10.1093/mnras/stz1750",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1093/mnras/stz1750"
+    ],
+    "dataset_and_design": "LSST/Euclid-like simulations; lens light, colours, SNR and mass-light scatter.",
+    "supported_finding": "Observational and galaxy assumptions change inference performance.",
+    "main_limitation": "Controlled simulations; its error summary is not this project's MAE.",
+    "project_implication": "Test lens-light shortcuts and physically meaningful nuisance variation.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "pearson2021",
+    "title": "Strong lens modelling: comparing and combining Bayesian neural networks and parametric profile fitting",
+    "authors": [
+      {
+        "family": "Pearson",
+        "given": "James"
+      },
+      {
+        "family": "Maresca",
+        "given": "Jacob"
+      },
+      {
+        "family": "Li",
+        "given": "Nan"
+      },
+      {
+        "family": "Dye",
+        "given": "Simon"
+      }
+    ],
+    "year": 2021,
+    "venue": "Monthly Notices of the Royal Astronomical Society",
+    "volume": "505",
+    "issue": "3",
+    "pages_or_article": "4362-4382",
+    "doi": "10.1093/mnras/stab1547",
+    "arxiv": "2103.03257",
+    "url": "https://doi.org/10.1093/mnras/stab1547",
+    "theme": "hybrid inference",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "selected full-text sections",
+    "sections_assessed": "Sections 3-5: test construction, error definition, comparisons and limitations",
+    "support_url": "https://academic.oup.com/mnras/article/505/3/4362/6287584",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1093/mnras/stab1547",
+      "https://arxiv.org/abs/2103.03257"
+    ],
+    "dataset_and_design": "Simulated lenses with analytic and EAGLE masses, HUDF sources and foreground structure.",
+    "supported_finding": "CNN predictions and uncertainties can improve initialization of physical fitting.",
+    "main_limitation": "Performance and timings depend on test family and fitting configuration.",
+    "project_implication": "Include a hybrid baseline before inventing a more complex learner.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "schuldt2021",
+    "title": "HOLISMOKES. IV. Efficient mass modeling of strong lenses through deep learning",
+    "authors": [
+      {
+        "family": "Schuldt",
+        "given": "S."
+      },
+      {
+        "family": "Suyu",
+        "given": "S. H."
+      },
+      {
+        "family": "Meinhardt",
+        "given": "T."
+      },
+      {
+        "family": "Leal-Taixé",
+        "given": "L."
+      },
+      {
+        "family": "Cañameras",
+        "given": "R."
+      },
+      {
+        "family": "Taubenberger",
+        "given": "S."
+      },
+      {
+        "family": "Halkola",
+        "given": "A."
+      }
+    ],
+    "year": 2021,
+    "venue": "Astronomy & Astrophysics",
+    "volume": "646",
+    "issue": "",
+    "pages_or_article": "A126",
+    "doi": "10.1051/0004-6361/202039574",
+    "arxiv": "2010.00602",
+    "url": "https://doi.org/10.1051/0004-6361/202039574",
+    "theme": "amortized inference",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/2010.00602",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1051/0004-6361/202039574",
+      "https://arxiv.org/abs/2010.00602"
+    ],
+    "dataset_and_design": "HSC lens-galaxy images and HUDF sources used in simulated SIE lenses.",
+    "supported_finding": "Tested architectures, doubles/quads and Einstein-radius priors.",
+    "main_limitation": "Publisher flags a 2022 corrigendum; correction text not retrieved.",
+    "project_implication": "Do not quote original numerical results until the correction is checked.",
+    "correction_status": "2022 corrigendum verified: 10.1051/0004-6361/202039574e; text retrieval blocked (403); original numerical estimates not used",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "schuldt2023",
+    "title": "HOLISMOKES. IX. Neural network inference of strong-lens parameters and uncertainties from ground-based images",
+    "authors": [
+      {
+        "family": "Schuldt",
+        "given": "S."
+      },
+      {
+        "family": "Cañameras",
+        "given": "R."
+      },
+      {
+        "family": "Shu",
+        "given": "Y."
+      },
+      {
+        "family": "Suyu",
+        "given": "S. H."
+      },
+      {
+        "family": "Taubenberger",
+        "given": "S."
+      },
+      {
+        "family": "Meinhardt",
+        "given": "T."
+      },
+      {
+        "family": "Leal-Taixé",
+        "given": "L."
+      }
+    ],
+    "year": 2023,
+    "venue": "Astronomy & Astrophysics",
+    "volume": "671",
+    "issue": "",
+    "pages_or_article": "A147",
+    "doi": "10.1051/0004-6361/202244325",
+    "arxiv": "",
+    "url": "https://doi.org/10.1051/0004-6361/202244325",
+    "theme": "uncertainty",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://doi.org/10.1051/0004-6361/202244325",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1051/0004-6361/202244325"
+    ],
+    "dataset_and_design": "HSC/HUDF-based simulated ground-based images; seven mass/shear outputs and uncertainties.",
+    "supported_finding": "SIE recovery improves, but shear and time-delay precision remain difficult.",
+    "main_limitation": "Resolution limits differ by parameter; fast output need not be adequate for follow-up science.",
+    "project_implication": "Measure resolution relative to Einstein radius.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "wagner2021",
+    "title": "Hierarchical Inference with Bayesian Neural Networks: An Application to Strong Gravitational Lensing",
+    "authors": [
+      {
+        "family": "Wagner-Carena",
+        "given": "Sebastian"
+      },
+      {
+        "family": "Park",
+        "given": "Ji Won"
+      },
+      {
+        "family": "Birrer",
+        "given": "Simon"
+      },
+      {
+        "family": "Marshall",
+        "given": "Philip J."
+      },
+      {
+        "family": "Roodman",
+        "given": "Aaron"
+      },
+      {
+        "family": "Wechsler",
+        "given": "Risa H."
+      },
+      {
+        "literal": "(LSST Dark Energy Science Collaboration)"
+      }
+    ],
+    "year": 2021,
+    "venue": "The Astrophysical Journal",
+    "volume": "909",
+    "issue": "2",
+    "pages_or_article": "187",
+    "doi": "10.3847/1538-4357/abdf59",
+    "arxiv": "2010.13787",
+    "url": "https://doi.org/10.3847/1538-4357/abdf59",
+    "theme": "population inference",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/2010.13787",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.3847/1538-4357/abdf59",
+      "https://arxiv.org/abs/2010.13787"
+    ],
+    "dataset_and_design": "Synthetic lens-subtracted HST images; power-law lens models; shifted lens populations.",
+    "supported_finding": "Hierarchical inference can correct an unrepresentative training interim prior.",
+    "main_limitation": "Requires sufficient training support; not a general correction for an incorrect image simulator.",
+    "project_implication": "Separate prior shift from observation-model mismatch.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "park2021",
+    "title": "Large-scale Gravitational Lens Modeling with Bayesian Neural Networks for Accurate and Precise Inference of the Hubble Constant",
+    "authors": [
+      {
+        "family": "Park",
+        "given": "Ji Won"
+      },
+      {
+        "family": "Wagner-Carena",
+        "given": "Sebastian"
+      },
+      {
+        "family": "Birrer",
+        "given": "Simon"
+      },
+      {
+        "family": "Marshall",
+        "given": "Philip J."
+      },
+      {
+        "family": "Lin",
+        "given": "Joshua Yao-Yu"
+      },
+      {
+        "family": "Roodman",
+        "given": "Aaron"
+      },
+      {
+        "literal": "(The LSST Dark Energy Science Collaboration)"
+      }
+    ],
+    "year": 2021,
+    "venue": "The Astrophysical Journal",
+    "volume": "910",
+    "issue": "1",
+    "pages_or_article": "39",
+    "doi": "10.3847/1538-4357/abdfc4",
+    "arxiv": "2012.00042",
+    "url": "https://doi.org/10.3847/1538-4357/abdfc4",
+    "theme": "cosmography",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/2012.00042",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.3847/1538-4357/abdfc4",
+      "https://arxiv.org/abs/2012.00042"
+    ],
+    "dataset_and_design": "Synthetic HST lensed AGN with lens light; simulated delays and environmental priors.",
+    "supported_finding": "Propagates neural lens posteriors into ensemble Hubble-constant inference.",
+    "main_limitation": "Forecast/recovery test under assumptions, not an observational cosmological measurement.",
+    "project_implication": "A scalar radius result cannot support an H0 claim.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "legin2023",
+    "title": "A Framework for Obtaining Accurate Posteriors of Strong Gravitational Lensing Parameters with Flexible Priors and Implicit Likelihoods Using Density Estimation",
+    "authors": [
+      {
+        "family": "Legin",
+        "given": "Ronan"
+      },
+      {
+        "family": "Hezaveh",
+        "given": "Yashar"
+      },
+      {
+        "family": "Perreault-Levasseur",
+        "given": "Laurence"
+      },
+      {
+        "family": "Wandelt",
+        "given": "Benjamin"
+      }
+    ],
+    "year": 2023,
+    "venue": "The Astrophysical Journal",
+    "volume": "943",
+    "issue": "1",
+    "pages_or_article": "4",
+    "doi": "10.3847/1538-4357/aca7c2",
+    "arxiv": "2212.00044",
+    "url": "https://doi.org/10.3847/1538-4357/aca7c2",
+    "theme": "simulation-based inference",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/2212.00044",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.3847/1538-4357/aca7c2",
+      "https://arxiv.org/abs/2212.00044"
+    ],
+    "dataset_and_design": "Synthetic lens simulations; regression compression followed by mixture-density likelihood.",
+    "supported_finding": "Allows explicit inference priors and evaluates posterior calibration.",
+    "main_limitation": "Accurate compression likelihood does not ensure simulator realism or sufficiency.",
+    "project_implication": "A reusable point predictor can be a compression stage.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "gentile2023",
+    "title": "lemon: LEns MOdelling with Neural networks – I. Automated modelling of strong gravitational lenses with Bayesian Neural Networks",
+    "authors": [
+      {
+        "family": "Gentile",
+        "given": "Fabrizio"
+      },
+      {
+        "family": "Tortora",
+        "given": "Crescenzo"
+      },
+      {
+        "family": "Covone",
+        "given": "Giovanni"
+      },
+      {
+        "family": "Koopmans",
+        "given": "Léon V E"
+      },
+      {
+        "family": "Li",
+        "given": "Rui"
+      },
+      {
+        "family": "Leuzzi",
+        "given": "Laura"
+      },
+      {
+        "family": "Napolitano",
+        "given": "Nicola R"
+      }
+    ],
+    "year": 2023,
+    "venue": "Monthly Notices of the Royal Astronomical Society",
+    "volume": "522",
+    "issue": "4",
+    "pages_or_article": "5442-5455",
+    "doi": "10.1093/mnras/stad1325",
+    "arxiv": "",
+    "url": "https://doi.org/10.1093/mnras/stad1325",
+    "theme": "amortized inference",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://doi.org/10.1093/mnras/stad1325",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1093/mnras/stad1325"
+    ],
+    "dataset_and_design": "HST/Euclid-like simulations; SIE radius and ellipticity; pilot real SLACS application.",
+    "supported_finding": "LEMON estimates parameters and uncertainties, with a real-image pilot.",
+    "main_limitation": "Real agreement relies on reference models rather than known true masses.",
+    "project_implication": "Uncertainty and observational comparison already have direct precedent.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "poh2025",
+    "title": "Deep inference of simulated strong lenses in ground-based surveys",
+    "authors": [
+      {
+        "family": "Poh",
+        "given": "Jason"
+      },
+      {
+        "family": "Samudre",
+        "given": "Ashwin"
+      },
+      {
+        "family": "Ćiprijanović",
+        "given": "Aleksandra"
+      },
+      {
+        "family": "Frieman",
+        "given": "Joshua"
+      },
+      {
+        "family": "Khullar",
+        "given": "Gourav"
+      },
+      {
+        "family": "Nord",
+        "given": "Brian D."
+      }
+    ],
+    "year": 2025,
+    "venue": "Journal of Cosmology and Astroparticle Physics",
+    "volume": "2025",
+    "issue": "05",
+    "pages_or_article": "053",
+    "doi": "10.1088/1475-7516/2025/05/053",
+    "arxiv": "2501.08524",
+    "url": "https://doi.org/10.1088/1475-7516/2025/05/053",
+    "theme": "simulation-based inference",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "selected full-text sections",
+    "sections_assessed": "Evaluation diagnostics; results; Appendix A noise bug and Appendix B stability",
+    "support_url": "https://arxiv.org/html/2501.08524v2",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1088/1475-7516/2025/05/053",
+      "https://arxiv.org/abs/2501.08524"
+    ],
+    "dataset_and_design": "DES-like synthetic images; NPE versus BNN for 1, 5 and 12 parameters.",
+    "supported_finding": "NPE performs better for most assessed parameters; uses coverage, ranks and predictive checks.",
+    "main_limitation": "Appendix A reports underestimated background noise from a magnitude conversion bug.",
+    "project_implication": "Use its diagnostic suite; do not borrow numerical precision as a real-data target.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "gawade2025",
+    "title": "Neural network prediction of model parameters for strong lensing samples from Hyper Suprime-Cam Survey",
+    "authors": [
+      {
+        "family": "Gawade",
+        "given": "Priyanka"
+      },
+      {
+        "family": "More",
+        "given": "Anupreeta"
+      },
+      {
+        "family": "More",
+        "given": "Surhud"
+      },
+      {
+        "family": "Kimura",
+        "given": "Akisato"
+      },
+      {
+        "family": "Sonnenfeld",
+        "given": "Alessandro"
+      },
+      {
+        "family": "Oguri",
+        "given": "Masamune"
+      },
+      {
+        "family": "Yoshida",
+        "given": "Naoki"
+      }
+    ],
+    "year": 2025,
+    "venue": "Monthly Notices of the Royal Astronomical Society",
+    "volume": "540",
+    "issue": "4",
+    "pages_or_article": "3384-3399",
+    "doi": "10.1093/mnras/staf935",
+    "arxiv": "2404.18897",
+    "url": "https://doi.org/10.1093/mnras/staf935",
+    "theme": "real-data validation",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "selected full-text sections",
+    "sections_assessed": "Simulation construction, results and discussion; arXiv v2 plus journal metadata",
+    "support_url": "https://arxiv.org/html/2404.18897v2",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1093/mnras/staf935",
+      "https://arxiv.org/abs/2404.18897"
+    ],
+    "dataset_and_design": "Increasing simulation realism; comparison against YattaLens fits of 182 real HSC lenses.",
+    "supported_finding": "Real-background injection and lens subtraction matter; radius is more consistent than ellipticity.",
+    "main_limitation": "Reference fits carry systematic error; realism is not a single monotone scale.",
+    "project_implication": "Strong nearby study for simulation-to-real validation.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "erickson2025",
+    "title": "Lens Modeling of STRIDES Strongly Lensed Quasars Using Neural Posterior Estimation",
+    "authors": [
+      {
+        "family": "Erickson",
+        "given": "Sydney"
+      },
+      {
+        "family": "Wagner-Carena",
+        "given": "Sebastian"
+      },
+      {
+        "family": "Marshall",
+        "given": "Phil"
+      },
+      {
+        "family": "Millon",
+        "given": "Martin"
+      },
+      {
+        "family": "Birrer",
+        "given": "Simon"
+      },
+      {
+        "family": "Roodman",
+        "given": "Aaron"
+      },
+      {
+        "family": "Schmidt",
+        "given": "Thomas"
+      },
+      {
+        "family": "Treu",
+        "given": "Tommaso"
+      },
+      {
+        "family": "Schuldt",
+        "given": "Stefan"
+      },
+      {
+        "family": "Shajib",
+        "given": "Anowar J."
+      },
+      {
+        "family": "Venkatraman",
+        "given": "Padma"
+      },
+      {
+        "literal": "The LSST Dark Energy Science Collaboration"
+      }
+    ],
+    "year": 2025,
+    "venue": "The Astronomical Journal",
+    "volume": "170",
+    "issue": "1",
+    "pages_or_article": "44",
+    "doi": "10.3847/1538-3881/add99f",
+    "arxiv": "2410.10123",
+    "url": "https://doi.org/10.3847/1538-3881/add99f",
+    "theme": "real-data validation",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "selected full-text sections",
+    "sections_assessed": "Instrumental effects, verification design, observational and forward-model comparisons",
+    "support_url": "https://arxiv.org/html/2410.10123v2",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.3847/1538-3881/add99f",
+      "https://arxiv.org/abs/2410.10123"
+    ],
+    "dataset_and_design": "Simulated analogues and 14 real HST STRIDES quasar lenses; NPE/SNPE plus hierarchy.",
+    "supported_finding": "Applies automated posterior and population inference to observations.",
+    "main_limitation": "Mass-profile assumptions and differences among reference fits remain relevant.",
+    "project_implication": "Empirical PSFs and dithering/drizzling are useful modelling precedents.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "euclid_lemon",
+    "title": "Euclid Quick Data Release (Q1). XXXI. LEMON – LEns MOdelling with Neural networks. Automated and fast modelling of Euclid gravitational lenses with singular isothermal ellipsoid mass profile",
+    "authors": [
+      {
+        "literal": "Euclid Collaboration"
+      },
+      {
+        "family": "Busillo",
+        "given": "V."
+      },
+      {
+        "family": "Tortora",
+        "given": "C."
+      },
+      {
+        "family": "Metcalf",
+        "given": "R. B."
+      },
+      {
+        "family": "Nightingale",
+        "given": "J. W."
+      },
+      {
+        "family": "Meneghetti",
+        "given": "M."
+      },
+      {
+        "family": "Gentile",
+        "given": "F."
+      },
+      {
+        "family": "Gavazzi",
+        "given": "R."
+      },
+      {
+        "family": "Zhong",
+        "given": "F."
+      },
+      {
+        "family": "Li",
+        "given": "R."
+      },
+      {
+        "family": "Clément",
+        "given": "B."
+      },
+      {
+        "family": "Covone",
+        "given": "G."
+      },
+      {
+        "family": "Napolitano",
+        "given": "N. R."
+      },
+      {
+        "family": "Courbin",
+        "given": "F."
+      },
+      {
+        "family": "Walmsley",
+        "given": "M."
+      },
+      {
+        "family": "Jullo",
+        "given": "E."
+      },
+      {
+        "family": "Pearson",
+        "given": "J."
+      },
+      {
+        "family": "Scott",
+        "given": "D."
+      },
+      {
+        "family": "Le Brun",
+        "given": "A. M. C."
+      },
+      {
+        "family": "Leuzzi",
+        "given": "L."
+      },
+      {
+        "family": "Aghanim",
+        "given": "N."
+      },
+      {
+        "family": "Altieri",
+        "given": "B."
+      },
+      {
+        "family": "Amara",
+        "given": "A."
+      },
+      {
+        "family": "Andreon",
+        "given": "S."
+      },
+      {
+        "family": "Aussel",
+        "given": "H."
+      },
+      {
+        "family": "Baccigalupi",
+        "given": "C."
+      },
+      {
+        "family": "Baldi",
+        "given": "M."
+      },
+      {
+        "family": "Bardelli",
+        "given": "S."
+      },
+      {
+        "family": "Battaglia",
+        "given": "P."
+      },
+      {
+        "family": "Biviano",
+        "given": "A."
+      },
+      {
+        "family": "Branchini",
+        "given": "E."
+      },
+      {
+        "family": "Brescia",
+        "given": "M."
+      },
+      {
+        "family": "Brinchmann",
+        "given": "J."
+      },
+      {
+        "family": "Camera",
+        "given": "S."
+      },
+      {
+        "family": "Cañas-Herrera",
+        "given": "G."
+      },
+      {
+        "family": "Capobianco",
+        "given": "V."
+      },
+      {
+        "family": "Carbone",
+        "given": "C."
+      },
+      {
+        "family": "Cardone",
+        "given": "V. F."
+      },
+      {
+        "family": "Carretero",
+        "given": "J."
+      },
+      {
+        "family": "Casas",
+        "given": "S."
+      },
+      {
+        "family": "Castellano",
+        "given": "M."
+      },
+      {
+        "family": "Castignani",
+        "given": "G."
+      },
+      {
+        "family": "Cavuoti",
+        "given": "S."
+      },
+      {
+        "family": "Chambers",
+        "given": "K. C."
+      },
+      {
+        "family": "Cimatti",
+        "given": "A."
+      },
+      {
+        "family": "Colodro-Conde",
+        "given": "C."
+      },
+      {
+        "family": "Congedo",
+        "given": "G."
+      },
+      {
+        "family": "Conselice",
+        "given": "C. J."
+      },
+      {
+        "family": "Conversi",
+        "given": "L."
+      },
+      {
+        "family": "Copin",
+        "given": "Y."
+      },
+      {
+        "family": "Courtois",
+        "given": "H. M."
+      },
+      {
+        "family": "Cropper",
+        "given": "M."
+      },
+      {
+        "family": "Da Silva",
+        "given": "A."
+      },
+      {
+        "family": "Degaudenzi",
+        "given": "H."
+      },
+      {
+        "family": "de la Torre",
+        "given": "S."
+      },
+      {
+        "family": "De Lucia",
+        "given": "G."
+      },
+      {
+        "family": "Di Giorgio",
+        "given": "A. M."
+      },
+      {
+        "family": "Dinis",
+        "given": "J."
+      },
+      {
+        "family": "Dole",
+        "given": "H."
+      },
+      {
+        "family": "Dubath",
+        "given": "F."
+      },
+      {
+        "family": "Dupac",
+        "given": "X."
+      },
+      {
+        "family": "Dusini",
+        "given": "S."
+      },
+      {
+        "family": "Escoffier",
+        "given": "S."
+      },
+      {
+        "family": "Farina",
+        "given": "M."
+      },
+      {
+        "family": "Farinelli",
+        "given": "R."
+      },
+      {
+        "family": "Faustini",
+        "given": "F."
+      },
+      {
+        "family": "Ferriol",
+        "given": "S."
+      },
+      {
+        "family": "Finelli",
+        "given": "F."
+      },
+      {
+        "family": "Fotopoulou",
+        "given": "S."
+      },
+      {
+        "family": "Frailis",
+        "given": "M."
+      },
+      {
+        "family": "Franceschi",
+        "given": "E."
+      },
+      {
+        "family": "Galeotta",
+        "given": "S."
+      },
+      {
+        "family": "George",
+        "given": "K."
+      },
+      {
+        "family": "Gillard",
+        "given": "W."
+      },
+      {
+        "family": "Gillis",
+        "given": "B."
+      },
+      {
+        "family": "Giocoli",
+        "given": "C."
+      },
+      {
+        "family": "Gracia-Carpio",
+        "given": "J."
+      },
+      {
+        "family": "Granett",
+        "given": "B. R."
+      },
+      {
+        "family": "Grazian",
+        "given": "A."
+      },
+      {
+        "family": "Grupp",
+        "given": "F."
+      },
+      {
+        "family": "Haugan",
+        "given": "S. V. H."
+      },
+      {
+        "family": "Holmes",
+        "given": "W."
+      },
+      {
+        "family": "Hook",
+        "given": "I."
+      },
+      {
+        "family": "Hormuth",
+        "given": "F."
+      },
+      {
+        "family": "Hornstrup",
+        "given": "A."
+      },
+      {
+        "family": "Hudelot",
+        "given": "P."
+      },
+      {
+        "family": "Jahnke",
+        "given": "K."
+      },
+      {
+        "family": "Jhabvala",
+        "given": "M."
+      },
+      {
+        "family": "Joachimi",
+        "given": "B."
+      },
+      {
+        "family": "Keihänen",
+        "given": "E."
+      },
+      {
+        "family": "Kermiche",
+        "given": "S."
+      },
+      {
+        "family": "Kiessling",
+        "given": "A."
+      },
+      {
+        "family": "Kubik",
+        "given": "B."
+      },
+      {
+        "family": "Kümmel",
+        "given": "M."
+      },
+      {
+        "family": "Kunz",
+        "given": "M."
+      },
+      {
+        "family": "Kurki-Suonio",
+        "given": "H."
+      },
+      {
+        "family": "Le Boulc’h",
+        "given": "Q."
+      },
+      {
+        "family": "Ligori",
+        "given": "S."
+      },
+      {
+        "family": "Lilje",
+        "given": "P. B."
+      },
+      {
+        "family": "Lindholm",
+        "given": "V."
+      },
+      {
+        "family": "Lloro",
+        "given": "I."
+      },
+      {
+        "family": "Mainetti",
+        "given": "G."
+      },
+      {
+        "family": "Maino",
+        "given": "D."
+      },
+      {
+        "family": "Maiorano",
+        "given": "E."
+      },
+      {
+        "family": "Mansutti",
+        "given": "O."
+      },
+      {
+        "family": "Marggraf",
+        "given": "O."
+      },
+      {
+        "family": "Markovic",
+        "given": "K."
+      },
+      {
+        "family": "Martinelli",
+        "given": "M."
+      },
+      {
+        "family": "Martinet",
+        "given": "N."
+      },
+      {
+        "family": "Marulli",
+        "given": "F."
+      },
+      {
+        "family": "Massey",
+        "given": "R."
+      },
+      {
+        "family": "Maurogordato",
+        "given": "S."
+      },
+      {
+        "family": "Medinaceli",
+        "given": "E."
+      },
+      {
+        "family": "Mei",
+        "given": "S."
+      },
+      {
+        "family": "Mellier",
+        "given": "Y."
+      },
+      {
+        "family": "Merlin",
+        "given": "E."
+      },
+      {
+        "family": "Meylan",
+        "given": "G."
+      },
+      {
+        "family": "Mora",
+        "given": "A."
+      },
+      {
+        "family": "Moresco",
+        "given": "M."
+      },
+      {
+        "family": "Moscardini",
+        "given": "L."
+      },
+      {
+        "family": "Nakajima",
+        "given": "R."
+      },
+      {
+        "family": "Neissner",
+        "given": "C."
+      },
+      {
+        "family": "Niemi",
+        "given": "S.-M."
+      },
+      {
+        "family": "Padilla",
+        "given": "C."
+      },
+      {
+        "family": "Paltani",
+        "given": "S."
+      },
+      {
+        "family": "Pasian",
+        "given": "F."
+      },
+      {
+        "family": "Pedersen",
+        "given": "K."
+      },
+      {
+        "family": "Pettorino",
+        "given": "V."
+      },
+      {
+        "family": "Pires",
+        "given": "S."
+      },
+      {
+        "family": "Polenta",
+        "given": "G."
+      },
+      {
+        "family": "Poncet",
+        "given": "M."
+      },
+      {
+        "family": "Popa",
+        "given": "L. A."
+      },
+      {
+        "family": "Pozzetti",
+        "given": "L."
+      },
+      {
+        "family": "Raison",
+        "given": "F."
+      },
+      {
+        "family": "Rebolo",
+        "given": "R."
+      },
+      {
+        "family": "Renzi",
+        "given": "A."
+      },
+      {
+        "family": "Rhodes",
+        "given": "J."
+      },
+      {
+        "family": "Riccio",
+        "given": "G."
+      },
+      {
+        "family": "Romelli",
+        "given": "E."
+      },
+      {
+        "family": "Roncarelli",
+        "given": "M."
+      },
+      {
+        "family": "Saglia",
+        "given": "R."
+      },
+      {
+        "family": "Sakr",
+        "given": "Z."
+      },
+      {
+        "family": "Sánchez",
+        "given": "A. G."
+      },
+      {
+        "family": "Sapone",
+        "given": "D."
+      },
+      {
+        "family": "Sartoris",
+        "given": "B."
+      },
+      {
+        "family": "Schewtschenko",
+        "given": "J. A."
+      },
+      {
+        "family": "Schirmer",
+        "given": "M."
+      },
+      {
+        "family": "Schneider",
+        "given": "P."
+      },
+      {
+        "family": "Schrabback",
+        "given": "T."
+      },
+      {
+        "family": "Secroun",
+        "given": "A."
+      },
+      {
+        "family": "Sefusatti",
+        "given": "E."
+      },
+      {
+        "family": "Seidel",
+        "given": "G."
+      },
+      {
+        "family": "Seiffert",
+        "given": "M."
+      },
+      {
+        "family": "Serrano",
+        "given": "S."
+      },
+      {
+        "family": "Simon",
+        "given": "P."
+      },
+      {
+        "family": "Sirignano",
+        "given": "C."
+      },
+      {
+        "family": "Sirri",
+        "given": "G."
+      },
+      {
+        "family": "Smadja",
+        "given": "G."
+      },
+      {
+        "family": "Stanco",
+        "given": "L."
+      },
+      {
+        "family": "Steinwagner",
+        "given": "J."
+      },
+      {
+        "family": "Tallada-Crespí",
+        "given": "P."
+      },
+      {
+        "family": "Taylor",
+        "given": "A. N."
+      },
+      {
+        "family": "Tereno",
+        "given": "I."
+      },
+      {
+        "family": "Toft",
+        "given": "S."
+      },
+      {
+        "family": "Toledo-Moreo",
+        "given": "R."
+      },
+      {
+        "family": "Torradeflot",
+        "given": "F."
+      },
+      {
+        "family": "Tutusaus",
+        "given": "I."
+      },
+      {
+        "family": "Valenziano",
+        "given": "L."
+      },
+      {
+        "family": "Valiviita",
+        "given": "J."
+      },
+      {
+        "family": "Vassallo",
+        "given": "T."
+      },
+      {
+        "family": "Veropalumbo",
+        "given": "A."
+      },
+      {
+        "family": "Wang",
+        "given": "Y."
+      },
+      {
+        "family": "Weller",
+        "given": "J."
+      },
+      {
+        "family": "Zamorani",
+        "given": "G."
+      },
+      {
+        "family": "Zucca",
+        "given": "E."
+      },
+      {
+        "family": "Allevato",
+        "given": "V."
+      },
+      {
+        "family": "Ballardini",
+        "given": "M."
+      },
+      {
+        "family": "Bolzonella",
+        "given": "M."
+      },
+      {
+        "family": "Bozzo",
+        "given": "E."
+      },
+      {
+        "family": "Burigana",
+        "given": "C."
+      },
+      {
+        "family": "Cabanac",
+        "given": "R."
+      },
+      {
+        "family": "Calabrese",
+        "given": "M."
+      },
+      {
+        "family": "Di Ferdinando",
+        "given": "D."
+      },
+      {
+        "family": "Escartin Vigo",
+        "given": "J. A."
+      },
+      {
+        "family": "Gabarra",
+        "given": "L."
+      },
+      {
+        "family": "Huertas-Company",
+        "given": "M."
+      },
+      {
+        "family": "Matthew",
+        "given": "S."
+      },
+      {
+        "family": "Mauri",
+        "given": "N."
+      },
+      {
+        "family": "Nucita",
+        "given": "A. A."
+      },
+      {
+        "family": "Pezzotta",
+        "given": "A."
+      },
+      {
+        "family": "Pöntinen",
+        "given": "M."
+      },
+      {
+        "family": "Porciani",
+        "given": "C."
+      },
+      {
+        "family": "Scottez",
+        "given": "V."
+      },
+      {
+        "family": "Tenti",
+        "given": "M."
+      },
+      {
+        "family": "Viel",
+        "given": "M."
+      },
+      {
+        "family": "Wiesmann",
+        "given": "M."
+      },
+      {
+        "family": "Akrami",
+        "given": "Y."
+      },
+      {
+        "family": "Alvi",
+        "given": "S."
+      },
+      {
+        "family": "Andika",
+        "given": "I. T."
+      },
+      {
+        "family": "Anselmi",
+        "given": "S."
+      },
+      {
+        "family": "Archidiacono",
+        "given": "M."
+      },
+      {
+        "family": "Atrio-Barandela",
+        "given": "F."
+      },
+      {
+        "family": "Bertacca",
+        "given": "D."
+      },
+      {
+        "family": "Bethermin",
+        "given": "M."
+      },
+      {
+        "family": "Blanchard",
+        "given": "A."
+      },
+      {
+        "family": "Blot",
+        "given": "L."
+      },
+      {
+        "family": "Borgani",
+        "given": "S."
+      },
+      {
+        "family": "Brown",
+        "given": "M. L."
+      },
+      {
+        "family": "Bruton",
+        "given": "S."
+      },
+      {
+        "family": "Calabro",
+        "given": "A."
+      },
+      {
+        "family": "Camacho Quevedo",
+        "given": "B."
+      },
+      {
+        "family": "Cappi",
+        "given": "A."
+      },
+      {
+        "family": "Caro",
+        "given": "F."
+      },
+      {
+        "family": "Carvalho",
+        "given": "C. S."
+      },
+      {
+        "family": "Castro",
+        "given": "T."
+      },
+      {
+        "family": "Cogato",
+        "given": "F."
+      },
+      {
+        "family": "Conseil",
+        "given": "S."
+      },
+      {
+        "family": "Contarini",
+        "given": "S."
+      },
+      {
+        "family": "Cooray",
+        "given": "A. R."
+      },
+      {
+        "family": "Cucciati",
+        "given": "O."
+      },
+      {
+        "family": "De Paolis",
+        "given": "F."
+      },
+      {
+        "family": "Desprez",
+        "given": "G."
+      },
+      {
+        "family": "Díaz-Sánchez",
+        "given": "A."
+      },
+      {
+        "family": "Di Domizio",
+        "given": "S."
+      },
+      {
+        "family": "Diego",
+        "given": "J. M."
+      },
+      {
+        "family": "Dimauro",
+        "given": "P."
+      },
+      {
+        "family": "Enia",
+        "given": "A."
+      },
+      {
+        "family": "Fang",
+        "given": "Y."
+      },
+      {
+        "family": "Ferrari",
+        "given": "A. G."
+      },
+      {
+        "family": "Ferreira",
+        "given": "P. G."
+      },
+      {
+        "family": "Finoguenov",
+        "given": "A."
+      },
+      {
+        "family": "Franco",
+        "given": "A."
+      },
+      {
+        "family": "Ganga",
+        "given": "K."
+      },
+      {
+        "family": "García-Bellido",
+        "given": "J."
+      },
+      {
+        "family": "Gasparetto",
+        "given": "T."
+      },
+      {
+        "family": "Gautard",
+        "given": "V."
+      },
+      {
+        "family": "Gaztanaga",
+        "given": "E."
+      },
+      {
+        "family": "Giacomini",
+        "given": "F."
+      },
+      {
+        "family": "Gianotti",
+        "given": "F."
+      },
+      {
+        "family": "Gozaliasl",
+        "given": "G."
+      },
+      {
+        "family": "Guidi",
+        "given": "M."
+      },
+      {
+        "family": "Gutierrez",
+        "given": "C. M."
+      },
+      {
+        "family": "Hall",
+        "given": "A."
+      },
+      {
+        "family": "Hartley",
+        "given": "W. G."
+      },
+      {
+        "family": "Hemmati",
+        "given": "S."
+      },
+      {
+        "family": "Hernández-Monteagudo",
+        "given": "C."
+      },
+      {
+        "family": "Hildebrandt",
+        "given": "H."
+      },
+      {
+        "family": "Hjorth",
+        "given": "J."
+      },
+      {
+        "family": "Kajava",
+        "given": "J. J. E."
+      },
+      {
+        "family": "Kang",
+        "given": "Y."
+      },
+      {
+        "family": "Kansal",
+        "given": "V."
+      },
+      {
+        "family": "Karagiannis",
+        "given": "D."
+      },
+      {
+        "family": "Kiiveri",
+        "given": "K."
+      },
+      {
+        "family": "Kirkpatrick",
+        "given": "C. C."
+      },
+      {
+        "family": "Kruk",
+        "given": "S."
+      },
+      {
+        "family": "Lattanzi",
+        "given": "M."
+      },
+      {
+        "family": "Le Graet",
+        "given": "J."
+      },
+      {
+        "family": "Legrand",
+        "given": "L."
+      },
+      {
+        "family": "Lembo",
+        "given": "M."
+      },
+      {
+        "family": "Lepori",
+        "given": "F."
+      },
+      {
+        "family": "Leroy",
+        "given": "G."
+      },
+      {
+        "family": "Lesgourgues",
+        "given": "J."
+      },
+      {
+        "family": "Liaudat",
+        "given": "T. I."
+      },
+      {
+        "family": "Liu",
+        "given": "S. J."
+      },
+      {
+        "family": "Loureiro",
+        "given": "A."
+      },
+      {
+        "family": "Macias-Perez",
+        "given": "J."
+      },
+      {
+        "family": "Maggio",
+        "given": "G."
+      },
+      {
+        "family": "Magliocchetti",
+        "given": "M."
+      },
+      {
+        "family": "Mannucci",
+        "given": "F."
+      },
+      {
+        "family": "Maoli",
+        "given": "R."
+      },
+      {
+        "family": "Martín-Fleitas",
+        "given": "J."
+      },
+      {
+        "family": "Martins",
+        "given": "C. J. A. P."
+      },
+      {
+        "family": "Maurin",
+        "given": "L."
+      },
+      {
+        "family": "Miluzio",
+        "given": "M."
+      },
+      {
+        "family": "Monaco",
+        "given": "P."
+      },
+      {
+        "family": "Moretti",
+        "given": "C."
+      },
+      {
+        "family": "Morgante",
+        "given": "G."
+      },
+      {
+        "family": "Nadathur",
+        "given": "S."
+      },
+      {
+        "family": "Naidoo",
+        "given": "K."
+      },
+      {
+        "family": "Natoli",
+        "given": "P."
+      },
+      {
+        "family": "Navarro-Alsina",
+        "given": "A."
+      },
+      {
+        "family": "Nesseris",
+        "given": "S."
+      },
+      {
+        "family": "Passalacqua",
+        "given": "F."
+      },
+      {
+        "family": "Paterson",
+        "given": "K."
+      },
+      {
+        "family": "Patrizii",
+        "given": "L."
+      },
+      {
+        "family": "Pisani",
+        "given": "A."
+      },
+      {
+        "family": "Potter",
+        "given": "D."
+      },
+      {
+        "family": "Quai",
+        "given": "S."
+      },
+      {
+        "family": "Radovich",
+        "given": "M."
+      },
+      {
+        "family": "Risso",
+        "given": "I."
+      },
+      {
+        "family": "Rocci",
+        "given": "P.-F."
+      },
+      {
+        "family": "Sacquegna",
+        "given": "S."
+      },
+      {
+        "family": "Sahlén",
+        "given": "M."
+      },
+      {
+        "family": "Sarpa",
+        "given": "E."
+      },
+      {
+        "family": "Schneider",
+        "given": "A."
+      },
+      {
+        "family": "Schultheis",
+        "given": "M."
+      },
+      {
+        "family": "Sciotti",
+        "given": "D."
+      },
+      {
+        "family": "Sellentin",
+        "given": "E."
+      },
+      {
+        "family": "Sereno",
+        "given": "M."
+      },
+      {
+        "family": "Smith",
+        "given": "L. C."
+      },
+      {
+        "family": "Stadel",
+        "given": "J."
+      },
+      {
+        "family": "Tanidis",
+        "given": "K."
+      },
+      {
+        "family": "Tao",
+        "given": "C."
+      },
+      {
+        "family": "Testera",
+        "given": "G."
+      },
+      {
+        "family": "Teyssier",
+        "given": "R."
+      },
+      {
+        "family": "Tosi",
+        "given": "S."
+      },
+      {
+        "family": "Troja",
+        "given": "A."
+      },
+      {
+        "family": "Tucci",
+        "given": "M."
+      },
+      {
+        "family": "Valieri",
+        "given": "C."
+      },
+      {
+        "family": "Venhola",
+        "given": "A."
+      },
+      {
+        "family": "Vergani",
+        "given": "D."
+      },
+      {
+        "family": "Vernardos",
+        "given": "G."
+      },
+      {
+        "family": "Verza",
+        "given": "G."
+      },
+      {
+        "family": "Vielzeuf",
+        "given": "P."
+      },
+      {
+        "family": "Walton",
+        "given": "N. A."
+      }
+    ],
+    "year": 2026,
+    "venue": "Astronomy & Astrophysics",
+    "volume": "711",
+    "issue": "",
+    "pages_or_article": "A31",
+    "doi": "10.1051/0004-6361/202554538",
+    "arxiv": "2503.15329",
+    "url": "https://doi.org/10.1051/0004-6361/202554538",
+    "theme": "real-data validation",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "selected full-text sections",
+    "sections_assessed": "Real Q1 comparison and Appendix C calibration; arXiv v2 plus published metadata",
+    "support_url": "https://arxiv.org/html/2503.15329v2",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1051/0004-6361/202554538",
+      "https://arxiv.org/abs/2503.15329"
+    ],
+    "dataset_and_design": "Euclid simulations, Euclidised lenses and real ERO/Q1 images; 354 selected Q1 comparisons.",
+    "supported_finding": "Real radius agreement coexists with weak mass-ellipticity agreement and calibration concerns.",
+    "main_limitation": "Q1 comparison requires successful classical fits; its reference models are not truth.",
+    "project_implication": "Evaluate sample selection and parameter-specific failures.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "swierc2023",
+    "title": "Domain Adaptation for Measurements of Strong Gravitational Lenses",
+    "authors": [
+      {
+        "literal": "Swierc, Paxson"
+      },
+      {
+        "literal": "Zhao, Megan"
+      },
+      {
+        "literal": "Ćiprijanović, Aleksandra"
+      },
+      {
+        "literal": "Nord, Brian"
+      }
+    ],
+    "year": 2023,
+    "venue": "NeurIPS Workshop on Machine Learning for the Physical Sciences",
+    "volume": "",
+    "issue": "",
+    "pages_or_article": "",
+    "doi": "",
+    "arxiv": "2311.17238",
+    "url": "https://ml4physicalsciences.github.io/2023/files/NeurIPS_ML4PS_2023_121.pdf",
+    "theme": "domain adaptation",
+    "relevance": "lensing-specific",
+    "publication_status": "workshop paper",
+    "access_depth": "selected full-text sections",
+    "sections_assessed": "Workshop PDF: dataset, training, metrics, results and discussion",
+    "support_url": "https://ml4physicalsciences.github.io/2023/files/NeurIPS_ML4PS_2023_121.pdf",
+    "metadata_sources": [
+      "https://arxiv.org/abs/2311.17238"
+    ],
+    "dataset_and_design": "Synthetic clean source and DES-noise-like target; unlabeled target images used during training.",
+    "supported_finding": "DANN and MMD improve target-domain regression R-squared.",
+    "main_limitation": "Workshop study; simulated target and target-data access differ from source-only randomization.",
+    "project_implication": "Match target-data access when comparing adaptation methods.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "agarwal2024",
+    "title": "Neural Network Prediction of Strong Lensing Systems with Domain Adaptation and Uncertainty Quantification",
+    "authors": [
+      {
+        "literal": "Agarwal, Shrihan"
+      },
+      {
+        "literal": "Ćiprijanović, Aleksandra"
+      },
+      {
+        "literal": "Nord, Brian D."
+      }
+    ],
+    "year": 2024,
+    "venue": "NeurIPS Workshop on Machine Learning for the Physical Sciences",
+    "volume": "",
+    "issue": "",
+    "pages_or_article": "",
+    "doi": "",
+    "arxiv": "2411.03334",
+    "url": "https://ml4physicalsciences.github.io/2024/files/NeurIPS_ML4PS_2024_58.pdf",
+    "theme": "domain adaptation",
+    "relevance": "lensing-specific",
+    "publication_status": "workshop paper",
+    "access_depth": "selected full-text sections",
+    "sections_assessed": "Workshop PDF: source/target construction, mean-variance method and metrics",
+    "support_url": "https://ml4physicalsciences.github.io/2024/files/NeurIPS_ML4PS_2024_58.pdf",
+    "metadata_sources": [
+      "https://arxiv.org/abs/2411.03334"
+    ],
+    "dataset_and_design": "Synthetic low-noise source and DES-like noisy target; mean-variance estimation with adaptation.",
+    "supported_finding": "Jointly evaluates regression and predicted uncertainty.",
+    "main_limitation": "Workshop evidence; reported signed residuals and calibration are not MAE.",
+    "project_implication": "Useful scalar uncertainty baseline with explicit target-data assumptions.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "holloway2026",
+    "title": "Lens Modeling and Cosmological Inference from an Impure Sample of Galaxy-Galaxy Strong Lenses",
+    "authors": [
+      {
+        "literal": "Holloway, Philip"
+      },
+      {
+        "literal": "Verma, Aprajita"
+      },
+      {
+        "literal": "Marshall, Philip J."
+      },
+      {
+        "literal": "Venkatraman, Padmavathi"
+      },
+      {
+        "literal": "Erickson, Sydney"
+      },
+      {
+        "literal": "Li, Tian"
+      },
+      {
+        "literal": "Birrer, Simon"
+      },
+      {
+        "literal": "Dillmann, Steven"
+      },
+      {
+        "literal": "Collett, Thomas E."
+      },
+      {
+        "literal": "Collaboration, the LSST Dark Energy Science"
+      }
+    ],
+    "year": 2026,
+    "venue": "arXiv preprint",
+    "volume": "",
+    "issue": "",
+    "pages_or_article": "",
+    "doi": "",
+    "arxiv": "2609.21699",
+    "url": "https://arxiv.org/abs/2609.21699",
+    "theme": "selection and cosmography",
+    "relevance": "lensing-specific",
+    "publication_status": "preprint; no journal version verified",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/2609.21699",
+    "metadata_sources": [
+      "https://arxiv.org/abs/2609.21699"
+    ],
+    "dataset_and_design": "Simulated LSST lenses and contaminants; NPE plus contamination-aware cosmology.",
+    "supported_finding": "Connects radius inference to population analysis with false positives.",
+    "main_limitation": "Preprint; cosmological results are simulated proof of concept.",
+    "project_implication": "Contaminant-aware evaluation is relevant only if modelling unvetted candidates.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "jarugula2026",
+    "title": "Strong Lensing Cosmology with Population-level Calibrated Neural Ratio Estimation",
+    "authors": [
+      {
+        "literal": "Jarugula, Sreevani"
+      },
+      {
+        "literal": "Nord, Brian D."
+      },
+      {
+        "literal": "Ćiprijanović, Aleksandra"
+      },
+      {
+        "literal": "Trivedi, Shubhendu"
+      }
+    ],
+    "year": 2026,
+    "venue": "arXiv preprint",
+    "volume": "",
+    "issue": "",
+    "pages_or_article": "",
+    "doi": "",
+    "arxiv": "2608.23534",
+    "url": "https://arxiv.org/abs/2608.23534",
+    "theme": "population calibration",
+    "relevance": "lensing-specific",
+    "publication_status": "preprint; no journal version verified",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/2608.23534",
+    "metadata_sources": [
+      "https://arxiv.org/abs/2608.23534"
+    ],
+    "dataset_and_design": "Simulated lens images plus spectroscopic information; population neural ratios.",
+    "supported_finding": "Studies post-hoc calibration and cosmological population inference.",
+    "main_limitation": "Preprint; auxiliary spectroscopy and assumed model are essential.",
+    "project_implication": "Do not equate image-only radius estimation with cosmology.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "chianese2020",
+    "title": "Differentiable strong lensing: uniting gravity and neural nets through differentiable probabilistic programming",
+    "authors": [
+      {
+        "family": "Chianese",
+        "given": "Marco"
+      },
+      {
+        "family": "Coogan",
+        "given": "Adam"
+      },
+      {
+        "family": "Hofma",
+        "given": "Paul"
+      },
+      {
+        "family": "Otten",
+        "given": "Sydney"
+      },
+      {
+        "family": "Weniger",
+        "given": "Christoph"
+      }
+    ],
+    "year": 2020,
+    "venue": "Monthly Notices of the Royal Astronomical Society",
+    "volume": "496",
+    "issue": "1",
+    "pages_or_article": "381-393",
+    "doi": "10.1093/mnras/staa1477",
+    "arxiv": "",
+    "url": "https://doi.org/10.1093/mnras/staa1477",
+    "theme": "physics-informed inference",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://doi.org/10.1093/mnras/staa1477",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1093/mnras/staa1477"
+    ],
+    "dataset_and_design": "Mock lens images; learned source model coupled to differentiable lensing physics.",
+    "supported_finding": "Combines flexible source inference with gradient-based posterior methods.",
+    "main_limitation": "Synthetic demonstration and learned source prior remain limiting assumptions.",
+    "project_implication": "Physics-based inference is an alternative to pure regression.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "biggio2023",
+    "title": "Modeling lens potentials with continuous neural fields in galaxy-scale strong lenses",
+    "authors": [
+      {
+        "family": "Biggio",
+        "given": "L."
+      },
+      {
+        "family": "Vernardos",
+        "given": "G."
+      },
+      {
+        "family": "Galan",
+        "given": "A."
+      },
+      {
+        "family": "Peel",
+        "given": "A."
+      },
+      {
+        "family": "Courbin",
+        "given": "F."
+      }
+    ],
+    "year": 2023,
+    "venue": "Astronomy & Astrophysics",
+    "volume": "675",
+    "issue": "",
+    "pages_or_article": "A125",
+    "doi": "10.1051/0004-6361/202245126",
+    "arxiv": "2210.09169",
+    "url": "https://doi.org/10.1051/0004-6361/202245126",
+    "theme": "flexible mass modelling",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/2210.09169",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1051/0004-6361/202245126",
+      "https://arxiv.org/abs/2210.09169"
+    ],
+    "dataset_and_design": "Synthetic HST images with perturbed mass potentials; known source brightness.",
+    "supported_finding": "Neural fields flexibly represent mass potentials without population pretraining.",
+    "main_limitation": "Known-source assumption simplifies the inverse problem.",
+    "project_implication": "Ablate physical model mismatch separately from detector variation.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "galan2022",
+    "title": "Using wavelets to capture deviations from smoothness in galaxy-scale strong lenses",
+    "authors": [
+      {
+        "family": "Galan",
+        "given": "A."
+      },
+      {
+        "family": "Vernardos",
+        "given": "G."
+      },
+      {
+        "family": "Peel",
+        "given": "A."
+      },
+      {
+        "family": "Courbin",
+        "given": "F."
+      },
+      {
+        "family": "Starck",
+        "given": "J.-L."
+      }
+    ],
+    "year": 2022,
+    "venue": "Astronomy & Astrophysics",
+    "volume": "668",
+    "issue": "",
+    "pages_or_article": "A155",
+    "doi": "10.1051/0004-6361/202244464",
+    "arxiv": "",
+    "url": "https://doi.org/10.1051/0004-6361/202244464",
+    "theme": "differentiable modelling",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://doi.org/10.1051/0004-6361/202244464",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1051/0004-6361/202244464"
+    ],
+    "dataset_and_design": "Simulated HST lenses; wavelet-based deviations from smooth potentials.",
+    "supported_finding": "Differentiable multiscale inference recovers several perturbation families.",
+    "main_limitation": "Not an amortized radius predictor; model assumptions still matter.",
+    "project_implication": "Retain physical forward modelling as a research core.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "legin2025",
+    "title": "Mind the Information Gap: Unveiling Detailed Morphologies of z 0.5-1.0 Galaxies with SLACS Strong Lenses and Data-Driven Analysis",
+    "authors": [
+      {
+        "literal": "Legin, Ronan"
+      },
+      {
+        "literal": "Stone, Connor"
+      },
+      {
+        "literal": "Adam, Alexandre"
+      },
+      {
+        "literal": "Barco, Gabriel Missael"
+      },
+      {
+        "literal": "Coogan, Adam"
+      },
+      {
+        "literal": "Malkin, Nikolay"
+      },
+      {
+        "literal": "Perreault-Levasseur, Laurence"
+      },
+      {
+        "literal": "Hezaveh, Yashar"
+      }
+    ],
+    "year": 2025,
+    "venue": "arXiv preprint",
+    "volume": "",
+    "issue": "",
+    "pages_or_article": "",
+    "doi": "",
+    "arxiv": "2511.19595",
+    "url": "https://arxiv.org/abs/2511.19595",
+    "theme": "generative priors",
+    "relevance": "lensing-specific",
+    "publication_status": "preprint; no journal version verified",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/2511.19595",
+    "metadata_sources": [
+      "https://arxiv.org/abs/2511.19595"
+    ],
+    "dataset_and_design": "Thirty real SLACS systems; learned priors for source, lens light and PSF.",
+    "supported_finding": "Joint generative modelling improves reconstructions; posterior samples for most systems.",
+    "main_limitation": "Preprint; better residuals do not establish true mass accuracy.",
+    "project_implication": "Source/PSF realism is an active research direction.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "wagner2023",
+    "title": "From Images to Dark Matter: End-to-end Inference of Substructure from Hundreds of Strong Gravitational Lenses",
+    "authors": [
+      {
+        "family": "Wagner-Carena",
+        "given": "Sebastian"
+      },
+      {
+        "family": "Aalbers",
+        "given": "Jelle"
+      },
+      {
+        "family": "Birrer",
+        "given": "Simon"
+      },
+      {
+        "family": "Nadler",
+        "given": "Ethan O."
+      },
+      {
+        "family": "Darragh-Ford",
+        "given": "Elise"
+      },
+      {
+        "family": "Marshall",
+        "given": "Philip J."
+      },
+      {
+        "family": "Wechsler",
+        "given": "Risa H."
+      }
+    ],
+    "year": 2023,
+    "venue": "The Astrophysical Journal",
+    "volume": "942",
+    "issue": "2",
+    "pages_or_article": "75",
+    "doi": "10.3847/1538-4357/aca525",
+    "arxiv": "2203.00690",
+    "url": "https://doi.org/10.3847/1538-4357/aca525",
+    "theme": "dark matter inference",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/2203.00690",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.3847/1538-4357/aca525",
+      "https://arxiv.org/abs/2203.00690"
+    ],
+    "dataset_and_design": "Simulated HST lenses with COSMOS sources and low-mass halo populations.",
+    "supported_finding": "Posterior estimation plus hierarchy constrains simulated subhalo populations.",
+    "main_limitation": "Dark-matter population task differs from scalar radius regression.",
+    "project_implication": "Hold source identities out when assessing morphology generalization.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "wagner2024",
+    "title": "A Strong Gravitational Lens Is Worth a Thousand Dark Matter Halos: Inference on Small-scale Structure Using Sequential Methods",
+    "authors": [
+      {
+        "family": "Wagner-Carena",
+        "given": "Sebastian"
+      },
+      {
+        "family": "Lee",
+        "given": "Jaehoon"
+      },
+      {
+        "family": "Pennington",
+        "given": "Jeffrey"
+      },
+      {
+        "family": "Aalbers",
+        "given": "Jelle"
+      },
+      {
+        "family": "Birrer",
+        "given": "Simon"
+      },
+      {
+        "family": "Wechsler",
+        "given": "Risa H."
+      }
+    ],
+    "year": 2024,
+    "venue": "The Astrophysical Journal",
+    "volume": "975",
+    "issue": "2",
+    "pages_or_article": "297",
+    "doi": "10.3847/1538-4357/ad6e70",
+    "arxiv": "2404.14487",
+    "url": "https://doi.org/10.3847/1538-4357/ad6e70",
+    "theme": "sequential inference",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/2404.14487",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.3847/1538-4357/ad6e70",
+      "https://arxiv.org/abs/2404.14487"
+    ],
+    "dataset_and_design": "Accelerated simulated HST lenses; sequential population inference.",
+    "supported_finding": "Training-distribution refinement improves simulation efficiency in its tested setup.",
+    "main_limitation": "Methodological gain is conditional on the simulator and inference target.",
+    "project_implication": "Compare simulation budget as well as optimizer updates.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "warren2003",
+    "title": "Semilinear Gravitational Lens Inversion",
+    "authors": [
+      {
+        "family": "Warren",
+        "given": "S. J."
+      },
+      {
+        "family": "Dye",
+        "given": "S."
+      }
+    ],
+    "year": 2003,
+    "venue": "The Astrophysical Journal",
+    "volume": "590",
+    "issue": "2",
+    "pages_or_article": "673-682",
+    "doi": "10.1086/375132",
+    "arxiv": "astro-ph/0302587",
+    "url": "https://doi.org/10.1086/375132",
+    "theme": "classical inversion",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/astro-ph/0302587",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1086/375132",
+      "https://arxiv.org/abs/astro-ph/0302587"
+    ],
+    "dataset_and_design": "Pixelized source reconstruction conditional on lens mass; simulated rings.",
+    "supported_finding": "Source inversion is linear at a fixed mass model.",
+    "main_limitation": "Does not remove nonlinear mass inference or all source regularization choices.",
+    "project_implication": "Classical baselines need not optimize every source pixel nonlinearly.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "suyu2006",
+    "title": "A Bayesian analysis of regularized source inversions in gravitational lensing",
+    "authors": [
+      {
+        "family": "Suyu",
+        "given": "S. H."
+      },
+      {
+        "family": "Marshall",
+        "given": "P. J."
+      },
+      {
+        "family": "Hobson",
+        "given": "M. P."
+      },
+      {
+        "family": "Blandford",
+        "given": "R. D."
+      }
+    ],
+    "year": 2006,
+    "venue": "Monthly Notices of the Royal Astronomical Society",
+    "volume": "371",
+    "issue": "2",
+    "pages_or_article": "983-998",
+    "doi": "10.1111/j.1365-2966.2006.10733.x",
+    "arxiv": "astro-ph/0601493",
+    "url": "https://doi.org/10.1111/j.1365-2966.2006.10733.x",
+    "theme": "classical inversion",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/astro-ph/0601493",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1111/j.1365-2966.2006.10733.x",
+      "https://arxiv.org/abs/astro-ph/0601493"
+    ],
+    "dataset_and_design": "Bayesian regularized source inversion.",
+    "supported_finding": "Evidence-based comparison of regularization and source discretization.",
+    "main_limitation": "Inference remains conditioned on mass, observation and source assumptions.",
+    "project_implication": "Regularization is a scientific modelling choice.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "nightingale2018",
+    "title": "AutoLens: automated modeling of a strong lens’s light, mass, and source",
+    "authors": [
+      {
+        "family": "Nightingale",
+        "given": "J W"
+      },
+      {
+        "family": "Dye",
+        "given": "S"
+      },
+      {
+        "family": "Massey",
+        "given": "Richard J"
+      }
+    ],
+    "year": 2018,
+    "venue": "Monthly Notices of the Royal Astronomical Society",
+    "volume": "478",
+    "issue": "4",
+    "pages_or_article": "4738-4784",
+    "doi": "10.1093/mnras/sty1264",
+    "arxiv": "1708.07377",
+    "url": "https://doi.org/10.1093/mnras/sty1264",
+    "theme": "classical automation",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/1708.07377",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1093/mnras/sty1264",
+      "https://arxiv.org/abs/1708.07377"
+    ],
+    "dataset_and_design": "Automated joint lens light, mass and pixelized source inference; simulations.",
+    "supported_finding": "Automates physical modelling and model-complexity comparison.",
+    "main_limitation": "Its original validation is simulated, not universal observational success.",
+    "project_implication": "Use automatic physical fitting as a serious comparator.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "etherington2022",
+    "title": "Automated galaxy–galaxy strong lens modelling: No lens left behind",
+    "authors": [
+      {
+        "family": "Etherington",
+        "given": "Amy"
+      },
+      {
+        "family": "Nightingale",
+        "given": "James W"
+      },
+      {
+        "family": "Massey",
+        "given": "Richard"
+      },
+      {
+        "family": "Cao",
+        "given": "XiaoYue"
+      },
+      {
+        "family": "Robertson",
+        "given": "Andrew"
+      },
+      {
+        "family": "Amorisco",
+        "given": "Nicola C"
+      },
+      {
+        "family": "Amvrosiadis",
+        "given": "Aristeidis"
+      },
+      {
+        "family": "Cole",
+        "given": "Shaun"
+      },
+      {
+        "family": "Frenk",
+        "given": "Carlos S"
+      },
+      {
+        "family": "He",
+        "given": "Qiuhan"
+      },
+      {
+        "family": "Li",
+        "given": "Ran"
+      },
+      {
+        "family": "Tam",
+        "given": "Sut-Ieng"
+      }
+    ],
+    "year": 2022,
+    "venue": "Monthly Notices of the Royal Astronomical Society",
+    "volume": "517",
+    "issue": "3",
+    "pages_or_article": "3275-3302",
+    "doi": "10.1093/mnras/stac2639",
+    "arxiv": "",
+    "url": "https://doi.org/10.1093/mnras/stac2639",
+    "theme": "real-data validation",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://doi.org/10.1093/mnras/stac2639",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1093/mnras/stac2639"
+    ],
+    "dataset_and_design": "Fifty-nine real HST galaxy lenses; automated Bayesian fitting with failure investigation.",
+    "supported_finding": "Foreground subtraction and initialization cause failures; adjustments recover the full sample.",
+    "main_limitation": "The full-sample outcome includes pipeline intervention, not unconditional first-pass success.",
+    "project_implication": "Report first-pass failure rate and rescue effort.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "birrer2018",
+    "title": "lenstronomy: Multi-purpose gravitational lens modelling software package",
+    "authors": [
+      {
+        "family": "Birrer",
+        "given": "Simon"
+      },
+      {
+        "family": "Amara",
+        "given": "Adam"
+      }
+    ],
+    "year": 2018,
+    "venue": "Physics of the Dark Universe",
+    "volume": "22",
+    "issue": "",
+    "pages_or_article": "189-201",
+    "doi": "10.1016/j.dark.2018.11.002",
+    "arxiv": "1803.09746",
+    "url": "https://doi.org/10.1016/j.dark.2018.11.002",
+    "theme": "simulation software",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/1803.09746",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1016/j.dark.2018.11.002",
+      "https://arxiv.org/abs/1803.09746"
+    ],
+    "dataset_and_design": "lenstronomy modelling/simulation software.",
+    "supported_finding": "Flexible analytic mass/light components and forward reconstruction.",
+    "main_limitation": "Software availability does not validate a particular simulation population.",
+    "project_implication": "Useful independent implementation with controlled convention checks.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "birrer2021",
+    "title": "lenstronomy II: A gravitational lensing software ecosystem",
+    "authors": [
+      {
+        "family": "Birrer",
+        "given": "Simon"
+      },
+      {
+        "family": "Shajib",
+        "given": "Anowar"
+      },
+      {
+        "family": "Gilman",
+        "given": "Daniel"
+      },
+      {
+        "family": "Galan",
+        "given": "Aymeric"
+      },
+      {
+        "family": "Aalbers",
+        "given": "Jelle"
+      },
+      {
+        "family": "Millon",
+        "given": "Martin"
+      },
+      {
+        "family": "Morgan",
+        "given": "Robert"
+      },
+      {
+        "family": "Pagano",
+        "given": "Giulia"
+      },
+      {
+        "family": "Park",
+        "given": "Ji"
+      },
+      {
+        "family": "Teodori",
+        "given": "Luca"
+      },
+      {
+        "family": "Tessore",
+        "given": "Nicolas"
+      },
+      {
+        "family": "Ueland",
+        "given": "Madison"
+      },
+      {
+        "family": "Van de Vyvere",
+        "given": "Lyne"
+      },
+      {
+        "family": "Wagner-Carena",
+        "given": "Sebastian"
+      },
+      {
+        "family": "Wempe",
+        "given": "Ewoud"
+      },
+      {
+        "family": "Yang",
+        "given": "Lilan"
+      },
+      {
+        "family": "Ding",
+        "given": "Xuheng"
+      },
+      {
+        "family": "Schmidt",
+        "given": "Thomas"
+      },
+      {
+        "family": "Sluse",
+        "given": "Dominique"
+      },
+      {
+        "family": "Zhang",
+        "given": "Ming"
+      },
+      {
+        "family": "Amara",
+        "given": "Adam"
+      }
+    ],
+    "year": 2021,
+    "venue": "Journal of Open Source Software",
+    "volume": "6",
+    "issue": "62",
+    "pages_or_article": "3283",
+    "doi": "10.21105/joss.03283",
+    "arxiv": "",
+    "url": "https://doi.org/10.21105/joss.03283",
+    "theme": "simulation software",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "publisher software-paper landing page and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://doi.org/10.21105/joss.03283",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.21105/joss.03283"
+    ],
+    "dataset_and_design": "lenstronomy II software ecosystem.",
+    "supported_finding": "Documents a broad collaborative lens modelling infrastructure.",
+    "main_limitation": "Software paper is not an accuracy benchmark.",
+    "project_implication": "Reuse tested components while validating scientific assumptions.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "nightingale2021",
+    "title": "PyAutoLens: Open-Source Strong Gravitational Lensing",
+    "authors": [
+      {
+        "family": "Nightingale",
+        "given": "James."
+      },
+      {
+        "family": "Hayes",
+        "given": "Richard"
+      },
+      {
+        "family": "Kelly",
+        "given": "Ashley"
+      },
+      {
+        "family": "Amvrosiadis",
+        "given": "Aristeidis"
+      },
+      {
+        "family": "Etherington",
+        "given": "Amy"
+      },
+      {
+        "family": "He",
+        "given": "Qiuhan"
+      },
+      {
+        "family": "Li",
+        "given": "Nan"
+      },
+      {
+        "family": "Cao",
+        "given": "XiaoYue"
+      },
+      {
+        "family": "Frawley",
+        "given": "Jonathan"
+      },
+      {
+        "family": "Cole",
+        "given": "Shaun"
+      },
+      {
+        "family": "Enia",
+        "given": "Andrea"
+      },
+      {
+        "family": "Frenk",
+        "given": "Carlos"
+      },
+      {
+        "family": "Harvey",
+        "given": "David"
+      },
+      {
+        "family": "Li",
+        "given": "Ran"
+      },
+      {
+        "family": "Massey",
+        "given": "Richard"
+      },
+      {
+        "family": "Negrello",
+        "given": "Mattia"
+      },
+      {
+        "family": "Robertson",
+        "given": "Andrew"
+      }
+    ],
+    "year": 2021,
+    "venue": "Journal of Open Source Software",
+    "volume": "6",
+    "issue": "58",
+    "pages_or_article": "2825",
+    "doi": "10.21105/joss.02825",
+    "arxiv": "",
+    "url": "https://doi.org/10.21105/joss.02825",
+    "theme": "simulation software",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "publisher software-paper landing page and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://doi.org/10.21105/joss.02825",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.21105/joss.02825"
+    ],
+    "dataset_and_design": "PyAutoLens software.",
+    "supported_finding": "Open-source automated strong-lens modelling.",
+    "main_limitation": "Package functionality is not proof of domain-independent accuracy.",
+    "project_implication": "Physical-fitting baseline and simulator option.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "morgan2021",
+    "title": "deeplenstronomy: A dataset simulation package for strong gravitational lensing",
+    "authors": [
+      {
+        "family": "Morgan",
+        "given": "Robert"
+      },
+      {
+        "family": "Nord",
+        "given": "Brian"
+      },
+      {
+        "family": "Birrer",
+        "given": "Simon"
+      },
+      {
+        "family": "Lin",
+        "given": "Joshua"
+      },
+      {
+        "family": "Poh",
+        "given": "Jason"
+      }
+    ],
+    "year": 2021,
+    "venue": "Journal of Open Source Software",
+    "volume": "6",
+    "issue": "58",
+    "pages_or_article": "2854",
+    "doi": "10.21105/joss.02854",
+    "arxiv": "2102.02830",
+    "url": "https://doi.org/10.21105/joss.02854",
+    "theme": "simulation software",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/2102.02830",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.21105/joss.02854",
+      "https://arxiv.org/abs/2102.02830"
+    ],
+    "dataset_and_design": "deeplenstronomy image-simulation software.",
+    "supported_finding": "Reproducible configurable synthetic astronomical scenes.",
+    "main_limitation": "Configuration support is not empirical calibration of noise or priors.",
+    "project_implication": "Useful tool precedent, not evidence that arbitrary noise is realistic.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "stone2024",
+    "title": "Caustics: A Python Package for Accelerated Strong Gravitational Lensing Simulations",
+    "authors": [
+      {
+        "family": "Stone",
+        "given": "Connor"
+      },
+      {
+        "family": "Adam",
+        "given": "Alexandre"
+      },
+      {
+        "family": "Coogan",
+        "given": "Adam"
+      },
+      {
+        "family": "Yantovski-Barth",
+        "given": "M. J."
+      },
+      {
+        "family": "Filipp",
+        "given": "Andreas"
+      },
+      {
+        "family": "Setiawan",
+        "given": "Landung"
+      },
+      {
+        "family": "Core",
+        "given": "Cordero"
+      },
+      {
+        "family": "Legin",
+        "given": "Ronan"
+      },
+      {
+        "family": "Wilson",
+        "given": "Charles"
+      },
+      {
+        "family": "Barco",
+        "given": "Gabriel Missael"
+      },
+      {
+        "family": "Hezaveh",
+        "given": "Yashar"
+      },
+      {
+        "family": "Perreault-Levasseur",
+        "given": "Laurence"
+      }
+    ],
+    "year": 2024,
+    "venue": "Journal of Open Source Software",
+    "volume": "9",
+    "issue": "103",
+    "pages_or_article": "7081",
+    "doi": "10.21105/joss.07081",
+    "arxiv": "2406.15542",
+    "url": "https://doi.org/10.21105/joss.07081",
+    "theme": "simulation software",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/2406.15542",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.21105/joss.07081",
+      "https://arxiv.org/abs/2406.15542"
+    ],
+    "dataset_and_design": "Caustics accelerated differentiable strong-lens simulator.",
+    "supported_finding": "Enables scalable lens simulation.",
+    "main_limitation": "Throughput and autodifferentiation do not prove realism.",
+    "project_implication": "Evaluate actual image/deflection differences before calling it an independent shift.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "gu2022",
+    "title": "GIGA-Lens: Fast Bayesian Inference for Strong Gravitational Lens Modeling",
+    "authors": [
+      {
+        "family": "Gu",
+        "given": "A."
+      },
+      {
+        "family": "Huang",
+        "given": "X."
+      },
+      {
+        "family": "Sheu",
+        "given": "W."
+      },
+      {
+        "family": "Aldering",
+        "given": "G."
+      },
+      {
+        "family": "Bolton",
+        "given": "A. S."
+      },
+      {
+        "family": "Boone",
+        "given": "K."
+      },
+      {
+        "family": "Dey",
+        "given": "A."
+      },
+      {
+        "family": "Filipp",
+        "given": "A."
+      },
+      {
+        "family": "Jullo",
+        "given": "E."
+      },
+      {
+        "family": "Perlmutter",
+        "given": "S."
+      },
+      {
+        "family": "Rubin",
+        "given": "D."
+      },
+      {
+        "family": "Schlafly",
+        "given": "E. F."
+      },
+      {
+        "family": "Schlegel",
+        "given": "D. J."
+      },
+      {
+        "family": "Shu",
+        "given": "Y."
+      },
+      {
+        "family": "Suyu",
+        "given": "S. H."
+      }
+    ],
+    "year": 2022,
+    "venue": "The Astrophysical Journal",
+    "volume": "935",
+    "issue": "1",
+    "pages_or_article": "49",
+    "doi": "10.3847/1538-4357/ac6de4",
+    "arxiv": "2202.07663",
+    "url": "https://doi.org/10.3847/1538-4357/ac6de4",
+    "theme": "accelerated physical fitting",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/2202.07663",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.3847/1538-4357/ac6de4",
+      "https://arxiv.org/abs/2202.07663"
+    ],
+    "dataset_and_design": "Simulated lenses; gradient optimization, variational approximation and HMC.",
+    "supported_finding": "GIGA-Lens accelerates physical Bayesian fitting on GPUs.",
+    "main_limitation": "Runtime uses specified multi-GPU hardware; compare total cost and fit quality.",
+    "project_implication": "Modern physical methods weaken comparisons against only slow manual fitting.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "galan2024",
+    "title": "Exploiting the diversity of modeling methods to probe systematic biases in strong lensing analyses",
+    "authors": [
+      {
+        "family": "Galan",
+        "given": "A."
+      },
+      {
+        "family": "Vernardos",
+        "given": "G."
+      },
+      {
+        "family": "Minor",
+        "given": "Q."
+      },
+      {
+        "family": "Sluse",
+        "given": "D."
+      },
+      {
+        "family": "Van de Vyvere",
+        "given": "L."
+      },
+      {
+        "family": "Gomer",
+        "given": "M."
+      }
+    ],
+    "year": 2024,
+    "venue": "Astronomy & Astrophysics",
+    "volume": "692",
+    "issue": "",
+    "pages_or_article": "A87",
+    "doi": "10.1051/0004-6361/202451095",
+    "arxiv": "2406.08484",
+    "url": "https://doi.org/10.1051/0004-6361/202451095",
+    "theme": "modelling systematics",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "selected full-text sections",
+    "sections_assessed": "Methods, independently simulated benchmark, systematics and idealization limits",
+    "support_url": "https://arxiv.org/html/2406.08484v2",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1051/0004-6361/202451095",
+      "https://arxiv.org/abs/2406.08484"
+    ],
+    "dataset_and_design": "Six modelling methods blindly fit independently simulated HST images.",
+    "supported_finding": "Systematic differences persist; PSF/source choices matter.",
+    "main_limitation": "Idealized benchmark; favourable model combination need not generalize.",
+    "project_implication": "An actual independent renderer provides stronger evidence than identical code paths.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "schneider2013",
+    "title": "Mass-sheet degeneracy, power-law models and external convergence: Impact on the determination of the Hubble constant from gravitational lensing",
+    "authors": [
+      {
+        "family": "Schneider",
+        "given": "Peter"
+      },
+      {
+        "family": "Sluse",
+        "given": "Dominique"
+      }
+    ],
+    "year": 2013,
+    "venue": "Astronomy & Astrophysics",
+    "volume": "559",
+    "issue": "",
+    "pages_or_article": "A37",
+    "doi": "10.1051/0004-6361/201321882",
+    "arxiv": "1306.0901",
+    "url": "https://doi.org/10.1051/0004-6361/201321882",
+    "theme": "identifiability",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/1306.0901",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1051/0004-6361/201321882",
+      "https://arxiv.org/abs/1306.0901"
+    ],
+    "dataset_and_design": "Analytical arguments and numerical lens examples.",
+    "supported_finding": "Mass-sheet-like freedoms can change cosmological inference despite similar images.",
+    "main_limitation": "Does not imply every observable or Einstein radius is equally unconstrained.",
+    "project_implication": "Explain the limits of inferring science from one accurately recovered parameter.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "schneider2014",
+    "title": "Source-position transformation: an approximate invariance in strong gravitational lensing",
+    "authors": [
+      {
+        "family": "Schneider",
+        "given": "Peter"
+      },
+      {
+        "family": "Sluse",
+        "given": "Dominique"
+      }
+    ],
+    "year": 2014,
+    "venue": "Astronomy & Astrophysics",
+    "volume": "564",
+    "issue": "",
+    "pages_or_article": "A103",
+    "doi": "10.1051/0004-6361/201322106",
+    "arxiv": "1306.4675",
+    "url": "https://doi.org/10.1051/0004-6361/201322106",
+    "theme": "identifiability",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/1306.4675",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1051/0004-6361/201322106",
+      "https://arxiv.org/abs/1306.4675"
+    ],
+    "dataset_and_design": "Analytical and numerical source-position transformations.",
+    "supported_finding": "Further approximate invariances permit different mass/source descriptions.",
+    "main_limitation": "Exactness depends on symmetry and transformation.",
+    "project_implication": "Good image fits and low residuals are insufficient uniqueness evidence.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "collett2015",
+    "title": "THE POPULATION OF GALAXY–GALAXY STRONG LENSES IN FORTHCOMING OPTICAL IMAGING SURVEYS",
+    "authors": [
+      {
+        "family": "Collett",
+        "given": "Thomas E."
+      }
+    ],
+    "year": 2015,
+    "venue": "The Astrophysical Journal",
+    "volume": "811",
+    "issue": "1",
+    "pages_or_article": "20",
+    "doi": "10.1088/0004-637X/811/1/20",
+    "arxiv": "1507.02657",
+    "url": "https://doi.org/10.1088/0004-637X/811/1/20",
+    "theme": "survey context",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/1507.02657",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1088/0004-637X/811/1/20",
+      "https://arxiv.org/abs/1507.02657"
+    ],
+    "dataset_and_design": "Population model and simulated survey observations; validation against an earlier survey.",
+    "supported_finding": "Forecasts large discoverable samples and strong dependence on detection cuts.",
+    "main_limitation": "Forecast counts depend on source populations and lens-light subtraction.",
+    "project_implication": "Use forecast language; define the selected population.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "birrer2024",
+    "title": "Time-Delay Cosmography: Measuring the Hubble Constant and Other Cosmological Parameters with Strong Gravitational Lensing",
+    "authors": [
+      {
+        "family": "Birrer",
+        "given": "S."
+      },
+      {
+        "family": "Millon",
+        "given": "M."
+      },
+      {
+        "family": "Sluse",
+        "given": "D."
+      },
+      {
+        "family": "Shajib",
+        "given": "A. J."
+      },
+      {
+        "family": "Courbin",
+        "given": "F."
+      },
+      {
+        "family": "Erickson",
+        "given": "S."
+      },
+      {
+        "family": "Koopmans",
+        "given": "L. V. E."
+      },
+      {
+        "family": "Suyu",
+        "given": "S. H."
+      },
+      {
+        "family": "Treu",
+        "given": "T."
+      }
+    ],
+    "year": 2024,
+    "venue": "Space Science Reviews",
+    "volume": "220",
+    "issue": "5",
+    "pages_or_article": "48",
+    "doi": "10.1007/s11214-024-01079-w",
+    "arxiv": "2210.10833",
+    "url": "https://doi.org/10.1007/s11214-024-01079-w",
+    "theme": "cosmography review",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/2210.10833",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1007/s11214-024-01079-w",
+      "https://arxiv.org/abs/2210.10833"
+    ],
+    "dataset_and_design": "Review of time-delay cosmography.",
+    "supported_finding": "Explains the additional observables and systematics needed for cosmology.",
+    "main_limitation": "Background synthesis, not a new radius benchmark.",
+    "project_implication": "Keep downstream scientific relevance conditional.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "tinylens2025",
+    "title": "CSST strong lensing preparation: fast modelling of galaxy–galaxy strong lenses in the big data era",
+    "authors": [
+      {
+        "family": "Cao",
+        "given": "Xiaoyue"
+      },
+      {
+        "family": "Li",
+        "given": "Ran"
+      },
+      {
+        "family": "Li",
+        "given": "Nan"
+      },
+      {
+        "family": "Chen",
+        "given": "Yun"
+      },
+      {
+        "family": "Li",
+        "given": "Rui"
+      },
+      {
+        "family": "Shan",
+        "given": "Huanyuan"
+      },
+      {
+        "family": "Li",
+        "given": "Tian"
+      }
+    ],
+    "year": 2025,
+    "venue": "Monthly Notices of the Royal Astronomical Society",
+    "volume": "540",
+    "issue": "4",
+    "pages_or_article": "3121-3134",
+    "doi": "10.1093/mnras/staf891",
+    "arxiv": "",
+    "url": "https://doi.org/10.1093/mnras/staf891",
+    "theme": "accelerated physical fitting",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://doi.org/10.1093/mnras/staf891",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1093/mnras/staf891"
+    ],
+    "dataset_and_design": "One thousand simulated lenses and 63 real HST SLACS lenses; GPU physical fitting.",
+    "supported_finding": "Fast modelling with explicit catastrophic failures on synthetic and real images.",
+    "main_limitation": "Real comparison is to literature fits, with hardware-specific timings.",
+    "project_implication": "Failure rate and manual effort belong beside accuracy and runtime.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "herle2024",
+    "title": "Selection functions of strong lens finding neural networks",
+    "authors": [
+      {
+        "family": "Herle",
+        "given": "A"
+      },
+      {
+        "family": "O’Riordan",
+        "given": "C M"
+      },
+      {
+        "family": "Vegetti",
+        "given": "S"
+      }
+    ],
+    "year": 2024,
+    "venue": "Monthly Notices of the Royal Astronomical Society",
+    "volume": "534",
+    "issue": "2",
+    "pages_or_article": "1093-1106",
+    "doi": "10.1093/mnras/stae2106",
+    "arxiv": "2307.10355",
+    "url": "https://doi.org/10.1093/mnras/stae2106",
+    "theme": "selection function",
+    "relevance": "lensing selection/detection; adjacent to parameter inference",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/2307.10355",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1093/mnras/stae2106",
+      "https://arxiv.org/abs/2307.10355"
+    ],
+    "dataset_and_design": "Controlled lens-finder simulations for galaxy and quasar lenses.",
+    "supported_finding": "Selection depends on radius, source morphology and task.",
+    "main_limitation": "Classification selection evidence is adjacent to regression.",
+    "project_implication": "Evaluate radius recovery in the population the finder actually selects.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "euclid2024",
+    "title": "Euclidpreparation. XXXIII. Characterization of convolutional neural networks for the identification of galaxy-galaxy strong-lensing events",
+    "authors": [
+      {
+        "literal": "Euclid Collaboration"
+      },
+      {
+        "family": "Leuzzi",
+        "given": "L."
+      },
+      {
+        "family": "Meneghetti",
+        "given": "M."
+      },
+      {
+        "family": "Angora",
+        "given": "G."
+      },
+      {
+        "family": "Metcalf",
+        "given": "R. B."
+      },
+      {
+        "family": "Moscardini",
+        "given": "L."
+      },
+      {
+        "family": "Rosati",
+        "given": "P."
+      },
+      {
+        "family": "Bergamini",
+        "given": "P."
+      },
+      {
+        "family": "Calura",
+        "given": "F."
+      },
+      {
+        "family": "Clément",
+        "given": "B."
+      },
+      {
+        "family": "Gavazzi",
+        "given": "R."
+      },
+      {
+        "family": "Gentile",
+        "given": "F."
+      },
+      {
+        "family": "Lochner",
+        "given": "M."
+      },
+      {
+        "family": "Grillo",
+        "given": "C."
+      },
+      {
+        "family": "Vernardos",
+        "given": "G."
+      },
+      {
+        "family": "Aghanim",
+        "given": "N."
+      },
+      {
+        "family": "Amara",
+        "given": "A."
+      },
+      {
+        "family": "Amendola",
+        "given": "L."
+      },
+      {
+        "family": "Auricchio",
+        "given": "N."
+      },
+      {
+        "family": "Bodendorf",
+        "given": "C."
+      },
+      {
+        "family": "Bonino",
+        "given": "D."
+      },
+      {
+        "family": "Branchini",
+        "given": "E."
+      },
+      {
+        "family": "Brescia",
+        "given": "M."
+      },
+      {
+        "family": "Brinchmann",
+        "given": "J."
+      },
+      {
+        "family": "Camera",
+        "given": "S."
+      },
+      {
+        "family": "Capobianco",
+        "given": "V."
+      },
+      {
+        "family": "Carbone",
+        "given": "C."
+      },
+      {
+        "family": "Carretero",
+        "given": "J."
+      },
+      {
+        "family": "Castellano",
+        "given": "M."
+      },
+      {
+        "family": "Cavuoti",
+        "given": "S."
+      },
+      {
+        "family": "Cimatti",
+        "given": "A."
+      },
+      {
+        "family": "Cledassou",
+        "given": "R."
+      },
+      {
+        "family": "Congedo",
+        "given": "G."
+      },
+      {
+        "family": "Conselice",
+        "given": "C. J."
+      },
+      {
+        "family": "Conversi",
+        "given": "L."
+      },
+      {
+        "family": "Copin",
+        "given": "Y."
+      },
+      {
+        "family": "Corcione",
+        "given": "L."
+      },
+      {
+        "family": "Courbin",
+        "given": "F."
+      },
+      {
+        "family": "Cropper",
+        "given": "M."
+      },
+      {
+        "family": "Da Silva",
+        "given": "A."
+      },
+      {
+        "family": "Degaudenzi",
+        "given": "H."
+      },
+      {
+        "family": "Dinis",
+        "given": "J."
+      },
+      {
+        "family": "Dubath",
+        "given": "F."
+      },
+      {
+        "family": "Dupac",
+        "given": "X."
+      },
+      {
+        "family": "Dusini",
+        "given": "S."
+      },
+      {
+        "family": "Farrens",
+        "given": "S."
+      },
+      {
+        "family": "Ferriol",
+        "given": "S."
+      },
+      {
+        "family": "Frailis",
+        "given": "M."
+      },
+      {
+        "family": "Franceschi",
+        "given": "E."
+      },
+      {
+        "family": "Fumana",
+        "given": "M."
+      },
+      {
+        "family": "Galeotta",
+        "given": "S."
+      },
+      {
+        "family": "Gillis",
+        "given": "B."
+      },
+      {
+        "family": "Giocoli",
+        "given": "C."
+      },
+      {
+        "family": "Grazian",
+        "given": "A."
+      },
+      {
+        "family": "Grupp",
+        "given": "F."
+      },
+      {
+        "family": "Guzzo",
+        "given": "L."
+      },
+      {
+        "family": "Haugan",
+        "given": "S. V. H."
+      },
+      {
+        "family": "Holmes",
+        "given": "W."
+      },
+      {
+        "family": "Hormuth",
+        "given": "F."
+      },
+      {
+        "family": "Hornstrup",
+        "given": "A."
+      },
+      {
+        "family": "Hudelot",
+        "given": "P."
+      },
+      {
+        "family": "Jahnke",
+        "given": "K."
+      },
+      {
+        "family": "Kümmel",
+        "given": "M."
+      },
+      {
+        "family": "Kermiche",
+        "given": "S."
+      },
+      {
+        "family": "Kiessling",
+        "given": "A."
+      },
+      {
+        "family": "Kitching",
+        "given": "T."
+      },
+      {
+        "family": "Kunz",
+        "given": "M."
+      },
+      {
+        "family": "Kurki-Suonio",
+        "given": "H."
+      },
+      {
+        "family": "Lilje",
+        "given": "P. B."
+      },
+      {
+        "family": "Lloro",
+        "given": "I."
+      },
+      {
+        "family": "Maiorano",
+        "given": "E."
+      },
+      {
+        "family": "Mansutti",
+        "given": "O."
+      },
+      {
+        "family": "Marggraf",
+        "given": "O."
+      },
+      {
+        "family": "Markovic",
+        "given": "K."
+      },
+      {
+        "family": "Marulli",
+        "given": "F."
+      },
+      {
+        "family": "Massey",
+        "given": "R."
+      },
+      {
+        "family": "Medinaceli",
+        "given": "E."
+      },
+      {
+        "family": "Mei",
+        "given": "S."
+      },
+      {
+        "family": "Melchior",
+        "given": "M."
+      },
+      {
+        "family": "Mellier",
+        "given": "Y."
+      },
+      {
+        "family": "Merlin",
+        "given": "E."
+      },
+      {
+        "family": "Meylan",
+        "given": "G."
+      },
+      {
+        "family": "Moresco",
+        "given": "M."
+      },
+      {
+        "family": "Munari",
+        "given": "E."
+      },
+      {
+        "family": "Niemi",
+        "given": "S.-M."
+      },
+      {
+        "family": "Nightingale",
+        "given": "J. W."
+      },
+      {
+        "family": "Nutma",
+        "given": "T."
+      },
+      {
+        "family": "Padilla",
+        "given": "C."
+      },
+      {
+        "family": "Paltani",
+        "given": "S."
+      },
+      {
+        "family": "Pasian",
+        "given": "F."
+      },
+      {
+        "family": "Pedersen",
+        "given": "K."
+      },
+      {
+        "family": "Pettorino",
+        "given": "V."
+      },
+      {
+        "family": "Pires",
+        "given": "S."
+      },
+      {
+        "family": "Polenta",
+        "given": "G."
+      },
+      {
+        "family": "Poncet",
+        "given": "M."
+      },
+      {
+        "family": "Raison",
+        "given": "F."
+      },
+      {
+        "family": "Renzi",
+        "given": "A."
+      },
+      {
+        "family": "Rhodes",
+        "given": "J."
+      },
+      {
+        "family": "Riccio",
+        "given": "G."
+      },
+      {
+        "family": "Romelli",
+        "given": "E."
+      },
+      {
+        "family": "Roncarelli",
+        "given": "M."
+      },
+      {
+        "family": "Rossetti",
+        "given": "E."
+      },
+      {
+        "family": "Saglia",
+        "given": "R."
+      },
+      {
+        "family": "Sapone",
+        "given": "D."
+      },
+      {
+        "family": "Sartoris",
+        "given": "B."
+      },
+      {
+        "family": "Schneider",
+        "given": "P."
+      },
+      {
+        "family": "Secroun",
+        "given": "A."
+      },
+      {
+        "family": "Seidel",
+        "given": "G."
+      },
+      {
+        "family": "Serrano",
+        "given": "S."
+      },
+      {
+        "family": "Sirignano",
+        "given": "C."
+      },
+      {
+        "family": "Sirri",
+        "given": "G."
+      },
+      {
+        "family": "Stanco",
+        "given": "L."
+      },
+      {
+        "family": "Tallada-Crespí",
+        "given": "P."
+      },
+      {
+        "family": "Taylor",
+        "given": "A. N."
+      },
+      {
+        "family": "Tereno",
+        "given": "I."
+      },
+      {
+        "family": "Toledo-Moreo",
+        "given": "R."
+      },
+      {
+        "family": "Torradeflot",
+        "given": "F."
+      },
+      {
+        "family": "Tutusaus",
+        "given": "I."
+      },
+      {
+        "family": "Valenziano",
+        "given": "L."
+      },
+      {
+        "family": "Vassallo",
+        "given": "T."
+      },
+      {
+        "family": "Wang",
+        "given": "Y."
+      },
+      {
+        "family": "Weller",
+        "given": "J."
+      },
+      {
+        "family": "Zamorani",
+        "given": "G."
+      },
+      {
+        "family": "Zoubian",
+        "given": "J."
+      },
+      {
+        "family": "Andreon",
+        "given": "S."
+      },
+      {
+        "family": "Bardelli",
+        "given": "S."
+      },
+      {
+        "family": "Boucaud",
+        "given": "A."
+      },
+      {
+        "family": "Bozzo",
+        "given": "E."
+      },
+      {
+        "family": "Colodro-Conde",
+        "given": "C."
+      },
+      {
+        "family": "Di Ferdinando",
+        "given": "D."
+      },
+      {
+        "family": "Farina",
+        "given": "M."
+      },
+      {
+        "family": "Farinelli",
+        "given": "R."
+      },
+      {
+        "family": "Graciá-Carpio",
+        "given": "J."
+      },
+      {
+        "family": "Keihänen",
+        "given": "E."
+      },
+      {
+        "family": "Lindholm",
+        "given": "V."
+      },
+      {
+        "family": "Maino",
+        "given": "D."
+      },
+      {
+        "family": "Mauri",
+        "given": "N."
+      },
+      {
+        "family": "Neissner",
+        "given": "C."
+      },
+      {
+        "family": "Schirmer",
+        "given": "M."
+      },
+      {
+        "family": "Scottez",
+        "given": "V."
+      },
+      {
+        "family": "Tenti",
+        "given": "M."
+      },
+      {
+        "family": "Tramacere",
+        "given": "A."
+      },
+      {
+        "family": "Veropalumbo",
+        "given": "A."
+      },
+      {
+        "family": "Zucca",
+        "given": "E."
+      },
+      {
+        "family": "Akrami",
+        "given": "Y."
+      },
+      {
+        "family": "Allevato",
+        "given": "V."
+      },
+      {
+        "family": "Baccigalupi",
+        "given": "C."
+      },
+      {
+        "family": "Ballardini",
+        "given": "M."
+      },
+      {
+        "family": "Bernardeau",
+        "given": "F."
+      },
+      {
+        "family": "Biviano",
+        "given": "A."
+      },
+      {
+        "family": "Borgani",
+        "given": "S."
+      },
+      {
+        "family": "Borlaff",
+        "given": "A. S."
+      },
+      {
+        "family": "Bretonnière",
+        "given": "H."
+      },
+      {
+        "family": "Burigana",
+        "given": "C."
+      },
+      {
+        "family": "Cabanac",
+        "given": "R."
+      },
+      {
+        "family": "Cappi",
+        "given": "A."
+      },
+      {
+        "family": "Carvalho",
+        "given": "C. S."
+      },
+      {
+        "family": "Casas",
+        "given": "S."
+      },
+      {
+        "family": "Castignani",
+        "given": "G."
+      },
+      {
+        "family": "Castro",
+        "given": "T."
+      },
+      {
+        "family": "Chambers",
+        "given": "K. C."
+      },
+      {
+        "family": "Cooray",
+        "given": "A. R."
+      },
+      {
+        "family": "Coupon",
+        "given": "J."
+      },
+      {
+        "family": "Courtois",
+        "given": "H. M."
+      },
+      {
+        "family": "Davini",
+        "given": "S."
+      },
+      {
+        "family": "de la Torre",
+        "given": "S."
+      },
+      {
+        "family": "De Lucia",
+        "given": "G."
+      },
+      {
+        "family": "Desprez",
+        "given": "G."
+      },
+      {
+        "family": "Di Domizio",
+        "given": "S."
+      },
+      {
+        "family": "Dole",
+        "given": "H."
+      },
+      {
+        "family": "Escartin Vigo",
+        "given": "J. A."
+      },
+      {
+        "family": "Escoffier",
+        "given": "S."
+      },
+      {
+        "family": "Ferrero",
+        "given": "I."
+      },
+      {
+        "family": "Gabarra",
+        "given": "L."
+      },
+      {
+        "family": "Ganga",
+        "given": "K."
+      },
+      {
+        "family": "Garcia-Bellido",
+        "given": "J."
+      },
+      {
+        "family": "Gaztanaga",
+        "given": "E."
+      },
+      {
+        "family": "George",
+        "given": "K."
+      },
+      {
+        "family": "Gozaliasl",
+        "given": "G."
+      },
+      {
+        "family": "Hildebrandt",
+        "given": "H."
+      },
+      {
+        "family": "Hook",
+        "given": "I."
+      },
+      {
+        "family": "Huertas-Company",
+        "given": "M."
+      },
+      {
+        "family": "Joachimi",
+        "given": "B."
+      },
+      {
+        "family": "Kajava",
+        "given": "J. J. E."
+      },
+      {
+        "family": "Kansal",
+        "given": "V."
+      },
+      {
+        "family": "Kirkpatrick",
+        "given": "C. C."
+      },
+      {
+        "family": "Legrand",
+        "given": "L."
+      },
+      {
+        "family": "Loureiro",
+        "given": "A."
+      },
+      {
+        "family": "Magliocchetti",
+        "given": "M."
+      },
+      {
+        "family": "Mainetti",
+        "given": "G."
+      },
+      {
+        "family": "Maoli",
+        "given": "R."
+      },
+      {
+        "family": "Martinelli",
+        "given": "M."
+      },
+      {
+        "family": "Martinet",
+        "given": "N."
+      },
+      {
+        "family": "Martins",
+        "given": "C. J. A. P."
+      },
+      {
+        "family": "Matthew",
+        "given": "S."
+      },
+      {
+        "family": "Maurin",
+        "given": "L."
+      },
+      {
+        "family": "Monaco",
+        "given": "P."
+      },
+      {
+        "family": "Morgante",
+        "given": "G."
+      },
+      {
+        "family": "Nadathur",
+        "given": "S."
+      },
+      {
+        "family": "Nucita",
+        "given": "A. A."
+      },
+      {
+        "family": "Patrizii",
+        "given": "L."
+      },
+      {
+        "family": "Popa",
+        "given": "V."
+      },
+      {
+        "family": "Porciani",
+        "given": "C."
+      },
+      {
+        "family": "Potter",
+        "given": "D."
+      },
+      {
+        "family": "Pöntinen",
+        "given": "M."
+      },
+      {
+        "family": "Reimberg",
+        "given": "P."
+      },
+      {
+        "family": "Sánchez",
+        "given": "A. G."
+      },
+      {
+        "family": "Sakr",
+        "given": "Z."
+      },
+      {
+        "family": "Schneider",
+        "given": "A."
+      },
+      {
+        "family": "Sereno",
+        "given": "M."
+      },
+      {
+        "family": "Simon",
+        "given": "P."
+      },
+      {
+        "family": "Spurio Mancini",
+        "given": "A."
+      },
+      {
+        "family": "Stadel",
+        "given": "J."
+      },
+      {
+        "family": "Steinwagner",
+        "given": "J."
+      },
+      {
+        "family": "Teyssier",
+        "given": "R."
+      },
+      {
+        "family": "Valiviita",
+        "given": "J."
+      },
+      {
+        "family": "Viel",
+        "given": "M."
+      },
+      {
+        "family": "Zinchenko",
+        "given": "I. A."
+      },
+      {
+        "family": "Domínguez Sánchez",
+        "given": "H."
+      }
+    ],
+    "year": 2024,
+    "venue": "Astronomy & Astrophysics",
+    "volume": "681",
+    "issue": "",
+    "pages_or_article": "A68",
+    "doi": "10.1051/0004-6361/202347244",
+    "arxiv": "",
+    "url": "https://doi.org/10.1051/0004-6361/202347244",
+    "theme": "detection context",
+    "relevance": "lensing selection/detection; adjacent to parameter inference",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://doi.org/10.1051/0004-6361/202347244",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1051/0004-6361/202347244"
+    ],
+    "dataset_and_design": "Mock Euclid lens detection; several CNN architectures and faint-arc fractions.",
+    "supported_finding": "Detection deteriorates as more difficult lenses are included.",
+    "main_limitation": "Classification study, not parameter inference.",
+    "project_implication": "Preserve faint and difficult systems in evaluation.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "euclid2026",
+    "title": "Euclid Quick Data Release (Q1). XXXII. From simulations to sky: Advancing machine-learning lens detection with real Euclid data",
+    "authors": [
+      {
+        "literal": "Euclid Collaboration"
+      },
+      {
+        "family": "Lines",
+        "given": "N. E. P."
+      },
+      {
+        "family": "Collett",
+        "given": "T. E."
+      },
+      {
+        "family": "Holloway",
+        "given": "P."
+      },
+      {
+        "family": "Rojas",
+        "given": "K."
+      },
+      {
+        "family": "Schuldt",
+        "given": "S."
+      },
+      {
+        "family": "Metcalf",
+        "given": "R. B."
+      },
+      {
+        "family": "Li",
+        "given": "T."
+      },
+      {
+        "family": "Verma",
+        "given": "A."
+      },
+      {
+        "family": "Despali",
+        "given": "G."
+      },
+      {
+        "family": "Courbin",
+        "given": "F."
+      },
+      {
+        "family": "Gavazzi",
+        "given": "R."
+      },
+      {
+        "family": "Tortora",
+        "given": "C."
+      },
+      {
+        "family": "Clément",
+        "given": "B."
+      },
+      {
+        "family": "Aghanim",
+        "given": "N."
+      },
+      {
+        "family": "Altieri",
+        "given": "B."
+      },
+      {
+        "family": "Amendola",
+        "given": "L."
+      },
+      {
+        "family": "Andreon",
+        "given": "S."
+      },
+      {
+        "family": "Auricchio",
+        "given": "N."
+      },
+      {
+        "family": "Baccigalupi",
+        "given": "C."
+      },
+      {
+        "family": "Baldi",
+        "given": "M."
+      },
+      {
+        "family": "Balestra",
+        "given": "A."
+      },
+      {
+        "family": "Bardelli",
+        "given": "S."
+      },
+      {
+        "family": "Battaglia",
+        "given": "P."
+      },
+      {
+        "family": "Biviano",
+        "given": "A."
+      },
+      {
+        "family": "Branchini",
+        "given": "E."
+      },
+      {
+        "family": "Brescia",
+        "given": "M."
+      },
+      {
+        "family": "Camera",
+        "given": "S."
+      },
+      {
+        "family": "Cañas-Herrera",
+        "given": "G."
+      },
+      {
+        "family": "Capobianco",
+        "given": "V."
+      },
+      {
+        "family": "Carbone",
+        "given": "C."
+      },
+      {
+        "family": "Carretero",
+        "given": "J."
+      },
+      {
+        "family": "Castellano",
+        "given": "M."
+      },
+      {
+        "family": "Castignani",
+        "given": "G."
+      },
+      {
+        "family": "Cavuoti",
+        "given": "S."
+      },
+      {
+        "family": "Cimatti",
+        "given": "A."
+      },
+      {
+        "family": "Colodro-Conde",
+        "given": "C."
+      },
+      {
+        "family": "Congedo",
+        "given": "G."
+      },
+      {
+        "family": "Conselice",
+        "given": "C. J."
+      },
+      {
+        "family": "Conversi",
+        "given": "L."
+      },
+      {
+        "family": "Copin",
+        "given": "Y."
+      },
+      {
+        "family": "Courtois",
+        "given": "H. M."
+      },
+      {
+        "family": "Cropper",
+        "given": "M."
+      },
+      {
+        "family": "Degaudenzi",
+        "given": "H."
+      },
+      {
+        "family": "De Lucia",
+        "given": "G."
+      },
+      {
+        "family": "Dole",
+        "given": "H."
+      },
+      {
+        "family": "Dubath",
+        "given": "F."
+      },
+      {
+        "family": "Dupac",
+        "given": "X."
+      },
+      {
+        "family": "Dusini",
+        "given": "S."
+      },
+      {
+        "family": "Ealet",
+        "given": "A."
+      },
+      {
+        "family": "Escoffier",
+        "given": "S."
+      },
+      {
+        "family": "Farina",
+        "given": "M."
+      },
+      {
+        "family": "Farinelli",
+        "given": "R."
+      },
+      {
+        "family": "Faustini",
+        "given": "F."
+      },
+      {
+        "family": "Ferriol",
+        "given": "S."
+      },
+      {
+        "family": "Finelli",
+        "given": "F."
+      },
+      {
+        "family": "Frailis",
+        "given": "M."
+      },
+      {
+        "family": "Franceschi",
+        "given": "E."
+      },
+      {
+        "family": "Fumana",
+        "given": "M."
+      },
+      {
+        "family": "Galeotta",
+        "given": "S."
+      },
+      {
+        "family": "George",
+        "given": "K."
+      },
+      {
+        "family": "Gillis",
+        "given": "B."
+      },
+      {
+        "family": "Giocoli",
+        "given": "C."
+      },
+      {
+        "family": "Gómez-Alvarez",
+        "given": "P."
+      },
+      {
+        "family": "Gracia-Carpio",
+        "given": "J."
+      },
+      {
+        "family": "Grazian",
+        "given": "A."
+      },
+      {
+        "family": "Grupp",
+        "given": "F."
+      },
+      {
+        "family": "Haugan",
+        "given": "S. V. H."
+      },
+      {
+        "family": "Holmes",
+        "given": "W."
+      },
+      {
+        "family": "Hook",
+        "given": "I. M."
+      },
+      {
+        "family": "Hormuth",
+        "given": "F."
+      },
+      {
+        "family": "Hornstrup",
+        "given": "A."
+      },
+      {
+        "family": "Jahnke",
+        "given": "K."
+      },
+      {
+        "family": "Jhabvala",
+        "given": "M."
+      },
+      {
+        "family": "Joachimi",
+        "given": "B."
+      },
+      {
+        "family": "Keihänen",
+        "given": "E."
+      },
+      {
+        "family": "Kermiche",
+        "given": "S."
+      },
+      {
+        "family": "Kiessling",
+        "given": "A."
+      },
+      {
+        "family": "Kubik",
+        "given": "B."
+      },
+      {
+        "family": "Kümmel",
+        "given": "M."
+      },
+      {
+        "family": "Kunz",
+        "given": "M."
+      },
+      {
+        "family": "Kurki-Suonio",
+        "given": "H."
+      },
+      {
+        "family": "Le Brun",
+        "given": "A. M. C."
+      },
+      {
+        "family": "Ligori",
+        "given": "S."
+      },
+      {
+        "family": "Lilje",
+        "given": "P. B."
+      },
+      {
+        "family": "Lindholm",
+        "given": "V."
+      },
+      {
+        "family": "Lloro",
+        "given": "I."
+      },
+      {
+        "family": "Mainetti",
+        "given": "G."
+      },
+      {
+        "family": "Maino",
+        "given": "D."
+      },
+      {
+        "family": "Maiorano",
+        "given": "E."
+      },
+      {
+        "family": "Mansutti",
+        "given": "O."
+      },
+      {
+        "family": "Marcin",
+        "given": "S."
+      },
+      {
+        "family": "Marggraf",
+        "given": "O."
+      },
+      {
+        "family": "Martinelli",
+        "given": "M."
+      },
+      {
+        "family": "Martinet",
+        "given": "N."
+      },
+      {
+        "family": "Marulli",
+        "given": "F."
+      },
+      {
+        "family": "Massey",
+        "given": "R. J."
+      },
+      {
+        "family": "Medinaceli",
+        "given": "E."
+      },
+      {
+        "family": "Mei",
+        "given": "S."
+      },
+      {
+        "family": "Melchior",
+        "given": "M."
+      },
+      {
+        "family": "Mellier",
+        "given": "Y."
+      },
+      {
+        "family": "Meneghetti",
+        "given": "M."
+      },
+      {
+        "family": "Merlin",
+        "given": "E."
+      },
+      {
+        "family": "Meylan",
+        "given": "G."
+      },
+      {
+        "family": "Mora",
+        "given": "A."
+      },
+      {
+        "family": "Moresco",
+        "given": "M."
+      },
+      {
+        "family": "Moscardini",
+        "given": "L."
+      },
+      {
+        "family": "Nakajima",
+        "given": "R."
+      },
+      {
+        "family": "Neissner",
+        "given": "C."
+      },
+      {
+        "family": "Niemi",
+        "given": "S.-M."
+      },
+      {
+        "family": "Nightingale",
+        "given": "J. W."
+      },
+      {
+        "family": "Padilla",
+        "given": "C."
+      },
+      {
+        "family": "Paltani",
+        "given": "S."
+      },
+      {
+        "family": "Pasian",
+        "given": "F."
+      },
+      {
+        "family": "Pedersen",
+        "given": "K."
+      },
+      {
+        "family": "Percival",
+        "given": "W. J."
+      },
+      {
+        "family": "Pettorino",
+        "given": "V."
+      },
+      {
+        "family": "Pires",
+        "given": "S."
+      },
+      {
+        "family": "Polenta",
+        "given": "G."
+      },
+      {
+        "family": "Poncet",
+        "given": "M."
+      },
+      {
+        "family": "Popa",
+        "given": "L. A."
+      },
+      {
+        "family": "Pozzetti",
+        "given": "L."
+      },
+      {
+        "family": "Raison",
+        "given": "F."
+      },
+      {
+        "family": "Renzi",
+        "given": "A."
+      },
+      {
+        "family": "Rhodes",
+        "given": "J."
+      },
+      {
+        "family": "Riccio",
+        "given": "G."
+      },
+      {
+        "family": "Romelli",
+        "given": "E."
+      },
+      {
+        "family": "Roncarelli",
+        "given": "M."
+      },
+      {
+        "family": "Rosset",
+        "given": "C."
+      },
+      {
+        "family": "Saglia",
+        "given": "R."
+      },
+      {
+        "family": "Sakr",
+        "given": "Z."
+      },
+      {
+        "family": "Sánchez",
+        "given": "A. G."
+      },
+      {
+        "family": "Sapone",
+        "given": "D."
+      },
+      {
+        "family": "Sartoris",
+        "given": "B."
+      },
+      {
+        "family": "Schewtschenko",
+        "given": "J. A."
+      },
+      {
+        "family": "Schneider",
+        "given": "P."
+      },
+      {
+        "family": "Schrabback",
+        "given": "T."
+      },
+      {
+        "family": "Secroun",
+        "given": "A."
+      },
+      {
+        "family": "Seidel",
+        "given": "G."
+      },
+      {
+        "family": "Serrano",
+        "given": "S."
+      },
+      {
+        "family": "Sirignano",
+        "given": "C."
+      },
+      {
+        "family": "Sirri",
+        "given": "G."
+      },
+      {
+        "family": "Stanco",
+        "given": "L."
+      },
+      {
+        "family": "Steinwagner",
+        "given": "J."
+      },
+      {
+        "family": "Tallada-Crespí",
+        "given": "P."
+      },
+      {
+        "family": "Taylor",
+        "given": "A. N."
+      },
+      {
+        "family": "Tereno",
+        "given": "I."
+      },
+      {
+        "family": "Tessore",
+        "given": "N."
+      },
+      {
+        "family": "Toft",
+        "given": "S."
+      },
+      {
+        "family": "Toledo-Moreo",
+        "given": "R."
+      },
+      {
+        "family": "Torradeflot",
+        "given": "F."
+      },
+      {
+        "family": "Tutusaus",
+        "given": "I."
+      },
+      {
+        "family": "Valiviita",
+        "given": "J."
+      },
+      {
+        "family": "Vassallo",
+        "given": "T."
+      },
+      {
+        "family": "Veropalumbo",
+        "given": "A."
+      },
+      {
+        "family": "Wang",
+        "given": "Y."
+      },
+      {
+        "family": "Weller",
+        "given": "J."
+      },
+      {
+        "family": "Zacchei",
+        "given": "A."
+      },
+      {
+        "family": "Zamorani",
+        "given": "G."
+      },
+      {
+        "family": "Zerbi",
+        "given": "F. M."
+      },
+      {
+        "family": "Zucca",
+        "given": "E."
+      },
+      {
+        "family": "Ballardini",
+        "given": "M."
+      },
+      {
+        "family": "Bolzonella",
+        "given": "M."
+      },
+      {
+        "family": "Bozzo",
+        "given": "E."
+      },
+      {
+        "family": "Burigana",
+        "given": "C."
+      },
+      {
+        "family": "Cabanac",
+        "given": "R."
+      },
+      {
+        "family": "Calabrese",
+        "given": "M."
+      },
+      {
+        "family": "Cappi",
+        "given": "A."
+      },
+      {
+        "family": "Castro",
+        "given": "T."
+      },
+      {
+        "family": "Escartin Vigo",
+        "given": "J. A."
+      },
+      {
+        "family": "Gabarra",
+        "given": "L."
+      },
+      {
+        "family": "García-Bellido",
+        "given": "J."
+      },
+      {
+        "family": "Gautard",
+        "given": "V."
+      },
+      {
+        "family": "Hemmati",
+        "given": "S."
+      },
+      {
+        "family": "Huertas-Company",
+        "given": "M."
+      },
+      {
+        "family": "Macias-Perez",
+        "given": "J."
+      },
+      {
+        "family": "Maoli",
+        "given": "R."
+      },
+      {
+        "family": "Martín-Fleitas",
+        "given": "J."
+      },
+      {
+        "family": "Maturi",
+        "given": "M."
+      },
+      {
+        "family": "Mauri",
+        "given": "N."
+      },
+      {
+        "family": "Monaco",
+        "given": "P."
+      },
+      {
+        "family": "Pöntinen",
+        "given": "M."
+      },
+      {
+        "family": "Porciani",
+        "given": "C."
+      },
+      {
+        "family": "Risso",
+        "given": "I."
+      },
+      {
+        "family": "Scottez",
+        "given": "V."
+      },
+      {
+        "family": "Sereno",
+        "given": "M."
+      },
+      {
+        "family": "Tenti",
+        "given": "M."
+      },
+      {
+        "family": "Tucci",
+        "given": "M."
+      },
+      {
+        "family": "Viel",
+        "given": "M."
+      },
+      {
+        "family": "Wiesmann",
+        "given": "M."
+      },
+      {
+        "family": "Akrami",
+        "given": "Y."
+      },
+      {
+        "family": "Andika",
+        "given": "I. T."
+      },
+      {
+        "family": "Angora",
+        "given": "G."
+      },
+      {
+        "family": "Anselmi",
+        "given": "S."
+      },
+      {
+        "family": "Archidiacono",
+        "given": "M."
+      },
+      {
+        "family": "Atrio-Barandela",
+        "given": "F."
+      },
+      {
+        "family": "Aubourg",
+        "given": "E."
+      },
+      {
+        "family": "Bazzanini",
+        "given": "L."
+      },
+      {
+        "family": "Bertacca",
+        "given": "D."
+      },
+      {
+        "family": "Bethermin",
+        "given": "M."
+      },
+      {
+        "family": "Beutler",
+        "given": "F."
+      },
+      {
+        "family": "Blanchard",
+        "given": "A."
+      },
+      {
+        "family": "Blot",
+        "given": "L."
+      },
+      {
+        "family": "Bonici",
+        "given": "M."
+      },
+      {
+        "family": "Borgani",
+        "given": "S."
+      },
+      {
+        "family": "Brown",
+        "given": "M. L."
+      },
+      {
+        "family": "Bruton",
+        "given": "S."
+      },
+      {
+        "family": "Calabro",
+        "given": "A."
+      },
+      {
+        "family": "Camacho Quevedo",
+        "given": "B."
+      },
+      {
+        "family": "Caro",
+        "given": "F."
+      },
+      {
+        "family": "Carvalho",
+        "given": "C. S."
+      },
+      {
+        "family": "Cogato",
+        "given": "F."
+      },
+      {
+        "family": "Conseil",
+        "given": "S."
+      },
+      {
+        "family": "Cooray",
+        "given": "A. R."
+      },
+      {
+        "family": "Cucciati",
+        "given": "O."
+      },
+      {
+        "family": "Davini",
+        "given": "S."
+      },
+      {
+        "family": "De Paolis",
+        "given": "F."
+      },
+      {
+        "family": "Desprez",
+        "given": "G."
+      },
+      {
+        "family": "Díaz-Sánchez",
+        "given": "A."
+      },
+      {
+        "family": "Di Domizio",
+        "given": "S."
+      },
+      {
+        "family": "Diego",
+        "given": "J. M."
+      },
+      {
+        "family": "Duc",
+        "given": "P.-A."
+      },
+      {
+        "family": "Duret",
+        "given": "V."
+      },
+      {
+        "family": "Elkhashab",
+        "given": "M. Y."
+      },
+      {
+        "family": "Enia",
+        "given": "A."
+      },
+      {
+        "family": "Fang",
+        "given": "Y."
+      },
+      {
+        "family": "Ferreira",
+        "given": "P. G."
+      },
+      {
+        "family": "Finoguenov",
+        "given": "A."
+      },
+      {
+        "family": "Fontana",
+        "given": "A."
+      },
+      {
+        "family": "Franco",
+        "given": "A."
+      },
+      {
+        "family": "Ganga",
+        "given": "K."
+      },
+      {
+        "family": "Gasparetto",
+        "given": "T."
+      },
+      {
+        "family": "Gaztanaga",
+        "given": "E."
+      },
+      {
+        "family": "Giacomini",
+        "given": "F."
+      },
+      {
+        "family": "Gianotti",
+        "given": "F."
+      },
+      {
+        "family": "Gozaliasl",
+        "given": "G."
+      },
+      {
+        "family": "Gruppuso",
+        "given": "A."
+      },
+      {
+        "family": "Guidi",
+        "given": "M."
+      },
+      {
+        "family": "Gutierrez",
+        "given": "C. M."
+      },
+      {
+        "family": "Hall",
+        "given": "A."
+      },
+      {
+        "family": "Hildebrandt",
+        "given": "H."
+      },
+      {
+        "family": "Hjorth",
+        "given": "J."
+      },
+      {
+        "family": "Kajava",
+        "given": "J. J. E."
+      },
+      {
+        "family": "Kang",
+        "given": "Y."
+      },
+      {
+        "family": "Kansal",
+        "given": "V."
+      },
+      {
+        "family": "Karagiannis",
+        "given": "D."
+      },
+      {
+        "family": "Kiiveri",
+        "given": "K."
+      },
+      {
+        "family": "Kim",
+        "given": "J."
+      },
+      {
+        "family": "Kirkpatrick",
+        "given": "C. C."
+      },
+      {
+        "family": "Kruk",
+        "given": "S."
+      },
+      {
+        "family": "Lattanzi",
+        "given": "M."
+      },
+      {
+        "family": "Legrand",
+        "given": "L."
+      },
+      {
+        "family": "Lepori",
+        "given": "F."
+      },
+      {
+        "family": "Leroy",
+        "given": "G."
+      },
+      {
+        "family": "Lesci",
+        "given": "G. F."
+      },
+      {
+        "family": "Lesgourgues",
+        "given": "J."
+      },
+      {
+        "family": "Liaudat",
+        "given": "T. I."
+      },
+      {
+        "family": "Magliocchetti",
+        "given": "M."
+      },
+      {
+        "family": "Manjón-García",
+        "given": "A."
+      },
+      {
+        "family": "Mannucci",
+        "given": "F."
+      },
+      {
+        "family": "Martins",
+        "given": "C. J. A. P."
+      },
+      {
+        "family": "Maurin",
+        "given": "L."
+      },
+      {
+        "family": "Miluzio",
+        "given": "M."
+      },
+      {
+        "family": "Montoro",
+        "given": "A."
+      },
+      {
+        "family": "Moretti",
+        "given": "C."
+      },
+      {
+        "family": "Morgante",
+        "given": "G."
+      },
+      {
+        "family": "Nadathur",
+        "given": "S."
+      },
+      {
+        "family": "Naidoo",
+        "given": "K."
+      },
+      {
+        "family": "Natoli",
+        "given": "P."
+      },
+      {
+        "family": "Nesseris",
+        "given": "S."
+      },
+      {
+        "family": "Paoletti",
+        "given": "D."
+      },
+      {
+        "family": "Passalacqua",
+        "given": "F."
+      },
+      {
+        "family": "Paterson",
+        "given": "K."
+      },
+      {
+        "family": "Patrizii",
+        "given": "L."
+      },
+      {
+        "family": "Pisani",
+        "given": "A."
+      },
+      {
+        "family": "Potter",
+        "given": "D."
+      },
+      {
+        "family": "Pratt",
+        "given": "G. W."
+      },
+      {
+        "family": "Quai",
+        "given": "S."
+      },
+      {
+        "family": "Radovich",
+        "given": "M."
+      },
+      {
+        "family": "Roster",
+        "given": "W."
+      },
+      {
+        "family": "Sacquegna",
+        "given": "S."
+      },
+      {
+        "family": "Sahlén",
+        "given": "M."
+      },
+      {
+        "family": "Sanders",
+        "given": "D. B."
+      },
+      {
+        "family": "Sarpa",
+        "given": "E."
+      },
+      {
+        "family": "Schneider",
+        "given": "A."
+      },
+      {
+        "family": "Sciotti",
+        "given": "D."
+      },
+      {
+        "family": "Sellentin",
+        "given": "E."
+      },
+      {
+        "family": "Smith",
+        "given": "L. C."
+      },
+      {
+        "family": "Sorce",
+        "given": "J. G."
+      },
+      {
+        "family": "Tanidis",
+        "given": "K."
+      },
+      {
+        "family": "Tao",
+        "given": "C."
+      },
+      {
+        "family": "Tarsitano",
+        "given": "F."
+      },
+      {
+        "family": "Testera",
+        "given": "G."
+      },
+      {
+        "family": "Teyssier",
+        "given": "R."
+      },
+      {
+        "family": "Tosi",
+        "given": "S."
+      },
+      {
+        "family": "Troja",
+        "given": "A."
+      },
+      {
+        "family": "Venhola",
+        "given": "A."
+      },
+      {
+        "family": "Vergani",
+        "given": "D."
+      },
+      {
+        "family": "Vernardos",
+        "given": "G."
+      },
+      {
+        "family": "Verza",
+        "given": "G."
+      },
+      {
+        "family": "Vinciguerra",
+        "given": "S."
+      },
+      {
+        "family": "Walmsley",
+        "given": "M."
+      },
+      {
+        "family": "Walton",
+        "given": "N. A."
+      },
+      {
+        "family": "Wright",
+        "given": "A. H."
+      }
+    ],
+    "year": 2026,
+    "venue": "Astronomy & Astrophysics",
+    "volume": "711",
+    "issue": "",
+    "pages_or_article": "A32",
+    "doi": "10.1051/0004-6361/202558456",
+    "arxiv": "",
+    "url": "https://doi.org/10.1051/0004-6361/202558456",
+    "theme": "detection context",
+    "relevance": "lensing selection/detection; adjacent to parameter inference",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://doi.org/10.1051/0004-6361/202558456",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1051/0004-6361/202558456"
+    ],
+    "dataset_and_design": "Real Euclid Q1 versus simulations; lens-finder training variants.",
+    "supported_finding": "Shows a sizeable simulation-to-real detection gap and benefit from real training data.",
+    "main_limitation": "Classification metrics cannot be imported into radius regression.",
+    "project_implication": "Real images are a necessary separate validation level.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "cranmer2020",
+    "title": "The frontier of simulation-based inference",
+    "authors": [
+      {
+        "family": "Cranmer",
+        "given": "Kyle"
+      },
+      {
+        "family": "Brehmer",
+        "given": "Johann"
+      },
+      {
+        "family": "Louppe",
+        "given": "Gilles"
+      }
+    ],
+    "year": 2020,
+    "venue": "Proceedings of the National Academy of Sciences",
+    "volume": "117",
+    "issue": "48",
+    "pages_or_article": "30055-30062",
+    "doi": "10.1073/pnas.1912789117",
+    "arxiv": "1911.01429",
+    "url": "https://doi.org/10.1073/pnas.1912789117",
+    "theme": "general SBI",
+    "relevance": "general method",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/1911.01429",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1073/pnas.1912789117",
+      "https://arxiv.org/abs/1911.01429"
+    ],
+    "dataset_and_design": "General review of simulation-based inference.",
+    "supported_finding": "Organizes likelihood, ratio and posterior learning approaches.",
+    "main_limitation": "Method overview does not establish lens-specific accuracy.",
+    "project_implication": "Use precise terminology for what a model estimates.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "lueckmann2021",
+    "title": "Benchmarking Simulation-Based Inference",
+    "authors": [
+      {
+        "literal": "Lueckmann, Jan-Matthis"
+      },
+      {
+        "literal": "Boelts, Jan"
+      },
+      {
+        "literal": "Greenberg, David S."
+      },
+      {
+        "literal": "Gonçalves, Pedro J."
+      },
+      {
+        "literal": "Macke, Jakob H."
+      }
+    ],
+    "year": 2021,
+    "venue": "Proceedings of AISTATS, PMLR 130",
+    "volume": "",
+    "issue": "",
+    "pages_or_article": "343-351",
+    "doi": "",
+    "arxiv": "2101.04653",
+    "url": "https://proceedings.mlr.press/v130/lueckmann21a.html",
+    "theme": "general SBI",
+    "relevance": "general method",
+    "publication_status": "conference paper",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/2101.04653",
+    "metadata_sources": [
+      "https://arxiv.org/abs/2101.04653"
+    ],
+    "dataset_and_design": "General SBI benchmark with multiple tasks and diagnostics.",
+    "supported_finding": "No uniformly best algorithm; conclusions depend on metric and budget.",
+    "main_limitation": "Benchmark tasks differ from astronomical images.",
+    "project_implication": "Use multiple diagnostics and avoid claiming universal method superiority.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "hermans2022",
+    "title": "A Trust Crisis In Simulation-Based Inference? Your Posterior Approximations Can Be Unfaithful",
+    "authors": [
+      {
+        "literal": "Hermans, Joeri"
+      },
+      {
+        "literal": "Delaunoy, Arnaud"
+      },
+      {
+        "literal": "Rozet, François"
+      },
+      {
+        "literal": "Wehenkel, Antoine"
+      },
+      {
+        "literal": "Begy, Volodimir"
+      },
+      {
+        "literal": "Louppe, Gilles"
+      }
+    ],
+    "year": 2022,
+    "venue": "Transactions on Machine Learning Research (TMLR version identified in arXiv record)",
+    "volume": "",
+    "issue": "",
+    "pages_or_article": "",
+    "doi": "",
+    "arxiv": "2110.06581",
+    "url": "https://arxiv.org/abs/2110.06581",
+    "theme": "general calibration",
+    "relevance": "general method",
+    "publication_status": "journal version; arXiv access",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/2110.06581",
+    "metadata_sources": [
+      "https://arxiv.org/abs/2110.06581"
+    ],
+    "dataset_and_design": "Empirical comparison of approximate SBI posteriors.",
+    "supported_finding": "Multiple algorithms can be overconfident; ensembles mitigate some failures.",
+    "main_limitation": "General benchmark evidence, not lens-specific rates.",
+    "project_implication": "A neural density output needs calibration checks.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "talts2018",
+    "title": "Validating Bayesian Inference Algorithms with Simulation-Based Calibration",
+    "authors": [
+      {
+        "literal": "Talts, Sean"
+      },
+      {
+        "literal": "Betancourt, Michael"
+      },
+      {
+        "literal": "Simpson, Daniel"
+      },
+      {
+        "literal": "Vehtari, Aki"
+      },
+      {
+        "literal": "Gelman, Andrew"
+      }
+    ],
+    "year": 2018,
+    "venue": "arXiv preprint",
+    "volume": "",
+    "issue": "",
+    "pages_or_article": "",
+    "doi": "",
+    "arxiv": "1804.06788",
+    "url": "https://arxiv.org/abs/1804.06788",
+    "theme": "general calibration",
+    "relevance": "general method",
+    "publication_status": "preprint; no journal version verified",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/1804.06788",
+    "metadata_sources": [
+      "https://arxiv.org/abs/1804.06788"
+    ],
+    "dataset_and_design": "General simulation-based calibration methodology.",
+    "supported_finding": "Rank checks test computational consistency under the assumed generative model.",
+    "main_limitation": "Passing SBC alone does not validate the real-world observation model.",
+    "project_implication": "Distinguish posterior correctness from simulator correctness.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "ovadia2019",
+    "title": "Can You Trust Your Model's Uncertainty? Evaluating Predictive Uncertainty Under Dataset Shift",
+    "authors": [
+      {
+        "literal": "Ovadia, Yaniv"
+      },
+      {
+        "literal": "Fertig, Emily"
+      },
+      {
+        "literal": "Ren, Jie"
+      },
+      {
+        "literal": "Nado, Zachary"
+      },
+      {
+        "literal": "Sculley, D"
+      },
+      {
+        "literal": "Nowozin, Sebastian"
+      },
+      {
+        "literal": "Dillon, Joshua V."
+      },
+      {
+        "literal": "Lakshminarayanan, Balaji"
+      },
+      {
+        "literal": "Snoek, Jasper"
+      }
+    ],
+    "year": 2019,
+    "venue": "Advances in Neural Information Processing Systems 32",
+    "volume": "",
+    "issue": "",
+    "pages_or_article": "",
+    "doi": "",
+    "arxiv": "1906.02530",
+    "url": "https://proceedings.neurips.cc/paper/2019/hash/8558cb408c1d76621371888657d2eb1d-Abstract.html",
+    "theme": "general uncertainty shift",
+    "relevance": "general method",
+    "publication_status": "conference paper",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/1906.02530",
+    "metadata_sources": [
+      "https://arxiv.org/abs/1906.02530"
+    ],
+    "dataset_and_design": "Classification uncertainty under dataset shift.",
+    "supported_finding": "Uncertainty and post-hoc calibration can deteriorate under shift.",
+    "main_limitation": "Classification benchmark; quantitative findings do not transfer to lens regression.",
+    "project_implication": "Test calibration separately within each shift regime.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "cubuk2020",
+    "title": "RandAugment: Practical automated data augmentation with a reduced search space",
+    "authors": [
+      {
+        "literal": "Cubuk, Ekin D."
+      },
+      {
+        "literal": "Zoph, Barret"
+      },
+      {
+        "literal": "Shlens, Jonathon"
+      },
+      {
+        "literal": "Le, Quoc V."
+      }
+    ],
+    "year": 2020,
+    "venue": "Advances in Neural Information Processing Systems 33",
+    "volume": "",
+    "issue": "",
+    "pages_or_article": "",
+    "doi": "",
+    "arxiv": "1909.13719",
+    "url": "https://proceedings.neurips.cc/paper_files/paper/2020/hash/d85b63ef0ccb114d0a3bb7b7d808028f-Abstract.html",
+    "theme": "general augmentation",
+    "relevance": "general method",
+    "publication_status": "conference paper",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/1909.13719",
+    "metadata_sources": [
+      "https://arxiv.org/abs/1909.13719"
+    ],
+    "dataset_and_design": "Image classification/detection augmentation.",
+    "supported_finding": "Simplifies automated augmentation search.",
+    "main_limitation": "Generic transforms may alter astronomical meaning or labels.",
+    "project_implication": "Use physically justified augmentation rather than copying image benchmarks.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "tobin2017",
+    "title": "Domain Randomization for Transferring Deep Neural Networks from Simulation to the Real World",
+    "authors": [
+      {
+        "literal": "Tobin, Josh"
+      },
+      {
+        "literal": "Fong, Rachel"
+      },
+      {
+        "literal": "Ray, Alex"
+      },
+      {
+        "literal": "Schneider, Jonas"
+      },
+      {
+        "literal": "Zaremba, Wojciech"
+      },
+      {
+        "literal": "Abbeel, Pieter"
+      }
+    ],
+    "year": 2017,
+    "venue": "arXiv (conference report; journal DOI not used here)",
+    "volume": "",
+    "issue": "",
+    "pages_or_article": "",
+    "doi": "",
+    "arxiv": "1703.06907",
+    "url": "https://arxiv.org/abs/1703.06907",
+    "theme": "general domain randomization",
+    "relevance": "general method",
+    "publication_status": "conference report; arXiv access",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/1703.06907",
+    "metadata_sources": [
+      "https://arxiv.org/abs/1703.06907"
+    ],
+    "dataset_and_design": "Robotics simulation-to-real visual localization.",
+    "supported_finding": "Randomized rendering can facilitate transfer.",
+    "main_limitation": "Different task and physical domain.",
+    "project_implication": "General precedent; randomization alone is not new lensing science.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "mehta2020",
+    "title": "Active Domain Randomization",
+    "authors": [
+      {
+        "literal": "Mehta, Bhairav"
+      },
+      {
+        "literal": "Diaz, Manfred"
+      },
+      {
+        "literal": "Golemo, Florian"
+      },
+      {
+        "literal": "Pal, Christopher J."
+      },
+      {
+        "literal": "Paull, Liam"
+      }
+    ],
+    "year": 2020,
+    "venue": "Proceedings of the Conference on Robot Learning, PMLR 100",
+    "volume": "",
+    "issue": "",
+    "pages_or_article": "1162-1176",
+    "doi": "",
+    "arxiv": "1904.04762",
+    "url": "https://proceedings.mlr.press/v100/mehta20a.html",
+    "theme": "general domain randomization",
+    "relevance": "general method",
+    "publication_status": "conference paper",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/1904.04762",
+    "metadata_sources": [
+      "https://arxiv.org/abs/1904.04762"
+    ],
+    "dataset_and_design": "Robotics; learned simulation-parameter sampling.",
+    "supported_finding": "Adaptive randomization can improve tested policies over uniform sampling.",
+    "main_limitation": "Not the same algorithm or domain as failure-weighted lens training.",
+    "project_implication": "Requires a matched uniform baseline and selection-budget accounting.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "shajib2022",
+    "title": "TDCOSMO. IX. Systematic comparison between lens modelling software programs: Time-delay prediction for WGD 2038−4008",
+    "authors": [
+      {
+        "family": "Shajib",
+        "given": "A. J."
+      },
+      {
+        "family": "Wong",
+        "given": "K. C."
+      },
+      {
+        "family": "Birrer",
+        "given": "S."
+      },
+      {
+        "family": "Suyu",
+        "given": "S. H."
+      },
+      {
+        "family": "Treu",
+        "given": "T."
+      },
+      {
+        "family": "Buckley-Geer",
+        "given": "E. J."
+      },
+      {
+        "family": "Lin",
+        "given": "H."
+      },
+      {
+        "family": "Rusu",
+        "given": "C. E."
+      },
+      {
+        "family": "Poh",
+        "given": "J."
+      },
+      {
+        "family": "Palmese",
+        "given": "A."
+      },
+      {
+        "family": "Agnello",
+        "given": "A."
+      },
+      {
+        "family": "Auger-Williams",
+        "given": "M. W."
+      },
+      {
+        "family": "Galan",
+        "given": "A."
+      },
+      {
+        "family": "Schuldt",
+        "given": "S."
+      },
+      {
+        "family": "Sluse",
+        "given": "D."
+      },
+      {
+        "family": "Courbin",
+        "given": "F."
+      },
+      {
+        "family": "Frieman",
+        "given": "J."
+      },
+      {
+        "family": "Millon",
+        "given": "M."
+      }
+    ],
+    "year": 2022,
+    "venue": "Astronomy & Astrophysics",
+    "volume": "667",
+    "issue": "",
+    "pages_or_article": "A123",
+    "doi": "10.1051/0004-6361/202243401",
+    "arxiv": "2202.11101",
+    "url": "https://doi.org/10.1051/0004-6361/202243401",
+    "theme": "real-data modelling systematics",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "selected full-text sections",
+    "sections_assessed": "Selected PDF discussion/figures on PSF exchange and model disagreement",
+    "support_url": "https://www.aanda.org/articles/aa/pdf/2022/11/aa43401-22.pdf",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1051/0004-6361/202243401",
+      "https://arxiv.org/abs/2202.11101"
+    ],
+    "dataset_and_design": "Real WGD 2038-4008; blind GLEE/lenstronomy comparisons and follow-up checks.",
+    "supported_finding": "PSF treatment explains important inter-method differences.",
+    "main_limitation": "One real system; not a universal failure-frequency estimate.",
+    "project_implication": "Empirical PSF errors can matter more than choosing a new learner.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "karchev2022",
+    "title": "Strong-Lensing Source Reconstruction with Denoising Diffusion Restoration Models",
+    "authors": [
+      {
+        "literal": "Karchev, Konstantin"
+      },
+      {
+        "literal": "Montel, Noemi Anau"
+      },
+      {
+        "literal": "Coogan, Adam"
+      },
+      {
+        "literal": "Weniger, Christoph"
+      }
+    ],
+    "year": 2022,
+    "venue": "NeurIPS Workshop on Machine Learning for the Physical Sciences",
+    "volume": "",
+    "issue": "",
+    "pages_or_article": "",
+    "doi": "",
+    "arxiv": "2211.04365",
+    "url": "https://ml4physicalsciences.github.io/2022/files/NeurIPS_ML4PS_2022_169.pdf",
+    "theme": "generative source priors",
+    "relevance": "lensing-specific",
+    "publication_status": "workshop paper",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/2211.04365",
+    "metadata_sources": [
+      "https://arxiv.org/abs/2211.04365"
+    ],
+    "dataset_and_design": "Noisy synthetic lens source reconstruction with a diffusion prior.",
+    "supported_finding": "Demonstrates data-driven source regularization.",
+    "main_limitation": "Workshop work; source reconstruction is not full lens-mass validation.",
+    "project_implication": "Learned source priors require their own distribution-shift tests.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "shajib_review2024",
+    "title": "Strong Lensing by Galaxies",
+    "authors": [
+      {
+        "family": "Shajib",
+        "given": "A. J."
+      },
+      {
+        "family": "Vernardos",
+        "given": "G."
+      },
+      {
+        "family": "Collett",
+        "given": "T. E."
+      },
+      {
+        "family": "Motta",
+        "given": "V."
+      },
+      {
+        "family": "Sluse",
+        "given": "D."
+      },
+      {
+        "family": "Williams",
+        "given": "L. L. R."
+      },
+      {
+        "family": "Saha",
+        "given": "P."
+      },
+      {
+        "family": "Birrer",
+        "given": "S."
+      },
+      {
+        "family": "Spiniello",
+        "given": "C."
+      },
+      {
+        "family": "Treu",
+        "given": "T."
+      }
+    ],
+    "year": 2024,
+    "venue": "Space Science Reviews",
+    "volume": "220",
+    "issue": "8",
+    "pages_or_article": "87",
+    "doi": "10.1007/s11214-024-01105-x",
+    "arxiv": "",
+    "url": "https://doi.org/10.1007/s11214-024-01105-x",
+    "theme": "astrophysical application review",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://doi.org/10.1007/s11214-024-01105-x",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1007/s11214-024-01105-x"
+    ],
+    "dataset_and_design": "Review of galaxy-scale lensing and its astrophysical applications.",
+    "supported_finding": "Connects modelling to galaxy structure, populations and cosmology.",
+    "main_limitation": "Review used for context; original studies support specific empirical claims.",
+    "project_implication": "Strengthen the scientific problem before selecting a network.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "auger2010",
+    "title": "THE SLOAN LENS ACS SURVEY. X. STELLAR, DYNAMICAL, AND TOTAL MASS CORRELATIONS OF MASSIVE EARLY-TYPE GALAXIES",
+    "authors": [
+      {
+        "family": "Auger",
+        "given": "M. W."
+      },
+      {
+        "family": "Treu",
+        "given": "T."
+      },
+      {
+        "family": "Bolton",
+        "given": "A. S."
+      },
+      {
+        "family": "Gavazzi",
+        "given": "R."
+      },
+      {
+        "family": "Koopmans",
+        "given": "L. V. E."
+      },
+      {
+        "family": "Marshall",
+        "given": "P. J."
+      },
+      {
+        "family": "Moustakas",
+        "given": "L. A."
+      },
+      {
+        "family": "Burles",
+        "given": "S."
+      }
+    ],
+    "year": 2010,
+    "venue": "The Astrophysical Journal",
+    "volume": "724",
+    "issue": "1",
+    "pages_or_article": "511-525",
+    "doi": "10.1088/0004-637X/724/1/511",
+    "arxiv": "1007.2880",
+    "url": "https://doi.org/10.1088/0004-637X/724/1/511",
+    "theme": "observational mass science",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/1007.2880",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1088/0004-637X/724/1/511",
+      "https://arxiv.org/abs/1007.2880"
+    ],
+    "dataset_and_design": "Seventy-three real SLACS early-type lenses; imaging, masses and velocity dispersions.",
+    "supported_finding": "Combines lensing with other observables to study galaxy mass structure.",
+    "main_limitation": "Selected lens population and extra measurements; not image-only inference.",
+    "project_implication": "A radius estimator supports mass science only with geometry and assumptions.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "vegetti2012",
+    "title": "Gravitational detection of a low-mass dark satellite galaxy at cosmological distance",
+    "authors": [
+      {
+        "family": "Vegetti",
+        "given": "S."
+      },
+      {
+        "family": "Lagattuta",
+        "given": "D. J."
+      },
+      {
+        "family": "McKean",
+        "given": "J. P."
+      },
+      {
+        "family": "Auger",
+        "given": "M. W."
+      },
+      {
+        "family": "Fassnacht",
+        "given": "C. D."
+      },
+      {
+        "family": "Koopmans",
+        "given": "L. V. E."
+      }
+    ],
+    "year": 2012,
+    "venue": "Nature",
+    "volume": "481",
+    "issue": "7381",
+    "pages_or_article": "341-343",
+    "doi": "10.1038/nature10669",
+    "arxiv": "1201.3643",
+    "url": "https://doi.org/10.1038/nature10669",
+    "theme": "observational dark matter science",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/1201.3643",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1038/nature10669",
+      "https://arxiv.org/abs/1201.3643"
+    ],
+    "dataset_and_design": "Observed JVAS B1938+666 gravitational imaging.",
+    "supported_finding": "Demonstrates sensitivity to a low-mass dark satellite through detailed modelling.",
+    "main_limitation": "A specific substructure measurement, not what scalar radius prediction measures.",
+    "project_implication": "Motivate mass mapping without claiming dark-matter detection by this project.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "filipp2025",
+    "title": "Robustness of Neural Ratio and Posterior Estimators to Distributional Shifts for Population-level Dark Matter Analysis in Strong Gravitational Lensing",
+    "authors": [
+      {
+        "family": "Filipp",
+        "given": "Andreas"
+      },
+      {
+        "family": "Hezaveh",
+        "given": "Yashar"
+      },
+      {
+        "family": "Perreault-Levasseur",
+        "given": "Laurence"
+      }
+    ],
+    "year": 2025,
+    "venue": "The Astrophysical Journal",
+    "volume": "989",
+    "issue": "2",
+    "pages_or_article": "226",
+    "doi": "10.3847/1538-4357/adee20",
+    "arxiv": "2411.05905",
+    "url": "https://doi.org/10.3847/1538-4357/adee20",
+    "theme": "distribution shift failures",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "selected full-text sections",
+    "sections_assessed": "Misspecification tests and results; arXiv v2 plus journal metadata",
+    "support_url": "https://arxiv.org/html/2411.05905v2",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.3847/1538-4357/adee20",
+      "https://arxiv.org/abs/2411.05905"
+    ],
+    "dataset_and_design": "Controlled source, lens, halo and noise shifts for population NRE/SNPE.",
+    "supported_finding": "Small simulation mismatches can cause substantial inferred-population bias.",
+    "main_limitation": "Population subhalo task; effect size is not directly transferable to radius.",
+    "project_implication": "Critical negative evidence: matched-distribution calibration is insufficient.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together; related 2024 ICML workshop report linked as a precursor, not counted as an independent study",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "modrak2025",
+    "title": "Simulation-Based Calibration Checking for Bayesian Computation: The Choice of Test Quantities Shapes Sensitivity",
+    "authors": [
+      {
+        "family": "Modrák",
+        "given": "Martin"
+      },
+      {
+        "family": "Moon",
+        "given": "Angie H."
+      },
+      {
+        "family": "Kim",
+        "given": "Shinyoung"
+      },
+      {
+        "family": "Bürkner",
+        "given": "Paul"
+      },
+      {
+        "family": "Huurre",
+        "given": "Niko"
+      },
+      {
+        "family": "Faltejsková",
+        "given": "Kateřina"
+      },
+      {
+        "family": "Gelman",
+        "given": "Andrew"
+      },
+      {
+        "family": "Vehtari",
+        "given": "Aki"
+      }
+    ],
+    "year": 2025,
+    "venue": "Bayesian Analysis",
+    "volume": "20",
+    "issue": "2",
+    "pages_or_article": "461-488",
+    "doi": "10.1214/23-BA1404",
+    "arxiv": "2211.02383",
+    "url": "https://doi.org/10.1214/23-BA1404",
+    "theme": "general calibration",
+    "relevance": "general method",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/2211.02383",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1214/23-BA1404",
+      "https://arxiv.org/abs/2211.02383"
+    ],
+    "dataset_and_design": "General SBC theory and numerical examples.",
+    "supported_finding": "Data-dependent test quantities expose failures missed by parameter-only checks.",
+    "main_limitation": "No single finite diagnostic certifies an arbitrary posterior.",
+    "project_implication": "Combine coverage/ranks with informativeness and posterior predictive checks.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "montel2024",
+    "title": "Scalable inference with autoregressive neural ratio estimation",
+    "authors": [
+      {
+        "family": "Anau Montel",
+        "given": "Noemi"
+      },
+      {
+        "family": "Alvey",
+        "given": "James"
+      },
+      {
+        "family": "Weniger",
+        "given": "Christoph"
+      }
+    ],
+    "year": 2024,
+    "venue": "Monthly Notices of the Royal Astronomical Society",
+    "volume": "530",
+    "issue": "4",
+    "pages_or_article": "4107-4124",
+    "doi": "10.1093/mnras/stae1130",
+    "arxiv": "2308.08597",
+    "url": "https://doi.org/10.1093/mnras/stae1130",
+    "theme": "ratio inference",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/2308.08597",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.1093/mnras/stae1130",
+      "https://arxiv.org/abs/2308.08597"
+    ],
+    "dataset_and_design": "Autoregressive ratios and slice-based sampling; toy, stream and lensing demonstrations.",
+    "supported_finding": "Addresses correlated high-dimensional posterior estimation.",
+    "main_limitation": "Proof-of-concept lens substructure application rather than real survey validation.",
+    "project_implication": "A later methodological option after simple inference is validated.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  },
+  {
+    "id": "filipp2026",
+    "title": "LSST Strong Lensing Systems Dark Matter Sensitivity Analysis with Neural Ratio Estimators",
+    "authors": [
+      {
+        "family": "Filipp",
+        "given": "Andreas"
+      },
+      {
+        "family": "Hezaveh",
+        "given": "Yashar"
+      },
+      {
+        "family": "Perreault-Levasseur",
+        "given": "Laurence"
+      },
+      {
+        "family": "Gilman",
+        "given": "Daniel"
+      },
+      {
+        "literal": "LSST Dark Energy Science Collaboration"
+      }
+    ],
+    "year": 2026,
+    "venue": "The Astrophysical Journal",
+    "volume": "1007",
+    "issue": "2",
+    "pages_or_article": "190",
+    "doi": "10.3847/1538-4357/ae8fd0",
+    "arxiv": "2604.07438",
+    "url": "https://doi.org/10.3847/1538-4357/ae8fd0",
+    "theme": "dark matter forecast",
+    "relevance": "lensing-specific",
+    "publication_status": "journal article",
+    "access_depth": "abstract and bibliographic metadata",
+    "sections_assessed": "Abstract/landing text; no complete full-text assessment claimed",
+    "support_url": "https://arxiv.org/abs/2604.07438",
+    "metadata_sources": [
+      "https://api.crossref.org/works/10.3847/1538-4357/ae8fd0",
+      "https://arxiv.org/abs/2604.07438"
+    ],
+    "dataset_and_design": "Simulated LSST lenses with subhalos and line-of-sight halos.",
+    "supported_finding": "Forecasts population dark-matter sensitivity and probes which halos supply information.",
+    "main_limitation": "Assumes knowledge of the data-generating process; not a real-data constraint.",
+    "project_implication": "Clear example of useful but explicitly conditional synthetic science.",
+    "correction_status": "No additional correction/retraction flag observed in retrieved records; not an exhaustive status audit",
+    "report_family_note": "Journal and arXiv versions counted together",
+    "checked_on": "2026-11-04"
+  }
+]

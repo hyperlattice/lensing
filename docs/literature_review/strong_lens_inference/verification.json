@@ -1,0 +1,30 @@
+{
+  "topical_references": 60,
+  "evidence_rows": 60,
+  "claim_map_entries": 15,
+  "pdf_pages": 18,
+  "pdf_bytes": 232095,
+  "pdf_sha256": "a6cb56415fa2a86415baf8595a909851c071e7bc52118ea6b5d8decf1538ac67",
+  "source_files_unchanged": [
+    "submission/aaai27/reviewer_bundle/paper.tex",
+    "submission/aaai27/reviewer_bundle/paper.bib",
+    "docs/equal_budget_final_v1.md",
+    "scripts/run_equal_budget_final_v1.py",
+    "src/ml/robustness_training_v1.py",
+    "src/simulation/autolens_backend_v2.py"
+  ],
+  "base_commit": "6362f2cc228ec2343dd36f347177adcab80bfa1a",
+  "checks_passed": [
+    "unique record/DOI identities",
+    "CSV/metadata agreement",
+    "claim references/local paths",
+    "60 BibTeX entries",
+    "JSON parse",
+    "complete reference fields",
+    "encoding and drafting marker scan",
+    "all topical IDs present in PDF",
+    "nonempty PDF pages",
+    "source files unchanged"
+  ],
+  "visual_review": "Passed: all 18 rendered pages inspected; final pagination changes on pages 7-11 re-rendered and inspected. No clipping, overlapping text or broken table cells observed."
+}

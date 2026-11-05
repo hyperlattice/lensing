@@ -1,0 +1,383 @@
+{
+  "search_date": "2026-11-04",
+  "provider": "web search (fallback: Parallel CLI/auth unavailable)",
+  "query_count": 73,
+  "queries": [
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "strong lensing neural networks uncertainty Perreault Levasseur 2017",
+      "screening": "pending"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "strong lensing Schuldt HOLISMOKES neural networks 2021 2023 modelling",
+      "screening": "pending"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "strong lensing Bayesian neural networks hierarchical inference Wagner Carena Park 2021",
+      "screening": "pending"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "strong gravitational lensing neural posterior estimation Legin Adam differentiable source 2022 2023",
+      "screening": "pending"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "strong gravitational lens modeling automated PyAutoLens Nightingale 2018 2021 2023 SLaM real lenses"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "lenstronomy Birrer Amara 2018 Birrer 2021 software strong lensing"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "strong lensing blind comparison modelling methods Galan 2024 202451095"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "strong lensing Einstein radius mass sheet degeneracy source position transformation Schneider Sluse 2013 2014"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"2404.18897\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Large-scale gravitational lens modeling\" \"Park\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"strong lens\" \"neural\" \"real\" \"2025\" parameter inference"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"strong lens\" \"2026\" \"posterior\" \"images\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Domain Adaptation for Measurements of Strong Gravitational Lenses\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Domain Adaptation\" \"Mean\" \"Variance\" \"lensing\" Agarwal 2024"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"GIGA-Lens\" \"2022\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"strong lens\" \"sequential neural posterior\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Lens Modeling of STRIDES\" \"Neural Posterior Estimation\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"strong lens\" \"neural posterior\" \"2026\" -gravitational-wave -microlensing"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"strong lensing\" \"diffusion\" \"source\" \"2025\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"strong lensing\" \"HERCULENS\" \"2022\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Lens Modeling and Cosmological Inference from an Impure Sample\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"strong lens\" \"2026\" \"simulation\" \"robustness\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Mind the Information Gap\" \"SLACS\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"deep inference\" \"Poh\" \"2022\" strong lenses"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "strong lensing simulation deeplenstronomy paltas caustics lensing 2021 2024"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"strong lens\" \"robustness\" \"simulation\" neural networks priors noise"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"strong lens\" \"neural\" \"calibration\" \"2026\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"strong lens\" \"neural\" \"selection functions\" Holloway 2024"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"strong lens\" \"neural\" \"2026\" \"calibrated\" arxiv"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"paltax\" Wagner Carena 2024"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"strong gravitational lens\" \"diffusion\" \"Legin\" 2023"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"lemon\" \"Gentile\" \"5442\" 2023"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"The population of galaxy-galaxy strong lenses\" Collett 2015"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Time-Delay Cosmography\" Birrer 2024 review"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Semilinear gravitational lens inversion\" Warren Dye"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"lens modelling\" \"Bayesian\" \"Suyu\" \"2006\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"The frontier of simulation-based inference\" Cranmer 2020"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"A guide to constraining effective field theories\" \"lensing\" neural ratio"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Benchmarking Simulation Based Inference\" Lueckmann"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"A Trust Crisis In Simulation-Based Inference\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Validating Bayesian Inference with Simulation-Based Calibration\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Can You Trust Your Model's Uncertainty\" Ovadia"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Active Domain Randomization\" Mehta"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"RandAugment\" \"Reduced Search Space\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"HOLISMOKES IV\" erratum neural network"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Scientific Agent Skills\" \"2609.00065\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Strong lens modelling: comparing and combining Bayesian\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Validating Bayesian Inference with Simulation-Based Calibration\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"HOLISMOKES IV\" \"corrigendum\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"10.1051/0004-6361/202039574e\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Strong-Lensing Source Reconstruction\" \"Diffusion\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Systematic comparison\" \"Shajib\" \"2022\" lens"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Sloan Lens ACS Survey\" \"X.\" \"Auger\" 2010"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Gravitational detection of a low-mass dark satellite\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Strong Lensing by Galaxies\" \"2024\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"HOLISMOKES\" \"Erratum\" 2022"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Semilinear Gravitational Lens Inversion\" arxiv"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"A Bayesian analysis of regularized source inversions\" arxiv"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"AutoLens: automated modeling\" arxiv"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Gravitational detection of a low-mass dark satellite\" arxiv"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "site:arxiv.org Warren Dye \"Semilinear\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "site:arxiv.org \"Suyu\" \"regularized source inversions\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "site:arxiv.org \"Stellar, Dynamical, and Total Mass Correlations\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"A Strong Gravitational Lens Is Worth a Thousand\" \"10.3847\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Neural Ratio Estimators Meet Distributional Shift\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Semilinear Gravitational Lens Inversion\" Warren Dye 2003 abstract"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Simulation-Based Calibration Checking\" \"Choice of Test Quantities\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"strong lens\" \"model misspecification\" neural inference"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Neural Ratio Estimators\" \"Cautionary Tale\" lensing authors"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Neural Ratio Estimators\" \"lensing\" arxiv misspecification"
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "site:proceedings.neurips.cc \"RandAugment\" \"2020\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "site:openreview.net \"A Trust Crisis\" \"2022\""
+    },
+    {
+      "date": "2026-11-04",
+      "provider": "web search",
+      "query": "\"Tobin\" \"Domain Randomization\" \"2017\" IROS DOI"
+    }
+  ],
+  "primary_metadata_retrieval": "Public Crossref DOI endpoints and arXiv abstract-page citation metadata; provenance preserved per reference.",
+  "limitations": [
+    "Ranked discovery and citation chaining, not complete database exports; no screened-result denominator or exhaustive coverage claimed.",
+    "Early broad orientation searches precede the retained exact-query ledger.",
+    "Selected full-text URLs and sections are recorded per reference.",
+    "No ADS/Scopus/Web of Science bulk export and no authenticated Parallel service calls."
+  ]
+}
