@@ -1,0 +1,5 @@
+schema_version: 1
+experiments:
+  theta-e-huber-delta-050-v1: configs/ml/huber_delta_050.yaml
+  theta-e-huber-delta-025-v1: configs/ml/huber_delta_025.yaml
+  theta-e-cnn-seeds-v1: configs/ml/baseline_seeds.yaml

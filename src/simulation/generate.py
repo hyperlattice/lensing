@@ -30,7 +30,7 @@ from src.simulation.render import render_from_parameters, render_sie_extended_so
 
 
 GENERATOR_VERSION = "0.1.0"
-DEFAULT_CONFIG = Path("configs/simulation_pilot_v1.yaml")
+DEFAULT_CONFIG = Path("configs/simulation/pilot.yaml")
 
 
 def _config_hash(path: Path) -> str:

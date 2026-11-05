@@ -31,7 +31,7 @@ Use these entry points from the repository root:
 
 ```powershell
 python -m src.pipeline --help
-python -m src.ml.train --config configs/ml_baseline_v1.yaml
+python -m src.ml.train --config configs/ml/baseline.yaml
 python -m src.ml.experiments --experiment theta-e-cnn-seeds-v1
 ```
 

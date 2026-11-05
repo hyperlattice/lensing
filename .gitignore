@@ -82,12 +82,66 @@ q256_header.txt
 # private even when they are present in the working tree.
 # Anchor repository-local data and results rules.  The unanchored forms also
 # ignored active source modules under src/data/ and src/results/.
-/results/
-/data/
+# Ignore products by default, but expose compact evidence for explicit review.
+# These exceptions do not make data/results part of the reviewer upload.
+/results/*
+!/results/README.md
+!/results/ml/
+!/results/reports/
+/results/ml/**
+/results/reports/**
+!/results/ml/**/
+!/results/reports/**/
+!/results/ml/**/*.md
+!/results/ml/**/*.json
+!/results/ml/**/*.csv
+!/results/ml/**/*.sha256
+!/results/reports/**/*.md
+!/results/reports/**/*.json
+!/results/reports/**/*.csv
+!/results/reports/**/*.sha256
+/data/*
+!/data/README.md
+!/data/labels/
+!/data/manifests/
+!/data/releases/
+/data/labels/**
+/data/manifests/**
+/data/releases/**
+!/data/labels/**/
+!/data/manifests/**/
+!/data/releases/**/
+!/data/labels/**/*.csv
+!/data/labels/**/*.md
+!/data/manifests/**/*.csv
+!/data/manifests/**/*.json
+!/data/manifests/**/*.md
+!/data/manifests/**/*.sha256
+!/data/releases/**/*.csv
+!/data/releases/**/*.json
+!/data/releases/**/*.md
+!/data/releases/**/*.sha256
+# Keep arrays and previews excluded even when they contain text sidecars.
+/data/releases/*/products/
+/data/releases/*/previews/
+**/*.private.*
 docs/private/
 submission/aaai27/private/
+/submission/aaai27/ai2ase_overleaf_project/
+/submission/aaai27/ai2ase_overleaf_project.zip
 
 # Local archive of generated/editor artifacts.  Historical source notes and
 # scripts under archive/ are intentionally trackable; this subtree is not.
 /archive/scratch/
 /archive/private/
+
+# Privacy exclusions take precedence over compact-evidence exceptions.
+private/
+**/private/
+*.private
+*.private.*
+*.secret
+*.secret.*
+.env
+.env.*
+!.env.example

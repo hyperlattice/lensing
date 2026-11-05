@@ -26,6 +26,10 @@ multi-phase research record.
 
 ## Scientific changes
 
+Current workflow/configuration locations are indexed in
+[`docs/experiments.md`](docs/experiments.md). Historical path/hash migrations
+are recorded in [`docs/maintenance/cleanup_v1.md`](docs/maintenance/cleanup_v1.md).
+
 Treat a reported experiment as an immutable record. Give changed scientific
 settings a new configuration and experiment or release ID. Record the parent
 experiment, random seeds, software environment, source hashes, and output
@@ -66,6 +70,11 @@ local outputs. Version the compact manifests, source labels, configurations,
 and reports needed to interpret an experiment. A report should state sample
 and independent-parent counts, the comparison being made, uncertainty method,
 and scientific limitations.
+
+See [`docs/artifact_policy.md`](docs/artifact_policy.md) for compact-evidence
+exceptions and use explicit paths when staging. Only
+`submission/aaai27/reviewer_bundle/` is editable submission source; generate
+delivery ZIPs with `python -m scripts.export_submission`.
 
 ## Local checks
 

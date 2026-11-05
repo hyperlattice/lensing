@@ -22,7 +22,7 @@ from src.ml.metrics import regression_metrics
 from src.ml.model import build_model
 
 
-DEFAULT_CONFIG = Path("configs/reliability_observation_systematics_v1.yaml")
+DEFAULT_CONFIG = Path("configs/reliability/observation_systematics.yaml")
 DEFAULT_RELEASE = Path("data/simulations/reliability-observation-systematics-v1")
 DEFAULT_OUTPUT = Path("results/reports/reliability_v1/observation_systematics")
 BASELINE_VALIDATION = Path("data/simulations/reliability-pixel-scale-v1-final/splits/validation__canonical.csv")
@@ -334,8 +334,8 @@ def evaluate_observation_systematics(
 
     summary = {
         "experiment_id": "WEEK4-OBSERVATION-SYSTEMATICS",
-        "protocol": "docs/reliability_study/protocol_v1.4.md",
-        "protocol_sha256": file_sha256(Path("docs/reliability_study/protocol_v1.4.md")),
+        "protocol": "archive/docs/reliability_study/protocol_v1.4.md",
+        "protocol_sha256": file_sha256(Path("archive/docs/reliability_study/protocol_v1.4.md")),
         "release": release.as_posix(),
         "release_manifest_sha256": file_sha256(release / "manifest.csv"),
         "parent_manifest_sha256": run_manifest["parent_manifest_sha256"],

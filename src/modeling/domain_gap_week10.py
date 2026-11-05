@@ -15,7 +15,7 @@ import pandas as pd
 import yaml
 
 
-CONFIG = Path("configs/reliability_domain_gap_v1.yaml")
+CONFIG = Path("configs/reliability/domain_gap.yaml")
 REAL_METADATA_COLUMNS = [
     "sample_id", "lens_id", "raw_path", "telescope", "instrument", "detector", "filter",
     "pixel_scale", "original_height", "original_width", "exposure", "bunit", "calstage",

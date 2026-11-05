@@ -5,7 +5,7 @@ backend: autolens
 required_backend_version: 2026.10.26.1
 output: data/simulations/cross-simulator-development-v1
 report: results/reports/cross-simulator-development-v1/controls.json
-source_config: configs/simulation_engineering_v1.yaml
+source_config: configs/simulation/engineering.yaml
 parent_count: 4
 seed: 61031
 split: development

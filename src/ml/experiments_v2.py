@@ -20,7 +20,7 @@ from src.ml.provenance import config_sha256, environment_record, source_provenan
 from src.ml.train import load_config, train_experiment
 
 
-DEFAULT_REGISTRY = Path("configs/ml/registry_v1.yaml")
+DEFAULT_REGISTRY = Path("configs/ml/registry.yaml")
 DEFAULT_EXPERIMENT = "theta-e-cnn-seeds-v1"
 
 

@@ -1,6 +1,6 @@
 schema_version: 1
 experiment_id: WEEK7-INDEPENDENT-SIE-LENS-EQUATION
-protocol: docs/reliability_study/protocol_v1.7.md
+protocol: archive/docs/reliability_study/protocol_v1.7.md
 training_release: data/simulations/sim-eng1000-v1
 validation_split: data/simulations/sim-eng1000-v1/splits/validation.csv
 matched_validation_parent_count: 150

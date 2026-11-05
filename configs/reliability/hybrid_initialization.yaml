@@ -1,6 +1,6 @@
 schema_version: 1
 experiment_id: WEEK9-HYBRID-INITIALIZATION
-protocol: docs/reliability_study/protocol_v1.9.md
+protocol: archive/docs/reliability_study/protocol_v1.9.md
 training_release: data/simulations/sim-eng1000-v1
 week8_release: data/simulations/reliability-domain-randomized-v1
 week8_predictions: results/reports/reliability_v1/mitigation/mitigation_predictions_before_scoring.csv

@@ -12,6 +12,11 @@ observations.
 
 ## Repository map
 
+Start with the [experiment index](docs/experiments.md) for current commands,
+completed studies, required inputs and result locations. The
+[cleanup record](docs/maintenance/cleanup_v1.md) explains renamed paths and
+historical reproduction boundaries.
+
 ```text
 configs/       Versioned preprocessing, simulation, comparison, and ML settings
 data/          Raw inputs, curated labels, releases, and compact audit manifests
@@ -19,6 +24,9 @@ docs/          Dataset contract, codebase guide, research protocols, and results
 notebooks/     Notebook navigation; historical notebooks are archived
 results/       Derived reports, ML artifacts, and domain-separated previews
 src/            Reproducible pipeline implementation
+scripts/        Experiment runners, maintenance checks and submission export
+submission/     Canonical reviewer bundle and generated delivery artifacts
+archive/        Historical protocols, scripts and planning records
 tests/          Automated unit and integration tests
 CONTRIBUTING.md Coding, documentation, and research reproducibility conventions
 pyproject.toml  Shared pytest configuration
@@ -30,6 +38,10 @@ Each working area has its own guide: [source code](src/README.md),
 [results](results/README.md), [documentation](docs/README.md), and
 [notebooks](notebooks/README.md). Contributor conventions are in
 [CONTRIBUTING.md](CONTRIBUTING.md).
+
+Check repository references with `python -m scripts.check_repository` and run
+the dataset-free analytic smoke with `python -m src.simulation.smoke_test`.
+See [artifact tracking policy](docs/artifact_policy.md) before staging outputs.
 
 ## Data and previews
 
@@ -114,7 +126,7 @@ python -m src.pipeline prepare-real --release-id real-castles-v3 --output data/r
 Generate a small simulation and validate its release:
 
 ```powershell
-python -m src.pipeline simulate --stage observation --output data/simulations/example-v1 --simulation-id example-v1 --count 10 --seed 6001 --config configs/simulation_pilot_v1.yaml
+python -m src.pipeline simulate --stage observation --output data/simulations/example-v1 --simulation-id example-v1 --count 10 --seed 6001 --config configs/simulation/pilot.yaml
 python -m src.pipeline validate data/simulations/example-v1/manifest.csv --root data/simulations/example-v1
 python -m src.pipeline make-splits data/simulations/example-v1/manifest.csv --output data/simulations/example-v1/splits --ancestry
 ```
@@ -162,7 +174,7 @@ See [the dataset schema](docs/dataset_schema.md) for the complete contract.
 Train the original image-only baseline using training and validation data:
 
 ```powershell
-python -m src.ml.train --config configs/ml_baseline_v1.yaml
+python -m src.ml.train --config configs/ml/baseline.yaml
 ```
 
 After accepting the checkpoint using validation only, evaluate it once on the

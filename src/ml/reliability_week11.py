@@ -23,7 +23,7 @@ from src.simulation.counterfactual import create_counterfactual_benchmark
 from src.simulation.generate import generate_observation_pilot
 
 
-CONFIG = Path("configs/reliability_blind_holdout_v1.yaml")
+CONFIG = Path("configs/reliability/blind_holdout.yaml")
 FREEZE_MANIFEST = Path("docs/reliability_study/week11_freeze_manifest.json")
 DEVELOPMENT_SPLITS = (
     Path("data/simulations/sim-eng1000-v1/splits/train.csv"),

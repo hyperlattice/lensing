@@ -32,7 +32,7 @@ from src.simulation.counterfactual import _render_parent, apply_intervention
 from src.ml.scale_aware_train import ShapeBucketBatchSampler
 
 
-DEFAULT_CONFIG = Path("configs/reliability_mitigation_v1.yaml")
+DEFAULT_CONFIG = Path("configs/reliability/mitigation.yaml")
 CANONICAL_RELEASE = Path("data/simulations/sim-eng1000-v1")
 RANDOMIZED_RELEASE = Path("data/simulations/reliability-domain-randomized-v1")
 OUTPUT = Path("results/reports/reliability_v1/mitigation")
@@ -792,8 +792,8 @@ def score_mitigation(config: dict[str, Any], predictions: pd.DataFrame, output: 
 
     summary = {
         "experiment_id": "WEEK8-TARGETED-RANDOMIZATION",
-        "protocol": "docs/reliability_study/protocol_v1.8.md",
-        "protocol_sha256": file_sha256(Path("docs/reliability_study/protocol_v1.8.md")),
+        "protocol": "archive/docs/reliability_study/protocol_v1.8.md",
+        "protocol_sha256": file_sha256(Path("archive/docs/reliability_study/protocol_v1.8.md")),
         "training_release_manifest_sha256": file_sha256(RANDOMIZED_RELEASE / "manifest.csv"),
         "training_parent_count": 700,
         "training_row_count": 1400,

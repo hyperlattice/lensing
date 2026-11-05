@@ -2,7 +2,7 @@
 
 ## Frozen final evaluation
 
-- **Protocol/config:** `archive/docs/reliability_study/protocol_v1.11.md` and `configs/reliability_blind_holdout_v1.yaml`.
+- **Current protocol/config locations:** `archive/docs/reliability_study/protocol_v1.11.md` and `configs/reliability/blind_holdout.yaml`. These relocated maintenance files are distinguished from the original frozen paths by the [migration record](../../maintenance/cleanup_v1.md).
 - **Freeze manifest:** [`week11_freeze_manifest.json`](../../../archive/docs/reliability_study/week11_freeze_manifest.json), SHA-256 `01a2c64e81cd9813f22988293f6aa992ade8fa8c67bdd652e8da218c3706da79`.
 - **Holdout:** 150 independent parents; seed 11031; 750 rows in canonical, pixel-scale 0.04, pixel-scale 0.06, half-exposure, and double-read-noise conditions.
 - **Models:** fixed checkpoint seeds 12001/12002/12003 for both ensembles; checkpoint and normalization hashes are recorded in the freeze manifest and prediction files.
@@ -13,7 +13,7 @@
 
 ## Regeneration
 
-The synthetic study workflows and phase-specific commands are recorded under `docs/reliability_study/` and their frozen protocols/configs. The Week 11 sequence was:
+The historical protocols are under `archive/docs/reliability_study/`. Exact source/environment reproduction requires the recorded original checkout; this maintenance checkout has changed paths and hashes. The original Week 11 sequence was:
 
 ```text
 python -m src.ml.reliability_week11 generate
@@ -28,3 +28,7 @@ python archive/scripts/build_reliability_final_package.py
 ```
 
 The freeze and package manifests record the relevant code, protocol, config, release, checkpoint, normalization, prediction, and output hashes. The package does not rerun model inference.
+
+The archived package builder retains historical path assumptions. Use its
+matching checkout and saved artifacts; maintenance has not regenerated the
+published analysis package.

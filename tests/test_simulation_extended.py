@@ -9,7 +9,7 @@ from src.simulation.render import render_sie_extended_source, render_sis_extende
 
 
 def _config():
-    with open("configs/simulation_pilot_v1.yaml", encoding="utf-8") as handle:
+    with open("configs/simulation/pilot.yaml", encoding="utf-8") as handle:
         return yaml.safe_load(handle)
 
 

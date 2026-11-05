@@ -32,7 +32,7 @@ from src.ml.plots import plot_predictions, plot_training_history
 from src.ml.provenance import config_sha256, environment_record, source_provenance
 
 
-DEFAULT_CONFIG = Path("configs/ml_baseline_v1.yaml")
+DEFAULT_CONFIG = Path("configs/ml/baseline.yaml")
 
 
 def load_config(path):

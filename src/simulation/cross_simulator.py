@@ -23,7 +23,7 @@ from src.simulation.independent_sie import independent_sie_deflection
 from src.simulation.priors import draw_observation_parameters
 from src.processing.preprocess import preprocess_image
 
-CONFIG = Path("configs/cross_simulator_development_v1.yaml")
+CONFIG = Path("configs/simulation/cross_simulator_legacy.yaml")
 
 
 def _json(path, value):

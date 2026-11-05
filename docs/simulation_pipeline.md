@@ -108,7 +108,7 @@ arcsec. These definitions differ and should be stated when matching grids.
 ## Parent sampling and the meaning of standard conditions
 
 The main release uses
-[`simulation_engineering_v1.yaml`](../configs/simulation_engineering_v1.yaml),
+[`simulation_engineering_v1.yaml`](../configs/simulation/engineering.yaml),
 which retains the validated P60 proposal ranges. Scalar ranges below are
 uniform draws; orientation angles are uniform on `[0, pi)`.
 
@@ -348,7 +348,7 @@ in the reliability study is forced to 256 by 256.
 
 ## Targeted training randomization
 
-[`reliability_mitigation_v1.yaml`](../configs/reliability_mitigation_v1.yaml)
+[`reliability_mitigation_v1.yaml`](../configs/reliability/mitigation.yaml)
 adds one deterministic randomized view to each of the 700 training parents,
 retaining the original view. Assignment uses PCG64 seed 6031 and samples:
 
@@ -410,7 +410,7 @@ Run from the repository root with the simulation dependencies installed.
 Use fresh release/output names; these examples must not overwrite frozen data.
 
 ```powershell
-python -m src.pipeline simulate --stage observation --output data/simulations/sim-doc-example-v1 --simulation-id sim-doc-example-v1 --count 10 --seed 61001 --config configs/simulation_engineering_v1.yaml --no-preview
+python -m src.pipeline simulate --stage observation --output data/simulations/sim-doc-example-v1 --simulation-id sim-doc-example-v1 --count 10 --seed 61001 --config configs/simulation/engineering.yaml --no-preview
 python -m src.pipeline validate data/simulations/sim-doc-example-v1/manifest.csv --root data/simulations/sim-doc-example-v1
 python -m src.pipeline make-splits data/simulations/sim-doc-example-v1/manifest.csv --output data/simulations/sim-doc-example-v1/splits --ancestry
 ```

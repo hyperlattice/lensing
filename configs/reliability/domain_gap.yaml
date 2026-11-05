@@ -1,6 +1,6 @@
 schema_version: 1
 experiment_id: WEEK10-CASTLES-DOMAIN-GAP
-protocol: docs/reliability_study/protocol_v1.10.md
+protocol: archive/docs/reliability_study/protocol_v1.10.md
 real_metadata: data/labels/derived/metadata.csv
 real_processed_metadata: data/labels/derived/processed_metadata.csv
 real_products_root: data/derived/actual/castles-development-v1

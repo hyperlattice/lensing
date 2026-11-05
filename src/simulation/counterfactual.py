@@ -25,7 +25,7 @@ from src.simulation.observation import observation_psf, realize_detector_observa
 
 
 DEFAULT_PARENT_MANIFEST = Path("data/simulations/sim-eng1000-v1/manifest.csv")
-DEFAULT_CONFIG = Path("configs/reliability_counterfactual_v1.yaml")
+DEFAULT_CONFIG = Path("configs/reliability/counterfactual.yaml")
 DEFAULT_OUTPUT = Path("data/simulations/reliability-counterfactual-smoke-v1")
 BENCHMARK_VERSION = "reliability-counterfactual-v1"
 

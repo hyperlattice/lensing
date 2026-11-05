@@ -1,6 +1,6 @@
 schema_version: 1
 experiment_id: WEEK8-TARGETED-RANDOMIZATION
-protocol: docs/reliability_study/protocol_v1.8.md
+protocol: archive/docs/reliability_study/protocol_v1.8.md
 source_release: data/simulations/sim-eng1000-v1
 randomized_release: data/simulations/reliability-domain-randomized-v1
 output: results/reports/reliability_v1/mitigation
@@ -15,7 +15,7 @@ randomization:
   exposure_time_multiplier: [0.5, 1.0]
   read_noise_multiplier: [1.0, 2.0]
 training:
-  baseline_config: configs/ml_baseline_v1.yaml
+  baseline_config: configs/ml/baseline.yaml
   seeds: [12001, 12002, 12003]
   train_rows: 1400
   independent_training_parents: 700

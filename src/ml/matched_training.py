@@ -241,7 +241,7 @@ def run(config_path, *, device_request="cpu"):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--config", default="configs/ml/matched_budget_v1.yaml")
+    parser.add_argument("--config", default="configs/ml/matched_budget.yaml")
     parser.add_argument("--device", default="cpu")
     args = parser.parse_args()
     run(args.config, device_request=args.device)

@@ -32,7 +32,7 @@ TRAINING_RELEASE = Path("data/simulations/sim-eng1000-v1")
 H1_RELEASE = Path("data/simulations/reliability-pixel-scale-v1-final")
 W4_RELEASE = Path("data/simulations/reliability-observation-systematics-v1")
 W5_RELEASE = Path("data/simulations/reliability-source-physics-v1")
-BASELINE_CONFIG = Path("configs/ml_baseline_v1.yaml")
+BASELINE_CONFIG = Path("configs/ml/baseline.yaml")
 CHECKPOINTS = [
     Path(f"results/ml/theta-e-cnn-seeds-v1/seed-{seed}/best.pt")
     for seed in (12001, 12002, 12003)
@@ -920,7 +920,7 @@ def run_week6(*, output_dir=ROOT, device_request="auto") -> dict:
     for checkpoint in CHECKPOINTS:
         if not checkpoint.exists():
             raise FileNotFoundError(f"Frozen Week 6 CNN checkpoint is missing: {checkpoint}")
-    protocol_path = Path("docs/reliability_study/protocol_v1.6.md")
+    protocol_path = Path("archive/docs/reliability_study/protocol_v1.6.md")
     if not protocol_path.exists():
         raise FileNotFoundError("Week 6 protocol must be frozen before model predictions")
 

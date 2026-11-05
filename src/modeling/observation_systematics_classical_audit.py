@@ -18,7 +18,7 @@ from src.modeling.pixel_scale_geometric_baseline import (
 )
 
 
-DEFAULT_CONFIG = Path("configs/classical_observation_systematics_v1.yaml")
+DEFAULT_CONFIG = Path("configs/reliability/classical_observation_systematics.yaml")
 DEFAULT_OUTPUT = Path("results/reports/reliability_v1/observation_systematics/classical")
 
 
@@ -38,7 +38,7 @@ def evaluate_classical_observation_systematics(
 ):
     config_path = Path(config_path)
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
-    protocol_path = str(config.get("protocol", "docs/reliability_study/protocol_v1.4.md"))
+    protocol_path = str(config.get("protocol", "archive/docs/reliability_study/protocol_v1.4.md"))
     release = Path(config["validation_release"])
     output = Path(output_dir)
     if output.exists() and any(output.iterdir()):

@@ -1,0 +1,322 @@
+{
+  "schema_version": 1,
+  "maintenance_id": "repository-cleanup-v1",
+  "baseline_revision": "e76b72df339dcb4cbf307d56cd76284bbfe4f362",
+  "configuration_moves": [
+    {
+      "previous_path": "configs/classical_observation_systematics_v1.yaml",
+      "current_path": "configs/reliability/classical_observation_systematics.yaml",
+      "previous_sha256": "851b7f6440661198d394609ff4a3f05c5484401bb6ceb11fa8db4596abc09525",
+      "migrated_sha256": "1e3095e735c9c3560358dc0b970870483f2bda76b624b6eed8f1374ef57e2910"
+    },
+    {
+      "previous_path": "configs/classical_pixel_scale_baseline_v1.yaml",
+      "current_path": "configs/reliability/classical_pixel_scale.yaml",
+      "previous_sha256": "a00ea37be30c24761e1fdd634c0bea43a3db87c2d2d4c8f116cdaf9ba21e2625",
+      "migrated_sha256": "a00ea37be30c24761e1fdd634c0bea43a3db87c2d2d4c8f116cdaf9ba21e2625"
+    },
+    {
+      "previous_path": "configs/cross_simulator_development_v1.yaml",
+      "current_path": "configs/simulation/cross_simulator_legacy.yaml",
+      "previous_sha256": "a81808274bb074cce0e4d5694412b59099aed719a2ddfafec29cd5d37299d91d",
+      "migrated_sha256": "7ae8191bf1b6b77c64dca035cb06303a19be78d3bd9b1677de1364fec3f1b649"
+    },
+    {
+      "previous_path": "configs/cross_simulator_development_v2.yaml",
+      "current_path": "configs/simulation/cross_simulator.yaml",
+      "previous_sha256": "6d853c1032874f54fb06b8d1ff59755a733ebb17155fdbb88a496d5ffd9d6041",
+      "migrated_sha256": "d995266697a32e97289f3c965ac70baa59ca0eb9c7f42ea3aa11f7fc742eab9d"
+    },
+    {
+      "previous_path": "configs/ml/baseline_seeds_v1.yaml",
+      "current_path": "configs/ml/baseline_seeds.yaml",
+      "previous_sha256": "15065795a45cddae8320d61752bd630af3dcee938acdd394b46df3db03219ca2",
+      "migrated_sha256": "fa59bc987ffe91ec81629630abdd69645236830d6f6e00cd3910043dd79be7af"
+    },
+    {
+      "previous_path": "configs/ml/huber_delta_025_v1.yaml",
+      "current_path": "configs/ml/huber_delta_025.yaml",
+      "previous_sha256": "a368628d797ccdc71c75cf22be17fc04d789fc0aec75a7f3f0b90a1c3f1ac4a7",
+      "migrated_sha256": "53de71fdaef8435ab1adcb93953c57d59d370d7107cade1043206d9118ad3402"
+    },
+    {
+      "previous_path": "configs/ml/huber_delta_050_v1.yaml",
+      "current_path": "configs/ml/huber_delta_050.yaml",
+      "previous_sha256": "26f2412b395f1d3212ff2f6dcf6176f275320b03095b32c6840cf25b7829bfe8",
+      "migrated_sha256": "06af6625a3c257e7be330c0dda195f4183e0ab3f99f617581a0038e78d6b73c1"
+    },
+    {
+      "previous_path": "configs/ml/matched_budget_v1.yaml",
+      "current_path": "configs/ml/matched_budget.yaml",
+      "previous_sha256": "d4d825d2a4546a480d9687aeddb1a5d39feed423b5aef589f930a93759d13931",
+      "migrated_sha256": "d4d825d2a4546a480d9687aeddb1a5d39feed423b5aef589f930a93759d13931"
+    },
+    {
+      "previous_path": "configs/ml/matched_budget_validation_v1.yaml",
+      "current_path": "configs/ml/matched_budget_validation.yaml",
+      "previous_sha256": "0ff5f291027372f2747db263f2630a137a5508164ab8821bd0a71a78bda9c5cb",
+      "migrated_sha256": "0ff5f291027372f2747db263f2630a137a5508164ab8821bd0a71a78bda9c5cb"
+    },
+    {
+      "previous_path": "configs/ml/registry_v1.yaml",
+      "current_path": "configs/ml/registry.yaml",
+      "previous_sha256": "bca770351e13e71c659c159465a21153eb16070d058089b3e4051c78d3056f73",
+      "migrated_sha256": "bae832532d1d6e44e17728ccace900342ed146ead8bbf58b9b2d58c3c5b2c55c"
+    },
+    {
+      "previous_path": "configs/ml/robustness_development_v1.yaml",
+      "current_path": "configs/ml/robustness_development.yaml",
+      "previous_sha256": "d3a3c4ef08746757e84467008b57e2e60bfcef7731273aa95e30b53103109ff6",
+      "migrated_sha256": "d3a3c4ef08746757e84467008b57e2e60bfcef7731273aa95e30b53103109ff6"
+    },
+    {
+      "previous_path": "configs/ml_baseline_v1.yaml",
+      "current_path": "configs/ml/baseline.yaml",
+      "previous_sha256": "5bbea6bdb224923ba491e83fd3226f687033917da4ce71d3e5efe7df5df77022",
+      "migrated_sha256": "5bbea6bdb224923ba491e83fd3226f687033917da4ce71d3e5efe7df5df77022"
+    },
+    {
+      "previous_path": "configs/preprocessing_v2.yaml",
+      "current_path": "configs/preprocessing/default.yaml",
+      "previous_sha256": "924d1c81c9f13fca0df54c403a6151986b8c918f40d47e4f8d2cb7ebddcea734",
+      "migrated_sha256": "924d1c81c9f13fca0df54c403a6151986b8c918f40d47e4f8d2cb7ebddcea734"
+    },
+    {
+      "previous_path": "configs/real_comparison_v1.yaml",
+      "current_path": "configs/observations/comparison.yaml",
+      "previous_sha256": "a5ff95e63956908ce3d65f0a0b5a880b8ad1d1ac7188e9c235b12e1817089ea2",
+      "migrated_sha256": "a5ff95e63956908ce3d65f0a0b5a880b8ad1d1ac7188e9c235b12e1817089ea2"
+    },
+    {
+      "previous_path": "configs/real_reference_pilot_v1.yaml",
+      "current_path": "configs/observations/reference_intake.yaml",
+      "previous_sha256": "71440cc5cd5b99cdd60556b5a9d37d464251c5f883b93fedd5461fcfa2f3a4f6",
+      "migrated_sha256": "71440cc5cd5b99cdd60556b5a9d37d464251c5f883b93fedd5461fcfa2f3a4f6"
+    },
+    {
+      "previous_path": "configs/reliability_blind_holdout_v1.yaml",
+      "current_path": "configs/reliability/blind_holdout.yaml",
+      "previous_sha256": "ac0c2c79075c20bdafda31eb3e7a1d44dbec994a961ec39a6d1548f9acfd76eb",
+      "migrated_sha256": "2fd4b7a883b90ac041880c76ad7b1f912582a6c6cf42481bf1fd92899b527000"
+    },
+    {
+      "previous_path": "configs/reliability_counterfactual_v1.yaml",
+      "current_path": "configs/reliability/counterfactual.yaml",
+      "previous_sha256": "16195e7df6bcfbcd88a41691970ccedc4c38a7cb3bd7694ff0d3627dea528f1d",
+      "migrated_sha256": "16195e7df6bcfbcd88a41691970ccedc4c38a7cb3bd7694ff0d3627dea528f1d"
+    },
+    {
+      "previous_path": "configs/reliability_cross_simulator_v1.yaml",
+      "current_path": "configs/reliability/cross_simulator.yaml",
+      "previous_sha256": "b86a69c6ee1405353504c7661b4a814dcda32193bfb6a5903e3e20e558fd30a4",
+      "migrated_sha256": "6bf1d7b886f7504fa80bc5082060115ed69e97f1313f275f1d43698f72383b0e"
+    },
+    {
+      "previous_path": "configs/reliability_domain_gap_v1.yaml",
+      "current_path": "configs/reliability/domain_gap.yaml",
+      "previous_sha256": "e314fae1122c2d9bd8698fd25d21affa47232f612cb05f717123d0b439b6d638",
+      "migrated_sha256": "d2429ef742138d1ed272f0e55422f3003700bbf24ea379d2c9c2a77530a1809b"
+    },
+    {
+      "previous_path": "configs/reliability_hybrid_initialization_v1.yaml",
+      "current_path": "configs/reliability/hybrid_initialization.yaml",
+      "previous_sha256": "e9da7f18b1e7f84f3679f23bf01f5f9ecc7ea099e4cfc573a87068fefe7bab95",
+      "migrated_sha256": "a449b23e7815b0263dec587f2dc2573df0af8e6fa6991a3fe4bfc87f239263da"
+    },
+    {
+      "previous_path": "configs/reliability_mitigation_v1.yaml",
+      "current_path": "configs/reliability/mitigation.yaml",
+      "previous_sha256": "6966667ba503f959db3ee5d24b8171e4cc5cc7313a21d71ea1144955f74789e9",
+      "migrated_sha256": "d9a2e94c17fcf039759d1bb0b387837879da5240c889c5433df1e1a10e9d3e54"
+    },
+    {
+      "previous_path": "configs/reliability_observation_systematics_v1.yaml",
+      "current_path": "configs/reliability/observation_systematics.yaml",
+      "previous_sha256": "f1569496b011c5588bb6d071079613afa26699566bcc6a299a7749b5cde675af",
+      "migrated_sha256": "f1569496b011c5588bb6d071079613afa26699566bcc6a299a7749b5cde675af"
+    },
+    {
+      "previous_path": "configs/reliability_pixel_scale_training_v1.yaml",
+      "current_path": "configs/reliability/pixel_scale_training.yaml",
+      "previous_sha256": "73f664d103851113d9857997faaf67d1650aa3c353b59e0dea1282b0fd85da82",
+      "migrated_sha256": "73f664d103851113d9857997faaf67d1650aa3c353b59e0dea1282b0fd85da82"
+    },
+    {
+      "previous_path": "configs/reliability_pixel_scale_v1.yaml",
+      "current_path": "configs/reliability/pixel_scale.yaml",
+      "previous_sha256": "186c0691d074aa750ccc4c77e67e7a3591cea58582123f725c59205362bdc758",
+      "migrated_sha256": "186c0691d074aa750ccc4c77e67e7a3591cea58582123f725c59205362bdc758"
+    },
+    {
+      "previous_path": "configs/reliability_source_physics_v1.yaml",
+      "current_path": "configs/reliability/source_physics.yaml",
+      "previous_sha256": "49935e082b1a17b4ae01312780fa566dc9f6d2cc438b60278b712fa9cd4db0d0",
+      "migrated_sha256": "49935e082b1a17b4ae01312780fa566dc9f6d2cc438b60278b712fa9cd4db0d0"
+    },
+    {
+      "previous_path": "configs/simulation_engineering_v1.yaml",
+      "current_path": "configs/simulation/engineering.yaml",
+      "previous_sha256": "d61fe2caf7447d084d3ce2e96514f662c05c6ef0b0ff67c067d4bf8c42806aaa",
+      "migrated_sha256": "d61fe2caf7447d084d3ce2e96514f662c05c6ef0b0ff67c067d4bf8c42806aaa"
+    },
+    {
+      "previous_path": "configs/simulation_pilot_v1.yaml",
+      "current_path": "configs/simulation/pilot.yaml",
+      "previous_sha256": "2dbe60cedffced46c8399b1863efd33d891b97fa97ccaa80b1ca2d8635de5304",
+      "migrated_sha256": "2dbe60cedffced46c8399b1863efd33d891b97fa97ccaa80b1ca2d8635de5304"
+    }
+  ],
+  "source_path_updates": [
+    {
+      "path": "src/data/external_reference.py",
+      "previous_sha256": "f1f0186949bcbc3c43045fdc5becb9bd60e6e90f41a47bb21f8138f7fb994963",
+      "migrated_sha256": "41a5ce872c7cdbde2b75f92c1e449861da78044e0b4fbe2897a8c560fee0e921",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/ml/experiments.py",
+      "previous_sha256": "dbc3e5fe4482c9a0d3203af88ad975573f86129f51c21cbb1d9332f34c168ecb",
+      "migrated_sha256": "808fadcb6bee85266b2fea0132cacf20f98cd833cd78277ef9a2de13e101c0f4",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/ml/experiments_v2.py",
+      "previous_sha256": "9bf51245a6dd9553dddd3fc5af7c54cfd77c618d4763ad8c7e6a42a1e9a1190f",
+      "migrated_sha256": "fb6913ceff68e181283d59ee1c6dcc3a966a6335ebc45fee914da9fa53b1aa28",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/ml/matched_training.py",
+      "previous_sha256": "17036b71390c6118ee54df20686a896d7c8db9a8c21a201b9d28f9670256f917",
+      "migrated_sha256": "d04c591134e063dd435459ab34aae8f39bf7cc5d6272fcac9e76f323d7956aa2",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/ml/observation_systematics_audit.py",
+      "previous_sha256": "416d80751022b70edb342452d77076f50737b471c346f758b1cac2a0775508e5",
+      "migrated_sha256": "61a04081648e5991ae0d874dc078caf0853ea93b6d5932bddf7901ed7ee58f0b",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/ml/pixel_scale_audit.py",
+      "previous_sha256": "381a35fc6f274e42e82752a0d84445b537c47392f9f76e5389869a2cf2dd6529",
+      "migrated_sha256": "3fd228f71a83d12872ca81ab3f6aa402d624bce31c8ec55fa57921137213db1c",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/ml/reliability_week11.py",
+      "previous_sha256": "0b478d3a22dde54e8d7336bf5f02d04b98ff40ad753de247acbc36cf9aa4ba8a",
+      "migrated_sha256": "cf83e10c4e334cde925ed7c92a3ee1ab9ea2d06782f4c016789969f56bc7280e",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/ml/reliability_week6.py",
+      "previous_sha256": "7168c8f95793a670530225b2ee2c1aae5a047a2e882d8b5553053c0ceee7076c",
+      "migrated_sha256": "8fe01a64f571909d43188e0105e568ae37262eeb40f25139960ef20704803efc",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/ml/reliability_week7.py",
+      "previous_sha256": "c293abba87b4a58a418e6555e98d9b8788a297dbe07f4b33546658fc20e83186",
+      "migrated_sha256": "6e6e6f3703ddc6e534b551498365a9b6733786962c67ffd38a046d676a21ed5b",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/ml/reliability_week8.py",
+      "previous_sha256": "391df93c76ccaf14e02d1fb2a75afd97e5ec6967d8d9c4c1cda0593445d563f0",
+      "migrated_sha256": "d1a03c90eda125061f6460b8cd94ad1af242ded7f75878fbb7ff2bd2962b1e60",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/ml/scale_aware_train.py",
+      "previous_sha256": "7f3b883e8f5f70133d3d28caf2dafa88c304de04d81682b2d97d49afb547a365",
+      "migrated_sha256": "c782df6b1093d836aae705f0c166ba1dfd19235dd23c3e560034694696c97747",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/ml/source_physics_audit.py",
+      "previous_sha256": "a982221967eed779f2604ab84b46d126a09eb5fe183a7856b9d5468c4cdd4cb1",
+      "migrated_sha256": "c3409c54e1534ab02d62627a4460955fa7e759e7f9f9d99759d2810a44840a07",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/ml/train.py",
+      "previous_sha256": "c78f7619f597173bd4ea86fc7144a69209f12198a7ddaf12be592e30215caa9c",
+      "migrated_sha256": "e506636f10cc75c9855f52a744bfafb5a964a404e8ea142bc936220ba470ec64",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/modeling/domain_gap_week10.py",
+      "previous_sha256": "cbf33c4b00030db7f051fc63c792362488fd468658417e50c3207007b8a11c32",
+      "migrated_sha256": "3806f49bf410b0e4d17a7d3993db93a00a8a5f6bce8f40ec19833a719516a968",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/modeling/hybrid_initialization.py",
+      "previous_sha256": "b979614e3daf623dbc70b76d4ea6cfe140745498ba17285dbf357bf4d7030fe5",
+      "migrated_sha256": "431dff674588d7ddb513bb86fd061dde21df391eebb55e08d9614ee59ed7e660",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/modeling/observation_systematics_classical_audit.py",
+      "previous_sha256": "30d324e474ddedeb8f82545d929cd39b77445954355ba0365ffb90adacae9c0a",
+      "migrated_sha256": "aa357c01f9293458ee2f902853c9506ae403da9583fd4f2498f52a9128e4df62",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/modeling/pixel_scale_geometric_baseline.py",
+      "previous_sha256": "b6119eac055d0db06bf6e12ac79ae1b61a329b98b2465f8433fa10a75ae2c667",
+      "migrated_sha256": "0a27e0ebe41eb62098e1dc668ed80950b7856675d484f10d13c408a13bb20d6e",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/pipeline.py",
+      "previous_sha256": "42194022bd6d16397fdddc57d69ecd7e414e767cc8922377487de88bf9f3b5bf",
+      "migrated_sha256": "3e379685d647b86239fbee1ad5db0397297c83beb7a048bf06d5f41faaf19752",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/processing/preprocess.py",
+      "previous_sha256": "d74d61dbac861a1ed9337ad81593d6da01f202b5adbe9ea42c9dceede175a2d7",
+      "migrated_sha256": "9a7a5488041b771a693771c0cd53a839eb859e1a1632beda36168b33d5b7063d",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/processing/preprocessing_config.py",
+      "previous_sha256": "a4cc989f439cd33b35c8e8aca7445790a259257dfa6c129832df9fe8b822177f",
+      "migrated_sha256": "8642c3ee0f146508668f1a42f5b7a43f5341af0c6fe715a3055c6ed37addd05b",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/simulation/counterfactual.py",
+      "previous_sha256": "2a0afc4b7ab66d43591129ed8f6719d4a7db0ff35be0561492cf56a0651dbfb0",
+      "migrated_sha256": "7a8ed0f1a612d3003f91547b3f9ff1cf3561b34d190d7880653456a4783ca54c",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/simulation/cross_simulator.py",
+      "previous_sha256": "ba971f31eca6a853ee59e0f5849390123b25d714b93ffeb97111f241346098d0",
+      "migrated_sha256": "4f72c02d8fea89dbea253451f9fcec2dd996f37c89adcec54abf0acec6b3c38f",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/simulation/cross_simulator_v2.py",
+      "previous_sha256": "73cb4d25ddfeb328c1eb7549c4cfb83109ac85ecb0050662b214661d64b6826d",
+      "migrated_sha256": "42f1f96d2be95a2aef386fed0ec2d277f0ff28265cc9bf362a9a34b0a8acdfec",
+      "change": "configuration path references only"
+    },
+    {
+      "path": "src/simulation/generate.py",
+      "previous_sha256": "bdfdca95b41e449c87dbad436dba24c83cc421108951db18455edaecb88e3072",
+      "migrated_sha256": "24711c042f2ff3ef85cd6d7e3d442caa327b29708a8aa7c9fef88414587585b3",
+      "change": "configuration path references only"
+    }
+  ],
+  "audit": {
+    "existing_configuration_values": "equivalent after path relocation",
+    "equal_budget_training_settings": "equal to pre-cleanup runner AST literal",
+    "preserved_evidence_file_count": 2627,
+    "preserved_evidence_bytes": "unchanged",
+    "source_updates": "path references only; algorithms unchanged"
+  }
+}

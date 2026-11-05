@@ -16,7 +16,7 @@ from src.ml.observation_bank_v1 import ObservationBank
 from src.ml.robustness_training_v1 import ARMS,train_arm
 from src.ml.source_policy_scoring_v1 import source_error_matrix,score_allocation
 
-CONFIG=Path("configs/ml/robustness_development_v1.yaml")
+CONFIG=Path("configs/ml/robustness_development.yaml")
 
 
 def trial_grid(arm,base):

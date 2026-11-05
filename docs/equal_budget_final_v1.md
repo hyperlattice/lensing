@@ -1,5 +1,13 @@
 # Equal-budget final comparison (item 1)
 
+The maintained runner accepts `--config configs/ml/equal_budget.yaml` and is
+invoked from repository root as `python -m scripts.run_equal_budget_final_v1`.
+The YAML extracts the recorded settings without changing the comparison.
+New fits save `resolved_config.json`, required by prediction/scoring; historical
+completed runs remain associated with their original runner. See the
+[experiment index](experiments.md) for input availability and the
+[cleanup record](maintenance/cleanup_v1.md) for provenance boundaries.
+
 This rapid study addresses the first missing priority: a fair, independent
 source-only comparison under a common training budget. It fits three arms:
 

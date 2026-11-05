@@ -16,7 +16,7 @@ import pandas as pd
 import yaml
 from astropy.io import fits
 
-DEFAULT_CONFIG = Path("configs/real_reference_pilot_v1.yaml")
+DEFAULT_CONFIG = Path("configs/observations/reference_intake.yaml")
 
 
 def read_config(path=DEFAULT_CONFIG):

@@ -20,7 +20,7 @@ from src.ml.metrics import regression_metrics
 from src.ml.model import build_model
 
 
-DEFAULT_CONFIG = Path("configs/reliability_pixel_scale_training_v1.yaml")
+DEFAULT_CONFIG = Path("configs/reliability/pixel_scale_training.yaml")
 DEFAULT_PIXEL_SCALE_RELEASE = Path("data/simulations/reliability-pixel-scale-train-v1")
 DEFAULT_VALIDATION_RELEASE = Path("data/simulations/reliability-pixel-scale-v1-final")
 DEFAULT_OUTPUT = Path("results/ml/reliability_pixel_scale_v1")

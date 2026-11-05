@@ -7,7 +7,7 @@ from pathlib import Path
 import yaml
 
 
-CONFIG_PATH = Path("configs/preprocessing_v2.yaml")
+CONFIG_PATH = Path("configs/preprocessing/default.yaml")
 REQUIRED_SECTIONS = {"science", "geometry", "background", "mask", "variance", "normalization", "outputs", "run"}
 ALLOWED_NORMALIZATIONS = {"masked_percentile", "affine", "none"}
 

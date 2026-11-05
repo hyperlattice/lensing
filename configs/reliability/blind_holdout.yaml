@@ -1,6 +1,6 @@
 schema_version: 1
 experiment_id: WEEK11-INDEPENDENT-BLIND-HOLDOUT
-protocol: docs/reliability_study/protocol_v1.11.md
+protocol: archive/docs/reliability_study/protocol_v1.11.md
 release: data/simulations/reliability-blind-holdout-v1
 output: results/reports/reliability_v1/blind_holdout_week11
 generation:
@@ -19,7 +19,7 @@ generation:
     count: 150
     seed: 11031
     simulation_id: reliability-blind-holdout-v1-root
-    config: configs/simulation_engineering_v1.yaml
+    config: configs/simulation/engineering.yaml
   counterfactual_selection_seed: 11031
   counterfactual_generator_only_split: validation
 interventions:

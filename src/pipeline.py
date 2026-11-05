@@ -75,7 +75,7 @@ def prepare_real_release(
     release_id="real-castles-v2",
     raw_root="data/raw/castles",
     catalog_source="data/labels/source/lens_catalog_source.csv",
-    preprocessing_config="configs/preprocessing_v2.yaml",
+    preprocessing_config="configs/preprocessing/default.yaml",
     seed=4201,
     overwrite=False,
     make_previews=True,
@@ -206,7 +206,7 @@ def build_engineering_release(
     *,
     audit_dir="data/manifests/sim-eng1000-v1",
     release_id="sim-eng1000-v1",
-    config_path="configs/simulation_engineering_v1.yaml",
+    config_path="configs/simulation/engineering.yaml",
     count=1000,
     seed=11001,
     split_seed=4201,
@@ -331,7 +331,7 @@ def main():
     real.add_argument("--output", default="data/releases/real-castles-v2")
     real.add_argument("--raw-root", default="data/raw/castles")
     real.add_argument("--catalog-source", default="data/labels/source/lens_catalog_source.csv")
-    real.add_argument("--config", default="configs/preprocessing_v2.yaml")
+    real.add_argument("--config", default="configs/preprocessing/default.yaml")
     real.add_argument("--seed", type=int, default=4201)
     real.add_argument("--overwrite", action="store_true")
     real.add_argument("--no-preview", action="store_true")
@@ -343,7 +343,7 @@ def main():
     simulate.add_argument("--simulation-id", required=True)
     simulate.add_argument("--count", type=int, required=True)
     simulate.add_argument("--seed", type=int, required=True)
-    simulate.add_argument("--config", default="configs/simulation_pilot_v1.yaml")
+    simulate.add_argument("--config", default="configs/simulation/pilot.yaml")
     simulate.add_argument("--overwrite", action="store_true")
     simulate.add_argument("--no-preview", action="store_true")
     simulate.add_argument("--preview-root", default=str(DEFAULT_PREVIEW_ROOT))
@@ -378,7 +378,7 @@ def main():
     real_comparison = commands.add_parser(
         "real-comparison", help="run the frozen exploratory real-lens comparison"
     )
-    real_comparison.add_argument("--config", default="configs/real_comparison_v1.yaml")
+    real_comparison.add_argument("--config", default="configs/observations/comparison.yaml")
     real_comparison.add_argument("--output", default="results/reports/real-comparison-v1")
 
     engineering = commands.add_parser(
@@ -387,7 +387,7 @@ def main():
     engineering.add_argument("--output", default="data/simulations/sim-eng1000-v1")
     engineering.add_argument("--audit-dir", default="data/manifests/sim-eng1000-v1")
     engineering.add_argument("--release-id", default="sim-eng1000-v1")
-    engineering.add_argument("--config", default="configs/simulation_engineering_v1.yaml")
+    engineering.add_argument("--config", default="configs/simulation/engineering.yaml")
     engineering.add_argument("--count", type=int, default=1000)
     engineering.add_argument("--seed", type=int, default=11001)
     engineering.add_argument("--split-seed", type=int, default=4201)

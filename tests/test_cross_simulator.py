@@ -21,7 +21,7 @@ def test_external_backend_matches_sis_and_elliptical_deflections():
     import yaml
     from pathlib import Path
     from src.simulation.cross_simulator import deflection_controls
-    config=yaml.safe_load(Path("configs/cross_simulator_development_v1.yaml").read_text())
+    config=yaml.safe_load(Path("configs/simulation/cross_simulator_legacy.yaml").read_text())
     report=deflection_controls(config)
     assert report["passed"], report
     assert len(report["checks"]) == 12

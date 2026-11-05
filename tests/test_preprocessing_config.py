@@ -10,7 +10,7 @@ from src.processing.preprocessing_config import config_hash, load_config, valida
 
 
 def test_preprocessing_config_loads_and_hash_is_stable():
-    config = load_config("configs/preprocessing_v2.yaml")
+    config = load_config("configs/preprocessing/default.yaml")
     assert validate_config(config) == []
     assert config_hash(config) == config_hash(config)
 
@@ -42,7 +42,7 @@ def test_preprocessing_dry_run_plans_outputs_without_writing_arrays(tmp_path):
         metadata_path=metadata,
         output_dir=output_dir,
         manifest_path=manifest,
-        config_path="configs/preprocessing_v2.yaml",
+        config_path="configs/preprocessing/default.yaml",
         dry_run=True,
         run_manifest_path=run_manifest,
     )
@@ -66,7 +66,7 @@ def test_preprocessing_writes_shared_geometry_and_mask_products(tmp_path):
         metadata_path=metadata,
         output_dir=products,
         manifest_path=tmp_path / "manifest.csv",
-        config_path="configs/preprocessing_v2.yaml",
+        config_path="configs/preprocessing/default.yaml",
     )
 
     assert summary["accepted_count"] == 1

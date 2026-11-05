@@ -21,7 +21,7 @@ from src.modeling.pixel_scale_geometric_baseline import (
 )
 
 
-CONFIG = Path("configs/reliability_hybrid_initialization_v1.yaml")
+CONFIG = Path("configs/reliability/hybrid_initialization.yaml")
 STARTS = ("training_mean", "peak_radius_median", "week8_ml_prediction")
 CONDITIONS = (
     "canonical",

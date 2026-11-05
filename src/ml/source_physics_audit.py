@@ -26,7 +26,7 @@ from src.modeling.pixel_scale_geometric_baseline import (
 )
 
 
-DEFAULT_CONFIG = Path("configs/reliability_source_physics_v1.yaml")
+DEFAULT_CONFIG = Path("configs/reliability/source_physics.yaml")
 DEFAULT_RELEASE = Path("data/simulations/reliability-source-physics-v1")
 DEFAULT_OUTPUT = Path("results/reports/reliability_v1/source_physics")
 BASELINE_VALIDATION = Path("data/simulations/reliability-pixel-scale-v1-final/splits/validation__canonical.csv")
@@ -407,8 +407,8 @@ def evaluate_source_physics(
 
     summary = {
         "experiment_id": "WEEK5-SOURCE-PHYSICS",
-        "protocol": "docs/reliability_study/protocol_v1.5.md",
-        "protocol_sha256": file_sha256("docs/reliability_study/protocol_v1.5.md"),
+        "protocol": "archive/docs/reliability_study/protocol_v1.5.md",
+        "protocol_sha256": file_sha256("archive/docs/reliability_study/protocol_v1.5.md"),
         "config_sha256": file_sha256(config_path),
         "release_manifest_sha256": file_sha256(release / "manifest.csv"),
         "parent_manifest_sha256": run_manifest["parent_manifest_sha256"],

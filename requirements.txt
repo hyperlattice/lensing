@@ -13,6 +13,8 @@ ipykernel>=6.29
 
 # Primary simulation backend.
 lenstronomy==1.14.2
+# Imported by Lenstronomy's fitting workflow during the backend smoke check.
+tqdm>=4.66
 
 # CPU/CUDA wheel selection depends on the package index and local platform.
 torch>=2.8,<3

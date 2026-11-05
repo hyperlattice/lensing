@@ -83,7 +83,7 @@ The release ladder has distinct purposes: P10 is an analytic SIS control, P30 in
 - `ml/experiments.py` runs registered validation-only seed suites, verifies resumable artifacts, aggregates per-seed metrics, and produces the comparison report.
 - `ml/provenance.py` records package, device, Git, and source-file identity for every training run.
 
-`configs/ml_baseline_v1.yaml` is the first fixed experiment. `configs/ml/registry_v1.yaml` registers the three-seed baseline benchmark. The run procedure and interpretation guide are in `docs/ml_quickstart.md`.
+`configs/ml/baseline.yaml` is the first fixed experiment. `configs/ml/registry.yaml` registers the three-seed baseline benchmark. The run procedure and interpretation guide are in `docs/ml_quickstart.md`.
 
 ## Reliability-study workflows
 
@@ -114,10 +114,10 @@ code should use topic-based names and a new versioned protocol/configuration.
 
 ## Configuration, artifacts, and tests
 
-- `configs/preprocessing_v2.yaml` freezes real preprocessing.
-- `configs/simulation_pilot_v1.yaml` freezes the staged controls.
-- `configs/simulation_engineering_v1.yaml` freezes the 1,000-parent release and split policy.
-- `configs/real_comparison_v1.yaml` freezes the real candidates before measurement.
+- `configs/preprocessing/default.yaml` freezes real preprocessing.
+- `configs/simulation/pilot.yaml` freezes the staged controls.
+- `configs/simulation/engineering.yaml` freezes the 1,000-parent release and split policy.
+- `configs/observations/comparison.yaml` freezes the real candidates before measurement.
 - `data/labels/source` holds curated source tables; `data/labels/derived` holds rebuildable metadata and catalog outputs.
 - `data/releases` holds actual-observation releases. Large products are ignored, while manifests and reports are tracked.
 - `data/simulations` holds full generated simulations and is ignored because of size.

@@ -1,5 +1,12 @@
 # Machine-learning quickstart
 
+Start with the [experiment index](experiments.md) for current configuration
+locations. The historical `src.ml.experiments` seed runner has a known
+`run_controls` verification mismatch with current training summaries; both
+associated test failures predate the cleanup. See the
+[validation record](maintenance/cleanup_validation.md). Its recorded results
+remain historical evidence; maintenance has not rerun those experiments.
+
 ## Controlled Huber-delta experiments
 
 The first loss ablation is implemented. Both registered candidates inherit the
@@ -67,7 +74,7 @@ The first recorded run used PyTorch 2.8.0 on CPU. A CUDA installation can be sel
 ## 2. Train without touching the test split
 
 ```powershell
-python -m src.ml.train --config configs/ml_baseline_v1.yaml
+python -m src.ml.train --config configs/ml/baseline.yaml
 ```
 
 The configuration fixes the release, target, seed, optimizer, loss, model size, batch size, epoch limit, and early-stopping patience. Training computes image and target normalization from the 700 training parents only. Each epoch prints:
@@ -83,7 +90,7 @@ The best checkpoint is chosen by validation MAE. The command records that zero t
 For a fast wiring check, use a new output directory:
 
 ```powershell
-python -m src.ml.train --config configs/ml_baseline_v1.yaml --output results/ml/smoke --epochs 2 --max-train-samples 32 --max-validation-samples 16
+python -m src.ml.train --config configs/ml/baseline.yaml --output results/ml/smoke --epochs 2 --max-train-samples 32 --max-validation-samples 16
 ```
 
 The two `--max-...` options are hidden development controls; a smoke result is not a scientific result.
@@ -149,7 +156,7 @@ Do not apply this checkpoint to `real-castles-v2` as a scientific measurement. T
 
 ## 7. Run the development benchmark across seeds
 
-Phase 1 of [the archived planning notebook](../archive/notebooks/ml_implementation_plan_v1.ipynb) is implemented. Run all commands from the repository root. The versioned registry is `configs/ml/registry_v1.yaml`; `configs/ml/baseline_seeds_v1.yaml` fixes seeds `12001`, `12002`, and `12003`, reuses the original CNN/Huber training configuration, and declares radius-bin edges before training.
+Phase 1 of [the archived planning notebook](../archive/notebooks/ml_implementation_plan_v1.ipynb) is implemented. Run all commands from the repository root. The versioned registry is `configs/ml/registry.yaml`; `configs/ml/baseline_seeds.yaml` fixes seeds `12001`, `12002`, and `12003`, reuses the original CNN/Huber training configuration, and declares radius-bin edges before training.
 
 A quick check runs two epochs with up to 32 training and 16 validation examples per seed:
 

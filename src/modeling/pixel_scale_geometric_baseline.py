@@ -18,7 +18,7 @@ from scipy.signal import fftconvolve
 from src.simulation.models import build_lens_model, sie_kwargs
 
 
-DEFAULT_CONFIG = Path("configs/classical_pixel_scale_baseline_v1.yaml")
+DEFAULT_CONFIG = Path("configs/reliability/classical_pixel_scale.yaml")
 DEFAULT_OUTPUT = Path("results/reports/reliability_v1/pixel_scale/classical_geometric")
 ALLOWED_VALIDATION_COLUMNS = [
     "sample_id",

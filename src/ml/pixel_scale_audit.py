@@ -388,7 +388,7 @@ def evaluate_pixel_scale_sweep(
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--config", default="configs/reliability_pixel_scale_v1.yaml")
+    parser.add_argument("--config", default="configs/reliability/pixel_scale.yaml")
     parser.add_argument("--release", default="data/simulations/reliability-pixel-scale-v1-final")
     parser.add_argument("--output", default="results/reports/reliability_v1/pixel_scale/baseline")
     parser.add_argument("--device", default="auto")

@@ -99,7 +99,7 @@ def test_smoke_rerender_is_deterministic_label_invariant_and_ancestry_safe(tmp_p
         count=1,
         seed=911,
         simulation_id="cf-test-source-v1",
-        config_path="configs/simulation_engineering_v1.yaml",
+        config_path="configs/simulation/engineering.yaml",
         create_preview=False,
     )
     parent_manifest = pd.read_csv(source_root / "manifest.csv")

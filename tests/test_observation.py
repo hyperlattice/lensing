@@ -35,7 +35,7 @@ def test_detector_noise_is_sampled_in_count_space_and_reproducible():
 )
 def test_observation_scene_contains_point_sources_psf_and_foreground_light(monkeypatch):
     monkeypatch.setenv("NUMBA_DISABLE_JIT", "1")
-    with open("configs/simulation_pilot_v1.yaml", encoding="utf-8") as handle:
+    with open("configs/simulation/pilot.yaml", encoding="utf-8") as handle:
         config = yaml.safe_load(handle)
     parameters = draw_observation_parameters(6001, 0, config)
     scene = render_observation_scene(parameters, shape=(64, 64), supersampling_factor=1)
@@ -55,7 +55,7 @@ def test_observation_scene_contains_point_sources_psf_and_foreground_light(monke
 )
 def test_zero_external_shear_matches_the_no_shear_observation_scene(monkeypatch):
     monkeypatch.setenv("NUMBA_DISABLE_JIT", "1")
-    with open("configs/simulation_pilot_v1.yaml", encoding="utf-8") as handle:
+    with open("configs/simulation/pilot.yaml", encoding="utf-8") as handle:
         config = yaml.safe_load(handle)
     parameters = draw_observation_parameters(6001, 0, config)
     no_shear = render_observation_scene(parameters, shape=(64, 64), supersampling_factor=1)

@@ -13,3 +13,7 @@ and hashes are in [`results/reports/final_v1/`](../../results/reports/final_v1/)
 The phase-specific programs remain under `src/ml/` and `src/modeling/`, with
 their active configurations under `configs/`. The archived records are kept
 for provenance but are not required for the current paper workflow.
+
+Start with the [experiment index](../experiments.md). Configurations are now
+grouped under `configs/reliability/`; the [migration record](../maintenance/cleanup_v1.md)
+preserves the distinction between current locations and original freeze paths.

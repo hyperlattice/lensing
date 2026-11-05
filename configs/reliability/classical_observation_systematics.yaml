@@ -1,5 +1,5 @@
 experiment_id: WEEK4-CLASSICAL-POINT-GEOMETRY
-protocol: docs/reliability_study/protocol_v1.4.md
+protocol: archive/docs/reliability_study/protocol_v1.4.md
 validation_release: data/simulations/reliability-observation-systematics-v1
 training_release: data/simulations/sim-eng1000-v1
 cnn_predictions: results/reports/reliability_v1/observation_systematics/cnn_predictions.csv

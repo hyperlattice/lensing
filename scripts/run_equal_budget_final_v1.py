@@ -16,6 +16,7 @@ import json
 import numpy as np
 import pandas as pd
 import torch
+import yaml
 
 from scripts.review_robustness_development_v1 import checked_fit
 from src.data.benchmark_contract_v1 import sha256
@@ -24,39 +25,62 @@ from src.ml.model import build_model
 from src.ml.robustness_training_v1 import grouped_forward
 
 
-ROOT = Path("results/ml/equal-budget-final-v1")
-SOURCE = Path("data/simulations/robustness-study-source-train-v4/bank.json")
-DEVELOPMENT = Path("data/simulations/robustness-study-source-development-v4/bank.json")
-POLICY = Path("results/ml/robustness-development-v4/allocation/policy.json")
-HOLDOUT = Path("data/simulations/reliability-blind-holdout-v1/splits/holdout.csv")
-SEEDS = tuple(730001 + i for i in range(10))
-ARMS = ("C", "G", "R")
-CONDITIONS = ("canonical", "pixel-scale-004", "pixel-scale-006", "exposure-half", "read-noise-double")
-STRESS = CONDITIONS[1:]
+DEFAULT_CONFIG = Path("configs/ml/equal_budget.yaml")
 
 
-def fit():
+def load_config(path=DEFAULT_CONFIG):
+    """Read settings only; never inspect data banks, checkpoints or holdout."""
+    config = yaml.safe_load(Path(path).read_text(encoding="utf-8"))
+    required = {"schema_version", "output", "source_train", "source_development",
+                "policy", "holdout", "seeds", "arms", "conditions", "bootstrap", "training"}
+    if not isinstance(config, dict) or set(config) != required or config["schema_version"] != 1:
+        raise ValueError("Unexpected equal-budget configuration schema")
+    if config["arms"] != ["C", "G", "R"] or config["conditions"] != [
+            "canonical", "pixel-scale-004", "pixel-scale-006", "exposure-half", "read-noise-double"]:
+        raise ValueError("This runner requires the fixed C/G/R observation matrix")
+    seeds = config["seeds"]
+    if not seeds or any(type(seed) is not int for seed in seeds) or len(seeds) != len(set(seeds)):
+        raise ValueError("Expected unique integer seeds")
+    controls = config["bootstrap"]
+    if set(controls) != {"resamples", "stress_seed", "canonical_seed"} or any(
+            type(value) is not int or value < 1 for value in controls.values()):
+        raise ValueError("Expected positive integer bootstrap controls")
+    return config
+
+
+def verify_resolved_config(config):
+    """Require downstream stages to use the configuration sealed at fit time."""
+    path = Path(config["output"]) / "resolved_config.json"
+    resolved = json.loads(path.read_text(encoding="utf-8"))
+    digest = hashlib.sha256(json.dumps(config, sort_keys=True, allow_nan=False).encode("utf-8")).hexdigest()
+    if resolved != {"config": config, "config_sha256": digest}:
+        raise ValueError("Equal-budget configuration changed; use a new output identity")
+
+
+def fit(config):
+    ROOT = Path(config["output"])
+    SOURCE, DEVELOPMENT = Path(config["source_train"]), Path(config["source_development"])
+    POLICY, HOLDOUT = Path(config["policy"]), Path(config["holdout"])
+    SEEDS, ARMS = config["seeds"], config["arms"]
     if (ROOT / "fit_complete.json").exists():
+        verify_resolved_config(config)
         print(json.dumps(json.loads((ROOT / "fit_complete.json").read_text()), indent=2))
         return
     ROOT.mkdir(parents=True, exist_ok=True)
     source = ObservationBank(SOURCE, expected_role="source_train")
     development = ObservationBank(DEVELOPMENT, expected_role="source_development")
     policy = json.loads(POLICY.read_text(encoding="utf-8"))
-    settings = {
-        "experiment_id": "equal-budget-final-v1",
-        "fit_purpose": "confirmatory_fit",
-        "optimizer_updates": 880,
-        "validation_interval_updates": 440,
-        "batch_size": 16,
-        "torch_threads": 6,
-        "learning_rate": 0.001,
-        "weight_decay": 0.0001,
-        "huber_delta": 1.0,
-        "mmd_weight": 0.0,
-        "model": {"channels": [8, 16, 32, 64], "pooled_size": 4,
-                  "hidden_features": 128, "dropout": 0.1},
-    }
+    settings = config["training"]
+    resolved = {"config": config, "config_sha256": hashlib.sha256(
+        json.dumps(config, sort_keys=True, allow_nan=False).encode("utf-8")).hexdigest()}
+    resolved_path = ROOT / "resolved_config.json"
+    if resolved_path.exists():
+        if json.loads(resolved_path.read_text(encoding="utf-8")) != resolved:
+            raise ValueError("Equal-budget configuration changed; use a new output identity")
+    else:
+        with resolved_path.open("x", encoding="utf-8") as stream:
+            json.dump(resolved, stream, indent=2)
+            stream.write("\n")
     records = []
     for seed in SEEDS:
         for arm in ARMS:
@@ -91,7 +115,8 @@ def fit():
                       "target_labels_accessed": False}))
 
 
-def _prediction_for_checkpoint(checkpoint_path: Path, rows: pd.DataFrame):
+def _prediction_for_checkpoint(checkpoint_path: Path, rows: pd.DataFrame, config):
+    HOLDOUT = Path(config["holdout"])
     checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=True)
     model = build_model(checkpoint["model_config"])
     model.load_state_dict(checkpoint["model_state"])
@@ -105,14 +130,17 @@ def _prediction_for_checkpoint(checkpoint_path: Path, rows: pd.DataFrame):
             raise ValueError(f"Invalid target-free holdout image: {value}")
         images.append(array)
     predictions = []
-    batch_size = 16
+    batch_size = config["training"]["batch_size"]
     for start in range(0, len(images), batch_size):
         _, output = grouped_forward(model, images[start:start + batch_size], stats)
         predictions.extend((output.detach().numpy() * stats["target_std"] + stats["target_mean"]).tolist())
     return np.asarray(predictions, dtype=float)
 
 
-def predict():
+def predict(config):
+    ROOT, HOLDOUT = Path(config["output"]), Path(config["holdout"])
+    CONDITIONS = config["conditions"]
+    verify_resolved_config(config)
     fit_manifest = json.loads((ROOT / "fit_complete.json").read_text(encoding="utf-8"))
     if fit_manifest["target_labels_accessed"] or fit_manifest["final_images_accessed"]:
         raise ValueError("Fit manifest records forbidden test access")
@@ -132,7 +160,7 @@ def predict():
         frame = rows.copy()
         frame["arm"] = record["arm"]
         frame["seed"] = record["seed"]
-        frame["theta_E_arcsec_predicted"] = _prediction_for_checkpoint(Path(record["checkpoint"]), rows)
+        frame["theta_E_arcsec_predicted"] = _prediction_for_checkpoint(Path(record["checkpoint"]), rows, config)
         outputs.append(frame[["sample_id", "parent_sample_id", "condition", "arm", "seed",
                               "theta_E_arcsec_predicted"]])
     result = pd.concat(outputs, ignore_index=True)
@@ -164,7 +192,11 @@ def _bootstrap_difference(values_a, values_b, seed=8731, draws=10000):
             "bootstrap_seed": seed, "bootstrap_resamples": draws}
 
 
-def score():
+def score(config):
+    ROOT, HOLDOUT = Path(config["output"]), Path(config["holdout"])
+    SEEDS, ARMS, CONDITIONS = config["seeds"], config["arms"], config["conditions"]
+    STRESS = CONDITIONS[1:]
+    verify_resolved_config(config)
     seal = json.loads((ROOT / "predictions_complete.json").read_text(encoding="utf-8"))
     if sha256(seal["prediction_path"]) != seal["prediction_sha256"]:
         raise ValueError("Prediction seal changed")
@@ -207,16 +239,18 @@ def score():
     contrasts = {}
     for candidate, comparator in (("G", "C"), ("R", "G"), ("R", "C")):
         contrasts[f"{candidate}_vs_{comparator}_four_stress"] = _bootstrap_difference(
-            four_stress[candidate], four_stress[comparator], seed=8731)
+            four_stress[candidate], four_stress[comparator],
+            seed=config["bootstrap"]["stress_seed"], draws=config["bootstrap"]["resamples"])
         contrasts[f"{candidate}_vs_{comparator}_canonical"] = _bootstrap_difference(
-            canonical[candidate][:, :, None], canonical[comparator][:, :, None], seed=8732)
+            canonical[candidate][:, :, None], canonical[comparator][:, :, None],
+            seed=config["bootstrap"]["canonical_seed"], draws=config["bootstrap"]["resamples"])
     report = {
         "schema": "equal_budget_final_report_v1",
         "stage": "scored_after_target_join",
         "holdout_manifest_sha256": sha256(HOLDOUT),
         "parent_count": len(parent_order), "seed_count": len(SEEDS),
         "seeds": list(SEEDS), "conditions": list(CONDITIONS),
-        "arms": list(ARMS), "optimizer_updates": 880,
+        "arms": list(ARMS), "optimizer_updates": config["training"]["optimizer_updates"],
         "metrics_by_arm_condition": metrics,
         "per_seed_four_stress_mae_arcsec": per_seed_stress,
         "contrasts": contrasts,
@@ -231,7 +265,7 @@ def score():
         json.dump(report, stream, indent=2)
         stream.write("\n")
     lines = ["# Equal-budget final result", "",
-             f"Frozen synthetic holdout: {len(parent_order)} parents; {len(SEEDS)} paired seeds; 880 updates.", "",
+             f"Frozen synthetic holdout: {len(parent_order)} parents; {len(SEEDS)} paired seeds; {config['training']['optimizer_updates']} updates.", "",
              "| Arm | Canonical MAE | Four-stress MAE |", "|---|---:|---:|"]
     for arm in ARMS:
         lines.append(f"| {arm} | {metrics[arm]['canonical']['mae_arcsec']:.6f} | "
@@ -252,5 +286,6 @@ def score():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("action", choices=("fit", "predict", "score"))
+    parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     args = parser.parse_args()
-    {"fit": fit, "predict": predict, "score": score}[args.action]()
+    {"fit": fit, "predict": predict, "score": score}[args.action](load_config(args.config))

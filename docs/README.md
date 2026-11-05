@@ -2,6 +2,9 @@
 
 | File | Use it for |
 |---|---|
+| `experiments.md` | Start here: current/development/historical workflows, commands, inputs and outputs. |
+| `artifact_policy.md` | Which data/result evidence is eligible for deliberate Git review. |
+| `maintenance/cleanup_v1.md` | Configuration migration and frozen-study reproduction boundaries. |
 | `codebase_guide.md` | Scientific and software architecture. |
 | `dataset_schema.md` | Manifest fields, paths, units, and domain rules. |
 | `production_dataset_v1.md` | Engineering simulation release gates and limits. |

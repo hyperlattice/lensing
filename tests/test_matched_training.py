@@ -65,7 +65,7 @@ def test_matched_run_pairs_actual_updates_parents_normalization_and_initializati
     pd.concat([train, extra]).to_csv(varied / "splits/train.csv", index=False)
     others = pd.read_csv(varied / "manifest.csv")
     pd.concat([others, extra]).to_csv(varied / "manifest.csv", index=False)
-    config = yaml.safe_load(Path("configs/ml/matched_budget_v1.yaml").read_text())
+    config = yaml.safe_load(Path("configs/ml/matched_budget.yaml").read_text())
     config.update(canonical_release=str(canonical), randomized_release=str(varied),
                   output=str(tmp_path / "out"), seeds=[17], optimizer_updates=2,
                   validation_interval_updates=1, batch_size=2, torch_threads=2,

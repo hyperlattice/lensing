@@ -185,7 +185,7 @@ def main(
     run_manifest_path=None,
     overwrite=None,
 ):
-    config_path = Path(config_path) if config_path is not None else Path("configs/preprocessing_v2.yaml")
+    config_path = Path(config_path) if config_path is not None else Path("configs/preprocessing/default.yaml")
     config = load_config(config_path)
     configuration_hash = config_hash(config)
     metadata_path = Path(metadata_path) if metadata_path is not None else (
@@ -419,7 +419,7 @@ def _cli():
     parser.add_argument("--metadata", default=None)
     parser.add_argument("--output-dir", default=str(OUTPUT_DIR))
     parser.add_argument("--manifest", default=str(MANIFEST_PATH))
-    parser.add_argument("--config", default="configs/preprocessing_v2.yaml")
+    parser.add_argument("--config", default="configs/preprocessing/default.yaml")
     parser.add_argument("--run-manifest", default=None)
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--overwrite", action="store_true", default=None)

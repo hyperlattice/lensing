@@ -34,7 +34,7 @@ from src.simulation.models import build_lens_model, sie_kwargs
 from src.simulation.observation import observation_psf, realize_detector_observation
 
 
-DEFAULT_CONFIG = Path("configs/reliability_cross_simulator_v1.yaml")
+DEFAULT_CONFIG = Path("configs/reliability/cross_simulator.yaml")
 DEFAULT_RELEASE = Path("data/simulations/reliability-independent-sie-v1")
 DEFAULT_OUTPUT = Path("results/reports/reliability_v1/cross_simulator_week7")
 SOURCE_RELEASE = Path("data/simulations/sim-eng1000-v1")
@@ -207,8 +207,8 @@ def _controls(output: Path, config: dict[str, Any]) -> dict[str, Any]:
     )
     control = {
         "experiment_id": "WEEK7-INDEPENDENT-SIE-LENS-EQUATION",
-        "protocol": "docs/reliability_study/protocol_v1.7.md",
-        "protocol_sha256": file_sha256(Path("docs/reliability_study/protocol_v1.7.md")),
+        "protocol": "archive/docs/reliability_study/protocol_v1.7.md",
+        "protocol_sha256": file_sha256(Path("archive/docs/reliability_study/protocol_v1.7.md")),
         "validation_parent_count": int(len(source)),
         "deflection_grid": deflection_rows,
         "maximum_deflection_component_difference_arcsec": max_deflection_error,
@@ -474,7 +474,7 @@ def _build_release(release: Path, output: Path, config: dict[str, Any], control:
                     "theta_E_target_available": True,
                     "simulator_name": "independent_sie_equation_shared_observation_components",
                     "simulator_version": "reliability-independent-sie-v1",
-                    "config_hash": file_sha256(Path("docs/reliability_study/protocol_v1.7.md")),
+                    "config_hash": file_sha256(Path("archive/docs/reliability_study/protocol_v1.7.md")),
                     "structural_status": "pass",
                     "observation_status": "pass",
                     "science_status": "pass",
@@ -710,7 +710,7 @@ def _score(predictions: pd.DataFrame, release: Path, output: Path, config: dict[
     metrics = effects.to_dict(orient="records")
     summary = {
         "experiment_id": "WEEK7-INDEPENDENT-SIE-LENS-EQUATION",
-        "protocol": "docs/reliability_study/protocol_v1.7.md",
+        "protocol": "archive/docs/reliability_study/protocol_v1.7.md",
         "protocol_sha256": control["protocol_sha256"],
         "release": release.as_posix(),
         "release_manifest_sha256": file_sha256(release / "manifest.csv"),
