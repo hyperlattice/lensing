@@ -80,7 +80,14 @@ q256_header.txt
 # submission/aaai27/reviewer_bundle/ is intended for workshop sharing. Raw
 # data, generated results, local author-kit files, and internal reports remain
 # private even when they are present in the working tree.
-results/
-data/
+# Anchor repository-local data and results rules.  The unanchored forms also
+# ignored active source modules under src/data/ and src/results/.
+/results/
+/data/
 docs/private/
 submission/aaai27/private/
+
+# Local archive of generated/editor artifacts.  Historical source notes and
+# scripts under archive/ are intentionally trackable; this subtree is not.
+/archive/scratch/
+/archive/private/

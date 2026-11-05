@@ -16,7 +16,7 @@ observations.
 configs/       Versioned preprocessing, simulation, comparison, and ML settings
 data/          Raw inputs, curated labels, releases, and compact audit manifests
 docs/          Dataset contract, codebase guide, research protocols, and results guidance
-notebooks/     Planning and explanation notebooks
+notebooks/     Notebook navigation; historical notebooks are archived
 results/       Derived reports, ML artifacts, and domain-separated previews
 src/            Reproducible pipeline implementation
 tests/          Automated unit and integration tests
@@ -68,10 +68,9 @@ configurations, and source tables are versioned.
 
 Read [the codebase guide](docs/codebase_guide.md) for the architecture and
 [the ML quickstart](docs/ml_quickstart.md) for model execution and results.
-The controlled one-target improvement roadmap is in
-[the ML experiment plan](docs/ml_experiment_plan/README.md), and the comparison
-of candidate architectures, physics hybrids, and posterior models is in the
-[one-parameter model landscape](docs/ml_model_landscape/README.md).
+Historical ML planning material is retained in the
+[archive](archive/README.md); the active workflow is documented in the
+[ML quickstart](docs/ml_quickstart.md).
 The completed reliability study and its frozen holdout evidence are indexed in
 [the reliability-study guide](docs/reliability_study/README.md).
 
@@ -179,8 +178,8 @@ python -m src.ml.experiments --experiment theta-e-cnn-seeds-v1
 The report is written to `results/ml/theta-e-cnn-seeds-v1/report.md`. Use
 `--smoke` for a wiring check, `--output` for a new repeat, and `--resume` to
 verify and reuse completed runs. The full procedure is in
-[the ML quickstart](docs/ml_quickstart.md); planned next phases are in
-[the ML planning notebook](notebooks/ml_implementation_plan_v1.ipynb).
+[the ML quickstart](docs/ml_quickstart.md). Historical planning material is in
+the [archive](archive/README.md).
 
 ## Verification
 

@@ -2,7 +2,7 @@
 
 Documentation reviewed against the repository implementation on October 26,
 2026. This describes the existing pipeline and recorded study; proposed
-extensions are in [the cross-simulator plan](cross_simulator_generalization_plan.md).
+extensions are in [the archived cross-simulator plan](../archive/docs/cross_simulator_generalization_plan.md).
 It does not change frozen experiments or report a new verification run.
 
 ## Purpose and scientific target
@@ -395,7 +395,7 @@ The Week 7 implementation independently codes SIE/SIS deflection, point-root
 search, and rasterization. It still shares Lenstronomy's Sersic light evaluator
 and the project's PSF, detector, and processing stages. Its close agreement
 checks conventions and implementation, not transfer to an independent full
-simulation stack. See [the recorded comparison](reliability_study/week7_cross_simulator_status.md).
+simulation stack. See [the archived recorded comparison](../archive/docs/reliability_study/week7_cross_simulator_status.md).
 
 CASTLES images are maintained separately. The completed study compared
 observable properties for 137 images of 69 systems; it did not score real

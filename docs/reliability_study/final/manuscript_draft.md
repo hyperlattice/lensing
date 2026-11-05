@@ -79,6 +79,6 @@ Targeted nuisance randomization improved paired `theta_E` MAE over a fixed canon
 
 ## Source artifacts
 
-- Protocols and decisions: [study protocols](../), [Week 11 freeze](../week11_freeze_manifest.json)
-- Week 3–10 phase reports: [pixel scale](../week3_pixel_scale_status.md), [observation systematics](../week4_observation_systematics_status.md), [source physics](../week5_source_physics_status.md), [baselines and shortcuts](../week6_baselines_shortcuts_status.md), [equation path](../week7_cross_simulator_status.md), [mitigation](../week8_mitigation_status.md), [hybrid initialization](../week9_hybrid_status.md), [CASTLES domain gap](../week10_domain_gap_status.md)
+- Protocols and decisions: [study guide](../), [Week 11 freeze](../../../archive/docs/reliability_study/week11_freeze_manifest.json)
+- Week 3–10 phase reports: [pixel scale](../../../archive/docs/reliability_study/week3_pixel_scale_status.md), [observation systematics](../../../archive/docs/reliability_study/week4_observation_systematics_status.md), [source physics](../../../archive/docs/reliability_study/week5_source_physics_status.md), [baselines and shortcuts](../../../archive/docs/reliability_study/week6_baselines_shortcuts_status.md), [equation path](../../../archive/docs/reliability_study/week7_cross_simulator_status.md), [mitigation](../../../archive/docs/reliability_study/week8_mitigation_status.md), [hybrid initialization](../../../archive/docs/reliability_study/week9_hybrid_status.md), [CASTLES domain gap](../../../archive/docs/reliability_study/week10_domain_gap_status.md)
 - Week 11 report and tables: [frozen holdout results](../../../results/reports/reliability_v1/blind_holdout_week11/report.md)

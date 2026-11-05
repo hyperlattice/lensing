@@ -2,8 +2,8 @@
 
 ## Frozen final evaluation
 
-- **Protocol/config:** `docs/reliability_study/protocol_v1.11.md` and `configs/reliability_blind_holdout_v1.yaml`.
-- **Freeze manifest:** [`week11_freeze_manifest.json`](../week11_freeze_manifest.json), SHA-256 `01a2c64e81cd9813f22988293f6aa992ade8fa8c67bdd652e8da218c3706da79`.
+- **Protocol/config:** `archive/docs/reliability_study/protocol_v1.11.md` and `configs/reliability_blind_holdout_v1.yaml`.
+- **Freeze manifest:** [`week11_freeze_manifest.json`](../../../archive/docs/reliability_study/week11_freeze_manifest.json), SHA-256 `01a2c64e81cd9813f22988293f6aa992ade8fa8c67bdd652e8da218c3706da79`.
 - **Holdout:** 150 independent parents; seed 11031; 750 rows in canonical, pixel-scale 0.04, pixel-scale 0.06, half-exposure, and double-read-noise conditions.
 - **Models:** fixed checkpoint seeds 12001/12002/12003 for both ensembles; checkpoint and normalization hashes are recorded in the freeze manifest and prediction files.
 - **Bootstrap:** 10,000 parent resamples, seed 6031.
@@ -24,7 +24,7 @@ python -m src.ml.reliability_week11 evaluate
 The `evaluate` command is exactly-once for this release. Regenerate tables, figures, and documents from the saved result files with:
 
 ```text
-python scripts/build_reliability_final_package.py
+python archive/scripts/build_reliability_final_package.py
 ```
 
 The freeze and package manifests record the relevant code, protocol, config, release, checkpoint, normalization, prediction, and output hashes. The package does not rerun model inference.

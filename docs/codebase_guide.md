@@ -102,9 +102,9 @@ keeping model inputs, parent identity, and holdout use explicit:
   Week 10 domain-coverage analyses.
 - `ml/reliability_week11.py` implements the new-parent blind holdout. Its
   source files and inputs are listed in
-  `docs/reliability_study/week11_freeze_manifest.json`; the evaluation is
+  `archive/docs/reliability_study/week11_freeze_manifest.json`; the evaluation is
   exactly-once and is not a routine rerun command.
-- `scripts/build_reliability_final_package.py` assembles tables and prose from
+- `archive/scripts/build_reliability_final_package.py` assembles tables and prose from
   saved evidence. It does not run model inference.
 
 The phase protocols, status records, and final research card are indexed in

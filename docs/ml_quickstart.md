@@ -150,7 +150,7 @@ Do not apply this checkpoint to `real-castles-v2` as a scientific measurement. T
 
 ## 7. Run the development benchmark across seeds
 
-Phase 1 of [the planning notebook](../notebooks/ml_implementation_plan_v1.ipynb) is implemented. Run all commands from the repository root. The versioned registry is `configs/ml/registry_v1.yaml`; `configs/ml/baseline_seeds_v1.yaml` fixes seeds `12001`, `12002`, and `12003`, reuses the original CNN/Huber training configuration, and declares radius-bin edges before training.
+Phase 1 of [the archived planning notebook](../archive/notebooks/ml_implementation_plan_v1.ipynb) is implemented. Run all commands from the repository root. The versioned registry is `configs/ml/registry_v1.yaml`; `configs/ml/baseline_seeds_v1.yaml` fixes seeds `12001`, `12002`, and `12003`, reuses the original CNN/Huber training configuration, and declares radius-bin edges before training.
 
 A quick check runs two epochs with up to 32 training and 16 validation examples per seed:
 
