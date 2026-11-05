@@ -1,3 +1,0 @@
-# Optional, pinned simulation backend for the lensing workflow.
-# Install after requirements.txt when running the simulation stages.
-lenstronomy==1.14.2

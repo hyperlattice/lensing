@@ -33,8 +33,8 @@ More views of a parent do not create more independent lens systems.
 
 ## Backend and software responsibilities
 
-The optional simulation dependency is **`lenstronomy==1.14.2`**, pinned in
-[`requirements-simulation.txt`](../requirements-simulation.txt). The project
+The simulation dependency is **`lenstronomy==1.14.2`**, pinned in
+[`requirements.txt`](../requirements.txt). The project
 does not simply use a ready-made telescope simulator: it combines Lenstronomy
 components with repository-owned sampling, point-image painting, PSF
 convolution, detector sampling, preprocessing, release validation, and

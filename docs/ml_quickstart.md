@@ -47,14 +47,13 @@ This guide trains and evaluates the first image-only model for `theta_E_arcsec`.
 
 For ongoing development, use the [multi-seed workflow](#7-run-the-development-benchmark-across-seeds) below. The original test result is already recorded; future model selection uses validation and the planning notebook calls for a new independent final holdout.
 
-## 1. Install the ML dependency
+## 1. Install dependencies
 
-From the repository root and your activated virtual environment:
+From the repository root and your activated virtual environment (Python 3.12
+on Windows for the unified PyAutoLens dependencies):
 
 ```powershell
 python -m pip install -r requirements.txt
-python -m pip install -r requirements-simulation.txt
-python -m pip install -r requirements-ml.txt
 ```
 
 Confirm the device PyTorch can see:

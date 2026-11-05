@@ -53,7 +53,7 @@ def backend_status() -> BackendStatus:
             available = False
             detail = "lenstronomy was discoverable but has no package metadata"
     else:
-        detail = "Install requirements-simulation.txt to enable backend rendering"
+        detail = "Install requirements.txt to enable backend rendering"
     return BackendStatus(
         name="lenstronomy",
         available=available,
@@ -232,7 +232,7 @@ def _load_lenstronomy() -> tuple[dict[str, Any], Any]:
     status = backend_status()
     if not status.available:
         raise SimulationBackendUnavailable(
-            "lenstronomy is unavailable. Install requirements-simulation.txt "
+            "lenstronomy is unavailable. Install requirements.txt "
             "or use the analytic controls."
         )
     try:

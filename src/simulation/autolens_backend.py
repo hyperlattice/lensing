@@ -19,7 +19,7 @@ def backend():
     try:
         import autolens as al
     except ImportError as exc:
-        raise ImportError("Install requirements-cross-simulator.txt in the separate Python 3.12 environment") from exc
+        raise ImportError("Install requirements.txt in a Python 3.12 environment") from exc
     return al
 
 
