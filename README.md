@@ -77,23 +77,26 @@ The completed reliability study and its frozen holdout evidence are indexed in
 
 ## Setup
 
-Use Python 3.11 or newer; the recorded release used Python 3.13.6.
+Use Python 3.12 on Windows for the unified dependency set, including the
+pinned PyAutoLens backend. Earlier releases used Python 3.13.6 without that
+backend; its recorded Python 3.13 installation required C++ Build Tools.
 
 ```powershell
-python -m venv .venv
+py -3.12 -m venv .venv
 .venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
-python -m pip install -r requirements-simulation.txt
 ```
 
-Install the ML dependency only when training models:
+`requirements.txt` contains preprocessing, simulation, ML, and alternate
+simulator dependencies. The actual-data workflow also needs `data/raw/castles/`.
 
-```powershell
-python -m pip install -r requirements-ml.txt
-```
-
-The actual-data workflow needs `data/raw/castles/`. Simulation stages need the
-pinned `lenstronomy` dependency from `requirements-simulation.txt`.
+The dependency files were consolidated on 2026-11-04 without changing their
+version constraints. Archived reports and the Week 11 freeze manifest retain
+the original filenames and hashes as historical evidence. This maintenance
+checkout does not match those frozen dependency hashes, and installation
+messages in backend adapters now refer to the unified file. Reproducing the
+frozen source and environment requires its original checkout. The unified
+environment has not been validated by a fresh installation.
 
 ## Main commands
 

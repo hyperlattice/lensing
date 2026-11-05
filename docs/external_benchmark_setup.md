@@ -85,7 +85,7 @@ Use a separate **Python 3.12** environment on this Windows machine:
 ```powershell
 # With a Python 3.12 interpreter available:
 python3.12 -m venv .venv-autolens
-.venv-autolens\Scripts\python.exe -m pip install -r requirements-cross-simulator.txt
+.venv-autolens\Scripts\python.exe -m pip install -r requirements.txt
 .venv-autolens\Scripts\python.exe -m src.simulation.cross_simulator controls
 .venv-autolens\Scripts\python.exe -m src.simulation.cross_simulator generate
 ```
