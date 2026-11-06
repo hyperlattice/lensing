@@ -1,0 +1,484 @@
+{
+  "review_date": "2026-11-05",
+  "scope": "Focused narrative novelty review of synthetic-training-data construction methods for strong-lens parameter recovery; not a systematic review.",
+  "backend": "web.run public discovery and primary-source retrieval",
+  "fallback_reason": "Parallel CLI was not found and PARALLEL_API_KEY was absent; no installation, authentication, paid Research job, or Perplexity call was attempted.",
+  "inclusion": "Primary studies on optical galaxy generation, synthetic-data utility, strong-lens parameter inference, relevant lens-generation and survey-imputation benchmarks; adjacent tasks and non-journal sources labelled separately. Public project proposals inform overlap, not empirical efficacy.",
+  "exclusions": "Unrelated Samsung Galaxy results; generic secondary summaries; weak-lensing-only studies retained only as adjacent context; source reconstruction and super-resolution distinguished from training-data generation.",
+  "limitations": [
+    "Single-agent narrative screening; no independent second reviewer.",
+    "Ranked web discovery, arXiv pages, publisher sources, author and institutional pages; no complete ADS, Scopus, Web of Science, OpenAlex, or Semantic Scholar export.",
+    "Preprints and journal reports linked as one work where identified; result snippets were discovery aids and source access depth is recorded separately.",
+    "No exhaustive record, report or study denominator; query count is not a study count.",
+    "No experimental reproduction or repository-level validation of external methods."
+  ],
+  "query_count": 46,
+  "calls": [
+    {
+      "call": 1,
+      "date": "2026-11-05",
+      "args": {
+        "search_query": [
+          {
+            "q": "strong gravitational lensing synthetic training data GAN diffusion augmentation benchmark parameter inference"
+          },
+          {
+            "q": "galaxy image generation benchmark GAN diffusion normalizing flow downstream tasks"
+          },
+          {
+            "q": "strong lens parameter estimation simulation realism source morphology noise augmentation comparison"
+          },
+          {
+            "q": "gravitational lens finding challenge synthetic data generative adversarial network diffusion"
+          }
+        ],
+        "response_length": "long"
+      }
+    },
+    {
+      "call": 2,
+      "date": "2026-11-05",
+      "args": {
+        "search_query": [
+          {
+            "q": "galaxy synthetic images GAN diffusion benchmark downstream regression physical parameters"
+          },
+          {
+            "q": "\"lensing\" \"diffusion\" \"augmentation\""
+          },
+          {
+            "q": "\"lensing\" \"GAN\" \"training\" \"simulation\""
+          },
+          {
+            "q": "\"galaxy\" \"generation\" \"benchmark\" \"2026\""
+          }
+        ],
+        "response_length": "long"
+      }
+    },
+    {
+      "call": 3,
+      "date": "2026-11-05",
+      "args": {
+        "search_query": [
+          {
+            "q": "\"strong lensing\" \"synthetic data\" \"benchmark\" \"diffusion\""
+          },
+          {
+            "q": "\"gravitational lens\" \"GAN\" \"diffusion\""
+          },
+          {
+            "q": "\"galaxy\" \"augmentation\" \"diffusion\" astronomy -Samsung -phone"
+          },
+          {
+            "q": "\"synthetic\" \"benchmark\" \"galaxy\" \"parameter\" generator -Samsung"
+          }
+        ],
+        "response_length": "long"
+      }
+    },
+    {
+      "call": 4,
+      "date": "2026-11-05",
+      "args": {
+        "open": [
+          {
+            "ref_id": "https://arxiv.org/html/2503.23127v1"
+          },
+          {
+            "ref_id": "https://arxiv.org/html/2203.11956"
+          },
+          {
+            "ref_id": "https://arxiv.org/html/2404.18897v3"
+          },
+          {
+            "ref_id": "https://arxiv.org/html/2506.16233"
+          }
+        ],
+        "response_length": "long"
+      }
+    },
+    {
+      "call": 5,
+      "date": "2026-11-05",
+      "args": {
+        "find": [
+          {
+            "ref_id": "turn9view1",
+            "pattern": "6.1"
+          },
+          {
+            "ref_id": "turn9view2",
+            "pattern": "Sersic"
+          },
+          {
+            "ref_id": "turn9view0",
+            "pattern": "downstream"
+          },
+          {
+            "ref_id": "turn9view3",
+            "pattern": "augmentation"
+          }
+        ],
+        "search_query": [
+          {
+            "q": "\"Denoising Diffusion\" \"Denselens\""
+          },
+          {
+            "q": "\"DiffLense\" conditional diffusion super resolution"
+          },
+          {
+            "q": "\"Evaluation metrics for galaxy image generators\" arxiv"
+          },
+          {
+            "q": "\"Realistic galaxy image simulation via score-based generative models\" arxiv"
+          }
+        ],
+        "response_length": "long"
+      }
+    },
+    {
+      "call": 6,
+      "date": "2026-11-05",
+      "args": {
+        "search_query": [
+          {
+            "q": "\"lens\" \"DDGAN\""
+          },
+          {
+            "q": "\"Denoising Diffusion\" \"impostors\" galaxies"
+          },
+          {
+            "q": "\"Galactic alchemy\" \"GAN\" \"diffusion\""
+          },
+          {
+            "q": "\"strong gravitational lens finding challenge\" Metcalf 2019"
+          }
+        ],
+        "open": [
+          {
+            "ref_id": "turn9view1",
+            "lineno": 350
+          },
+          {
+            "ref_id": "turn9view2",
+            "lineno": 82
+          },
+          {
+            "ref_id": "turn9view0",
+            "lineno": 250
+          }
+        ],
+        "response_length": "long"
+      }
+    },
+    {
+      "call": 7,
+      "date": "2026-11-05",
+      "args": {
+        "open": [
+          {
+            "ref_id": "https://pure.rug.nl/ws/portalfiles/portal/1187888221/Chapter_6.pdf"
+          },
+          {
+            "ref_id": "https://arxiv.org/abs/2506.16233"
+          },
+          {
+            "ref_id": "https://arxiv.org/abs/2510.23768"
+          },
+          {
+            "ref_id": "https://arxiv.org/abs/2406.08442"
+          }
+        ],
+        "search_query": [
+          {
+            "q": "\"DDGAN\" \"lenses\""
+          },
+          {
+            "q": "\"Denoising Diffusion Generative Adversarial\" \"galaxies\""
+          },
+          {
+            "q": "\"galaxy\" \"generator\" \"Einstein radius\""
+          },
+          {
+            "q": "\"diffusion\" \"synthetic training\" \"lensing\""
+          }
+        ],
+        "response_length": "long"
+      }
+    },
+    {
+      "call": 8,
+      "date": "2026-11-05",
+      "args": {
+        "search_query": [
+          {
+            "q": "site:arxiv.org \"strong lensing\" \"generative\" \"augmentation\""
+          },
+          {
+            "q": "site:arxiv.org \"galaxy\" \"synthetic data\" \"benchmark\""
+          },
+          {
+            "q": "\"synthetic data\" \"strong lensing\" comparison GAN diffusion noise"
+          },
+          {
+            "q": "\"noise augmentation\" \"Einstein radius\""
+          }
+        ],
+        "open": [
+          {
+            "ref_id": "https://arxiv.org/abs/2611.04139"
+          },
+          {
+            "ref_id": "https://arxiv.org/abs/2605.17546"
+          },
+          {
+            "ref_id": "https://pure.rug.nl/ws/portalfiles/portal/1187888217/Chapter_4.pdf"
+          },
+          {
+            "ref_id": "https://arxiv.org/abs/1708.08842"
+          }
+        ],
+        "response_length": "long"
+      }
+    },
+    {
+      "call": 9,
+      "date": "2026-11-05",
+      "args": {
+        "open": [
+          {
+            "ref_id": "turn13view0",
+            "lineno": 8
+          },
+          {
+            "ref_id": "turn13view1",
+            "lineno": 8
+          },
+          {
+            "ref_id": "turn13view2",
+            "lineno": 290
+          },
+          {
+            "ref_id": "turn9view1",
+            "lineno": 365
+          }
+        ],
+        "response_length": "long"
+      }
+    },
+    {
+      "call": 10,
+      "date": "2026-11-05",
+      "args": {
+        "open": [
+          {
+            "ref_id": "https://arxiv.org/html/2611.04139v1"
+          },
+          {
+            "ref_id": "https://arxiv.org/html/2605.17546v1"
+          },
+          {
+            "ref_id": "https://arxiv.org/html/2510.23768v1"
+          },
+          {
+            "ref_id": "https://arxiv.org/html/1708.08842"
+          }
+        ],
+        "response_length": "long"
+      }
+    },
+    {
+      "call": 11,
+      "date": "2026-11-05",
+      "args": {
+        "find": [
+          {
+            "ref_id": "turn15view0",
+            "pattern": "Einstein"
+          },
+          {
+            "ref_id": "turn15view0",
+            "pattern": "Downstream Classification"
+          },
+          {
+            "ref_id": "turn15view0",
+            "pattern": "Training details"
+          },
+          {
+            "ref_id": "turn15view2",
+            "pattern": "Limitations"
+          }
+        ],
+        "open": [
+          {
+            "ref_id": "https://doi.org/10.1016/j.ascom.2022.100685"
+          },
+          {
+            "ref_id": "https://doi.org/10.3847/1538-4365/ae1f10"
+          },
+          {
+            "ref_id": "https://arxiv.org/abs/2510.23768",
+            "lineno": 16
+          }
+        ],
+        "response_length": "long"
+      }
+    },
+    {
+      "call": 12,
+      "date": "2026-11-05",
+      "args": {
+        "search_query": [
+          {
+            "q": "\"lensing\" \"source generation\" \"diffusion\""
+          },
+          {
+            "q": "\"lensing\" \"source galaxies\" \"GAN\""
+          },
+          {
+            "q": "\"Einstein radius\" \"generative adversarial\""
+          },
+          {
+            "q": "\"Einstein radius\" \"diffusion\" \"training data\""
+          }
+        ],
+        "response_length": "long"
+      }
+    },
+    {
+      "call": 13,
+      "date": "2026-11-05",
+      "args": {
+        "open": [
+          {
+            "ref_id": "https://arxiv.org/html/2611.04139v1",
+            "lineno": 140
+          },
+          {
+            "ref_id": "https://arxiv.org/html/2404.18897v3",
+            "lineno": 65
+          },
+          {
+            "ref_id": "https://arxiv.org/abs/2511.16415"
+          },
+          {
+            "ref_id": "https://arxiv.org/abs/2506.16233",
+            "lineno": 16
+          }
+        ],
+        "search_query": [
+          {
+            "q": "\"synthetic data\" \"strong lens\" \"benchmark\" GAN diffusion regression"
+          },
+          {
+            "q": "\"galaxy generation\" \"downstream\" \"lensing\" benchmark"
+          },
+          {
+            "q": "\"gravitational lens\" \"augmentation\" \"diffusion models\" benchmark regression"
+          },
+          {
+            "q": "\"How good is my GAN\" classification evaluation ECCV 2018"
+          }
+        ],
+        "response_length": "long"
+      }
+    },
+    {
+      "call": 14,
+      "date": "2026-11-05",
+      "args": {
+        "search_query": [
+          {
+            "q": "site:ml4sci.org \"Physics-Informed Diffusion Models for Gravitational Lensing Simulation\""
+          },
+          {
+            "q": "\"DeepLense\" \"diffusion\" \"2026\" \"simulation\""
+          },
+          {
+            "q": "\"strong lensing\" \"synthetic data generation\" \"benchmark\""
+          }
+        ],
+        "open": [
+          {
+            "ref_id": "https://github.com/ML4SCI/DeepLense/blob/main/README.md?plain=1"
+          },
+          {
+            "ref_id": "https://arxiv.org/html/2404.18897v3",
+            "lineno": 70
+          }
+        ],
+        "response_length": "long"
+      }
+    },
+    {
+      "call": 15,
+      "date": "2026-11-05",
+      "args": {
+        "search_query": [
+          {
+            "q": "\"FlowLensing: Simulating Gravitational Lensing with Flow Matching\""
+          },
+          {
+            "q": "\"FlowLensing\" \"GAN\""
+          },
+          {
+            "q": "\"Diffusion Models for Gravitational Lensing Simulation\" benchmark GAN"
+          }
+        ],
+        "find": [
+          {
+            "ref_id": "turn19view0",
+            "pattern": "FlowLensing"
+          },
+          {
+            "ref_id": "turn19view0",
+            "pattern": "Diffusion"
+          }
+        ],
+        "response_length": "long"
+      }
+    },
+    {
+      "call": 16,
+      "date": "2026-11-05",
+      "args": {
+        "open": [
+          {
+            "ref_id": "https://arxiv.org/html/2510.07878v1"
+          },
+          {
+            "ref_id": "https://openreview.net/forum?id=9AAb6BzlwG"
+          }
+        ],
+        "response_length": "long"
+      }
+    },
+    {
+      "call": 17,
+      "date": "2026-11-05",
+      "args": {
+        "open": [
+          {
+            "ref_id": "https://arxiv.org/abs/2609.00065"
+          },
+          {
+            "ref_id": "https://arxiv.org/html/2404.18897v3",
+            "lineno": 72
+          }
+        ],
+        "response_length": "short"
+      }
+    }
+  ],
+  "additional_executed_query_batch": {
+    "date": "2026-11-05",
+    "queries": [
+      "\"Optimizing machine learning methods to discover strong gravitational lenses\"",
+      "\"Evaluation metrics for galaxy image generators\"",
+      "\"strong lens\" \"diffusion\" \"synthetic\" benchmark -site:reddit.com",
+      "\"galaxy image\" \"benchmark\" \"diffusion\" \"2026\" -Samsung"
+    ],
+    "note": "Executed after the first two discovery batches and before the exact-overlap batch; reconstructed from the visible tool call. Raw response not retained in this compact log."
+  }
+}

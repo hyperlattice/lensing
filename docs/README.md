@@ -11,6 +11,9 @@
 | `simulation_pipeline.md` | Current simulation backend, rendering, noise, products, and limits. |
 | `ml_quickstart.md` | Training, evaluation, multi-seed benchmarks, and result interpretation. |
 | `equal_budget_final_v1.md` | Current equal-budget experiment and claim boundary. |
+| `explainability_synthetic_data_proposal.md` | Proposed explainability study using controlled synthetic interventions and targeted training data. |
+| [Synthetic-generation benchmark review](literature_review/synthetic_generation_benchmark/review.md) | Literature comparison, novelty limits, and proposed scientific-utility benchmark. |
+| [Benchmark data options](literature_review/synthetic_generation_benchmark/data_options.md) | Dataset compatibility, limited-data generation, output-label validity, and unresolved data-route choices. |
 | `reliability_study/README.md` | Final reliability-study evidence and scope. |
 | `reliability_study/final/` | Final research card, manuscript, evidence map, and reproducibility statement. |
 | `../archive/private/` | Local working notes and authoring material; ignored by Git. |
