@@ -1,322 +1,378 @@
+"""Generative source bank and image-only target bank for development training.
+
+Source expected-rate arrays are simulator internals used solely to draw fresh
+observations. They are not predictor features. Target banks expose only fixed
+observed images and never return target labels, expected scenes or parameters.
+Qualification and identity audit are mandatory outside explicit unit fixtures.
+"""
+
+from __future__ import annotations
+
 import json
 from pathlib import Path
 
 import numpy as np
-import pandas as pd
 
-from src.processing.psf import validate_psf
-
-
-TARGET_FIELDS = {
-    "theta_E_arcsec",
-    "einstein_radius_estimate_arcsec",
-    "einstein_radius_arcsec",
-    "mass_enclosed_msun",
-    "mass_aperture_arcsec",
-    "einstein_radius_method",
-    "q",
-    "phi_rad",
-    "e1",
-    "e2",
-    "gamma1",
-    "gamma2",
-}
-PRIVILEGED_FIELDS = {
-    "mass_model",
-    "q",
-    "phi_rad",
-    "e1",
-    "e2",
-    "gamma1",
-    "gamma2",
-    "source_x_arcsec",
-    "source_y_arcsec",
-    "source_re_arcsec",
-    "source_n",
-    "simulator_name",
-    "simulator_version",
-    "parameter_seed",
-    "noise_seed",
-    "parameters_path",
-    "parent_system_id",
-    "parent_real_lens_id",
-    "split_group_id",
-    "source_template_id",
-    "background_template_id",
-    "lens_center_x_arcsec",
-    "lens_center_y_arcsec",
-    "source_q",
-    "source_phi_rad",
-    "source_amp",
-    "source_flux",
-    "lens_light_q",
-    "lens_light_phi_rad",
-    "lens_light_n",
-    "lens_light_re_arcsec",
-    "lens_light_amp",
-    "point_source_amp",
-    "point_positions_x_arcsec",
-    "point_positions_y_arcsec",
-    "point_amplitudes",
-    "stress_case",
-    "image_count_physical",
-    "image_count_detectable",
-    "lens_equation_max_residual_arcsec",
-}
-MODEL_INPUT_METADATA_FIELDS = {
-    "domain",
-    "image_unit",
-    "pixel_scale",
-    "pixel_scale_x",
-    "pixel_scale_y",
-    "instrument",
-    "detector",
-    "filter_name",
-    "exposure_s",
-    "masked_fraction",
-    "normalization_method",
-    "variance_method",
-    "variance_status",
-    "variance_unit",
-    "noise_correlation_assumption",
-    "psf_id",
-    "psf_fwhm_arcsec",
-    "exposure_time",
-    "background_rate",
-    "read_noise_electrons",
-}
-REQUIRED_COLUMNS = {"sample_id", "lens_id", "raw_path", "processed_path", "pixel_scale"}
-PRODUCT_FIELDS = {
-    "science_path": "science",
-    "mask_path": "invalid_mask",
-    "coverage_mask_path": "coverage_mask",
-    "background_mask_path": "background_mask",
-    "variance_path": "variance",
-    "expected_variance_path": "expected_variance",
-}
+from src.data.schema import contained_path, validate_lineage
+from src.simulation.observation import (
+    CONDITIONS,
+    RENDERERS,
+    condition_for,
+    evaluation_condition,
+    sample_detector,
+)
 
 
-class LensDataset:
-    """Validated NumPy-compatible dataset with an optional structured sample view."""
+class ObservationBank:
+    def __init__(
+        self, path: str | Path, *, expected_role: str, allow_fixture: bool = False
+    ) -> None:
+        if expected_role not in {"source_train", "source_development", "target_adaptation"}:
+            raise ValueError("This bank cannot load pilot/final data")
+        self.path = Path(path)
+        self.root = self.path.parent
+        document = json.loads(self.path.read_text(encoding="utf-8"))
+        if document["schema"] != "observation_bank_v1" or document["role"] != expected_role:
+            raise ValueError("Bank schema/role mismatch")
+        self.role = expected_role
+        if document["stage"] == "unit_fixture":
+            if not allow_fixture:
+                raise ValueError("Unit fixtures are not scientific data")
+        else:
+            if document["stage"] != "qualified_development":
+                raise ValueError("Observation bank is not qualified")
+            qualification = document["qualification"]
+            report_path = Path(qualification["path"])
+            report = json.loads(report_path.read_text())
+            if (
+                report["passed"] is not True
+                or report["rendering_factor"] != document["rendering_factor"]
+            ):
+                raise ValueError("Failed or inconsistent rendering qualification")
+        self.document = document
+        if document["stage"] != "unit_fixture" and (
+            document.get("image_unit") != "electrons_per_second"
+            or document.get("target_definition") != "lenstronomy_SIE_circularized_parameter_arcsec"
+        ):
+            raise ValueError("Missing image units or target convention")
+        self.parents = [
+            {**p, "latent_id": p.get("latent_id", p.get("latent_sha256", p["parent_system_id"]))}
+            for p in document["parents"]
+        ]
+        self.by_id = {p["parent_system_id"]: p for p in self.parents}
+        if not self.parents or len(self.by_id) != len(self.parents):
+            raise ValueError("Empty/duplicate parent identities")
+        validate_lineage(self.parents, document["exclusion_ledger"])
+        seeds, noise_seeds, fingerprints = {}, set(), set()
+        for p in self.parents:
+            if p["role"] != expected_role:
+                raise ValueError("Parent crossed bank role")
+            fingerprint = p["latent_id"]
+            if (
+                fingerprint in fingerprints
+                or p["parameter_seed"] in seeds
+                or p["noise_seed"] in noise_seeds
+            ):
+                raise ValueError("Duplicate latent parent or parameter/noise seed alias")
+            fingerprints.add(fingerprint)
+            seeds[p["parameter_seed"]] = p["parent_system_id"]
+            noise_seeds.add(p["noise_seed"])
+        self._arrays = {}
+        if expected_role == "target_adaptation":
+            if document["targets"] is not None or any("theta_E_arcsec" in p for p in self.parents):
+                raise ValueError("Target adaptation bank contains labels")
+            for p in self.parents:
+                if set(p).difference({"latent_sha256"}) != {
+                    "parent_system_id",
+                    "role",
+                    "parameter_seed",
+                    "noise_seed",
+                    "ancestry_ids",
+                    "latent_id",
+                    "images",
+                }:
+                    raise ValueError("Target bank contains unexpected physical metadata")
+                self._arrays[p["parent_system_id"]] = [
+                    self._array(a, nonnegative=False) for a in p["images"]
+                ]
+                if not self._arrays[p["parent_system_id"]]:
+                    raise ValueError("Target parent has no observations")
+            self.targets = None
+        else:
+            target = document["targets"]
+            path = contained_path(self.root, target["path"])
+            self.targets = json.loads(path.read_text())
+            if set(self.targets) != set(self.by_id) or any(
+                not np.isfinite(v) or v <= 0 for v in self.targets.values()
+            ):
+                raise ValueError("Source labels must match parent identities")
+            for p in self.parents:
+                if set(p["expected"]) != {
+                    "base",
+                    "pixel-scale-004",
+                    "pixel-scale-006",
+                    "gaussian-fwhm-075",
+                    "gaussian-fwhm-125",
+                }:
+                    raise ValueError("Source bank missing shared transformation support")
+                self._arrays[p["parent_system_id"]] = {
+                    k: self._array(a, nonnegative=True) for k, a in p["expected"].items()
+                }
+                if document["stage"] != "unit_fixture":
+                    for key, array in self._arrays[p["parent_system_id"]].items():
+                        cell = "fresh-noise" if key == "base" else key
+                        if array.shape != tuple(condition_for(cell)["shape"]):
+                            raise ValueError("Source cell has the wrong declared native geometry")
+                detector = p["detector"]
+                if (
+                    set(detector) != {"exposure_s", "read_noise_electrons", "background_rate"}
+                    or not np.isfinite(list(detector.values())).all()
+                ):
+                    raise ValueError("Invalid detector metadata")
+                if (
+                    detector["exposure_s"] <= 0
+                    or min(detector["read_noise_electrons"], detector["background_rate"]) < 0
+                ):
+                    raise ValueError("Invalid detector exposure/read/background units")
+
+    def _array(self, record, *, nonnegative):
+        path = contained_path(self.root, record["path"])
+        # Read-only file-backed arrays avoid committing the entire multi-GB
+        # source/target bank to private RAM on the 8-GB development machine.
+        a = np.load(path, allow_pickle=False, mmap_mode="r")
+        if (
+            a.ndim != 2
+            or a.dtype != np.float32
+            or not np.isfinite(a).all()
+            or (nonnegative and np.any(a < 0))
+        ):
+            raise ValueError("Invalid native-grid observation array")
+        return a
+
+    def source_image(
+        self,
+        parent: str,
+        *,
+        cell: str = "fresh-noise",
+        noise_seed: int | None = None,
+        historical: bool = False,
+    ) -> np.ndarray:
+        if self.targets is None:
+            raise ValueError("Target bank cannot generate source observations")
+        p = self.by_id[parent]
+        if historical:
+            condition = p["historical_condition"]
+            key = {0.04: "pixel-scale-004", 0.06: "pixel-scale-006"}.get(
+                condition["pixel_scale_arcsec"], "base"
+            )
+        else:
+            condition = condition_for(cell)
+            key = (
+                cell
+                if cell
+                in {"pixel-scale-004", "pixel-scale-006", "gaussian-fwhm-075", "gaussian-fwhm-125"}
+                else "base"
+            )
+        d = p["detector"]
+        fixed = p.get("historical_noise_seed", p["noise_seed"]) if historical else p["noise_seed"]
+        seed = fixed if noise_seed is None else noise_seed
+        raw, _ = sample_detector(
+            self._arrays[parent][key],
+            d["exposure_s"] * condition["exposure_multiplier"],
+            d["read_noise_electrons"] * condition["read_noise_multiplier"],
+            d["background_rate"],
+            seed,
+        )
+        return raw.astype(np.float32)
+
+    def target_image(self, parent: str, view_index: int) -> np.ndarray:
+        if self.targets is not None:
+            raise ValueError("Source bank cannot be used as target adaptation")
+        return self._arrays[parent][view_index % len(self._arrays[parent])]
+
+    def source_statistics(self) -> dict[str, float]:
+        if self.role != "source_train":
+            raise ValueError("Normalization is source-training-only")
+        total, squared, pixels = 0.0, 0.0, 0
+        for parent in self.by_id:
+            a = self.source_image(parent).astype(float)
+            total += a.sum()
+            squared += np.square(a).sum()
+            pixels += a.size
+        y = np.asarray(list(self.targets.values()))
+        mean = total / pixels
+        std = np.sqrt(max(squared / pixels - mean**2, 0.0))
+        if min(std, y.std()) <= 0:
+            raise ValueError("Degenerate source normalization")
+        return {
+            "image_mean": float(mean),
+            "image_std": float(std),
+            "target_mean": float(y.mean()),
+            "target_std": float(y.std()),
+        }
+
+
+class PairedEvaluationImages:
+    """Expose paired native images while keeping the truth vault inaccessible."""
 
     def __init__(
         self,
-        manifest_path,
-        root=None,
-        strict_products=False,
+        manifest_path: str | Path,
         *,
-        split=None,
-        domain=None,
-        eligible_for=None,
-        target_fields=None,
-        expected_shape=(256, 256),
-    ):
-        manifest_path = Path(manifest_path)
-        if manifest_path.is_dir():
-            manifest_path = manifest_path / "manifest.csv"
-        manifest_root = manifest_path.parent
-        if split is not None:
-            split_path = manifest_path.parent / "splits" / f"{split}.csv"
-            if not split_path.exists():
-                raise FileNotFoundError(f"Split manifest does not exist: {split_path}")
-            manifest_path = split_path
-        self.manifest_path = manifest_path
-        self.root = manifest_root if root is None else Path(root)
-        self.expected_shape = None if expected_shape is None else tuple(int(value) for value in expected_shape)
-        if self.expected_shape is not None and (len(self.expected_shape) != 2 or min(self.expected_shape) <= 0):
-            raise ValueError("expected_shape must contain two positive dimensions or be None")
-        self.metadata = pd.read_csv(self.manifest_path).reset_index(drop=True)
-        missing = REQUIRED_COLUMNS.difference(self.metadata.columns)
-        if missing:
-            raise ValueError(f"Manifest is missing columns: {sorted(missing)}")
-        if self.metadata["sample_id"].duplicated().any():
-            raise ValueError("Manifest contains duplicate sample_id values")
-        if domain is not None:
-            if "domain" not in self.metadata:
-                raise ValueError("Cannot filter by domain: manifest has no domain column")
-            self.metadata = self.metadata.loc[self.metadata["domain"] == domain].reset_index(drop=True)
-        if eligible_for is not None:
-            if "eligible_for" not in self.metadata:
-                raise ValueError("Cannot filter by eligibility: manifest has no eligible_for column")
-            self.metadata = self.metadata.loc[
-                self.metadata["eligible_for"].fillna("").astype(str).str.split(";").map(
-                    lambda values: str(eligible_for) in values
+        role: str,
+        study_id: str | None = None,
+        freeze_sha256: str | None = None,
+    ) -> None:
+        self.path = Path(manifest_path)
+        self.root = self.path.parent
+        self.document = json.loads(self.path.read_text())
+        doc = self.document
+        if freeze_sha256 is not None and doc.get("method_freeze_sha256") != freeze_sha256:
+            raise ValueError("Paired release does not match the frozen method identity")
+        fields = {
+            "schema",
+            "role",
+            "qualification",
+            "rendering_factor",
+            "parent_ids",
+            "condition_order",
+            "renderer_order",
+            "observations",
+            "image_unit",
+            "variance_unit",
+            "mask_semantics",
+            "proposal_count",
+            "accepted_proposals",
+            "physical_single_image_rejections",
+            "numerical_failures",
+            "noise_coupling",
+        }
+        if (
+            not fields.issubset(doc)
+            or doc["schema"] != "paired_evaluation_release_v1"
+            or doc["role"] != role
+            or role not in {"power_pilot", "final"}
+        ):
+            raise ValueError("Unexpected evaluation release schema or role")
+        q = doc["qualification"]
+        report = json.loads(Path(q["path"]).read_text())
+        if report["passed"] is not True or report["rendering_factor"] != doc["rendering_factor"]:
+            raise ValueError("Release is not numerically qualified")
+        if (
+            doc["condition_order"] != list(CONDITIONS)
+            or doc["renderer_order"] != list(RENDERERS)
+            or doc["image_unit"] != "electrons_per_second"
+            or doc["variance_unit"] != "electrons_per_second_squared"
+            or doc["mask_semantics"] != "true_is_excluded"
+            or doc["numerical_failures"] != 0
+        ):
+            raise ValueError("Observation matrix, units or qualification failure differs")
+        self.parent_ids = doc["parent_ids"]
+        if len(self.parent_ids) < 2 or len(set(self.parent_ids)) != len(self.parent_ids):
+            raise ValueError("Invalid parent identities")
+        row_fields = {
+            "parent_system_id",
+            "role",
+            "parameter_seed",
+            "noise_seed",
+            "ancestry_ids",
+            "latent_id",
+            "renderer",
+            "condition",
+            "shape",
+            "pixel_scale_arcsec",
+            "psf_family",
+            "condition_parameters",
+            "detector",
+            "products",
+        }
+        self.rows = {}
+        fingerprints = {}
+        lineage = []
+        for source_row in doc["observations"]:
+            row = {
+                **source_row,
+                "latent_id": source_row.get(
+                    "latent_id", source_row.get("latent_sha256", source_row["parent_system_id"])
+                ),
+            }
+            if set(row).difference({"latent_sha256"}) != row_fields or row["role"] != role:
+                raise ValueError("Unexpected physical metadata or truth in observation row")
+            key = (row["parent_system_id"], row["renderer"], row["condition"])
+            if (
+                key in self.rows
+                or key[0] not in self.parent_ids
+                or key[1] not in RENDERERS
+                or key[2] not in CONDITIONS
+            ):
+                raise ValueError("Duplicate or unknown observation identity")
+            condition = evaluation_condition(key[2])
+            if (
+                row["condition_parameters"] != condition
+                or row["shape"] != condition["shape"]
+                or row["pixel_scale_arcsec"] != condition["pixel_scale_arcsec"]
+                or row["psf_family"] != condition["psf_family"]
+            ):
+                raise ValueError("Native geometry or condition metadata differs")
+            if set(row["products"]) != {
+                "image",
+                "variance",
+                "psf",
+                "invalid_mask",
+                "coverage_mask",
+            }:
+                raise ValueError("Missing required observation product")
+            detector = row["detector"]
+            if (
+                set(detector)
+                != {"exposure_s", "read_noise_electrons", "background_rate", "noise_seed"}
+                or not np.isfinite(list(detector.values())).all()
+                or detector["exposure_s"] <= 0
+                or min(
+                    detector["read_noise_electrons"],
+                    detector["background_rate"],
+                    detector["noise_seed"],
                 )
-            ].reset_index(drop=True)
-        self.target_fields = set(TARGET_FIELDS if target_fields is None else target_fields)
-        unknown_targets = self.target_fields.difference(TARGET_FIELDS)
-        if unknown_targets:
-            raise ValueError(f"Unknown target fields: {sorted(unknown_targets)}")
-        unavailable_targets = self.target_fields.difference(self.metadata.columns)
-        if target_fields is not None and unavailable_targets:
-            raise ValueError(f"Target fields are absent from the manifest: {sorted(unavailable_targets)}")
-        if strict_products:
-            errors = self.validate_all(require_products=True)
-            if errors:
-                raise ValueError("Invalid dataset manifest:\n" + "\n".join(errors))
+                < 0
+            ):
+                raise ValueError("Invalid explicit detector provenance")
+            fingerprint = row["latent_id"]
+            if fingerprint in fingerprints and fingerprints[fingerprint] != key[0]:
+                raise ValueError("Physical parent has multiple identities")
+            fingerprints[fingerprint] = key[0]
+            lineage.append(row)
+            self.rows[key] = row
+        expected = len(self.parent_ids) * len(CONDITIONS) * len(RENDERERS)
+        if len(self.rows) != expected:
+            raise ValueError("Missing paired observations")
+        validate_lineage(lineage)
+        self._validated = set()
 
-    def __len__(self):
-        return len(self.metadata)
+    def _product(self, row, key):
+        record = row["products"][key]
+        if "path" not in record:
+            raise ValueError("Invalid product identity")
+        path = contained_path(self.root, record["path"])
+        if record["path"] not in self._validated:
+            a = np.load(path, allow_pickle=False, mmap_mode="r")
+            shape = tuple(row["shape"])
+            if key in {"invalid_mask", "coverage_mask"}:
+                if a.dtype != np.bool_ or a.shape != shape or a.any():
+                    raise ValueError("Expected all-valid native mask")
+            elif a.dtype != np.float32 or a.ndim != 2 or not np.isfinite(a).all():
+                raise ValueError("Invalid finite float32 product")
+            elif key == "psf":
+                if np.any(a < 0) or not np.isclose(a.sum(dtype=float), 1.0, atol=1e-6):
+                    raise ValueError("Invalid normalized PSF")
+            elif a.shape != shape or (key == "variance" and np.any(a < 0)):
+                raise ValueError("Invalid native image or variance")
+            self._validated.add(record["path"])
+        return np.load(path, allow_pickle=False, mmap_mode="r")
 
-    def _row(self, index):
-        if index < 0:
-            index += len(self.metadata)
-        if index < 0 or index >= len(self.metadata):
-            raise IndexError(index)
-        return self.metadata.iloc[index].to_dict()
+    def verify_all_products(self) -> None:
+        for row in self.rows.values():
+            for key in row["products"]:
+                self._product(row, key)
 
-    def _path(self, value):
-        path = Path(str(value))
-        return path if path.is_absolute() else self.root / path
-
-    def _load_array(self, row, field, required=False):
-        value = row.get(field)
-        if value is None or (isinstance(value, float) and np.isnan(value)):
-            if required:
-                raise ValueError(f"{row['sample_id']}: missing {field}")
-            return None
-        path = self._path(value)
-        if not path.exists():
-            if required:
-                raise ValueError(f"{row['sample_id']}: missing {field} file {path}")
-            return None
-        return np.load(path)
-
-    def _validate_image(self, array, sample_id, field, dtype=np.float32):
-        if array is None:
-            return [f"{sample_id}: {field} is missing"]
-        errors = []
-        if self.expected_shape is None:
-            if array.ndim != 2:
-                errors.append(f"{sample_id}: {field} must be two-dimensional, found shape {array.shape}")
-        elif array.shape != self.expected_shape:
-            errors.append(f"{sample_id}: {field} shape is {array.shape}, expected {self.expected_shape}")
-        if dtype is not None and array.dtype != dtype:
-            errors.append(f"{sample_id}: {field} dtype is {array.dtype}, expected {dtype}")
-        if not np.isfinite(array).all():
-            errors.append(f"{sample_id}: {field} contains NaN or infinity")
-        return errors
-
-    def validate_all(self, require_products=False):
-        """Return row-level product errors without modifying files."""
-        errors = []
-        for row in self.metadata.to_dict(orient="records"):
-            sample_id = row["sample_id"]
-            for path_field in ("raw_path", "processed_path"):
-                path = self._path(row.get(path_field))
-                if not path.exists():
-                    errors.append(f"{sample_id}: missing {path_field} file {path}")
-            image = self._load_array(row, "processed_path", required=False)
-            errors.extend(self._validate_image(image, sample_id, "processed_path"))
-            if require_products:
-                for field in ("science_path", "mask_path", "coverage_mask_path", "background_mask_path", "variance_path"):
-                    if row.get(field) is None or (isinstance(row.get(field), float) and np.isnan(row.get(field))):
-                        errors.append(f"{sample_id}: missing required product field {field}")
-                        continue
-                    array = self._load_array(row, field, required=False)
-                    if array is None:
-                        errors.append(f"{sample_id}: missing {field} file")
-                        continue
-                    if field in {"mask_path", "coverage_mask_path", "background_mask_path"}:
-                        if array.shape != image.shape or array.dtype != bool:
-                            errors.append(f"{sample_id}: {field} must be bool with the image shape {image.shape}")
-                        continue
-                    errors.extend(self._validate_image(array, sample_id, field))
-                variance = self._load_array(row, "variance_path", required=False)
-                combined_mask = None
-                mask_values = [self._load_array(row, field, required=False) for field in ("mask_path", "coverage_mask_path")]
-                if all(value is not None for value in mask_values):
-                    combined_mask = np.logical_or.reduce(mask_values)
-                if variance is not None and combined_mask is not None:
-                    if not np.isfinite(variance[~combined_mask]).all() or not (variance[~combined_mask] > 0).all():
-                        errors.append(f"{sample_id}: variance must be finite and positive on valid pixels")
-                elif variance is not None and (not np.isfinite(variance).all() or not (variance > 0).all()):
-                    errors.append(f"{sample_id}: variance must be finite and positive")
-            geometry_value = row.get("geometry_transform_path")
-            if require_products and geometry_value is not None and not (isinstance(geometry_value, float) and np.isnan(geometry_value)):
-                geometry_path = self._path(geometry_value)
-                if not geometry_path.exists():
-                    errors.append(f"{sample_id}: missing geometry_transform_path file")
-                else:
-                    try:
-                        geometry = json.loads(geometry_path.read_text(encoding="utf-8"))
-                        if tuple(geometry.get("target_shape", [])) != image.shape:
-                            errors.append(f"{sample_id}: geometry target_shape does not match image shape")
-                    except Exception as exc:
-                        errors.append(f"{sample_id}: invalid geometry transform: {exc}")
-        return errors
-
-    def __getitem__(self, index):
-        row = self._row(index)
-        image = self._load_array(row, "processed_path", required=True)
-        errors = self._validate_image(image, row["sample_id"], "processed_path")
-        if errors:
-            raise ValueError("; ".join(errors))
-        return image, row
-
-    def get_sample(self, index):
-        """Return separated model inputs, targets, provenance metadata, and products."""
-        row = self._row(index)
-        image = self._load_array(row, "processed_path", required=True)
-        errors = self._validate_image(image, row["sample_id"], "processed_path")
-        if errors:
-            raise ValueError("; ".join(errors))
-
-        products = {"image": image}
-        for field, output_name in PRODUCT_FIELDS.items():
-            array = self._load_array(row, field, required=False)
-            if array is not None:
-                if output_name.endswith("mask") or output_name in {"invalid_mask", "coverage_mask", "background_mask"}:
-                    if array.shape != image.shape or array.dtype != bool:
-                        raise ValueError(f"{row['sample_id']}: {field} must be bool with image shape")
-                elif output_name in {"variance", "expected_variance"}:
-                    if array.shape != image.shape:
-                        raise ValueError(f"{row['sample_id']}: variance shape does not match image")
-                else:
-                    product_errors = self._validate_image(array, row["sample_id"], output_name)
-                    if product_errors:
-                        raise ValueError("; ".join(product_errors))
-                products[output_name] = array
-
-        variance = products.get("variance")
-        masks = [products.get(name) for name in ("invalid_mask", "coverage_mask")]
-        if variance is not None:
-            combined_mask = np.logical_or.reduce([mask for mask in masks if mask is not None]) if any(mask is not None for mask in masks) else np.zeros(image.shape, dtype=bool)
-            if not np.isfinite(variance[~combined_mask]).all() or not (variance[~combined_mask] > 0).all():
-                raise ValueError(f"{row['sample_id']}: variance must be finite and positive on valid pixels")
-
-        geometry = None
-        geometry_value = row.get("geometry_transform_path")
-        if geometry_value is not None and not (isinstance(geometry_value, float) and np.isnan(geometry_value)):
-            geometry = json.loads(self._path(geometry_value).read_text(encoding="utf-8"))
-            if tuple(geometry.get("target_shape", [])) != tuple(image.shape):
-                raise ValueError(f"{row['sample_id']}: geometry target shape does not match image")
-        products["geometry"] = geometry
-
-        psf = None
-        psf_value = row.get("psf_path")
-        if psf_value is not None and not (isinstance(psf_value, float) and np.isnan(psf_value)):
-            psf = self._load_array(row, "psf_path", required=True)
-            psf_errors = validate_psf(type("PSFRecord", (), {"values": psf, "pixel_scale": float(row.get("pixel_scale", 0.0))})())
-            if psf_errors:
-                raise ValueError(f"{row['sample_id']}: invalid PSF: {'; '.join(psf_errors)}")
-        products["psf"] = psf
-
-        targets = {
-            key: row[key]
-            for key in self.target_fields
-            if key in row and not (isinstance(row[key], float) and np.isnan(row[key]))
-        }
-        targets["availability"] = {
-            key: bool(row.get(key, False))
-            for key in ("theta_E_target_available", "mass_target_available")
-            if key in row
-        }
-        # A positive allowlist makes it impossible for a newly added truth or
-        # provenance column to silently become a model feature.
-        input_metadata = {key: row[key] for key in MODEL_INPUT_METADATA_FIELDS if key in row}
-        return {
-            "inputs": {"products": products, "metadata": input_metadata},
-            "targets": targets,
-            "metadata": row,
-        }
+    def image(self, parent: str, renderer: str, condition: str) -> np.ndarray:
+        return self._product(self.rows[(parent, renderer, condition)], "image")

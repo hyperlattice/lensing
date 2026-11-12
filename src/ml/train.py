@@ -1,325 +1,281 @@
-"""Train the first image-only Einstein-radius CNN baseline."""
+"""Paired fixed-budget C/G/R training; final images and labels are inaccessible."""
 
 from __future__ import annotations
 
-import argparse
-import copy
 import json
 import time
+from collections import Counter
 from pathlib import Path
+from typing import Any
 
-import pandas as pd
+import numpy as np
 import torch
-import yaml
 
-from src.ml.data import TorchLensDataset, compute_training_statistics
-from src.ml.engine import (
-    collect_predictions,
-    make_loader,
-    require_output_directory,
+from src.data.dataset import ObservationBank
+from src.data.schema import validate_lineage
+from src.ml.artifacts import (
+    environment_record,
     seed_everything,
-    select_device,
-    train_one_epoch,
+    source_provenance,
+    verify_resolved_config,
     write_json,
 )
-from src.ml.metrics import (
-    improvement_fraction, mean_baseline_metrics, regression_metrics, target_bin_metrics, validate_bin_edges,
-)
+from src.ml.data import grouped_forward, source_validation
 from src.ml.model import build_model
-from src.ml.losses import build_loss
-from src.ml.plots import plot_predictions, plot_training_history
-from src.ml.provenance import environment_record, source_provenance
+from src.ml.policy import CELLS, paired_policy_schedule
+
+ARMS = {"C", "G", "R"}
 
 
-DEFAULT_CONFIG = Path("configs/ml/baseline.yaml")
-
-
-def load_config(path):
-    path = Path(path)
-    config = yaml.safe_load(path.read_text(encoding="utf-8"))
-    required = {
-        "experiment_id",
-        "release",
-        "output",
-        "target_field",
-        "seed",
-        "epochs",
-        "batch_size",
-        "learning_rate",
-        "weight_decay",
-        "patience",
-        "model",
-    }
-    missing = required.difference(config)
-    if missing:
-        raise ValueError(f"Experiment config is missing: {sorted(missing)}")
-    return config
-
-
-def train_experiment(
-    config,
+def train_arm(
+    config: dict[str, Any],
     *,
-    output_override=None,
-    device_request="auto",
-    overwrite=False,
-    max_train_samples=None,
-    train_sample_ids=None,
-    sample_selection_id=None,
-    max_validation_samples=None,
-):
-    started = time.perf_counter()
-    config = copy.deepcopy(config)
-    config["output"] = Path(output_override or config["output"]).as_posix()
-    for field in ("epochs", "batch_size", "patience"):
-        if isinstance(config[field], bool) or not isinstance(config[field], int) or config[field] < 1:
-            raise ValueError(f"{field} must be a positive integer")
-    if config["target_field"] != "theta_E_arcsec":
-        raise ValueError("This baseline supports only theta_E_arcsec")
-    loss_function = build_loss(config.get("loss", {"kind": "huber", "delta": config.get("huber_delta", 1.0)}))
-    if "loss" in config and "huber_delta" in config:
-        raise ValueError("Use loss or legacy huber_delta, not both")
-    bin_edges = validate_bin_edges(config.get("target_bin_edges_arcsec", [0.5, 1.0, 1.5, 2.0]))
-    config["target_bin_edges_arcsec"] = bin_edges
-    if train_sample_ids is not None:
-        train_sample_ids = [str(value) for value in train_sample_ids]
-        if max_train_samples is not None:
-            raise ValueError("Use train_sample_ids or max_train_samples, not both")
-        if not train_sample_ids or len(train_sample_ids) != len(set(train_sample_ids)):
-            raise ValueError("train_sample_ids must be a nonempty list without duplicates")
-        config["training_selection"] = {
-            "selection_id": str(sample_selection_id or "explicit_sample_ids"),
-            "sample_count": len(train_sample_ids),
-            "ordered_sample_ids": train_sample_ids,
-        }
-    controls = {
-        "max_train_samples": max_train_samples,
-        "max_validation_samples": max_validation_samples,
-        "train_sample_count": None if train_sample_ids is None else len(train_sample_ids),
-        "train_sample_ids": train_sample_ids,
-        "sample_selection_id": None if train_sample_ids is None else str(sample_selection_id or "explicit_sample_ids"),
-    }
-    for field in ("max_train_samples", "max_validation_samples", "train_sample_count"):
-        value = controls[field]
-        if value is not None and (isinstance(value, bool) or not isinstance(value, int) or value < 1):
-            raise ValueError(f"{field} must be a positive integer")
-    provenance = source_provenance()
-    seed_everything(config["seed"])
-    device = select_device(device_request)
-    output_dir = require_output_directory(output_override or config["output"], overwrite=overwrite)
-    write_json(output_dir / "resolved_config.json", config)
-    release = Path(config["release"])
-    raw_training = TorchLensDataset(
-        release,
-        split="train",
-        target_field=config["target_field"],
-        max_samples=max_train_samples,
-        sample_ids=train_sample_ids,
-    )
-    statistics = compute_training_statistics(raw_training)
-    training = TorchLensDataset(
-        release,
-        split="train",
-        target_field=config["target_field"],
-        statistics=statistics,
-        max_samples=max_train_samples,
-        sample_ids=train_sample_ids,
-    )
-    validation = TorchLensDataset(
-        release,
-        split="validation",
-        target_field=config["target_field"],
-        statistics=statistics,
-        max_samples=max_validation_samples,
-    )
-    training_loader = make_loader(
-        training,
-        batch_size=config["batch_size"],
-        shuffle=True,
-        seed=config["seed"],
-        num_workers=config.get("num_workers", 0),
-    )
-    validation_loader = make_loader(
-        validation,
-        batch_size=config["batch_size"],
-        shuffle=False,
-        seed=config["seed"],
-        num_workers=config.get("num_workers", 0),
-    )
-    model = build_model(config["model"]).to(device)
-    split_sample_ids = {
-        split: pd.read_csv(release / "splits" / f"{split}.csv", usecols=["sample_id"])["sample_id"].astype(str).tolist()
-        for split in ("train", "validation", "test")
-    }
+    seed: int,
+    arm: str,
+    source: ObservationBank,
+    development: ObservationBank,
+    target: ObservationBank | None,
+    output: str | Path,
+    probabilities: list[float] | np.ndarray | None,
+    allow_fixture: bool = False,
+) -> dict[str, Any]:
+    """Run a fixed-update development fit; no final scoring or implicit resume."""
+    if arm not in ARMS:
+        raise ValueError("Unknown comparison arm")
+    purpose = config.get("fit_purpose", "development_only")
+    if purpose not in {"development_only", "power_pilot_fit", "confirmatory_fit"}:
+        raise ValueError("Unknown source-data fit purpose")
+    if source.role != "source_train" or development.role != "source_development":
+        raise ValueError("Source training and development roles must be distinct")
+    for key in ("optimizer_updates", "batch_size", "validation_interval_updates", "torch_threads"):
+        if type(config[key]) is not int or config[key] < 1:
+            raise ValueError(f"Invalid positive-integer control: {key}")
+    if config["mmd_weight"] != 0:
+        raise ValueError("The maintained C/G/R trainer requires zero MMD weight")
+    if not allow_fixture and any(
+        b.document["stage"] != "qualified_development" for b in (source, development)
+    ):
+        raise ValueError("Unqualified scientific input bank")
+    if target is not None:
+        raise ValueError("Source-only arms cannot receive a target bank")
+    source_ids = list(source.by_id)
+    source_lineage = [*source.parents, *development.parents]
+    validate_lineage(source_lineage)
+    fingerprints = {}
+    for parent in source_lineage:
+        fingerprint = parent["latent_id"]
+        if fingerprint in fingerprints and fingerprints[fingerprint] != parent["role"]:
+            raise ValueError("Physical latent fingerprint overlaps across roles")
+        fingerprints[fingerprint] = parent["role"]
+    output = Path(output)
+    if output.exists():
+        raise FileExistsError("Use a new fit identity")
+    output.mkdir(parents=True)
+    statistics = source.source_statistics()
+    torch.set_num_threads(config["torch_threads"])
+    seed_everything(seed)
+    model = build_model(config["model"])
     optimizer = torch.optim.AdamW(
-        model.parameters(),
-        lr=float(config["learning_rate"]),
-        weight_decay=float(config["weight_decay"]),
+        model.parameters(), lr=config["learning_rate"], weight_decay=config["weight_decay"]
     )
-    history = []
-    best_mae = float("inf")
-    best_epoch = 0
-    epochs_without_improvement = 0
-    checkpoint_path = output_dir / "best.pt"
-    for epoch in range(1, int(config["epochs"]) + 1):
-        epoch_started = time.perf_counter()
-        training_loss = train_one_epoch(
-            model, training_loader, optimizer, loss_function, device
-        )
-        validation_result = collect_predictions(
-            model, validation_loader, device, statistics, loss_function=loss_function
-        )
-        validation_metrics = regression_metrics(
-            validation_result["targets"], validation_result["predictions"]
-        )
-        row = {
-            "epoch": epoch,
-            "train_loss": training_loss,
-            "validation_loss": validation_result["normalized_loss"],
-            "validation_mae_arcsec": validation_metrics["mae_arcsec"],
-            "validation_rmse_arcsec": validation_metrics["rmse_arcsec"],
-            "validation_r2": validation_metrics["r2"],
-            "runtime_seconds": time.perf_counter() - epoch_started,
-        }
-        history.append(row)
-        print(json.dumps(row, sort_keys=True), flush=True)
-        if validation_metrics["mae_arcsec"] < best_mae:
-            best_mae = validation_metrics["mae_arcsec"]
-            best_epoch = epoch
-            epochs_without_improvement = 0
-            torch.save(
-                {
-                    "format_version": 1,
-                    "experiment_id": config["experiment_id"],
-                    "seed": config["seed"],
-                    "model_state": model.state_dict(),
-                    "model_config": model.model_config,
-                    "statistics": statistics,
-                    "target_field": config["target_field"],
-                    "release": release.as_posix(),
-                    "best_epoch": best_epoch,
-                    "validation_metrics": validation_metrics,
-                    "torch_version": str(torch.__version__),
-                },
-                checkpoint_path,
-            )
-        else:
-            epochs_without_improvement += 1
-        if epochs_without_improvement >= int(config["patience"]):
-            break
-
-    pd.DataFrame(history).to_csv(output_dir / "history.csv", index=False)
-    plot_training_history(history, output_dir / "training_curves.png")
-    checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=True)
-    model.load_state_dict(checkpoint["model_state"])
-    training_eval_loader = make_loader(
-        training,
+    policy = arm
+    probabilities = probabilities if policy == "R" else np.ones(len(CELLS)) / len(CELLS)
+    schedule = paired_policy_schedule(
+        source_ids,
+        probabilities,
+        updates=config["optimizer_updates"],
         batch_size=config["batch_size"],
-        shuffle=False,
-        seed=0,
-        num_workers=config.get("num_workers", 0),
+        seed=seed + 100000,
     )
-    best_training = collect_predictions(model, training_eval_loader, device, statistics)
-    training_metrics = regression_metrics(best_training["targets"], best_training["predictions"])
-    training_predictions = pd.DataFrame(
+    # Target and historical view streams never advance the source-parent stream.
+    write_json(
+        output / "started.json",
         {
-            "sample_id": best_training["sample_ids"],
-            "theta_E_arcsec_true": best_training["targets"],
-            "theta_E_arcsec_predicted": best_training["predictions"],
-        }
+            "seed": seed,
+            "arm": arm,
+            "config": config,
+            "statistics": statistics,
+            "target_information_access": None,
+            "source": source_provenance(),
+            "environment": environment_record(torch.device("cpu")),
+        },
     )
-    training_predictions["residual_arcsec"] = (
-        training_predictions["theta_E_arcsec_predicted"] - training_predictions["theta_E_arcsec_true"]
-    )
-    training_predictions["absolute_error_arcsec"] = training_predictions["residual_arcsec"].abs()
-    training_predictions.to_csv(output_dir / "training_predictions.csv", index=False)
-    best_validation = collect_predictions(model, validation_loader, device, statistics)
-    best_metrics = regression_metrics(
-        best_validation["targets"], best_validation["predictions"]
-    )
-    baseline = mean_baseline_metrics(statistics["target_mean"], best_validation["targets"])
-    predictions = pd.DataFrame(
+    parent_schedule = [row["parents"] for row in schedule]
+    write_json(
+        output / "sampling_controls.json",
         {
-            "sample_id": best_validation["sample_ids"],
-            "theta_E_arcsec_true": best_validation["targets"],
-            "theta_E_arcsec_predicted": best_validation["predictions"],
-        }
+            "parent_schedule": parent_schedule,
+            "source_parent_order": source_ids,
+            "cell_probabilities": np.asarray(probabilities).tolist(),
+            "cell_order": list(CELLS),
+            "schedule_seed": seed + 100000,
+            "target_seed_sequence": [seed, 50001],
+            "historical_seed_sequence": [seed, 50002],
+            "parent_exposures": dict(
+                Counter(parent_id for row in schedule for parent_id in row["parents"])
+            ),
+            "scheduled_cell_counts": dict(Counter(row["cell"] for row in schedule)),
+            "reconstruction": "paired_policy_schedule with recorded NumPy version; source-only C/N/T ignore scheduled cell",
+        },
     )
-    predictions["residual_arcsec"] = (
-        predictions["theta_E_arcsec_predicted"] - predictions["theta_E_arcsec_true"]
-    )
-    predictions["absolute_error_arcsec"] = predictions["residual_arcsec"].abs()
-    predictions["relative_error"] = predictions["absolute_error_arcsec"] / predictions["theta_E_arcsec_true"].abs()
-    predictions.to_csv(output_dir / "validation_predictions.csv", index=False)
-    plot_predictions(
-        best_validation["targets"],
-        best_validation["predictions"],
-        output_dir / "validation_predictions.png",
-        title="Validation split: best checkpoint",
-    )
-    summary = {
-        "experiment_id": config["experiment_id"],
-        "parent_baseline_id": config.get("parent_baseline_id"),
-        "seed": config["seed"],
-        "run_controls": controls,
-        "environment": environment_record(device),
-        "provenance": provenance,
-        "release_id": release.name,
-        "status": "trained_validation_only",
-        "device": str(device),
-        "torch_version": str(torch.__version__),
-        "train_samples": len(training),
-        "training_metrics": training_metrics,
-        "validation_samples": len(validation),
-        "test_samples_accessed": 0,
-        "best_epoch": best_epoch,
-        "epochs_completed": len(history),
-        "trainable_parameters": model.trainable_parameter_count,
+    history, processed_pixels, started = [], 0, time.perf_counter()
+    actual_views = Counter()
+    loss_fn = torch.nn.HuberLoss(delta=config["huber_delta"])
+    for update, row in enumerate(schedule, 1):
+        images = []
+        for parent, draw_seed in zip(row["parents"], row["noise_seeds"]):
+            if policy == "C":
+                image = source.source_image(parent)
+                actual_views["canonical_fixed_noise"] += 1
+            else:
+                image = source.source_image(parent, cell=row["cell"], noise_seed=draw_seed)
+                actual_views[row["cell"]] += 1
+            images.append(image)
+        model.train()
+        optimizer.zero_grad(set_to_none=True)
+        _, prediction = grouped_forward(model, images, statistics)
+        truth = torch.tensor(
+            [
+                (source.targets[parent_id] - statistics["target_mean"]) / statistics["target_std"]
+                for parent_id in row["parents"]
+            ],
+            dtype=torch.float32,
+        )
+        supervised = loss_fn(prediction, truth)
+        discrepancy = torch.zeros(())
+        loss = supervised + config["mmd_weight"] * discrepancy
+        if not torch.isfinite(loss):
+            raise ValueError("Nonfinite training loss; retain failed fit")
+        loss.backward()
+        optimizer.step()
+        processed_pixels += sum(image.size for image in images)
+        if update % config["validation_interval_updates"] == 0 or update == len(schedule):
+            validation = source_validation(
+                model, development, statistics, batch_size=config["batch_size"]
+            )
+            record = {
+                "update": update,
+                "validation_mae_arcsec": validation["mae_arcsec"],
+                "supervised_loss": float(supervised.detach()),
+                "mmd_loss": float(discrepancy.detach()),
+            }
+            history.append(record)
+            print(json.dumps({"arm": arm, "seed": seed, **record}), flush=True)
+    checkpoint = {
+        "model_state": model.state_dict(),
+        "model_config": model.model_config,
         "statistics": statistics,
-        "split_sample_ids": split_sample_ids,
-        "validation_metrics": best_metrics,
-        "validation_target_bins": target_bin_metrics(
-            best_validation["targets"], best_validation["predictions"], bin_edges
-        ),
-        "mean_baseline_metrics": baseline,
-        "validation_mae_improvement_over_mean": improvement_fraction(
-            best_metrics["mae_arcsec"], baseline["mae_arcsec"]
-        ),
-        "checkpoint_path": checkpoint_path.as_posix(),
-        "runtime_seconds": time.perf_counter() - started,
-        "scientific_scope": "in-domain synthetic validation only; test and real data not accessed",
+        "arm": arm,
+        "seed": seed,
+        "optimizer_updates": len(schedule),
+        "target_information_access": None,
     }
-    write_json(output_dir / "normalization.json", statistics)
-    write_json(output_dir / "training_summary.json", summary)
-    return summary
+    torch.save(checkpoint, output / "final.pt")
+    write_json(output / "source_validation_predictions.json", validation)
+    write_json(output / "history.json", history)
+    report = {
+        "stage": purpose,
+        "arm": arm,
+        "seed": seed,
+        "validation_mae_arcsec": validation["mae_arcsec"],
+        "optimizer_updates": len(schedule),
+        "batch_size": config["batch_size"],
+        "source_exposures": len(schedule) * config["batch_size"],
+        "target_exposures": 0,
+        "pixels_processed": processed_pixels,
+        "runtime_seconds": time.perf_counter() - started,
+        "final_images_accessed": False,
+        "target_information_access": None,
+        "target_regression_labels_accessed": False,
+        "realized_source_view_counts": dict(actual_views),
+    }
+    write_json(output / "complete.json", report)
+    return report
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--config", default=str(DEFAULT_CONFIG))
-    parser.add_argument("--output", default=None)
-    parser.add_argument("--device", default="auto")
-    parser.add_argument("--epochs", type=int, default=None)
-    parser.add_argument("--batch-size", type=int, default=None)
-    parser.add_argument("--overwrite", action="store_true")
-    parser.add_argument("--max-train-samples", type=int, default=None, help=argparse.SUPPRESS)
-    parser.add_argument("--max-validation-samples", type=int, default=None, help=argparse.SUPPRESS)
-    args = parser.parse_args()
-    config = load_config(args.config)
-    if args.epochs is not None:
-        config["epochs"] = args.epochs
-    if args.batch_size is not None:
-        config["batch_size"] = args.batch_size
-    summary = train_experiment(
-        config,
-        output_override=args.output,
-        device_request=args.device,
-        overwrite=args.overwrite,
-        max_train_samples=args.max_train_samples,
-        max_validation_samples=args.max_validation_samples,
+def checked_fit(folder: str | Path, settings: dict[str, Any], **kwargs: Any) -> dict[str, Any]:
+    """Reuse a completed fit only when its configuration, arm and seed match."""
+    folder = Path(folder)
+    if folder.exists():
+        report = json.loads((folder / "complete.json").read_text())
+        started = json.loads((folder / "started.json").read_text())
+        if (
+            started["config"] != settings
+            or started["seed"] != kwargs["seed"]
+            or started["arm"] != kwargs["arm"]
+        ):
+            raise ValueError("Existing completed fit identity changed")
+        return report
+    return train_arm(settings, output=folder, **kwargs)
+
+
+def fit(config: dict[str, Any]) -> None:
+    """Fit the configured paired arms without opening the holdout manifest."""
+    output_root = Path(config["output"])
+    source_path, development_path = Path(config["source_train"]), Path(config["source_development"])
+    policy_path, holdout_path = Path(config["policy"]), Path(config["holdout"])
+    seeds, arms = config["seeds"], config["arms"]
+    if (output_root / "fit_complete.json").exists():
+        verify_resolved_config(config)
+        print(json.dumps(json.loads((output_root / "fit_complete.json").read_text()), indent=2))
+        return
+    output_root.mkdir(parents=True, exist_ok=True)
+    source = ObservationBank(source_path, expected_role="source_train")
+    development = ObservationBank(development_path, expected_role="source_development")
+    policy = json.loads(policy_path.read_text(encoding="utf-8"))
+    settings = config["training"]
+    resolved = {"config": config}
+    resolved_path = output_root / "resolved_config.json"
+    if resolved_path.exists():
+        if json.loads(resolved_path.read_text(encoding="utf-8")).get("config") != config:
+            raise ValueError("Equal-budget configuration changed; use a new output identity")
+    else:
+        with resolved_path.open("x", encoding="utf-8") as stream:
+            json.dump(resolved, stream, indent=2)
+            stream.write("\n")
+    records = []
+    for seed in seeds:
+        for arm in arms:
+            folder = output_root / "fits" / arm / f"seed-{seed}"
+            checked_fit(
+                folder,
+                settings,
+                seed=seed,
+                arm=arm,
+                source=source,
+                development=development,
+                target=None,
+                probabilities=policy["probabilities"],
+            )
+            records.append(
+                {
+                    "arm": arm,
+                    "seed": seed,
+                    "folder": str(folder),
+                    "checkpoint": str(folder / "final.pt"),
+                    "target_labels_accessed": False,
+                    "final_images_accessed": False,
+                }
+            )
+    manifest = {
+        "schema": "equal_budget_final_v1",
+        "stage": "fit_complete_target_free",
+        "arms": list(arms),
+        "seeds": list(seeds),
+        "optimizer_updates": settings["optimizer_updates"],
+        "batch_size": settings["batch_size"],
+        "source_bank": {"path": str(source_path)},
+        "development_bank": {"path": str(development_path)},
+        "policy": {"path": str(policy_path)},
+        "settings": settings,
+        "holdout_manifest_not_read": str(holdout_path),
+        "fits": records,
+        "target_labels_accessed": False,
+        "final_images_accessed": False,
+    }
+    with (output_root / "fit_complete.json").open("x", encoding="utf-8") as stream:
+        json.dump(manifest, stream, indent=2)
+        stream.write("\n")
+    print(
+        json.dumps({"stage": "fit_complete", "fits": len(records), "target_labels_accessed": False})
     )
-    print(json.dumps(summary, indent=2, sort_keys=True))
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())

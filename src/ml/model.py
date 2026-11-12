@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 import torch
 from torch import nn
 
@@ -63,18 +65,21 @@ class EinsteinRadiusCNN(nn.Module):
             nn.Linear(int(hidden_features), 1),
         )
 
-    def forward(self, images, metadata=None):
+    def forward(self, images: torch.Tensor, metadata: torch.Tensor | None = None) -> torch.Tensor:
         if images.ndim != 4 or images.shape[1] != 1:
             raise ValueError("Expected images with shape [batch, 1, height, width]")
         features = self.pool(self.features(images)).flatten(start_dim=1)
         if self.metadata_features:
-            if metadata is None or metadata.ndim != 2 or metadata.shape != (
-                images.shape[0],
-                self.metadata_features,
-            ):
-                raise ValueError(
-                    f"Expected metadata with shape [batch, {self.metadata_features}]"
+            if (
+                metadata is None
+                or metadata.ndim != 2
+                or metadata.shape
+                != (
+                    images.shape[0],
+                    self.metadata_features,
                 )
+            ):
+                raise ValueError(f"Expected metadata with shape [batch, {self.metadata_features}]")
             features = torch.cat((features, metadata.to(dtype=features.dtype)), dim=1)
         elif metadata is not None:
             raise ValueError("This model was configured without auxiliary metadata")
@@ -85,7 +90,7 @@ class EinsteinRadiusCNN(nn.Module):
         return sum(parameter.numel() for parameter in self.parameters() if parameter.requires_grad)
 
 
-def build_model(config):
+def build_model(config: dict[str, Any]) -> EinsteinRadiusCNN:
     """Load legacy CNN configs and explicitly named CNN variants alike."""
     settings = dict(config)
     kind = settings.pop("kind", "cnn")

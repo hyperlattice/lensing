@@ -1,1137 +1,359 @@
-"""Generate the deterministic P10 analytic SIS control release."""
+"""Deterministic process-parallel rendering of the declared development banks.
+
+Physical settings and bank schema match generate_robustness_banks_v1. Worker
+completion order cannot change the cohort: results are consumed in proposal
+order. All computed proposals, including rejected source proposals, are
+audited; numerical failures anywhere block bank completion.
+"""
 
 from __future__ import annotations
 
-import argparse
-import csv
 import json
-import os
+import time
+from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 import numpy as np
-import pandas as pd
-import yaml
-from astropy.io import fits
 
-from src.layout import DEFAULT_PREVIEW_ROOT, preview_directory
-from src.processing.preprocess import preprocess_image
-from src.processing.preview_dataset import create_previews
-from src.simulation.models import backend_status
-from src.simulation.observation import observation_psf, realize_detector_observation, render_observation_scene
-from src.simulation.priors import (
-    draw_observation_parameters,
-    draw_sie_parameters,
-    draw_stress_parameters,
-    validate_sie_parameters,
+from src.data.dataset import ObservationBank
+from src.data.schema import validate_lineage
+from src.data.validation import product_records, save_array, write
+from src.ml.artifacts import sha256 as digest
+from src.simulation.independent import solve_independent_sie_images
+from src.simulation.observation import condition_for
+from src.simulation.render import SceneEngine, adaptive_clean
+from src.simulation.scene import (
+    SOURCE,
+    identity_ledger,
+    physical_fingerprint,
+    source_proposals,
 )
-from src.simulation.render import render_from_parameters, render_sie_extended_source
+
+QUALIFICATION = Path("results/reports/renderer-qualification-v5/qualification.json")
 
 
-GENERATOR_VERSION = "0.1.0"
-DEFAULT_CONFIG = Path("configs/simulation/pilot.yaml")
-
-
-def _write_json(path: Path, value: Any) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-
-
-def _relative(path: Path, root: Path) -> str:
-    return path.relative_to(root).as_posix()
-
-
-def _create_simulation_previews(raw_root: Path, simulation_id: str, preview_root) -> tuple[Any, Path]:
-    """Write visual QC artifacts outside the self-contained simulation release."""
-    output = preview_directory("simulated", simulation_id, root=preview_root)
-    index = create_previews(
-        root=raw_root,
-        output=output,
-        manifest_path=None,
-        dpi=100,
-        contact_sheet=True,
+def independent_positions(p: dict[str, Any]) -> np.ndarray:
+    """Solve independent SIE positions to distinguish physical single-image cases."""
+    return solve_independent_sie_images(
+        source_x_arcsec=p["source_x_arcsec"],
+        source_y_arcsec=p["source_y_arcsec"],
+        theta_E_arcsec=p["theta_E_arcsec"],
+        axis_ratio=p["q"],
+        phi_rad=p["phi_rad"],
+        center_x_arcsec=p["lens_center_x_arcsec"],
+        center_y_arcsec=p["lens_center_y_arcsec"],
+        angular_starts=96,
     )
-    return index, output
 
 
-def _seed_pair(seed: int, index: int) -> tuple[int, int]:
-    state = np.random.SeedSequence([int(seed), int(index)]).generate_state(2)
-    return int(state[0]), int(state[1])
+def write_native_masks(output: str | Path) -> None:
+    """Write all-valid masks for the three retained native geometries."""
+    for cell in ("fresh-noise", "pixel-scale-004", "pixel-scale-006"):
+        shape = tuple(condition_for(cell)["shape"])
+        path = Path(output) / f"masks/{shape[0]}x{shape[1]}.npy"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        np.save(path, np.zeros(shape, dtype=bool))
 
 
-def _draw_parameters(seed: int, index: int, config: dict[str, Any]) -> dict[str, Any]:
-    parameter_seed, noise_seed = _seed_pair(seed, index)
-    rng = np.random.default_rng(parameter_seed)
-    control = config["pilot"]["sis_control"]
-    theta_min, theta_max = control["theta_E_arcsec"]
-    beta_min, beta_max = control["source_radius_arcsec"]
-    theta_E = float(rng.uniform(theta_min, theta_max))
-    beta_radius = float(rng.uniform(beta_min, min(beta_max, 0.45 * theta_E)))
-    beta_angle = float(rng.uniform(0.0, 2.0 * np.pi))
-    return {
-        "parameter_seed": parameter_seed,
-        "noise_seed": noise_seed,
-        "mass_model": "SIS",
-        "theta_E_arcsec": theta_E,
-        "source_radius_arcsec": beta_radius,
-        "source_x_arcsec": float(beta_radius * np.cos(beta_angle)),
-        "source_y_arcsec": float(beta_radius * np.sin(beta_angle)),
-        "source_angle_rad": beta_angle,
-        "source_flux": float(control.get("source_flux", 1.0)),
-        "shape": list(config["grid"]["shape"]),
-        "pixel_scale_arcsec": float(config["grid"]["pixel_scale_arcsec"]),
-        "render_mode": "analytic_point_source_bilinear_noiseless",
+def render_one(task: tuple) -> dict[str, Any]:
+    """Render one source parent and retain diagnostics if numerical work fails."""
+    role, index, row, p, historical, historical_seed, output = task
+    output = Path(output)
+    parent = row["parent_system_id"]
+    identity = {
+        "parent_system_id": parent,
+        "role": role,
+        "parameter_seed": int(p["parameter_seed"]),
+        "noise_seed": int(p["noise_seed"]),
+        "ancestry_ids": [],
+        "latent_sha256": physical_fingerprint(p),
     }
-
-
-def _write_raw_fits(
-    path: Path,
-    image: np.ndarray,
-    parameters: dict[str, Any],
-    sample_id: str,
-    parent_id: str,
-    *,
-    simulation_id: str = "sim-p10-v1",
-    model: str = "SIS",
-    simulation_type: str = "ANALYTIC_SIS_CONTROL",
-    image_unit: str = "RELATIVE_FLUX",
-    overwrite: bool = False,
-) -> None:
-    header = fits.Header()
-    header["SIMID"] = simulation_id
-    header["PARENTID"] = parent_id
-    header["SAMPLEID"] = sample_id
-    header["MODEL"] = model
-    header["THETAE"] = (float(parameters["theta_E_arcsec"]), "Einstein radius [arcsec]")
-    if "source_x_arcsec" in parameters:
-        header["BETAX"] = (float(parameters["source_x_arcsec"]), "Source x [arcsec]")
-        header["BETAY"] = (float(parameters["source_y_arcsec"]), "Source y [arcsec]")
-    if "q" in parameters:
-        header["AXISRAT"] = (float(parameters["q"]), "Lens minor/major axis ratio")
-        header["POSANG"] = (float(parameters["phi_rad"]), "Lens angle [radian]")
-    header["SIMTYPE"] = simulation_type
-    header["PIXSCALE"] = (float(parameters["pixel_scale_arcsec"]), "Arcsec per pixel")
-    header["BUNIT"] = image_unit
-    path.parent.mkdir(parents=True, exist_ok=True)
-    fits.PrimaryHDU(np.asarray(image, dtype=np.float32), header=header).writeto(path, overwrite=overwrite)
-
-
-def _manifest_row(
-    *,
-    sample_id: str,
-    parent_id: str,
-    simulation_id: str,
-    parameters: dict[str, Any],
-    render: Any,
-    output_root: Path,
-    paths: dict[str, Path],
-    preprocess: dict[str, Any],
-) -> dict[str, Any]:
-    variance = preprocess["variance"]
-    background = preprocess["background"]
-    normalization = preprocess["normalization"]
-    return {
-        "sample_id": sample_id,
-        "lens_id": parent_id,
-        "domain": "simulated",
-        "schema_version": "2.0",
-        "dataset_version": simulation_id,
-        "simulation_id": simulation_id,
-        "parent_system_id": parent_id,
-        "split_group_id": parent_id,
-        "source_template_id": f"analytic-point:{parent_id}",
-        "background_template_id": f"analytic-zero:{parent_id}",
-        "raw_path": _relative(paths["raw"], output_root),
-        "science_path": _relative(paths["science"], output_root),
-        "processed_path": _relative(paths["normalized"], output_root),
-        "mask_path": _relative(paths["invalid_mask"], output_root),
-        "coverage_mask_path": _relative(paths["coverage_mask"], output_root),
-        "background_mask_path": _relative(paths["background_mask"], output_root),
-        "variance_path": _relative(paths["variance"], output_root),
-        "geometry_transform_path": _relative(paths["geometry_transform"], output_root),
-        "render_geometry_path": _relative(paths["render_geometry"], output_root),
-        "background_path": _relative(paths["background"], output_root),
-        "normalization_path": _relative(paths["normalization"], output_root),
-        "noise_model_path": _relative(paths["noise_model"], output_root),
-        "image_positions_path": _relative(paths["diagnostics"], output_root),
-        "parameters_path": _relative(paths["parameters"], output_root),
-        "image_unit": "relative_flux",
-        "calibration_status": "pass",
-        "original_shape": "x".join(str(value) for value in render.image.shape),
-        "processed_shape": "x".join(str(value) for value in preprocess["normalized"].shape),
-        "pixel_scale": parameters["pixel_scale_arcsec"],
-        "pixel_scale_x": parameters["pixel_scale_arcsec"],
-        "pixel_scale_y": parameters["pixel_scale_arcsec"],
-        "processing_config_id": "simulation-preprocessing-v2",
-        "processing_version": "2.0.0",
-        "background_status": background.status,
-        "background_method": background.method,
-        "normalization_method": normalization.method,
-        "variance_method": "noiseless_control_floor",
-        "variance_status": variance.status,
-        "variance_unit": variance.unit,
-        "noise_correlation_assumption": "not_applicable_noiseless_control",
-        "mask_semantics": "true means excluded",
-        "masked_fraction": float(preprocess["background_mask"].mean()),
-        "source_type": "point",
-        "mass_target_available": False,
-        "theta_E_target_available": True,
-        "structural_status": "pass",
-        "observation_status": "pass",
-        "science_status": "pass",
-        "eligible_for": "simulation;classical_fit;ml",
-        "exclusion_reason": "",
-        "mass_model": "SIS",
-        "theta_E_arcsec": parameters["theta_E_arcsec"],
-        "q": 1.0,
-        "phi_rad": 0.0,
-        "source_x_arcsec": parameters["source_x_arcsec"],
-        "source_y_arcsec": parameters["source_y_arcsec"],
-        "source_flux": parameters["source_flux"],
-        "image_count_physical": len(render.solutions),
-        "image_count_detectable": len(render.solutions),
-        "lens_equation_max_residual_arcsec": max(solution.residual_norm_arcsec for solution in render.solutions),
-        "simulator_name": "lensing-analytic-sis-control",
-        "simulator_version": GENERATOR_VERSION,
-        "parameter_seed": parameters["parameter_seed"],
-        "noise_seed": parameters["noise_seed"],
-    }
-
-
-def generate_sis_controls(
-    output_dir: str | Path,
-    *,
-    count: int = 10,
-    seed: int = 1001,
-    simulation_id: str = "sim-p10-v1",
-    config_path: str | Path = DEFAULT_CONFIG,
-    overwrite: bool = False,
-    create_preview: bool = True,
-    preview_root: str | Path = DEFAULT_PREVIEW_ROOT,
-) -> dict[str, Any]:
-    """Generate P10 into a self-contained artifact directory."""
-
-    output_root = Path(output_dir)
-    config_path = Path(config_path)
-    if count <= 0:
-        raise ValueError("count must be positive")
-    if output_root.exists() and any(output_root.iterdir()) and not overwrite:
-        raise FileExistsError(f"Output directory is not empty and overwrite is disabled: {output_root}")
-    config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
-    output_root.mkdir(parents=True, exist_ok=True)
-    directories = {
-        name: output_root / name
-        for name in (
-            "raw",
-            "science",
-            "normalized",
-            "masks",
-            "variance",
-            "geometry",
-            "background",
-            "transforms",
-            "noise",
-            "parameters",
-            "diagnostics",
-        )
-    }
-    for directory in directories.values():
-        directory.mkdir(parents=True, exist_ok=True)
-
-    rows: list[dict[str, Any]] = []
-    rejections: list[dict[str, Any]] = []
-    for index in range(count):
-        sample_id = f"{simulation_id}-{index + 1:04d}"
-        parent_id = f"{simulation_id}-parent-{index + 1:04d}"
-        parameters = _draw_parameters(seed, index, config)
-        paths = {
-            "raw": directories["raw"] / f"{sample_id}.fits",
-            "science": directories["science"] / f"{sample_id}.npy",
-            "normalized": directories["normalized"] / f"{sample_id}.npy",
-            "invalid_mask": directories["masks"] / f"{sample_id}_invalid.npy",
-            "coverage_mask": directories["masks"] / f"{sample_id}_coverage.npy",
-            "background_mask": directories["masks"] / f"{sample_id}_background.npy",
-            "variance": directories["variance"] / f"{sample_id}.npy",
-            "geometry_transform": directories["geometry"] / f"{sample_id}.json",
-            "render_geometry": directories["geometry"] / f"{sample_id}_render.json",
-            "background": directories["background"] / f"{sample_id}.json",
-            "normalization": directories["transforms"] / f"{sample_id}.json",
-            "noise_model": directories["noise"] / f"{sample_id}.json",
-            "parameters": directories["parameters"] / f"{sample_id}.json",
-            "diagnostics": directories["diagnostics"] / f"{sample_id}.json",
-        }
-        try:
-            render = render_from_parameters(parameters)
-            _write_raw_fits(paths["raw"], render.image, parameters, sample_id, parent_id, overwrite=overwrite)
-            processed = preprocess_image(
-                paths["raw"],
-                target_shape=tuple(config["grid"]["shape"]),
-                normalization_method=config["preprocessing"]["normalization_method"],
-                lower=config["preprocessing"]["lower_percentile"],
-                upper=config["preprocessing"]["upper_percentile"],
-                background_sigma_clip=config["preprocessing"]["background_sigma_clip"],
-                background_max_iterations=config["preprocessing"]["background_max_iterations"],
-                background_min_valid_pixels=config["preprocessing"]["background_min_valid_pixels"],
-                image_unit="relative_flux",
-                noise_floor=config["preprocessing"]["noise_floor"],
-                noise_correlation_assumption="not_applicable_noiseless_control",
-            )
-            np.save(paths["science"], processed["science"])
-            np.save(paths["normalized"], processed["normalized"])
-            np.save(paths["invalid_mask"], processed["invalid_mask"])
-            np.save(paths["coverage_mask"], processed["coverage_mask"])
-            np.save(paths["background_mask"], processed["background_mask"])
-            np.save(paths["variance"], processed["variance"].values)
-            _write_json(paths["geometry_transform"], processed["geometry_transform"].to_dict())
-            _write_json(paths["render_geometry"], render.geometry())
-            _write_json(paths["background"], processed["background"].to_dict())
-            _write_json(paths["normalization"], processed["normalization"].to_dict())
-            _write_json(paths["noise_model"], processed["variance"].to_dict())
-            diagnostics = {
-                "sample_id": sample_id,
-                "parent_system_id": parent_id,
-                "source_position_arcsec": [parameters["source_x_arcsec"], parameters["source_y_arcsec"]],
-                "solutions": [solution.to_dict() for solution in render.solutions],
-                "max_residual_arcsec": max(solution.residual_norm_arcsec for solution in render.solutions),
-                "rendered_flux": float(render.image.sum()),
-                "expected_lensed_flux": float(
-                    parameters["source_flux"]
-                    * sum(solution.magnification_abs for solution in render.solutions)
-                ),
-            }
-            _write_json(paths["diagnostics"], diagnostics)
-            _write_json(
-                paths["parameters"],
+    diagnostics = []
+    observations = []
+    try:
+        if any(abs(float(p.get(k, 0.0))) > 0 for k in ("gamma1", "gamma2")):
+            raise ValueError("This bank is restricted to the declared no-shear SIE prior")
+        engine = SceneEngine(p, "lenstronomy")
+        positions, _ = engine.points()
+        expected = {}
+        for cell in ("fresh-noise", "pixel-scale-004", "pixel-scale-006"):
+            condition = condition_for(cell)
+            clean, diag = adaptive_clean(engine, condition)
+            diagnostics.append({"parent": parent, "geometry": cell, **diag})
+            rendered = engine.expected(condition, factor=4, clean=clean)
+            key = "base" if cell == "fresh-noise" else cell
+            expected[key] = save_array(output, f"products/{parent}-{key}.npy", rendered["expected"])
+            psf = save_array(output, f"products/{parent}-{key}-psf.npy", rendered["psf"])
+            observations.append(
                 {
-                    **parameters,
-                    "sample_id": sample_id,
-                    "parent_system_id": parent_id,
-                    "simulation_id": simulation_id,
-                    "simulator_name": "lensing-analytic-sis-control",
-                    "simulator_version": GENERATOR_VERSION,
-                    "config_path": config_path.as_posix(),
-                    "backend_reference": backend_status().to_dict(),
-                    "solutions": [solution.to_dict() for solution in render.solutions],
-                },
-            )
-            rows.append(
-                _manifest_row(
-                    sample_id=sample_id,
-                    parent_id=parent_id,
-                    simulation_id=simulation_id,
-                    parameters=parameters,
-                    render=render,
-                    output_root=output_root,
-                    paths=paths,
-                    preprocess=processed,
-                )
-            )
-        except (ValueError, FloatingPointError) as exc:
-            rejections.append(
-                {
-                    "sample_id": sample_id,
-                    "parent_system_id": parent_id,
-                    "stage": "render_or_write",
-                    "error_type": type(exc).__name__,
-                    "message": str(exc),
+                    "parent": parent,
+                    "condition": condition,
+                    "expected_rate": expected[key],
+                    "psf": psf,
+                    "variance_method": "reconstruct from expected rate and explicit detector parameters for each training draw",
+                    "mask_semantics": "all_native_pixels_valid; no crop/pad; background retained",
                 }
             )
-
-    manifest_path = output_root / "manifest.csv"
-    manifest = pd.DataFrame(rows)
-    manifest.to_csv(manifest_path, index=False)
-    rejection_path = output_root / "rejection_log.csv"
-    with rejection_path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(
-            handle,
-            fieldnames=["sample_id", "parent_system_id", "stage", "error_type", "message"],
+            if cell == "fresh-noise":
+                for width in ("gaussian-fwhm-075", "gaussian-fwhm-125"):
+                    shifted = engine.expected(condition_for(width), factor=4, clean=clean)
+                    expected[width] = save_array(
+                        output, f"products/{parent}-{width}.npy", shifted["expected"]
+                    )
+                    psf = save_array(output, f"products/{parent}-{width}-psf.npy", shifted["psf"])
+                    observations.append(
+                        {
+                            "parent": parent,
+                            "condition": condition_for(width),
+                            "expected_rate": expected[width],
+                            "psf": psf,
+                            "variance_method": "reconstruct from expected rate and explicit detector parameters for each training draw",
+                            "mask_semantics": "all_native_pixels_valid; no crop/pad; background retained",
+                        }
+                    )
+        parameter_path = SOURCE / row["parameters_path"]
+        identity.update(
+            expected=expected,
+            detector={
+                "exposure_s": p["exposure_time"],
+                "read_noise_electrons": p["read_noise_electrons"],
+                "background_rate": p["background_rate"],
+            },
+            historical_condition=historical,
+            historical_noise_seed=historical_seed,
+            source_parameter_sha256=digest(parameter_path),
+            source_parameter_path=parameter_path.as_posix(),
         )
-        writer.writeheader()
-        writer.writerows(rejections)
-
-    preview_index = None
-    preview_output = None
-    if create_preview and rows:
-        preview_index, preview_output = _create_simulation_previews(
-            directories["raw"], simulation_id, preview_root
-        )
-
-    run_manifest = {
-        "run_id": simulation_id,
-        "generator_version": GENERATOR_VERSION,
-        "simulation_id": simulation_id,
-        "config_path": config_path.as_posix(),
-        "seed": int(seed),
-        "count_requested": int(count),
-        "count_attempted": int(count),
-        "count_accepted": len(rows),
-        "count_rejected": len(rejections),
-        "output_root": output_root.as_posix(),
-        "manifest_path": _relative(manifest_path, output_root),
-        "rejection_log_path": _relative(rejection_path, output_root),
-        "preview_index_path": None if preview_output is None else (preview_output / "preview_index.csv").as_posix(),
-        "backend_reference": backend_status().to_dict(),
-        "noise_policy": "noiseless image; positive numerical variance floor only",
-        "rejections": rejections,
-    }
-    run_manifest_path = output_root / "run_manifest.json"
-    _write_json(run_manifest_path, run_manifest)
-    return run_manifest
-
-
-def _sie_manifest_row(
-    *,
-    sample_id: str,
-    parent_id: str,
-    simulation_id: str,
-    parameters: dict[str, Any],
-    render: Any,
-    output_root: Path,
-    paths: dict[str, Path],
-    preprocess: dict[str, Any],
-    simulator_version: str,
-) -> dict[str, Any]:
-    variance = preprocess["variance"]
-    background = preprocess["background"]
-    normalization = preprocess["normalization"]
-    return {
-        "sample_id": sample_id,
-        "lens_id": parent_id,
-        "domain": "simulated",
-        "schema_version": "2.0",
-        "dataset_version": simulation_id,
-        "simulation_id": simulation_id,
-        "parent_system_id": parent_id,
-        "split_group_id": parent_id,
-        "source_template_id": f"analytic-sersic:{parent_id}",
-        "background_template_id": f"analytic-zero:{parent_id}",
-        "raw_path": _relative(paths["raw"], output_root),
-        "science_path": _relative(paths["science"], output_root),
-        "processed_path": _relative(paths["normalized"], output_root),
-        "mask_path": _relative(paths["invalid_mask"], output_root),
-        "coverage_mask_path": _relative(paths["coverage_mask"], output_root),
-        "background_mask_path": _relative(paths["background_mask"], output_root),
-        "variance_path": _relative(paths["variance"], output_root),
-        "geometry_transform_path": _relative(paths["geometry_transform"], output_root),
-        "render_geometry_path": _relative(paths["render_geometry"], output_root),
-        "background_path": _relative(paths["background"], output_root),
-        "normalization_path": _relative(paths["normalization"], output_root),
-        "noise_model_path": _relative(paths["noise_model"], output_root),
-        "image_positions_path": _relative(paths["diagnostics"], output_root),
-        "parameters_path": _relative(paths["parameters"], output_root),
-        "image_unit": "relative_flux",
-        "calibration_status": "pass",
-        "original_shape": "x".join(str(value) for value in render.image.shape),
-        "processed_shape": "x".join(str(value) for value in preprocess["normalized"].shape),
-        "pixel_scale": parameters["pixel_scale_arcsec"],
-        "pixel_scale_x": parameters["pixel_scale_arcsec"],
-        "pixel_scale_y": parameters["pixel_scale_arcsec"],
-        "processing_config_id": "simulation-preprocessing-v2",
-        "processing_version": "2.0.0",
-        "background_status": background.status,
-        "background_method": background.method,
-        "normalization_method": normalization.method,
-        "variance_method": "noiseless_control_floor",
-        "variance_status": variance.status,
-        "variance_unit": variance.unit,
-        "noise_correlation_assumption": "not_applicable_noiseless_control",
-        "mask_semantics": "true means excluded",
-        "masked_fraction": float(preprocess["background_mask"].mean()),
-        "source_type": "sersic",
-        "mass_target_available": False,
-        "theta_E_target_available": True,
-        "structural_status": "pass",
-        "observation_status": "pass",
-        "science_status": "pass",
-        "eligible_for": "simulation;classical_fit;ml",
-        "exclusion_reason": "",
-        "mass_model": "SIE",
-        "theta_E_arcsec": parameters["theta_E_arcsec"],
-        "q": parameters["q"],
-        "phi_rad": parameters["phi_rad"],
-        "e1": render.lens_parameters["e1"],
-        "e2": render.lens_parameters["e2"],
-        "lens_center_x_arcsec": parameters["lens_center_x_arcsec"],
-        "lens_center_y_arcsec": parameters["lens_center_y_arcsec"],
-        "source_x_arcsec": parameters["source_x_arcsec"],
-        "source_y_arcsec": parameters["source_y_arcsec"],
-        "source_q": parameters["source_q"],
-        "source_phi_rad": parameters["source_phi_rad"],
-        "source_re_arcsec": parameters["source_re_arcsec"],
-        "source_n": parameters["source_n"],
-        "source_amp": parameters["source_amp"],
-        "supersampling_factor": render.supersampling_factor,
-        "simulator_name": "lenstronomy",
-        "simulator_version": simulator_version,
-        "parameter_seed": parameters["parameter_seed"],
-        "noise_seed": parameters["noise_seed"],
-    }
-
-
-def generate_sie_extended(
-    output_dir: str | Path,
-    *,
-    count: int = 20,
-    seed: int = 3001,
-    simulation_id: str = "sim-p30-v1",
-    config_path: str | Path = DEFAULT_CONFIG,
-    overwrite: bool = False,
-    create_preview: bool = True,
-    preview_root: str | Path = DEFAULT_PREVIEW_ROOT,
-) -> dict[str, Any]:
-    """Generate the twenty additional P30 SIE/extended-source systems."""
-
-    # Keep the local Python 3.13 import deterministic; callers can explicitly set
-    # NUMBA_DISABLE_JIT=0 when profiling a larger generation run.
-    os.environ.setdefault("NUMBA_DISABLE_JIT", "1")
-    output_root = Path(output_dir)
-    config_path = Path(config_path)
-    if count <= 0:
-        raise ValueError("count must be positive")
-    if output_root.exists() and any(output_root.iterdir()) and not overwrite:
-        raise FileExistsError(f"Output directory is not empty and overwrite is disabled: {output_root}")
-    config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
-    simulator_version = backend_status().version or "unavailable"
-    output_root.mkdir(parents=True, exist_ok=True)
-    directories = {
-        name: output_root / name
-        for name in (
-            "raw",
-            "science",
-            "normalized",
-            "masks",
-            "variance",
-            "geometry",
-            "background",
-            "transforms",
-            "noise",
-            "parameters",
-            "diagnostics",
-        )
-    }
-    for directory in directories.values():
-        directory.mkdir(parents=True, exist_ok=True)
-
-    rows: list[dict[str, Any]] = []
-    rejections: list[dict[str, Any]] = []
-    for index in range(count):
-        sample_id = f"{simulation_id}-{index + 1:04d}"
-        parent_id = f"{simulation_id}-parent-{index + 1:04d}"
-        parameters = draw_sie_parameters(seed, index, config)
-        paths = {
-            "raw": directories["raw"] / f"{sample_id}.fits",
-            "science": directories["science"] / f"{sample_id}.npy",
-            "normalized": directories["normalized"] / f"{sample_id}.npy",
-            "invalid_mask": directories["masks"] / f"{sample_id}_invalid.npy",
-            "coverage_mask": directories["masks"] / f"{sample_id}_coverage.npy",
-            "background_mask": directories["masks"] / f"{sample_id}_background.npy",
-            "variance": directories["variance"] / f"{sample_id}.npy",
-            "geometry_transform": directories["geometry"] / f"{sample_id}.json",
-            "render_geometry": directories["geometry"] / f"{sample_id}_render.json",
-            "background": directories["background"] / f"{sample_id}.json",
-            "normalization": directories["transforms"] / f"{sample_id}.json",
-            "noise_model": directories["noise"] / f"{sample_id}.json",
-            "parameters": directories["parameters"] / f"{sample_id}.json",
-            "diagnostics": directories["diagnostics"] / f"{sample_id}.json",
+        for observation in observations:
+            h, w = observation["condition"]["shape"]
+            relative = f"masks/{h}x{w}.npy"
+            mask = {"path": relative, "sha256": digest(output / relative)}
+            observation.update(invalid_mask=mask, coverage_mask=mask)
+        return {
+            "proposal": index,
+            "identity": identity,
+            "label": p["theta_E_arcsec"],
+            "diagnostics": diagnostics,
+            "observations": observations,
+            "failure": None,
         }
-        try:
-            parameter_errors = validate_sie_parameters(parameters)
-            if parameter_errors:
-                raise ValueError("; ".join(parameter_errors))
-            render = render_sie_extended_source(
-                parameters,
-                supersampling_factor=int(config["pilot"]["sie_extended"]["supersampling_factor"]),
-            )
-            _write_raw_fits(
-                paths["raw"],
-                render.image,
-                parameters,
-                sample_id,
-                parent_id,
-                simulation_id=simulation_id,
-                model="SIE",
-                simulation_type="LENSTRONOMY_EXTENDED_NOISELESS",
-                overwrite=overwrite,
-            )
-            processed = preprocess_image(
-                paths["raw"],
-                target_shape=tuple(config["grid"]["shape"]),
-                normalization_method=config["preprocessing"]["normalization_method"],
-                lower=config["preprocessing"]["lower_percentile"],
-                upper=config["preprocessing"]["upper_percentile"],
-                background_sigma_clip=config["preprocessing"]["background_sigma_clip"],
-                background_max_iterations=config["preprocessing"]["background_max_iterations"],
-                background_min_valid_pixels=config["preprocessing"]["background_min_valid_pixels"],
-                image_unit="relative_flux",
-                noise_floor=config["preprocessing"]["noise_floor"],
-                noise_correlation_assumption="not_applicable_noiseless_control",
-            )
-            np.save(paths["science"], processed["science"])
-            np.save(paths["normalized"], processed["normalized"])
-            np.save(paths["invalid_mask"], processed["invalid_mask"])
-            np.save(paths["coverage_mask"], processed["coverage_mask"])
-            np.save(paths["background_mask"], processed["background_mask"])
-            np.save(paths["variance"], processed["variance"].values)
-            _write_json(paths["geometry_transform"], processed["geometry_transform"].to_dict())
-            _write_json(paths["render_geometry"], render.geometry())
-            _write_json(paths["background"], processed["background"].to_dict())
-            _write_json(paths["normalization"], processed["normalization"].to_dict())
-            _write_json(paths["noise_model"], processed["variance"].to_dict())
-            diagnostics = {
-                "sample_id": sample_id,
-                "parent_system_id": parent_id,
-                "supersampling_factor": render.supersampling_factor,
-                "lens_parameters": render.lens_parameters,
-                "source_parameters": render.source_parameters,
-                "rendered_flux": float(render.image.sum()),
-                "rendered_max": float(render.image.max()),
-            }
-            _write_json(paths["diagnostics"], diagnostics)
-            _write_json(
-                paths["parameters"],
-                {
-                    **parameters,
-                    "sample_id": sample_id,
-                    "parent_system_id": parent_id,
-                    "simulation_id": simulation_id,
-                    "simulator_name": "lenstronomy",
-                    "simulator_version": simulator_version,
-                    "config_path": config_path.as_posix(),
-                    "backend_reference": backend_status().to_dict(),
-                },
-            )
-            rows.append(
-                _sie_manifest_row(
-                    sample_id=sample_id,
-                    parent_id=parent_id,
-                    simulation_id=simulation_id,
-                    parameters=parameters,
-                    render=render,
-                    output_root=output_root,
-                    paths=paths,
-                    preprocess=processed,
-                    simulator_version=simulator_version,
-                )
-            )
-        except (ValueError, FloatingPointError) as exc:
-            rejections.append(
-                {
-                    "sample_id": sample_id,
-                    "parent_system_id": parent_id,
-                    "stage": "render_or_write",
-                    "error_type": type(exc).__name__,
-                    "message": str(exc),
-                }
-            )
-
-    manifest_path = output_root / "manifest.csv"
-    pd.DataFrame(rows).to_csv(manifest_path, index=False)
-    rejection_path = output_root / "rejection_log.csv"
-    with rejection_path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(
-            handle,
-            fieldnames=["sample_id", "parent_system_id", "stage", "error_type", "message"],
-        )
-        writer.writeheader()
-        writer.writerows(rejections)
-    preview_index = None
-    preview_output = None
-    if create_preview and rows:
-        preview_index, preview_output = _create_simulation_previews(
-            directories["raw"], simulation_id, preview_root
-        )
-    run_manifest = {
-        "run_id": simulation_id,
-        "generator_version": GENERATOR_VERSION,
-        "simulation_id": simulation_id,
-        "config_path": config_path.as_posix(),
-        "seed": int(seed),
-        "count_requested": int(count),
-        "count_attempted": int(count),
-        "count_accepted": len(rows),
-        "count_rejected": len(rejections),
-        "output_root": output_root.as_posix(),
-        "manifest_path": "manifest.csv",
-        "rejection_log_path": "rejection_log.csv",
-        "preview_index_path": None if preview_output is None else (preview_output / "preview_index.csv").as_posix(),
-        "backend": backend_status().to_dict(),
-        "noise_policy": "noiseless image; positive numerical variance floor only",
-        "supersampling_factor": int(config["pilot"]["sie_extended"]["supersampling_factor"]),
-        "rejections": rejections,
-    }
-    _write_json(output_root / "run_manifest.json", run_manifest)
-    return run_manifest
-
-
-def generate_stress_pilot(
-    output_dir: str | Path,
-    *,
-    count: int = 40,
-    seed: int = 9001,
-    simulation_id: str = "sim-p100-v1",
-    config_path: str | Path = DEFAULT_CONFIG,
-    overwrite: bool = False,
-    create_preview: bool = True,
-    preview_root: str | Path = DEFAULT_PREVIEW_ROOT,
-) -> dict[str, Any]:
-    """Generate the forty-system P100 SIE-plus-shear stress increment."""
-
-    return generate_observation_pilot(
-        output_dir,
-        count=count,
-        seed=seed,
-        simulation_id=simulation_id,
-        config_path=config_path,
-        overwrite=overwrite,
-        create_preview=create_preview,
-        preview_root=preview_root,
-        parameter_drawer=draw_stress_parameters,
-        stage_name="stress_increment",
-    )
-
-
-def _observation_manifest_row(
-    *,
-    sample_id: str,
-    parent_id: str,
-    simulation_id: str,
-    parameters: dict[str, Any],
-    scene: Any,
-    detector: Any,
-    preprocess: dict[str, Any],
-    output_root: Path,
-    paths: dict[str, Path],
-    detectable_threshold: float,
-    simulator_version: str,
-) -> dict[str, Any]:
-    background = preprocess["background"]
-    variance = preprocess["variance"]
-    normalization = preprocess["normalization"]
-    physical_count = len(scene.point_positions_x_arcsec)
-    detectable_count = sum(value >= detectable_threshold for value in scene.point_amplitudes)
-    return {
-        "sample_id": sample_id,
-        "lens_id": parent_id,
-        "domain": "simulated",
-        "schema_version": "2.0",
-        "dataset_version": simulation_id,
-        "simulation_id": simulation_id,
-        "parent_system_id": parent_id,
-        "split_group_id": parent_id,
-        "source_template_id": f"analytic-sersic-point:{parent_id}",
-        "background_template_id": f"analytic-scalar:{parent_id}",
-        "raw_path": _relative(paths["raw"], output_root),
-        "science_path": _relative(paths["science"], output_root),
-        "processed_path": _relative(paths["normalized"], output_root),
-        "mask_path": _relative(paths["invalid_mask"], output_root),
-        "coverage_mask_path": _relative(paths["coverage_mask"], output_root),
-        "background_mask_path": _relative(paths["background_mask"], output_root),
-        "variance_path": _relative(paths["variance"], output_root),
-        "expected_variance_path": _relative(paths["expected_variance"], output_root),
-        "clean_scene_path": _relative(paths["clean_scene"], output_root),
-        "expected_scene_path": _relative(paths["expected_scene"], output_root),
-        "observed_science_path": _relative(paths["observed_science"], output_root),
-        "psf_path": _relative(paths["psf_values"], output_root),
-        "psf_metadata_path": _relative(paths["psf_metadata"], output_root),
-        "geometry_transform_path": _relative(paths["geometry_transform"], output_root),
-        "render_geometry_path": _relative(paths["render_geometry"], output_root),
-        "background_path": _relative(paths["background"], output_root),
-        "normalization_path": _relative(paths["normalization"], output_root),
-        "noise_model_path": _relative(paths["noise_model"], output_root),
-        "image_positions_path": _relative(paths["diagnostics"], output_root),
-        "parameters_path": _relative(paths["parameters"], output_root),
-        "image_unit": "electrons_per_second",
-        "calibration_status": "pass",
-        "original_shape": "x".join(str(value) for value in scene.expected_scene.shape),
-        "processed_shape": "x".join(str(value) for value in preprocess["normalized"].shape),
-        "pixel_scale": parameters["pixel_scale_arcsec"],
-        "pixel_scale_x": parameters["pixel_scale_arcsec"],
-        "pixel_scale_y": parameters["pixel_scale_arcsec"],
-        "processing_config_id": "simulation-preprocessing-v2",
-        "processing_version": "2.0.0",
-        "background_status": background.status,
-        "background_method": background.method,
-        "normalization_method": normalization.method,
-        "variance_method": "preprocessing_toy_scalar_background",
-        "variance_status": variance.status,
-        "variance_unit": variance.unit,
-        "expected_variance_method": "poisson_plus_read_noise_rate_variance",
-        "noise_correlation_assumption": "independent_poisson_plus_independent_read_noise",
-        "mask_semantics": "true means excluded",
-        "masked_fraction": float(preprocess["background_mask"].mean()),
-        "source_type": parameters.get("source_type", "sersic_plus_point_source"),
-        "mass_target_available": False,
-        "theta_E_target_available": True,
-        "structural_status": "pass",
-        "observation_status": "pass",
-        "science_status": "pass",
-        "eligible_for": "simulation;classical_fit;ml",
-        "exclusion_reason": "",
-        "mass_model": parameters.get("mass_model", "SIE"),
-        "theta_E_arcsec": parameters["theta_E_arcsec"],
-        "q": parameters["q"],
-        "phi_rad": parameters["phi_rad"],
-        "e1": scene.lens_parameters["e1"],
-        "e2": scene.lens_parameters["e2"],
-        "gamma1": parameters.get("gamma1"),
-        "gamma2": parameters.get("gamma2"),
-        "gamma_amplitude": parameters.get("gamma_amplitude"),
-        "gamma_phi_rad": parameters.get("gamma_phi_rad"),
-        "lens_center_x_arcsec": parameters["lens_center_x_arcsec"],
-        "lens_center_y_arcsec": parameters["lens_center_y_arcsec"],
-        "source_x_arcsec": parameters["source_x_arcsec"],
-        "source_y_arcsec": parameters["source_y_arcsec"],
-        "source_q": parameters["source_q"],
-        "source_phi_rad": parameters["source_phi_rad"],
-        "source_re_arcsec": parameters["source_re_arcsec"],
-        "source_n": parameters["source_n"],
-        "source_amp": parameters["source_amp"],
-        "point_source_amp": parameters["point_source_amp"],
-        "stress_case": parameters.get("stress_case"),
-        "image_count_physical": physical_count,
-        "image_count_detectable": detectable_count,
-        "detectable_amplitude_threshold": detectable_threshold,
-        "psf_fwhm_arcsec": parameters["psf_fwhm_arcsec"],
-        "psf_method": "analytic_gaussian_control_zero_boundary",
-        "psf_id": "observation-gaussian-control",
-        "exposure_time": parameters["exposure_time"],
-        "background_rate": parameters["background_rate"],
-        "read_noise_electrons": parameters["read_noise_electrons"],
-        "supersampling_factor": scene.supersampling_factor,
-        "simulator_name": "lenstronomy",
-        "simulator_version": simulator_version,
-        "parameter_seed": parameters["parameter_seed"],
-        "noise_seed": parameters["noise_seed"],
-    }
-
-
-def generate_observation_pilot(
-    output_dir: str | Path,
-    *,
-    count: int = 30,
-    seed: int = 6001,
-    simulation_id: str = "sim-p60-v1",
-    config_path: str | Path = DEFAULT_CONFIG,
-    overwrite: bool = False,
-    create_preview: bool = True,
-    preview_root: str | Path = DEFAULT_PREVIEW_ROOT,
-    parameter_drawer: Callable[[int, int, dict[str, Any]], dict[str, Any]] = draw_observation_parameters,
-    stage_name: str = "observation",
-) -> dict[str, Any]:
-    """Generate P60 systems with point sources, PSF, and detector noise."""
-
-    os.environ.setdefault("NUMBA_DISABLE_JIT", "1")
-    output_root = Path(output_dir)
-    config_path = Path(config_path)
-    if count <= 0:
-        raise ValueError("count must be positive")
-    if output_root.exists() and any(output_root.iterdir()) and not overwrite:
-        raise FileExistsError(f"Output directory is not empty and overwrite is disabled: {output_root}")
-    config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
-    simulator_version = backend_status().version or "unavailable"
-    effects = config["pilot"]["observation_effects"]
-    detectable_threshold = float(effects["detectable_amplitude_threshold"])
-    output_root.mkdir(parents=True, exist_ok=True)
-    directory_names = (
-        "raw",
-        "science",
-        "normalized",
-        "masks",
-        "variance",
-        "expected_variance",
-        "scenes",
-        "geometry",
-        "background",
-        "transforms",
-        "noise",
-        "psf",
-        "parameters",
-        "diagnostics",
-    )
-    directories = {name: output_root / name for name in directory_names}
-    for directory in directories.values():
-        directory.mkdir(parents=True, exist_ok=True)
-
-    rows: list[dict[str, Any]] = []
-    rejections: list[dict[str, Any]] = []
-    for index in range(count):
-        sample_id = f"{simulation_id}-{index + 1:04d}"
-        parent_id = f"{simulation_id}-parent-{index + 1:04d}"
-        parameters = parameter_drawer(seed, index, config)
-        parameters["supersampling_factor"] = int(
-            parameters.get("supersampling_factor", config["pilot"]["sie_extended"]["supersampling_factor"])
-        )
-        paths = {
-            "raw": directories["raw"] / f"{sample_id}.fits",
-            "science": directories["science"] / f"{sample_id}.npy",
-            "normalized": directories["normalized"] / f"{sample_id}.npy",
-            "invalid_mask": directories["masks"] / f"{sample_id}_invalid.npy",
-            "coverage_mask": directories["masks"] / f"{sample_id}_coverage.npy",
-            "background_mask": directories["masks"] / f"{sample_id}_background.npy",
-            "variance": directories["variance"] / f"{sample_id}.npy",
-            "expected_variance": directories["expected_variance"] / f"{sample_id}.npy",
-            "clean_scene": directories["scenes"] / f"{sample_id}_clean.npy",
-            "expected_scene": directories["scenes"] / f"{sample_id}_expected.npy",
-            "observed_science": directories["scenes"] / f"{sample_id}_observed_science.npy",
-            "geometry_transform": directories["geometry"] / f"{sample_id}.json",
-            "render_geometry": directories["geometry"] / f"{sample_id}_render.json",
-            "background": directories["background"] / f"{sample_id}.json",
-            "normalization": directories["transforms"] / f"{sample_id}.json",
-            "noise_model": directories["noise"] / f"{sample_id}.json",
-            "psf": directories["psf"] / f"{sample_id}.json",
-            "psf_metadata": directories["psf"] / f"{sample_id}_metadata.json",
-            "psf_values": directories["psf"] / f"{sample_id}.npy",
-            "parameters": directories["parameters"] / f"{sample_id}.json",
-            "diagnostics": directories["diagnostics"] / f"{sample_id}.json",
-        }
-        try:
-            parameter_errors = validate_sie_parameters(parameters)
-            if parameter_errors:
-                raise ValueError("; ".join(parameter_errors))
-            solved_scene = render_observation_scene(
-                parameters,
-                psf_fwhm_arcsec=float(parameters["psf_fwhm_arcsec"]),
-                supersampling_factor=int(parameters["supersampling_factor"]),
-            )
-            # Freeze the backend's solved point roots at the artifact boundary.
-            # Re-rendering from LENSED_POSITION avoids tiny source-solver changes
-            # altering PSF-painted pixels or downstream Poisson draws.
-            point_position_decimals = 8
-            parameters["point_positions_x_arcsec"] = [
-                float(np.round(value, point_position_decimals))
-                for value in solved_scene.point_positions_x_arcsec
-            ]
-            parameters["point_positions_y_arcsec"] = [
-                float(np.round(value, point_position_decimals))
-                for value in solved_scene.point_positions_y_arcsec
-            ]
-            parameters["point_amplitudes"] = list(solved_scene.point_amplitudes)
-            parameters["point_position_rounding_decimals"] = point_position_decimals
-            scene = render_observation_scene(
-                parameters,
-                psf_fwhm_arcsec=float(parameters["psf_fwhm_arcsec"]),
-                supersampling_factor=int(parameters["supersampling_factor"]),
-            )
-            parameters["point_amplitudes"] = list(scene.point_amplitudes)
-            parameters["point_amplitude_rounding_decimals"] = 3
-            detector = realize_detector_observation(
-                scene.expected_scene,
-                background_rate=parameters["background_rate"],
-                exposure_time=parameters["exposure_time"],
-                read_noise_electrons=parameters["read_noise_electrons"],
-                noise_seed=parameters["noise_seed"],
-            )
-            _write_raw_fits(
-                paths["raw"],
-                detector.observed_rate,
-                parameters,
-                sample_id,
-                parent_id,
-                simulation_id=simulation_id,
-                model="SIE",
-                simulation_type="LENSTRONOMY_OBSERVED_NOISE",
-                image_unit="ELECTRONS/S",
-                overwrite=overwrite,
-            )
-            processed = preprocess_image(
-                paths["raw"],
-                target_shape=tuple(config["grid"]["shape"]),
-                normalization_method=config["preprocessing"]["normalization_method"],
-                lower=config["preprocessing"]["lower_percentile"],
-                upper=config["preprocessing"]["upper_percentile"],
-                background_sigma_clip=config["preprocessing"]["background_sigma_clip"],
-                background_max_iterations=config["preprocessing"]["background_max_iterations"],
-                background_min_valid_pixels=config["preprocessing"]["background_min_valid_pixels"],
-                image_unit="electrons_per_second",
-                noise_floor=config["preprocessing"]["noise_floor"],
-                noise_correlation_assumption="independent_poisson_plus_independent_read_noise",
-            )
-            np.save(paths["science"], processed["science"])
-            np.save(paths["normalized"], processed["normalized"])
-            np.save(paths["invalid_mask"], processed["invalid_mask"])
-            np.save(paths["coverage_mask"], processed["coverage_mask"])
-            np.save(paths["background_mask"], processed["background_mask"])
-            np.save(paths["variance"], processed["variance"].values)
-            np.save(paths["expected_variance"], detector.variance_rate)
-            np.save(paths["clean_scene"], scene.clean_scene)
-            np.save(paths["expected_scene"], scene.expected_scene)
-            np.save(paths["observed_science"], detector.science_rate)
-            _write_json(paths["geometry_transform"], processed["geometry_transform"].to_dict())
-            _write_json(paths["render_geometry"], {
-                "coordinate_convention": "x_y_arcsec_about_lens_center",
-                "image_index_order": "image[y, x]",
-                "pixel_center_convention": "zero_based_pixel_centers",
-                "shape": list(scene.expected_scene.shape),
-                "pixel_scale_arcsec": scene.pixel_scale_arcsec,
-                "supersampling_factor": scene.supersampling_factor,
-                "lens_model": parameters.get("mass_model", "SIE"),
-                "shear_parameters": scene.shear_parameters,
-            })
-            _write_json(paths["background"], processed["background"].to_dict())
-            _write_json(paths["normalization"], processed["normalization"].to_dict())
-            _write_json(paths["noise_model"], {
-                **detector.to_dict(),
-                "expected_variance_path": _relative(paths["expected_variance"], output_root),
-            })
-            psf_kernel = observation_psf(
-                psf_fwhm_arcsec=scene.psf_fwhm_arcsec,
-                pixel_scale_arcsec=scene.pixel_scale_arcsec,
-            )
-            np.save(paths["psf_values"], psf_kernel.values)
-            psf_record = {
-                "psf_type": "GAUSSIAN",
-                "fwhm_arcsec": scene.psf_fwhm_arcsec,
-                "pixel_scale_arcsec": scene.pixel_scale_arcsec,
-                "sigma_pixels": scene.psf_fwhm_arcsec / (
-                    2.0 * np.sqrt(2.0 * np.log(2.0)) * scene.pixel_scale_arcsec
-                ),
-                "normalization": "unit_sum",
-                "kernel_size_policy": "odd ceil(10 sigma), minimum 5",
-                "source": "analytic_gaussian_control",
-                "convolution": "deterministic_zero_boundary",
-                "values_path": _relative(paths["psf_values"], output_root),
-                "psf_id": psf_kernel.psf_id,
-                "shape": list(psf_kernel.values.shape),
-                "sum": float(np.sum(psf_kernel.values)),
-            }
-            _write_json(paths["psf"], psf_record)
-            _write_json(paths["psf_metadata"], psf_kernel.to_dict(_relative(paths["psf_values"], output_root)))
-            _write_json(paths["diagnostics"], {
-                "sample_id": sample_id,
-                "parent_system_id": parent_id,
-                "supersampling_factor": scene.supersampling_factor,
-                "point_positions_x_arcsec": list(scene.point_positions_x_arcsec),
-                "point_positions_y_arcsec": list(scene.point_positions_y_arcsec),
-                "point_amplitudes": list(scene.point_amplitudes),
-                "image_count_physical": len(scene.point_positions_x_arcsec),
-                "image_count_detectable": sum(value >= detectable_threshold for value in scene.point_amplitudes),
-                "detectable_amplitude_threshold": detectable_threshold,
-                "clean_scene_flux": float(scene.clean_scene.sum()),
-                "expected_scene_flux": float(scene.expected_scene.sum()),
-                "observed_science_mean": float(detector.science_rate.mean()),
-                "expected_variance_mean": float(detector.variance_rate.mean()),
-            })
-            _write_json(paths["parameters"], {
-                **parameters,
-                "sample_id": sample_id,
-                "parent_system_id": parent_id,
-                "simulation_id": simulation_id,
-                "simulator_name": "lenstronomy",
-                "simulator_version": simulator_version,
-                "config_path": config_path.as_posix(),
-                "backend_reference": backend_status().to_dict(),
-                "lens_parameters": scene.lens_parameters,
-                "shear_parameters": scene.shear_parameters,
-                "source_parameters": scene.source_parameters,
-                "lens_light_parameters": scene.lens_light_parameters,
-                "point_source_parameters": scene.point_source_parameters,
-                "point_positions_x_arcsec": list(scene.point_positions_x_arcsec),
-                "point_positions_y_arcsec": list(scene.point_positions_y_arcsec),
-                "point_amplitudes": list(scene.point_amplitudes),
-            })
-            rows.append(
-                _observation_manifest_row(
-                    sample_id=sample_id,
-                    parent_id=parent_id,
-                    simulation_id=simulation_id,
-                    parameters=parameters,
-                    scene=scene,
-                    detector=detector,
-                    preprocess=processed,
-                    output_root=output_root,
-                    paths=paths,
-                    detectable_threshold=detectable_threshold,
-                    simulator_version=simulator_version,
-                )
-            )
-        except (ValueError, FloatingPointError) as exc:
-            rejections.append({
-                "sample_id": sample_id,
-                "parent_system_id": parent_id,
-                "stage": "render_or_write",
-                "error_type": type(exc).__name__,
+    except Exception as exc:
+        single_count = "found 1 roots" in str(exc) or "root multiplicity 1" in str(exc)
+        approved_single = single_count and len(independent_positions(p)) == 1
+        return {
+            "proposal": index,
+            "identity": identity,
+            "label": None,
+            "diagnostics": diagnostics,
+            "observations": observations,
+            "failure": {
+                "proposal": index,
+                "parent": parent,
+                "error": type(exc).__name__,
                 "message": str(exc),
-            })
+                "approved_physical_single_image_rejection": bool(approved_single),
+            },
+        }
 
-    manifest_path = output_root / "manifest.csv"
-    pd.DataFrame(rows).to_csv(manifest_path, index=False)
-    rejection_path = output_root / "rejection_log.csv"
-    with rejection_path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=["sample_id", "parent_system_id", "stage", "error_type", "message"])
-        writer.writeheader()
-        writer.writerows(rejections)
-    preview_index = None
-    preview_output = None
-    if create_preview and rows:
-        preview_index, preview_output = _create_simulation_previews(
-            directories["raw"], simulation_id, preview_root
+
+def run(role: str, workers: int) -> None:
+    """Generate a bounded-worker source bank using the unchanged v4 destinations."""
+    if role not in {"source_train", "source_development"}:
+        raise ValueError("Only source training/development banks are maintained")
+    if type(workers) is not int or not 1 <= workers <= 2:
+        raise ValueError("Use 1-2 bounded rendering workers; run roles sequentially")
+    q = json.loads(QUALIFICATION.read_text())
+    if q["passed"] is not True:
+        raise ValueError("Numerical qualification failed")
+    for path, expected in q["source_sha256"].items():
+        if digest(path) != expected:
+            raise ValueError("Qualified rendering source changed")
+    name = {
+        "source_train": "source-train",
+        "source_development": "source-development",
+    }[role]
+    output = Path(f"data/simulations/robustness-study-{name}-v4")
+    report_path = Path(f"results/reports/robustness-study-banks-v4/{name}.json")
+    if report_path.exists() or (output / "complete.json").exists():
+        raise FileExistsError("This bank role is already complete")
+    ledger, input_hashes = identity_ledger()
+    proposals, more = source_proposals(role)
+    input_hashes.update(more)
+    count = len(proposals)
+    for row, p, _, _ in proposals:
+        validate_lineage(
+            [
+                {
+                    "parent_system_id": row["parent_system_id"],
+                    "role": role,
+                    "parameter_seed": int(p["parameter_seed"]),
+                    "noise_seed": int(p["noise_seed"]),
+                    "ancestry_ids": [],
+                }
+            ],
+            ledger,
         )
-    run_manifest = {
-        "run_id": simulation_id,
-        "generator_version": GENERATOR_VERSION,
-        "simulation_id": simulation_id,
-        "simulation_stage": stage_name,
-        "config_path": config_path.as_posix(),
-        "seed": int(seed),
-        "count_requested": int(count),
-        "count_attempted": int(count),
-        "count_accepted": len(rows),
-        "count_rejected": len(rejections),
-        "output_root": output_root.as_posix(),
-        "manifest_path": "manifest.csv",
-        "rejection_log_path": "rejection_log.csv",
-        "preview_index_path": None if preview_output is None else (preview_output / "preview_index.csv").as_posix(),
-        "backend": backend_status().to_dict(),
-        "noise_policy": "Poisson in electrons plus Gaussian read noise before background subtraction",
-        "point_source_rendering": "bilinear_pixel_deposition_then_analytic_gaussian_control_convolution",
-        "point_position_rounding_decimals": 8,
-        "point_amplitude_rounding_decimals": 3,
-        "rejections": rejections,
+    output.mkdir(parents=True, exist_ok=True)
+    if not (output / "started.json").exists():
+        write_native_masks(output)
+    elif not all((output / f"masks/{h}x{h}.npy").exists() for h in (256, 320, 213)):
+        raise ValueError("Existing v4 checkpoint has incomplete native masks")
+    started = time.perf_counter()
+    started_record = {
+        "role": role,
+        "workers": workers,
+        "requested_parents": count,
+        "computed_proposal_pool": len(proposals),
+        "qualification_sha256": digest(QUALIFICATION),
+        "source_identity_sha256": input_hashes,
+        "generator_sha256": {
+            __file__: digest(__file__),
+            "src/simulation/scene.py": digest("src/simulation/scene.py"),
+        },
     }
-    _write_json(output_root / "run_manifest.json", run_manifest)
-    return run_manifest
-
-
-def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", default="data/simulations/sim-p10-v1")
-    parser.add_argument("--stage", choices=("sis", "sie", "observation", "stress"), default="sis")
-    parser.add_argument("--count", type=int, default=None)
-    parser.add_argument("--seed", type=int, default=1001)
-    parser.add_argument("--simulation-id", default=None)
-    parser.add_argument("--config", default=str(DEFAULT_CONFIG))
-    parser.add_argument("--overwrite", action="store_true")
-    parser.add_argument("--no-preview", action="store_true")
-    parser.add_argument("--preview-root", default=str(DEFAULT_PREVIEW_ROOT))
-    args = parser.parse_args()
-    generators = {
-        "sis": generate_sis_controls,
-        "sie": generate_sie_extended,
-        "observation": generate_observation_pilot,
-        "stress": generate_stress_pilot,
-    }
-    defaults = {
-        "sis": (10, "sim-p10-v1"),
-        "sie": (20, "sim-p30-v1"),
-        "observation": (30, "sim-p60-v1"),
-        "stress": (40, "sim-p100-v1"),
-    }
-    generator = generators[args.stage]
-    default_count, default_id = defaults[args.stage]
-    simulation_id = args.simulation_id or default_id
-    summary = generator(
-        args.output,
-        count=args.count or default_count,
-        seed=args.seed,
-        simulation_id=simulation_id,
-        config_path=args.config,
-        overwrite=args.overwrite,
-        create_preview=not args.no_preview,
-        preview_root=args.preview_root,
+    if (output / "started.json").exists():
+        if json.loads((output / "started.json").read_text()) != started_record:
+            raise ValueError("Existing v4 output belongs to different frozen inputs")
+    else:
+        write(output / "started.json", started_record)
+    tasks = [(role, index, *record, output.as_posix()) for index, record in enumerate(proposals)]
+    checkpoint = output / "checkpoint.json"
+    completed = {}
+    if checkpoint.exists():
+        for result in json.loads(checkpoint.read_text()):
+            refs = product_records(result)
+            valid = True
+            for ref in refs:
+                path = output / ref["path"]
+                if not path.exists():
+                    valid = False
+                    break
+                if digest(path) != ref["sha256"]:
+                    raise ValueError(f"Checkpoint product hash mismatch: {ref['path']}")
+            if valid:
+                completed[int(result["proposal"])] = result
+    results = list(completed.values())
+    pending = [task for task in tasks if int(task[1]) not in completed]
+    since_checkpoint = 0
+    with ProcessPoolExecutor(max_workers=workers) as executor:
+        for result in executor.map(render_one, pending):
+            completed[int(result["proposal"])] = result
+            results = [completed[i] for i in sorted(completed)]
+            since_checkpoint += 1
+            if since_checkpoint >= 10:
+                tmp = checkpoint.with_suffix(".tmp")
+                tmp.write_text(
+                    json.dumps(results, indent=2, allow_nan=False) + "\n", encoding="utf-8"
+                )
+                tmp.replace(checkpoint)
+                since_checkpoint = 0
+            if len(completed) % 10 == 0 or not pending:
+                print(
+                    json.dumps(
+                        {
+                            "role": role,
+                            "computed": len(results),
+                            "pool": len(tasks),
+                            "failures": sum(r["failure"] is not None for r in results),
+                            "seconds": time.perf_counter() - started,
+                        }
+                    ),
+                    flush=True,
+                )
+    results = [completed[i] for i in range(len(tasks))]
+    tmp = checkpoint.with_suffix(".tmp")
+    tmp.write_text(json.dumps(results, indent=2, allow_nan=False) + "\n", encoding="utf-8")
+    tmp.replace(checkpoint)
+    failures = [r["failure"] for r in results if r["failure"] is not None]
+    accepted = [r for r in results if r["failure"] is None]
+    # Preserve all proposal diagnostics even if a numerical failure blocks the
+    # index. Source pools are filtered only by the declared 2/4-image rule;
+    # they are not replenished with new parents or selected by CNN outcomes.
+    write(output / "worker_results.json", results)
+    requested = count
+    count = len(accepted)
+    selected = accepted[:count]
+    if (
+        not count
+        or len(selected) != count
+        or any(not f["approved_physical_single_image_rejection"] for f in failures)
+    ):
+        write(
+            output / "failed.json",
+            {"requested": count, "accepted": len(accepted), "failures": failures},
+        )
+        raise ValueError("Bank has unresolved numerical/cohort failures")
+    for path, expected in q["source_sha256"].items():
+        if digest(path) != expected:
+            raise ValueError("Qualified rendering source changed during generation")
+    parents = [r["identity"] for r in selected]
+    labels = None
+    write(
+        output / "source_targets.json",
+        {r["identity"]["parent_system_id"]: r["label"] for r in selected},
     )
-    print(json.dumps(summary, indent=2, sort_keys=True))
-    return 0 if summary["count_rejected"] == 0 else 1
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
+    labels = {"path": "source_targets.json", "sha256": digest(output / "source_targets.json")}
+    document = {
+        "schema": "observation_bank_v1",
+        "stage": "qualified_development",
+        "role": role,
+        "rendering_factor": q["rendering_factor"],
+        "qualification": {"path": QUALIFICATION.as_posix(), "sha256": digest(QUALIFICATION)},
+        "exclusion_ledger": ledger,
+        "targets": labels,
+        "parents": parents,
+        "image_semantics": "unnormalized raw rate with background retained",
+        "condition_access": "gaussian_only",
+    }
+    write(output / "observation_provenance.json", [o for r in results for o in r["observations"]])
+    document.update(
+        image_unit="electrons_per_second",
+        target_definition="lenstronomy_SIE_circularized_parameter_arcsec",
+        observation_provenance={
+            "path": "observation_provenance.json",
+            "sha256": digest(output / "observation_provenance.json"),
+        },
+    )
+    write(output / "bank.json", document)
+    bank = ObservationBank(output / "bank.json", expected_role=role)
+    selected_ids = set(bank.by_id)
+    write(
+        output / "proposal_audit.json",
+        [
+            {
+                "proposal": r["proposal"],
+                **{
+                    k: r["identity"][k]
+                    for k in ("parent_system_id", "parameter_seed", "noise_seed", "latent_sha256")
+                },
+                "selected": r["identity"]["parent_system_id"] in selected_ids,
+                "failure": r["failure"],
+            }
+            for r in results
+        ],
+    )
+    write(output / "integration_diagnostics.json", [d for r in results for d in r["diagnostics"]])
+    report = {
+        "role": role,
+        "parents": len(bank.parents),
+        "requested_parents": requested,
+        "computed_proposals": len(results),
+        "accepted_proposals": len(accepted),
+        "unused_accepted": len(accepted) - count,
+        "failures": failures,
+        "manifest_sha256": digest(output / "bank.json"),
+        "qualification_sha256": digest(QUALIFICATION),
+        "runtime_seconds": time.perf_counter() - started,
+        "workers": workers,
+        "bank_validated": True,
+        "final_arrays_accessed": False,
+        "final_identity_columns_only": True,
+        "target_labels_serialized": False,
+        "source_labels_serialized": True,
+        "bytes_materialized": sum(p.stat().st_size for p in output.rglob("*") if p.is_file()),
+    }
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    write(report_path, report)
+    write(output / "complete.json", report)
+    print(json.dumps(report, indent=2))

@@ -1,71 +1,59 @@
+"""Detector units and backend conventions are independent of model outcomes."""
+
 import importlib.util
+import json
+from pathlib import Path
 
 import numpy as np
 import pytest
-import yaml
 
-from src.simulation.observation import render_observation_scene, realize_detector_observation
-from src.simulation.priors import draw_observation_parameters
-
-
-def test_detector_noise_is_sampled_in_count_space_and_reproducible():
-    expected = np.ones((2, 2), dtype=float)
-    first = realize_detector_observation(
-        expected,
-        background_rate=0.2,
-        exposure_time=10.0,
-        read_noise_electrons=3.0,
-        noise_seed=42,
-    )
-    second = realize_detector_observation(
-        expected,
-        background_rate=0.2,
-        exposure_time=10.0,
-        read_noise_electrons=3.0,
-        noise_seed=42,
-    )
-    assert np.array_equal(first.observed_electrons, second.observed_electrons)
-    assert np.allclose(first.expected_electrons, 12.0)
-    assert np.allclose(first.variance_rate, (12.0 + 9.0) / 100.0)
+from src.simulation.backends import deflections_xy, mapped_light_parameters, mass_profile
+from src.simulation.independent import independent_sie_deflection
+from src.simulation.observation import psf_kernel, sample_detector
 
 
-@pytest.mark.skipif(
-    importlib.util.find_spec("lenstronomy") is None,
-    reason="optional lenstronomy backend is not installed",
-)
-def test_observation_scene_contains_point_sources_psf_and_foreground_light(monkeypatch):
-    monkeypatch.setenv("NUMBA_DISABLE_JIT", "1")
-    with open("configs/simulation/pilot.yaml", encoding="utf-8") as handle:
-        config = yaml.safe_load(handle)
-    parameters = draw_observation_parameters(6001, 0, config)
-    scene = render_observation_scene(parameters, shape=(64, 64), supersampling_factor=1)
+def test_detector_units_background_and_same_seed_are_explicit():
+    expected = np.full((128, 128), 0.3)
+    first, variance = sample_detector(expected, 100.0, 2.0, 0.03, 19)
+    second, _ = sample_detector(expected, 100.0, 2.0, 0.03, 19)
+    np.testing.assert_array_equal(first, second)
+    np.testing.assert_allclose(variance, ((0.3 + 0.03) * 100 + 2**2) / 100**2)
+    assert abs(first.mean() - 0.33) < 5 * np.sqrt(variance[0, 0] / first.size)
+    with pytest.raises(ValueError, match="Invalid detector"):
+        sample_detector(expected, 0.0, 2.0, 0.03, 19)
 
-    assert scene.expected_scene.shape == (64, 64)
-    assert np.isfinite(scene.expected_scene).all()
-    assert np.isfinite(scene.clean_scene).all()
-    assert np.all(scene.expected_scene >= 0)
-    assert len(scene.point_positions_x_arcsec) >= 2
-    assert len(scene.point_positions_x_arcsec) == len(scene.point_amplitudes)
-    assert not np.array_equal(scene.clean_scene, scene.expected_scene)
+
+def test_bad_light_parameters_fail_before_optional_backend_import():
+    for intensity, radius, index in ((-1, 0.2, 1), (1, 0, 1), (1, 0.2, np.nan)):
+        with pytest.raises(ValueError, match="Light parameters"):
+            mapped_light_parameters(intensity, radius, index)
+
+
+@pytest.mark.parametrize("family", ["gaussian", "moffat"])
+def test_psf_is_finite_nonnegative_and_normalized(family):
+    kernel = psf_kernel(0.1, 0.05, family)
+    assert kernel.ndim == 2
+    assert np.isfinite(kernel).all()
+    assert (kernel >= 0).all()
+    np.testing.assert_allclose(kernel.sum(), 1.0)
 
 
 @pytest.mark.skipif(
-    importlib.util.find_spec("lenstronomy") is None,
-    reason="optional lenstronomy backend is not installed",
+    importlib.util.find_spec("autolens") is None,
+    reason="optional AutoLens physical backend is unavailable",
 )
-def test_zero_external_shear_matches_the_no_shear_observation_scene(monkeypatch):
-    monkeypatch.setenv("NUMBA_DISABLE_JIT", "1")
-    with open("configs/simulation/pilot.yaml", encoding="utf-8") as handle:
-        config = yaml.safe_load(handle)
-    parameters = draw_observation_parameters(6001, 0, config)
-    no_shear = render_observation_scene(parameters, shape=(64, 64), supersampling_factor=1)
-    zero_shear_parameters = {**parameters, "gamma1": 0.0, "gamma2": 0.0}
-    zero_shear = render_observation_scene(
-        zero_shear_parameters,
-        shape=(64, 64),
-        supersampling_factor=1,
+def test_autolens_deflections_match_independent_sie_control():
+    record = json.loads((Path(__file__).parent / "fixtures/render_reference.json").read_text())
+    parameters = record["parameters"]
+    coordinates = np.array([[0.7, 0.4], [-1.2, 0.2], [0.2, -0.9]])
+    actual = deflections_xy(mass_profile(parameters), coordinates)
+    horizontal, vertical = independent_sie_deflection(
+        coordinates[:, 0],
+        coordinates[:, 1],
+        theta_E_arcsec=parameters["theta_E_arcsec"],
+        axis_ratio=parameters["q"],
+        phi_rad=parameters["phi_rad"],
+        center_x_arcsec=parameters["lens_center_x_arcsec"],
+        center_y_arcsec=parameters["lens_center_y_arcsec"],
     )
-
-    assert zero_shear.shear_parameters == {"gamma1": 0.0, "gamma2": 0.0}
-    assert np.allclose(zero_shear.clean_scene, no_shear.clean_scene, rtol=1e-6, atol=1e-7)
-    assert np.allclose(zero_shear.expected_scene, no_shear.expected_scene, rtol=1e-6, atol=1e-7)
+    np.testing.assert_allclose(actual, np.column_stack((horizontal, vertical)), atol=1e-7)

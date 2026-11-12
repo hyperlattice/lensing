@@ -1,0 +1,49 @@
+{
+  "parameters": {
+    "parameter_seed": 2181198562,
+    "noise_seed": 1137694030,
+    "mass_model": "SIE",
+    "theta_E_arcsec": 0.5756922319620997,
+    "q": 0.613635347361918,
+    "phi_rad": 1.4876317908067702,
+    "lens_center_x_arcsec": -0.1066831455071934,
+    "lens_center_y_arcsec": 0.1557012978297913,
+    "source_x_arcsec": 0.000271166513489407,
+    "source_y_arcsec": -0.3478139703076937,
+    "source_q": 0.536546161743503,
+    "source_phi_rad": 2.432422214254744,
+    "source_n": 1.4674942052292563,
+    "source_re_arcsec": 0.24450946527795298,
+    "source_amp": 0.8219885030759657,
+    "shape": [
+      256,
+      256
+    ],
+    "pixel_scale_arcsec": 0.05,
+    "render_mode": "lenstronomy_sie_extended_point_source_psf",
+    "lens_light_q": 0.6953154954101106,
+    "lens_light_phi_rad": 0.12762647179646844,
+    "lens_light_n": 3.723241689415545,
+    "lens_light_re_arcsec": 0.3587110974392458,
+    "lens_light_amp": 0.1425279606763657,
+    "point_source_amp": 0.4663303997576879,
+    "psf_fwhm_arcsec": 0.13181429612324833,
+    "background_rate": 0.02036980421339415,
+    "read_noise_electrons": 1.1741019413072062,
+    "exposure_time": 83.38534837913427
+  },
+  "condition": {
+    "shape": [
+      64,
+      64
+    ],
+    "pixel_scale_arcsec": 0.2,
+    "psf_family": "gaussian",
+    "exposure_multiplier": 1.0,
+    "read_noise_multiplier": 1.0
+  },
+  "baseline_revision": "aac2e583b32ddea3e7f93ed23485e0bf395eb1b4",
+  "backend": "lenstronomy==1.14.2",
+  "factor": 4,
+  "noise_seed": 123
+}

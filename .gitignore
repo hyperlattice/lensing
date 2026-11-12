@@ -14,8 +14,7 @@ env/
 build/
 dist/
 
-# Test and analysis tool caches. Pytest uses several named temporary roots in
-# this repository, so cover every .pytest-* directory rather than one run name.
+# Test/tool caches and historical temporary roots. New tests use OS temporary storage.
 .pytest_cache/
 .pytest-*/
 results/test-tmp/

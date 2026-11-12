@@ -1,8 +1,10 @@
-"""Noninteractive diagnostic plots for the baseline experiment."""
+"""Create publication figures from the sealed equal-budget report only."""
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
+from typing import Any
 
 import matplotlib
 
@@ -10,70 +12,95 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 
-
-def plot_training_history(history, output_path):
-    output_path = Path(output_path)
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    epochs = [row["epoch"] for row in history]
-    figure, axes = plt.subplots(1, 2, figsize=(10, 4))
-    axes[0].plot(epochs, [row["train_loss"] for row in history], label="train")
-    axes[0].plot(epochs, [row["validation_loss"] for row in history], label="validation")
-    axes[0].set(xlabel="epoch", ylabel="Huber loss (normalized target)", title="Optimization")
-    axes[0].legend()
-    axes[1].plot(epochs, [row["validation_mae_arcsec"] for row in history], color="tab:orange")
-    axes[1].set(xlabel="epoch", ylabel="MAE (arcsec)", title="Validation accuracy")
-    for axis in axes:
-        axis.grid(alpha=0.25)
-    figure.tight_layout()
-    figure.savefig(output_path, dpi=160)
-    plt.close(figure)
+ROOT = Path("results/ml/equal-budget-final-v1")
+REPORT = ROOT / "final_report.json"
+FIGURES = ROOT / "figures"
+CONDITIONS = (
+    "canonical",
+    "pixel-scale-004",
+    "pixel-scale-006",
+    "exposure-half",
+    "read-noise-double",
+)
+LABELS = ("Canonical", "Pixel 0.04", "Pixel 0.06", "Half exposure", "2x read noise")
+ARMS = ("C", "G", "R")
+COLORS = {"C": "#4C78A8", "G": "#F58518", "R": "#54A24B"}
 
 
-def plot_predictions(targets, predictions, output_path, *, title):
-    output_path = Path(output_path)
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    targets = np.asarray(targets, dtype=float)
-    predictions = np.asarray(predictions, dtype=float)
-    residuals = predictions - targets
-    low = float(min(targets.min(), predictions.min()))
-    high = float(max(targets.max(), predictions.max()))
-    figure, axes = plt.subplots(1, 3, figsize=(14, 4))
-    axes[0].scatter(targets, predictions, s=16, alpha=0.65)
-    axes[0].plot([low, high], [low, high], "k--", linewidth=1)
-    axes[0].set(xlabel="true theta_E (arcsec)", ylabel="predicted theta_E (arcsec)", title="Prediction")
-    axes[1].scatter(targets, residuals, s=16, alpha=0.65, color="tab:orange")
-    axes[1].axhline(0.0, color="black", linestyle="--", linewidth=1)
-    axes[1].set(xlabel="true theta_E (arcsec)", ylabel="prediction - truth (arcsec)", title="Residual by target")
-    axes[2].hist(residuals, bins=min(20, max(5, len(residuals) // 5)), color="tab:green", alpha=0.8)
-    axes[2].axvline(0.0, color="black", linestyle="--", linewidth=1)
-    axes[2].set(xlabel="residual (arcsec)", ylabel="count", title="Residual distribution")
-    figure.suptitle(title)
-    for axis in axes:
-        axis.grid(alpha=0.2)
-    figure.tight_layout()
-    figure.savefig(output_path, dpi=160)
-    plt.close(figure)
+def _save(fig, name, figures):
+    figures.mkdir(parents=True, exist_ok=True)
+    fig.savefig(figures / f"{name}.png", dpi=300, bbox_inches="tight")
+    fig.savefig(figures / f"{name}.pdf", bbox_inches="tight")
+    plt.close(fig)
 
 
-def plot_seed_comparison(summaries, output_path):
-    """Show seed spread and radius-dependent bias on the same validation set."""
-    figure, axes = plt.subplots(1, 2, figsize=(12, 4))
-    positions = np.arange(len(summaries))
-    for offset, (metric, label) in enumerate((
-        ("mae_arcsec", "MAE"), ("rmse_arcsec", "RMSE"), ("p95_absolute_error_arcsec", "P95"),
-    )):
-        axes[0].bar(positions + (offset - 1) * 0.24, [run["validation_metrics"][metric] for run in summaries], width=0.24, label=label)
-    axes[0].set_xticks(positions, [str(run["seed"]) for run in summaries])
-    axes[0].set(xlabel="training seed", ylabel="absolute error (arcsec)", title="Validation errors across seeds")
-    for run in summaries:
-        bins = [row for row in run["validation_target_bins"] if row["metrics"] is not None and row["lower_arcsec"] is not None and row["upper_arcsec"] is not None]
-        centers = [(row["lower_arcsec"] + row["upper_arcsec"]) / 2 for row in bins]
-        axes[1].plot(centers, [row["metrics"]["bias_arcsec"] for row in bins], marker="o", label=str(run["seed"]))
-    axes[1].axhline(0, color="black", linestyle="--", linewidth=1)
-    axes[1].set(xlabel="true radius bin center (arcsec)", ylabel="prediction - truth (arcsec)", title="Radius-dependent validation bias")
-    for axis in axes:
-        axis.legend()
-        axis.grid(alpha=0.2)
-    figure.tight_layout()
-    figure.savefig(output_path, dpi=160)
-    plt.close(figure)
+def plot_mae(report: dict[str, Any], figures: Path = FIGURES) -> None:
+    values = np.array(
+        [
+            [
+                report["metrics_by_arm_condition"][arm][condition]["mae_arcsec"]
+                for condition in CONDITIONS
+            ]
+            for arm in ARMS
+        ]
+    )
+    x = np.arange(len(CONDITIONS))
+    width = 0.24
+    fig, ax = plt.subplots(figsize=(8.2, 4.6))
+    for index, arm in enumerate(ARMS):
+        ax.bar(
+            x + (index - 1) * width,
+            values[index],
+            width,
+            label={"C": "C: canonical", "G": "G: uniform variation", "R": "R: failure-weighted"}[
+                arm
+            ],
+            color=COLORS[arm],
+        )
+    ax.set_xticks(x, LABELS, rotation=18, ha="right")
+    ax.set_ylabel("MAE (arcsec)")
+    ax.set_title("Equal-budget performance by observation condition")
+    ax.grid(axis="y", alpha=0.25)
+    ax.legend(frameon=False, ncols=3, loc="upper center", bbox_to_anchor=(0.5, 1.16))
+    ax.spines[["top", "right"]].set_visible(False)
+    _save(fig, "equal_budget_mae_by_condition", figures)
+
+
+def plot_contrasts(report: dict[str, Any], figures: Path = FIGURES) -> None:
+    names = ("G_vs_C_four_stress", "R_vs_G_four_stress", "R_vs_C_four_stress")
+    labels = ("G − C", "R − G", "R − C")
+    values = np.array([report["contrasts"][name]["difference_arcsec"] for name in names])
+    lows = np.array([report["contrasts"][name]["bootstrap_95_low_arcsec"] for name in names])
+    highs = np.array([report["contrasts"][name]["bootstrap_95_high_arcsec"] for name in names])
+    y = np.arange(len(names))
+    fig, ax = plt.subplots(figsize=(7.0, 3.6))
+    ax.errorbar(
+        values,
+        y,
+        xerr=[values - lows, highs - values],
+        fmt="o",
+        color="#222222",
+        ecolor="#222222",
+        capsize=4,
+        markersize=6,
+        linewidth=1.5,
+    )
+    ax.axvline(0.0, color="#888888", linewidth=1)
+    ax.axvline(
+        -0.005, color="#B22222", linewidth=1, linestyle="--", label="−0.005 arcsec reference margin"
+    )
+    ax.set_yticks(y, labels)
+    ax.set_xlabel("MAE change (candidate − comparator, arcsec)")
+    ax.set_title("Parent-bootstrap contrasts (95% intervals)")
+    ax.grid(axis="x", alpha=0.25)
+    ax.spines[["top", "right"]].set_visible(False)
+    ax.legend(frameon=False, loc="lower right")
+    _save(fig, "equal_budget_paired_contrasts", figures)
+
+
+def plot(config: dict) -> None:
+    """Generate the existing figure filenames beside the configured report."""
+    root = Path(config["output"])
+    report = json.loads((root / "final_report.json").read_text(encoding="utf-8"))
+    plot_mae(report, root / "figures")
+    plot_contrasts(report, root / "figures")

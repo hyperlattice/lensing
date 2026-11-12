@@ -1,226 +1,77 @@
-# Lensing
+# Synthetic lens robustness study
 
-This repository builds an auditable workflow for strong-gravitational-lens
-images. It prepares actual CASTLES observations, generates controlled
-simulations, validates both against one manifest contract, performs classical
-recovery checks, and trains an initial image-only model for the simulated
-Einstein radius `theta_E_arcsec`.
-
-The project currently supports reproducible synthetic experiments. It does not
-yet support calibrated mass measurements or validated performance on real HST
-observations.
-
-## Repository map
-
-Start with the [experiment index](docs/experiments.md) for current commands,
-completed studies, required inputs and result locations. The
-[cleanup record](docs/maintenance/cleanup_v1.md) explains renamed paths and
-historical reproduction boundaries.
-
-```text
-configs/       Versioned preprocessing, simulation, comparison, and ML settings
-data/          Raw inputs, curated labels, releases, and compact audit manifests
-docs/          Dataset contract, codebase guide, research protocols, and results guidance
-notebooks/     Notebook navigation; historical notebooks are archived
-results/       Derived reports, ML artifacts, and domain-separated previews
-src/            Reproducible pipeline implementation
-scripts/        Experiment runners, maintenance checks and submission export
-submission/     Canonical reviewer bundle and generated delivery artifacts
-archive/        Historical protocols, scripts and planning records
-tests/          Automated unit and integration tests
-CONTRIBUTING.md Coding, documentation, and research reproducibility conventions
-pyproject.toml  Shared pytest configuration
-.editorconfig   Shared text-file and indentation conventions
-```
-
-Each working area has its own guide: [source code](src/README.md),
-[data](data/README.md), [configuration](configs/README.md),
-[results](results/README.md), [documentation](docs/README.md), and
-[notebooks](notebooks/README.md). Contributor conventions are in
-[CONTRIBUTING.md](CONTRIBUTING.md).
-
-Check repository references with `python -m scripts.check_repository`. Analytic
-and rendering checks are part of the test suite described below.
-See [artifact tracking policy](docs/artifact_policy.md) before staging outputs.
-
-## Data and previews
-
-Actual observations and simulations are deliberately separate.
-
-| Purpose | Canonical location |
-|---|---|
-| Raw actual FITS observations | `data/raw/castles/` |
-| Curated actual-observation labels | `data/labels/source/` |
-| Derived actual metadata and catalogs | `data/labels/derived/` |
-| Frozen actual preprocessing release | `data/releases/real-castles-v2/` |
-| Generated simulation releases | `data/simulations/<release>/` |
-| Tracked engineering-release audit mirror | `data/manifests/sim-eng1000-v1/` |
-| Actual-observation review previews | `results/previews/actual/<release>/` |
-| Simulated review previews | `results/previews/simulated/<release>/` |
-
-Dataset releases keep their products beside their manifests because those
-manifests contain release-relative paths. New review images go in
-`results/previews/` and never become model inputs. Large raw data, arrays,
-previews, and model checkpoints are ignored by Git; manifests, reports,
-configurations, and source tables are versioned.
-
-## Current project state
-
-- `real-castles-v2`: 137 observations from 69 lens systems after structural
-  preprocessing, with calibration and variance limitations recorded.
-- `sim-eng1000-v1`: 1,000 independent simulated parents split into 700 train,
-  150 validation, and 150 test parents without ancestry leakage.
-- P10, P30, P60, and P100 are staged controls. P100 is a separate stress suite
-  and is never training data.
-- Classical recovery completed 13 of 13 fixed optimization cases. The
-  noiseless control recovered `theta_E` within 0.033%.
-- The initial CNN achieved 0.0876 arcsec MAE on the frozen synthetic test
-  split. Its three-seed validation benchmark measured 0.09210 +/- 0.00872
-  arcsec MAE; the second value is seed-to-seed sample standard deviation.
-
-Read [the codebase guide](docs/codebase_guide.md) for the architecture and
-[the ML quickstart](docs/ml_quickstart.md) for model execution and results.
-Historical ML planning material is retained in the
-[archive](archive/README.md); the active workflow is documented in the
-[ML quickstart](docs/ml_quickstart.md).
-The completed reliability study and its frozen holdout evidence are indexed in
-[the reliability-study guide](docs/reliability_study/README.md).
+This repository studies whether varying observing conditions improves an image-only
+CNN's Einstein-radius estimates on new synthetic lens systems. The maintained
+comparison uses canonical (C), uniform variation (G), and source-development
+failure-weighted variation (R), with paired seeds and identical optimizer budgets.
+The secondary experiment compares paired Lenstronomy/AutoLens image products.
+These experiments do not establish real-telescope parameter accuracy.
 
 ## Setup
 
-Use Python 3.12 on Windows for the unified dependency set, including the
-pinned PyAutoLens backend. Earlier releases used Python 3.13.6 without that
-backend; its recorded Python 3.13 installation required C++ Build Tools.
+Use Python 3.12 for the pinned optional AutoLens stack. The primary CPU workflow
+is also tested locally on Python 3.10. Install from the repository root:
 
 ```powershell
 py -3.12 -m venv .venv
 .venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
+python -m pip install -e ".[dev]"
+# Only when running the secondary physical backend:
+python -m pip install -e ".[autolens]"
 ```
 
-`requirements.txt` contains preprocessing, simulation, ML, and alternate
-simulator dependencies. The actual-data workflow also needs `data/raw/castles/`.
-
-The dependency files were consolidated on 2026-11-04 without changing their
-version constraints. Archived reports and the Week 11 freeze manifest retain
-the original filenames and hashes as historical evidence. This maintenance
-checkout does not match those frozen dependency hashes, and installation
-messages in backend adapters now refer to the unified file. Reproducing the
-frozen source and environment requires its original checkout. The unified
-environment has not been validated by a fresh installation.
-
-## Main commands
-
-Show all project commands:
+## Run the study
 
 ```powershell
-python -m src.pipeline --help
+python -m scripts.study develop reference
+python -m scripts.study develop weights
+python -m scripts.study train
+python -m scripts.study predict
+python -m scripts.study analyze
+python -m scripts.study plot
 ```
 
-Build a new actual-observation release and its domain-separated previews:
+Every action is explicit: training never chains into holdout inference or scoring.
+`develop tune` and `develop review` are optional source-only development actions;
+they do not modify the final study configuration or reopen the holdout.
+
+**All existing data and result destinations are preserved.** Primary results remain
+under `results/ml/equal-budget-final-v1/`; policy development remains under
+`results/ml/robustness-development-v4/`; the secondary comparison remains under
+`results/ml/cross-simulator-rapid-v2/`. Existing artifacts are not moved or rewritten.
+Required banks, private image arrays and checkpoints are not necessarily available
+in a code-only checkout. See [reproduction](docs/reproduction.md).
+
+## Layout
+
+```text
+configs/             Three flat YAML files: study, simulation, development
+src/data/            Stored image contracts, bank loading and qualification
+src/simulation/      Scene sampling, one renderer, backend adapters and generation
+src/ml/              Model, batches, policies, training, prediction, analysis and plots
+scripts/             Study command, repository check and submission export
+tests/              Small temporary fixtures and pre-refactor regression controls
+data/               Existing datasets, source labels and audit manifests; unchanged
+results/            Existing output hierarchy; unchanged
+docs/               Current design/reproduction guides and preserved historical records
+submission/         Canonical manuscript/reviewer bundle; unchanged
+archive/            Historical research records; use their original Git checkout
+```
+
+Current documentation: [study](docs/study.md), [data contract](docs/data_contract.md),
+[rendering](docs/rendering.md), and [migration](docs/migration.md).
+The manuscript is [paper.tex](submission/aaai27/reviewer_bundle/paper.tex).
+
+## Checks
 
 ```powershell
-python -m src.pipeline prepare-real --release-id real-castles-v3 --output data/releases/real-castles-v3
+python -m ruff check .
+python -m ruff format --check .
+python -B -m pytest -q -p no:cacheprovider
+python -m scripts.check_repository
+python -m scripts.submission check
 ```
 
-Generate a small simulation and validate its release:
-
-```powershell
-python -m src.pipeline simulate --stage observation --output data/simulations/example-v1 --simulation-id example-v1 --count 10 --seed 6001 --config configs/simulation/pilot.yaml
-python -m src.pipeline validate data/simulations/example-v1/manifest.csv --root data/simulations/example-v1
-python -m src.pipeline make-splits data/simulations/example-v1/manifest.csv --output data/simulations/example-v1/splits --ancestry
-```
-
-Use `--preview-root some/path` to put review images elsewhere, or
-`--no-preview` when previews are not needed. Release directories are protected
-against accidental replacement; use a new ID or pass `--overwrite` only when
-you intentionally rebuild a release.
-
-Reproduce the recorded engineering evidence:
-
-```powershell
-python -m src.pipeline fit-grid
-python -m src.pipeline real-comparison
-python -m src.pipeline engineering-release
-```
-
-## Load a split safely
-
-The loader exposes arrays and explicitly allowlisted observational metadata.
-Simulator truth, random seeds, ancestry, identifiers, and sidecar paths remain
-outside model inputs.
-
-```python
-from src.data.dataset import LensDataset
-
-dataset = LensDataset(
-    "data/simulations/sim-eng1000-v1",
-    root="data/simulations/sim-eng1000-v1",
-    split="train",
-    domain="simulated",
-    eligible_for="ml",
-    target_fields={"theta_E_arcsec"},
-    strict_products=True,
-)
-sample = dataset.get_sample(0)
-image = sample["inputs"]["products"]["image"]
-theta_e = sample["targets"]["theta_E_arcsec"]
-```
-
-See [the dataset schema](docs/dataset_schema.md) for the complete contract.
-
-## Machine learning
-
-Train the original image-only baseline using training and validation data:
-
-```powershell
-python -m src.ml.train --config configs/ml/baseline.yaml
-```
-
-After accepting the checkpoint using validation only, evaluate it once on the
-locked test split:
-
-```powershell
-python -m src.ml.evaluate --checkpoint results/ml/theta-e-cnn-baseline-v1/best.pt --split test
-```
-
-Measure seed variation before comparing new inputs, losses, or architectures:
-
-```powershell
-python -m src.ml.experiments --experiment theta-e-cnn-seeds-v1
-```
-
-The report is written to `results/ml/theta-e-cnn-seeds-v1/report.md`. Use
-`--smoke` for a wiring check, `--output` for a new repeat, and `--resume` to
-verify and reuse completed runs. The full procedure is in
-[the ML quickstart](docs/ml_quickstart.md). Historical planning material is in
-the [archive](archive/README.md).
-
-## Verification
-
-Run all automated tests:
-
-```powershell
-python -B -m pytest -q -p no:cacheprovider --basetemp=.pytest-work
-```
-
-Validate the local engineering release when its generated products are
-available:
-
-```powershell
-python -B -m src.testing.validate_simulations data/simulations/sim-eng1000-v1/manifest.csv
-```
-
-New releases record configurations, seeds, paths, and sample identities.
-Historical checksum files remain as archived evidence; maintained workflows
-do not generate or enforce them.
-
-## Scientific boundary
-
-The engineering simulations use analytic Sersic sources, Gaussian control
-PSFs, scalar backgrounds, independent Poisson/read noise, and hand-set uniform
-priors. The actual release lacks empirical PSF, ERR, and DQ products and uses
-a labeled toy variance fallback. Results demonstrate in-domain synthetic
-learning and reproducible engineering behavior; they do not establish
-observational mass accuracy, calibrated uncertainty, or population-level
-performance.
+Tests use operating-system temporary storage. They never train on production
+banks, score production holdouts, or accumulate `.pytest-work*` folders.
+See [contributor guidance](CONTRIBUTING.md) before changing scientific behavior.

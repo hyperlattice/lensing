@@ -1,1 +1,1 @@
-"""Lensing pipeline package."""
+"""Maintained synthetic Einstein-radius study implementation."""
