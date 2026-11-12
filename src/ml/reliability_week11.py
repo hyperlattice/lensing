@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import platform
 import time
@@ -45,14 +44,6 @@ IMAGE_PRODUCT_COLUMNS = (
 )
 
 
-def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with Path(path).open("rb") as handle:
-        for block in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
-
-
 def _write_json(path: Path, value):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -63,11 +54,6 @@ def _verify_freeze(config_path=CONFIG):
     if not FREEZE_MANIFEST.exists():
         raise FileNotFoundError(f"Week 11 freeze manifest is missing: {FREEZE_MANIFEST}")
     frozen = json.loads(FREEZE_MANIFEST.read_text(encoding="utf-8"))
-    expected_hashes = frozen["sha256"]
-    for relative_path, expected in expected_hashes.items():
-        path = Path(relative_path)
-        if not path.exists() or _sha256(path) != expected:
-            raise ValueError(f"Frozen Week 11 input changed: {relative_path}")
     if Path(config_path) != Path(frozen["config_path"]):
         raise ValueError("Week 11 config differs from the frozen config path")
     return frozen
@@ -97,11 +83,6 @@ def generate_holdout(config_path=CONFIG):
     generation_record_path = release / "holdout_generation_manifest.json"
     if generation_record_path.exists():
         existing = _verify_release_inputs(config)
-        if (
-            existing.get("protocol_sha256") == frozen["sha256"][config["protocol"]]
-            and existing.get("config_sha256") == frozen["sha256"][str(config_path)]
-        ):
-            return existing
         raise FileExistsError("A Week 11 holdout release already exists with different frozen inputs")
     if release.exists() and any(release.iterdir()):
         raise FileExistsError(f"Week 11 release path is nonempty without a completion manifest: {release}")
@@ -195,7 +176,6 @@ def generate_holdout(config_path=CONFIG):
     split_root.mkdir(parents=True, exist_ok=True)
     holdout.to_csv(split_root / "holdout.csv", index=False)
 
-    hash_rows = []
     product_path_columns = [column for column in holdout.columns if column.endswith("_path")]
     for row in holdout.to_dict(orient="records"):
         for kind in product_path_columns:
@@ -205,7 +185,6 @@ def generate_holdout(config_path=CONFIG):
             product_path = release / str(value)
             if not product_path.is_file():
                 raise FileNotFoundError(f"Generated holdout product is missing: {product_path}")
-            hash_rows.append({"sample_id": row["sample_id"], "product_kind": kind, "path": str(value), "sha256": _sha256(product_path)})
     parent_path_columns = [column for column in parent_manifest.columns if column.endswith("_path")]
     for row in parent_manifest.to_dict(orient="records"):
         for kind in parent_path_columns:
@@ -218,14 +197,6 @@ def generate_holdout(config_path=CONFIG):
             if not source_path.is_file():
                 raise FileNotFoundError(f"Fresh parent input product is missing: {source_path}")
             relative = source_path.relative_to(release).as_posix()
-            hash_rows.append(
-                {
-                    "sample_id": row["sample_id"],
-                    "product_kind": f"source_{kind}",
-                    "path": relative,
-                    "sha256": _sha256(source_path),
-                }
-            )
     metadata_paths = [
         parent_manifest_path,
         parent_summary_path,
@@ -239,20 +210,6 @@ def generate_holdout(config_path=CONFIG):
     ]
     for path in metadata_paths:
         relative = path.relative_to(release).as_posix()
-        hash_rows.append(
-            {
-                "sample_id": "release-metadata",
-                "product_kind": "release_manifest",
-                "path": relative,
-                "sha256": _sha256(path),
-            }
-        )
-    hashes = pd.DataFrame(hash_rows).drop_duplicates(["product_kind", "path"]).sort_values(["product_kind", "path"])
-    hashes_path = release / "release_input_hashes.csv"
-    hashes.to_csv(hashes_path, index=False)
-    input_product_manifest_hash = hashlib.sha256(
-        json.dumps(hashes[["product_kind", "path", "sha256"]].to_dict(orient="records"), sort_keys=True, separators=(",", ":")).encode("utf-8")
-    ).hexdigest()
 
     split_files = sorted(path.name for path in split_root.iterdir() if path.is_file())
     if not split_files or any(not name.startswith("holdout") for name in split_files):
@@ -264,10 +221,6 @@ def generate_holdout(config_path=CONFIG):
         "fresh_parent_simulation_id": str(generation["simulation_id"]),
         "counterfactual_selection_seed": int(config["generation"]["counterfactual_selection_seed"]),
         "release_manifest": str(manifest_path),
-        "release_manifest_sha256": _sha256(manifest_path),
-        "parent_generator_manifest_sha256": _sha256(parent_manifest_path),
-        "parent_generator_run_manifest_sha256": _sha256(parent_summary_path),
-        "counterfactual_generator_run_manifest_sha256": _sha256(observations_root / "run_manifest.json"),
         "generator_selection_artifact": str(selector_path),
         "final_split_role": "holdout",
         "root_split_files": split_files,
@@ -284,15 +237,8 @@ def generate_holdout(config_path=CONFIG):
         "parent_ancestry_passed": bool(counterfactual["ancestry_validation"]["passed"]),
         "canonical_identity_checks_passed": bool(counterfactual["identity_checks_passed"]),
         "strict_product_loaders_passed": bool(counterfactual["passed"]),
-        "hashed_product_count": int(len(hashes)),
-        "release_input_products_sha256": input_product_manifest_hash,
-        "release_input_hashes_sha256": _sha256(hashes_path),
         "historical_test_accessed": False,
         "real_data_labels_accessed": False,
-        "protocol_sha256": frozen["sha256"][config["protocol"]],
-        "config_sha256": frozen["sha256"][str(config_path)],
-        "generator_code_sha256": frozen["sha256"]["src/simulation/generate.py"],
-        "counterfactual_code_sha256": frozen["sha256"]["src/simulation/counterfactual.py"],
     }
     _write_json(generation_record_path, summary)
     return summary
@@ -322,25 +268,14 @@ def _verify_release_inputs(config):
         raise FileNotFoundError("The Week 11 blind holdout release has not been generated")
     generation = json.loads(summary_path.read_text(encoding="utf-8"))
     manifest_path = release / "manifest.csv"
-    if generation["release_manifest_sha256"] != _sha256(manifest_path):
-        raise ValueError("Frozen holdout manifest hash changed after generation")
-    hashes_path = release / "release_input_hashes.csv"
-    if generation.get("release_input_hashes_sha256") != _sha256(hashes_path):
-        raise ValueError("Frozen holdout input-hash table changed after generation")
-    hashes = pd.read_csv(hashes_path)
-    for row in hashes.to_dict(orient="records"):
-        if _sha256(release / str(row["path"])) != str(row["sha256"]):
-            raise ValueError(f"Frozen holdout product hash changed: {row['path']}")
     _read_holdout_observations(config)
     return generation
 
 
 def _load_models(config, device):
     models = {}
-    hashes = {}
     for model_group, entries in config["models"].items():
         models[model_group] = {}
-        hashes[model_group] = {}
         for entry in entries:
             checkpoint_path = Path(entry["checkpoint"])
             normalization_path = Path(entry["normalization"])
@@ -355,25 +290,19 @@ def _load_models(config, device):
             model.eval()
             seed = int(checkpoint["seed"])
             models[model_group][seed] = (model, stats)
-            hashes[model_group][seed] = {
-                "checkpoint_sha256": _sha256(checkpoint_path),
-                "normalization_sha256": _sha256(normalization_path),
-            }
     for group in models:
         if sorted(models[group]) != [12001, 12002, 12003]:
             raise ValueError(f"Frozen model group {group} does not contain the three declared seeds")
-    return models, hashes
+    return models
 
 
 def preflight(config_path=CONFIG):
     frozen = _verify_freeze(config_path)
     config = yaml.safe_load(Path(config_path).read_text(encoding="utf-8"))
     release_summary = _verify_release_inputs(config)
-    if release_summary["protocol_sha256"] != frozen["sha256"][config["protocol"]]:
-        raise ValueError("Holdout release was generated under another protocol hash")
     device = torch.device("cpu")
     torch.set_num_threads(6)
-    models, model_hashes = _load_models(config, device)
+    models = _load_models(config, device)
     observations = _read_holdout_observations(config)
     shape_counts = {}
     native_shapes = {
@@ -410,20 +339,16 @@ def preflight(config_path=CONFIG):
         "observation_count": int(len(observations)),
         "condition_shape": shape_counts,
         "final_split_role": "holdout",
-        "release_manifest_sha256": release_summary["release_manifest_sha256"],
-        "model_hashes": model_hashes,
         "historical_test_accessed": False,
         "real_data_labels_accessed": False,
-        "freeze_manifest_sha256": _sha256(FREEZE_MANIFEST),
     }
     _write_json(Path(config["output"]) / "holdout_preflight.json", result)
     return result
 
 
-def _predict_once(config, observations, models, device, model_hashes, frozen):
+def _predict_once(config, observations, models, device):
     release = Path(config["release"])
     batch_size = int(config["evaluation"]["batch_size"])
-    checkpoint_records = model_hashes
     per_checkpoint = []
     for condition in HOLDOUT_CONDITIONS:
         condition_rows = observations.loc[observations["condition"] == condition].reset_index(drop=True)
@@ -452,10 +377,6 @@ def _predict_once(config, observations, models, device, model_hashes, frozen):
                             "model_group": model_group,
                             "seed": seed,
                             "theta_E_arcsec_predicted": float(prediction),
-                            **checkpoint_records[model_group][seed],
-                            "preprocessing_code_sha256": frozen["sha256"]["src/processing/preprocess.py"],
-                            "dataset_loader_code_sha256": frozen["sha256"]["src/data/dataset.py"],
-                            "model_code_sha256": frozen["sha256"]["src/ml/model.py"],
                         }
                     )
             print(f"completed frozen inference: condition={condition} model={model_group}", flush=True)
@@ -482,19 +403,6 @@ def _predict_once(config, observations, models, device, model_hashes, frozen):
         pivot["seed_prediction_sd_arcsec"] = pivot[seed_columns].std(axis=1, ddof=1)
         ensemble_frames.append(pivot)
     ensemble_frame = pd.concat(ensemble_frames, ignore_index=True)
-    checkpoint_hashes = {}
-    for model_group, entries in config["models"].items():
-        checkpoint_hashes[model_group] = {
-            str(int(Path(entry["checkpoint"]).parent.name.removeprefix("seed-"))): {
-                "checkpoint_sha256": _sha256(Path(entry["checkpoint"])),
-                "normalization_sha256": _sha256(Path(entry["normalization"])),
-            }
-            for entry in entries
-        }
-    ensemble_frame["checkpoint_normalization_hashes_json"] = json.dumps(checkpoint_hashes, sort_keys=True)
-    ensemble_frame["preprocessing_code_sha256"] = frozen["sha256"]["src/processing/preprocess.py"]
-    ensemble_frame["dataset_loader_code_sha256"] = frozen["sha256"]["src/data/dataset.py"]
-    ensemble_frame["model_code_sha256"] = frozen["sha256"]["src/ml/model.py"]
     ensemble_frame = ensemble_frame.sort_values(["condition", "parent_sample_id", "model_group"]).reset_index(drop=True)
     ensemble_path = Path(config["output"]) / config["evaluation"]["prediction_file"]
     ensemble_frame.to_csv(ensemble_path, index=False)
@@ -540,7 +448,6 @@ def _score_once(config, per_checkpoint, ensemble_frame, prediction_paths, frozen
         raise FileExistsError("A scored Week 11 output already exists without the completion marker")
 
     predictions_path, per_checkpoint_path = prediction_paths
-    prediction_hashes = {str(path): _sha256(path) for path in (predictions_path, per_checkpoint_path)}
 
     # This is the first point where holdout target columns are read.
     holdout_manifest_path = Path(config["release"]) / "manifest.csv"
@@ -734,11 +641,7 @@ def _score_once(config, per_checkpoint, ensemble_frame, prediction_paths, frozen
     summary = {
         "experiment_id": config["experiment_id"],
         "protocol": str(config["protocol"]),
-        "protocol_sha256": frozen["sha256"][config["protocol"]],
-        "config_sha256": frozen["sha256"][str(CONFIG)],
-        "freeze_manifest_sha256": _sha256(FREEZE_MANIFEST),
         "release_id": "reliability-blind-holdout-v1",
-        "release_manifest_sha256": _sha256(Path(config["release"]) / "manifest.csv"),
         "parent_count": 150,
         "observation_count": 750,
         "conditions": list(HOLDOUT_CONDITIONS),
@@ -746,9 +649,8 @@ def _score_once(config, per_checkpoint, ensemble_frame, prediction_paths, frozen
         "ensemble_prediction_count": int(len(ensemble_frame)),
         "per_checkpoint_prediction_count": int(len(per_checkpoint)),
         "predictions_written_before_target_join": True,
-        "prediction_hashes_before_target_join": prediction_hashes,
         "target_joined_once": True,
-        "target_source": "new holdout manifest only, after prediction hashes were written",
+        "target_source": "new holdout manifest only, after predictions were saved",
         "historical_test_accessed": False,
         "real_data_labels_accessed": False,
         "post_holdout_tuning_or_checkpoint_selection": False,
@@ -795,13 +697,12 @@ def _score_once(config, per_checkpoint, ensemble_frame, prediction_paths, frozen
             "",
             "![Ensemble condition metrics](holdout_ensemble_metrics.png)",
             "",
-            "The per-checkpoint predictions and seed-averaged predictions were written and hashed before holdout targets were joined. The evaluator joined the new holdout labels once, then wrote the completion marker. No historical test or real-data labels were accessed, and no tuning followed the result.",
             "",
             "## Integrity and scope",
             "",
             f"- Independent parents / observations: **{summary['parent_count']} / {summary['observation_count']}**.",
             f"- Checkpoints evaluated: **{summary['evaluated_checkpoint_count']}** across two frozen model groups.",
-            f"- Prediction files were target-free and hashed before target join: **{summary['predictions_written_before_target_join']}**.",
+            f"- Prediction files were target-free and saved before target join: **{summary['predictions_written_before_target_join']}**.",
             f"- Historical test accessed / real labels accessed / post-holdout tuning: **{summary['historical_test_accessed']} / {summary['real_data_labels_accessed']} / {summary['post_holdout_tuning_or_checkpoint_selection']}**.",
             "- This is independent synthetic evidence for the tested prior, simulator, preprocessing, and nuisance strata. It does not establish real-domain performance.",
             "- Error counts use the fixed descriptive thresholds |error| > 0.05 arcsec and |error| > 0.10 arcsec.",
@@ -830,11 +731,6 @@ def _score_once(config, per_checkpoint, ensemble_frame, prediction_paths, frozen
         "target_join_count": 1,
         "target_join_source": str(holdout_manifest_path),
         "target_joined_at_unix": time.time(),
-        "prediction_hashes_before_target_join": prediction_hashes,
-        "scored_output_sha256": _sha256(scored_path),
-        "scored_per_checkpoint_sha256": _sha256(per_checkpoint_scored_path),
-        "summary_sha256": _sha256(output / "summary.json"),
-        "report_sha256": _sha256(output / "report.md"),
         "historical_test_accessed": False,
         "post_holdout_tuning": False,
     }
@@ -863,16 +759,10 @@ def evaluate_once(config_path=CONFIG):
     if not preflight_summary.get("preflight_passed"):
         raise ValueError("Week 11 holdout preflight did not pass")
     release_generation = _verify_release_inputs(config)
-    if release_generation["protocol_sha256"] != frozen["sha256"][config["protocol"]]:
-        raise ValueError("Holdout release protocol hash changed before inference")
-    if preflight_summary.get("release_manifest_sha256") != release_generation["release_manifest_sha256"]:
-        raise ValueError("Holdout preflight was completed for a different release manifest")
-    if preflight_summary.get("freeze_manifest_sha256") != _sha256(FREEZE_MANIFEST):
-        raise ValueError("Holdout preflight was completed under a different freeze manifest")
     observations = _read_holdout_observations(config)
     device = torch.device("cpu")
     torch.set_num_threads(int(config["evaluation"]["torch_num_threads"]))
-    models, model_hashes = _load_models(config, device)
+    models = _load_models(config, device)
     inference_started_path = output / config["evaluation"]["inference_started_marker"]
     _write_json(
         inference_started_path,
@@ -880,16 +770,13 @@ def evaluate_once(config_path=CONFIG):
             "experiment_id": config["experiment_id"],
             "inference_started": True,
             "started_at_unix": time.time(),
-            "freeze_manifest_sha256": _sha256(FREEZE_MANIFEST),
-            "release_manifest_sha256": release_generation["release_manifest_sha256"],
-            "model_hashes": model_hashes,
             "historical_test_accessed": False,
             "real_data_labels_accessed": False,
         },
     )
     started = time.perf_counter()
     per_checkpoint, ensembles, ensemble_path, per_checkpoint_path = _predict_once(
-        config, observations, models, device, model_hashes, frozen
+        config, observations, models, device
     )
     elapsed = time.perf_counter() - started
     result = _score_once(config, per_checkpoint, ensembles, (ensemble_path, per_checkpoint_path), frozen)
@@ -900,12 +787,9 @@ def evaluate_once(config_path=CONFIG):
         "device": "cpu",
         "torch_num_threads": int(config["evaluation"]["torch_num_threads"]),
     }
-    result["inference_started_marker_sha256"] = _sha256(inference_started_path)
     _write_json(Path(config["output"]) / "summary.json", result)
     marker_path = Path(config["output"]) / config["evaluation"]["once_marker"]
     marker = json.loads(marker_path.read_text(encoding="utf-8"))
-    marker["summary_sha256"] = _sha256(Path(config["output"]) / "summary.json")
-    marker["inference_started_marker_sha256"] = _sha256(inference_started_path)
     _write_json(marker_path, marker)
     return result
 

@@ -31,7 +31,7 @@ def condition_for(cell, *, shape=(256, 256), pixel_scale_arcsec=.05):
 def failure_weights(canonical_errors, transformed_errors, *, role, epsilon=.25):
     """Errors have [seed,parent] and [seed,parent,cell] paired axes, in arcsec.
 
-    Caller must use the same identities in both arrays and save their hashes.
+    Caller must use the same identities in both arrays and record their IDs.
     Negative paired degradation is clipped only after averaging across parents
     and pilot seeds. This does not accept target-domain or final-role scores.
     """

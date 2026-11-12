@@ -17,7 +17,7 @@ versioned priors -> lens/source rendering -> PSF/noise -> simulated products
                                                     -> ML-safe loader/handoff
 ```
 
-`src/pipeline.py` is the public command-line coordinator. `src/main.py` is a compatibility entry point that forwards to it.
+`src/pipeline.py` is the public command-line coordinator; run it with `python -m src.pipeline`.
 
 ## Data contract and loader
 
@@ -54,13 +54,13 @@ The rebuilt `real-castles-v2` release is structurally valid. Review states are i
 
 ## Simulation system
 
-- `simulation/models.py` is the adapter boundary to lenstronomy. It owns SIS/SIE and ellipticity conventions and avoids spreading backend-specific objects through the codebase.
+- `simulation/models.py` owns SIS/SIE and ellipticity conventions, analytic controls, and backend status. Renderers import lenstronomy locally and construct its objects directly.
 - `simulation/priors.py` makes deterministic parameter draws from versioned YAML ranges and validates them.
 - `simulation/render.py` contains the analytic SIS control and extended SIE/Sersic rendering functions.
 - `simulation/observation.py` adds lens light, point images, Gaussian PSF convolution, Poisson counts, read noise, and saved expected variance.
-- `simulation/generate.py` creates the P10/P30/P60/P100 stages and engineering observations. Each accepted row receives independent parameter/noise seeds, ancestry IDs, truth/diagnostic sidecars, and all array products. Exceptions go to the rejection log and never become manifest rows.
+- `simulation/generate.py` creates the P10/P30/P60/P100 stages and engineering observations. Each accepted row receives independent parameter/noise seeds, ancestry IDs, truth/diagnostic sidecars, and all array products. Invalid sample values and floating-point failures go to the rejection log. Unexpected implementation errors and file I/O failures stop generation with their original traceback.
 - `simulation/assemble.py` combines stage manifests without losing their roots or provenance.
-- `simulation/smoke_test.py` checks the backend boundary and conventions in a minimal render.
+- Simulation tests cover analytic controls, backend conventions, and rendered products.
 - `testing/validate_simulations.py` rerenders saved samples and checks exact float32 reproducibility, schema, products, flux, and image multiplicity.
 - `testing/report_simulation_pilot.py` summarizes staged-release metrics and limitations.
 
@@ -78,8 +78,8 @@ The release ladder has distinct purposes: P10 is an analytic SIS control, P30 in
 - `ml/engine.py` contains deterministic seeding, device selection, data loading, training, checkpointing support, and prediction collection.
 - `ml/metrics.py` computes angular, relative, bias, R², and train-mean baseline metrics without an additional metrics dependency.
 - `ml/plots.py` creates noninteractive learning-curve, residual, and multi-seed diagnostics.
-- `ml/train.py` trains on 700 parents, selects a checkpoint using only 150 validation parents, and records configuration, data, source, environment, and artifact hashes.
-- `ml/evaluate.py` verifies hashes before evaluating a frozen split and writes overall, subgroup, and worst-case evidence.
+- `ml/train.py` trains on 700 parents, selects a checkpoint using only 150 validation parents, and records configuration, data identity, Git revision and dirty status, environment, and saved sample IDs.
+- `ml/evaluate.py` checks recorded sample IDs before evaluating a split and writes overall, subgroup, and worst-case evidence.
 - `ml/experiments.py` runs registered validation-only seed suites, verifies resumable artifacts, aggregates per-seed metrics, and produces the comparison report.
 - `ml/provenance.py` records package, device, Git, and source-file identity for every training run.
 

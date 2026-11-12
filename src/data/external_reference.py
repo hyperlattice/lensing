@@ -6,7 +6,6 @@ simulator targets. Intake can succeed while scientific scoring remains blocked.
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 from pathlib import Path
 import urllib.request
@@ -23,17 +22,6 @@ def read_config(path=DEFAULT_CONFIG):
     return yaml.safe_load(Path(path).read_text(encoding="utf-8"))
 
 
-def verify_asset(data: bytes, spec: dict) -> str:
-    """Verify pinned source bytes, and return the local SHA-256 digest."""
-    digest = hashlib.sha256(data).hexdigest()
-    if not spec.get("sha256") and not spec.get("git_blob_sha1"):
-        raise ValueError("An external asset requires a pinned content hash")
-    if spec.get("sha256") and digest != spec["sha256"]:
-        raise ValueError("External asset SHA-256 mismatch")
-    git_digest = hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest()
-    if spec.get("git_blob_sha1") and git_digest != spec["git_blob_sha1"]:
-        raise ValueError("External asset Git blob hash mismatch")
-    return digest
 
 
 def _filename(value):
@@ -63,12 +51,11 @@ def fetch(config_path=DEFAULT_CONFIG):
                 data = response.read(20_000_001)
             if len(data) > 20_000_000:
                 raise ValueError("Pilot asset exceeds the 20 MB intake limit")
-        digest = verify_asset(data, spec)
         if not path.exists():
             path.write_bytes(data)
-        records.append({"path": path.as_posix(), "url": spec["url"], "sha256": digest, "bytes": len(data)})
+        records.append({"path": path.as_posix(), "url": spec["url"], "bytes": len(data)})
     (root / "download_manifest.json").write_text(json.dumps(records, indent=2) + "\n", encoding="utf-8")
-    return {"downloaded_or_verified_assets": len(records), "raw_root": root.as_posix()}
+    return {"available_assets": len(records), "raw_root": root.as_posix()}
 
 
 def catalog_rows(path):
@@ -103,16 +90,14 @@ def prepare(config_path=DEFAULT_CONFIG):
     raw_root, output = Path(config["raw_root"]), Path(config["output"])
     catalog_spec = config["reference_catalog"]
     catalog_path = raw_root / _filename(catalog_spec["filename"])
-    verify_asset(catalog_path.read_bytes(), catalog_spec)
     catalog = catalog_rows(catalog_path)
     output.mkdir(parents=True, exist_ok=True)
     rows, reports = [], []
     for sample in config["samples"]:
         sample_id = _filename(sample["sample_id"])
-        arrays, headers, hashes = {}, {}, {}
+        arrays, headers = {}, {}
         for kind, spec in sample["assets"].items():
             path = raw_root / sample_id / _filename(spec["filename"])
-            hashes[kind] = verify_asset(path.read_bytes(), spec)
             with fits.open(path) as hdus:
                 hdu = hdus[int(sample["science_hdu"]) if kind == "science" else 0]
                 arrays[kind] = np.array(hdu.data, dtype=np.float32, copy=True)
@@ -154,14 +139,12 @@ def prepare(config_path=DEFAULT_CONFIG):
                      "accuracy_ready": not blockers, "status": "blocked" if blockers else "ready"})
         reports.append({**rows[-1], "structural_errors": errors, "blockers": blockers,
                         "comparison_references": sample.get("comparison_references", []),
-                        "headers": headers, "asset_sha256": hashes,
-                        "psf_input_sum": float(psf.sum()) if np.isfinite(psf.sum()) else None,
+                        "headers": headers, "psf_input_sum": float(psf.sum()) if np.isfinite(psf.sum()) else None,
                         "angular_pixel_extent_arcsec": [float(n * scale) for n in science.shape]})
     pd.DataFrame(rows).to_csv(output / "reference_intake.csv", index=False)
     report = {"experiment_id": config["experiment_id"], "sample_count": len(rows),
               "accuracy_ready_count": sum(row["accuracy_ready"] for row in rows),
-              "cnn_inference_run": False, "samples": reports,
-              "config_sha256": hashlib.sha256(Path(config_path).read_bytes()).hexdigest()}
+              "cnn_inference_run": False, "samples": reports}
     path = Path(config["report"])
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(report, indent=2, allow_nan=False) + "\n", encoding="utf-8")

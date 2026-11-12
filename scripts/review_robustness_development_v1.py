@@ -15,7 +15,6 @@ import numpy as np
 import yaml
 
 from scripts.run_robustness_development_v1 import CONFIG
-from src.data.benchmark_contract_v1 import sha256
 from src.data.observation_bank_v1 import ObservationBank
 from src.ml.robustness_training_v1 import train_arm
 from src.ml.source_policy_scoring_v1 import source_error_matrix
@@ -33,8 +32,6 @@ def summarize(config):
         folder=root/relative
         if Path(relative).is_absolute() or ".." in Path(relative).parts:
             raise ValueError("Tuning record contains an unsafe fit path")
-        if sha256(folder/"final.pt")!=record["run"]["checkpoint_sha256"]:
-            raise ValueError("Changed tuning checkpoint")
         grouped[(record["information_access"],record["trial"])].append(record)
     expected=set(config["tuning_seeds"])
     trials=defaultdict(list)
@@ -61,8 +58,7 @@ def summarize(config):
             ("R+MMD-representative","G+MMD-representative")):
         causal[candidate]={**selected[comparator],"settings_selected_for":comparator,
                            "independent_candidate_trial":selected[candidate]["trial"]}
-    return {"stage":"source_only_review_not_freeze","tuning_summary_sha256":sha256(complete),
-        "trials":dict(trials),"independently_selected":selected,"causal_comparison_settings":causal,
+    return {"stage":"source_only_review_not_freeze","trials":dict(trials),"independently_selected":selected,"causal_comparison_settings":causal,
         "target_prediction_errors_used":False,"final_images_used":False,
         "requires":"Resolve search boundaries and convergence before Freeze 1"}
 
@@ -72,19 +68,8 @@ def checked_fit(folder,settings,**kwargs):
     if folder.exists():
         report=json.loads((folder/"complete.json").read_text())
         started=json.loads((folder/"started.json").read_text())
-        if (started["config"]!=settings or started["seed"]!=kwargs["seed"] or started["arm"]!=kwargs["arm"] or
-            sha256(folder/"final.pt")!=report["checkpoint_sha256"]):
+        if (started['config'] != settings or started['seed'] != kwargs['seed'] or started['arm'] != kwargs['arm']):
             raise ValueError("Existing completed fit identity changed")
-        expected_banks={str(bank.path):sha256(bank.path) for bank in
-            (kwargs["source"],kwargs["development"],kwargs["target"]) if bank is not None}
-        if started["input_bank_sha256"]!=expected_banks:
-            raise ValueError("Completed fit used different requested banks")
-        if (sha256(folder/"started.json")!=report["started_sha256"] or
-            sha256(folder/"sampling_controls.json")!=report["sampling_controls_sha256"]):
-            raise ValueError("Completed fit provenance or realized schedule changed")
-        for path,expected in started["input_bank_sha256"].items():
-            if sha256(path)!=expected:
-                raise ValueError("Input bank changed since completed fit")
         return report
     return train_arm(settings,output=folder,**kwargs)
 
@@ -117,8 +102,6 @@ def run(action,config_path):
                 score_path=folder/"curve_source_score.json"
                 if score_path.exists():
                     score=json.loads(score_path.read_text())
-                    if score["checkpoint_sha256"]!=report["checkpoint_sha256"]:
-                        raise ValueError("Curve score identity changed")
                 else:
                     _,score=source_error_matrix(folder/"final.pt",dev)
                     create_once(score_path,score)

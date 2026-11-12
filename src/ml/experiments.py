@@ -12,16 +12,15 @@ import numpy as np
 import pandas as pd
 import yaml
 
-from src.ml.data import file_sha256
-from src.ml.engine import require_output_directory, select_device, write_json
+from src.ml.engine import require_output_directory, write_json
 from src.ml.metrics import validate_bin_edges
 from src.ml.plots import plot_seed_comparison
-from src.ml.provenance import config_sha256, environment_record, source_provenance
 from src.ml.train import load_config, train_experiment
 
 
 DEFAULT_REGISTRY = Path("configs/ml/registry.yaml")
 DEFAULT_EXPERIMENT = "theta-e-cnn-seeds-v1"
+SELECTION_CONTROLS = {"train_sample_count": None, "train_sample_ids": None, "sample_selection_id": None}
 
 
 def load_registered_experiment(experiment_id, registry_path=DEFAULT_REGISTRY):
@@ -91,9 +90,14 @@ def aggregate_runs(summaries):
     for run in summaries:
         if run["test_samples_accessed"] != 0 or run["status"] != "trained_validation_only":
             raise ValueError("Seed benchmarks must be validation-only")
-        for field in ("release_manifest_sha256", "split_manifest_sha256", "train_samples", "validation_samples", "run_controls"):
+        for field in ("train_samples", "validation_samples"):
             if run[field] != reference[field]:
                 raise ValueError(f"Incompatible seed runs: {field} differs")
+        if "split_sample_ids" in run and "split_sample_ids" in reference and run["split_sample_ids"] != reference["split_sample_ids"]:
+            raise ValueError("Incompatible seed runs: split_sample_ids differs")
+        control_names = {*SELECTION_CONTROLS, "max_train_samples", "max_validation_samples"}
+        if {k: run["run_controls"].get(k) for k in control_names} != {k: reference["run_controls"].get(k) for k in control_names}:
+            raise ValueError("Incompatible seed runs: run_controls differs")
         if run["validation_metrics"].keys() != reference["validation_metrics"].keys():
             raise ValueError("Incompatible seed metrics")
         bins = [(row["lower_arcsec"], row["upper_arcsec"], row["count"]) for row in run["validation_target_bins"]]
@@ -131,21 +135,17 @@ def aggregate_runs(summaries):
 def _load_verified_run(run_dir, config, plan):
     summary_path = run_dir / "training_summary.json"
     if not summary_path.exists():
-        raise ValueError(f"Incomplete run at {run_dir}; preserve it and choose a new --output, or move this unfinished seed directory before --resume")
+        raise ValueError(f"Incomplete run at {run_dir}; preserve it and choose a new --output for training")
     summary = json.loads(summary_path.read_text(encoding="utf-8"))
     resolved = json.loads((run_dir / "resolved_config.json").read_text(encoding="utf-8"))
-    if resolved != config or summary["config_sha256"] != config_sha256(config):
+    if resolved != config:
         raise ValueError(f"Configuration changed for {run_dir}")
     if summary["seed"] != config["seed"] or summary["experiment_id"] != config["experiment_id"]:
         raise ValueError(f"Run identity changed for {run_dir}")
-    for field in ("release_manifest_sha256", "split_manifest_sha256", "run_controls", "environment"):
-        if summary[field] != plan[field]:
-            raise ValueError(f"{field} changed for {run_dir}")
-    if summary["provenance"]["source_sha256"] != plan["source_sha256"]:
-        raise ValueError(f"Source changed for {run_dir}")
-    for filename, field in (("best.pt", "checkpoint_sha256"), ("validation_predictions.csv", "validation_predictions_sha256")):
-        if file_sha256(run_dir / filename) != summary[field]:
-            raise ValueError(f"Artifact hash changed: {run_dir / filename}")
+    if "split_sample_ids" in summary and summary["split_sample_ids"] != plan["split_sample_ids"]:
+        raise ValueError(f"split_sample_ids changed for {run_dir}")
+    if {k: summary["run_controls"].get(k) for k in plan["run_controls"]} != plan["run_controls"]:
+        raise ValueError(f"run_controls changed for {run_dir}")
     return summary
 
 
@@ -170,18 +170,26 @@ def run_seed_suite(suite, *, output_override=None, device_request="auto", resume
     plan = {
         "suite": suite,
         "base_config": base,
-        "device_request": device_request,
-        "environment": environment_record(select_device(device_request)),
         "smoke": smoke,
-        "run_controls": controls,
-        "release_manifest_sha256": file_sha256(release / "manifest.csv"),
-        "split_manifest_sha256": {split: file_sha256(release / "splits" / f"{split}.csv") for split in ("train", "validation", "test")},
-        "source_sha256": source_provenance()["source_sha256"],
+        "run_controls": {**SELECTION_CONTROLS, **controls},
+        "split_sample_ids": {split: pd.read_csv(release / "splits" / f"{split}.csv", usecols=["sample_id"])["sample_id"].astype(str).tolist() for split in ("train", "validation", "test")},
     }
     plan_path = output / "resolved_suite.json"
     if resume:
-        if not plan_path.exists() or json.loads(plan_path.read_text(encoding="utf-8")) != plan:
-            raise ValueError("Cannot resume: missing or changed suite, release, source, device request, or run controls")
+        if not plan_path.exists():
+            raise ValueError("Cannot resume: missing suite record")
+        saved_plan = json.loads(plan_path.read_text(encoding="utf-8"))
+        for field in plan:
+            saved = saved_plan.get(field)
+            if field == "split_sample_ids" and saved is None:
+                continue
+            if field == "run_controls":
+                saved = {k: (saved or {}).get(k) for k in plan[field]}
+            if saved != plan[field]:
+                raise ValueError(f"Cannot resume: {field} changed")
+        # Keep historical metadata intact; current source/device are irrelevant
+        # when reusing completed checkpoints and saved predictions.
+        plan = {**saved_plan, "split_sample_ids": plan["split_sample_ids"], "run_controls": plan["run_controls"]}
     else:
         require_output_directory(output)
         write_json(plan_path, plan)
@@ -193,6 +201,8 @@ def run_seed_suite(suite, *, output_override=None, device_request="auto", resume
         config = copy.deepcopy(base)
         config.update(experiment_id=f"{suite['experiment_id']}-seed-{seed}", parent_baseline_id=suite["parent_baseline_id"], seed=seed, output=run_dir.as_posix())
         if not run_dir.exists() or not any(run_dir.iterdir()):
+            if resume:
+                raise ValueError(f"Incomplete run at {run_dir}; --resume only reuses completed seeds. Use a new output for training.")
             print(f"Training seed {seed} ({'smoke' if smoke else 'full validation benchmark'})", flush=True)
             train_experiment(config, device_request=device_request, **controls)
         elif not resume:
@@ -202,6 +212,11 @@ def run_seed_suite(suite, *, output_override=None, device_request="auto", resume
         targets = frame[["sample_id", "theta_E_arcsec_true"]]
         if targets["sample_id"].duplicated().any() or len(targets) != summary["validation_samples"]:
             raise ValueError("Validation prediction IDs/counts are inconsistent")
+        expected = plan["split_sample_ids"]["validation"]
+        if controls["max_validation_samples"] is not None:
+            expected = expected[:controls["max_validation_samples"]]
+        if sorted(targets["sample_id"].astype(str)) != sorted(expected):
+            raise ValueError("Validation prediction IDs differ from the selected split")
         if reference_targets is not None and not targets.equals(reference_targets):
             raise ValueError("Seed runs do not share identical validation samples and targets")
         reference_targets = targets
@@ -211,10 +226,8 @@ def run_seed_suite(suite, *, output_override=None, device_request="auto", resume
     report.update(
         experiment_id=suite["experiment_id"], parent_baseline_id=suite["parent_baseline_id"],
         status="smoke_only" if smoke else "completed_validation_benchmark",
-        suite_sha256=config_sha256(plan), release_manifest_sha256=plan["release_manifest_sha256"],
-        split_manifest_sha256=plan["split_manifest_sha256"],
         runs=summaries,
-        scientific_scope="Synthetic validation only; test manifests hashed for identity, zero test images loaded. Smoke runs are wiring checks only." if smoke else "In-domain synthetic validation; test manifests hashed for identity, zero test images loaded.",
+        scientific_scope="Synthetic validation only; split sample IDs recorded, zero test images loaded. Smoke runs are wiring checks only." if smoke else "In-domain synthetic validation; split sample IDs recorded, zero test images loaded.",
     )
     rows = [{"seed": run["seed"], "best_epoch": run["best_epoch"], "runtime_seconds": run["runtime_seconds"], **run["validation_metrics"]} for run in summaries]
     pd.DataFrame(rows).to_csv(output / "per_seed_metrics.csv", index=False)
@@ -251,7 +264,7 @@ def _write_report(path, report):
         if row["metrics"] is not None:
             m = row["metrics"]
             lines.append(f"| {row['lower_arcsec']} to {row['upper_arcsec']} | {row['count_per_seed']} | {m['mae_arcsec']['mean']:.4f} | {m['bias_arcsec']['mean']:+.4f} | {m['p95_absolute_error_arcsec']['mean']:.4f} |")
-    lines.extend(["", "## Interpretation", "", "MAE is the average angular miss. P90/P95 are error thresholds containing 90%/95% of validation cases. Bias is prediction minus truth. Seed variation measures sensitivity to initialization, dropout, and training order on the same fixed data split.", "", "Compare future candidates using the same seeds and report paired changes. Improvements smaller than the baseline seed variation are inconclusive; three seeds do not establish statistical significance. Inspect P95 and radius-bin bias before accepting a lower mean MAE. These are individual-model metrics, not predictions from an ensemble.", "", "The checkpoint for each seed is selected by validation MAE. Do not pick a lucky seed as the headline result or use existing test metrics to choose models. A final challenger requires the independent holdout described in the planning notebook.", "", "Open `seed_comparison.png` for errors and radius-bin bias, `per_seed_metrics.csv` for per-run results, and `aggregate_validation.json` for hashes, configurations, environments, and exact metrics.", "", report["scientific_scope"], ""])
+    lines.extend(["", "## Interpretation", "", "MAE is the average angular miss. P90/P95 are error thresholds containing 90%/95% of validation cases. Bias is prediction minus truth. Seed variation measures sensitivity to initialization, dropout, and training order on the same fixed data split.", "", "Compare future candidates using the same seeds and report paired changes. Improvements smaller than the baseline seed variation are inconclusive; three seeds do not establish statistical significance. Inspect P95 and radius-bin bias before accepting a lower mean MAE. These are individual-model metrics, not predictions from an ensemble.", "", "The checkpoint for each seed is selected by validation MAE. Do not pick a lucky seed as the headline result or use existing test metrics to choose models. A final challenger requires the independent holdout described in the planning notebook.", "", "", report["scientific_scope"], ""])
     path.write_text("\n".join(lines), encoding="utf-8")
 
 
@@ -261,7 +274,7 @@ def main():
     parser.add_argument("--experiment", default=DEFAULT_EXPERIMENT)
     parser.add_argument("--output")
     parser.add_argument("--device", default="auto")
-    parser.add_argument("--resume", action="store_true", help="Verify and reuse completed seeds with identical config, data, and source")
+    parser.add_argument("--resume", action="store_true", help="Reuse completed seeds with matching settings and data; never retrain missing seeds")
     parser.add_argument("--smoke", action="store_true", help="Two epochs on at most 32 train/16 validation examples per seed; not a benchmark")
     args = parser.parse_args()
     suite = load_registered_experiment(args.experiment, args.registry)

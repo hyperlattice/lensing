@@ -1,15 +1,8 @@
 """Simulation backends and project-level lens-model conventions."""
 
 from src.simulation.models import (
-    SimulationBackendUnavailable,
     backend_convention_check,
     backend_status,
-    build_fitting_sequence,
-    build_image_model,
-    build_lens_model,
-    build_light_model,
-    build_point_source_model,
-    build_psf,
     e1_e2_to_q_phi,
     ellipticity_from_q_phi,
     q_phi_to_e1_e2,
@@ -33,15 +26,8 @@ from src.simulation.render import (
 )
 
 __all__ = [
-    "SimulationBackendUnavailable",
     "backend_convention_check",
     "backend_status",
-    "build_fitting_sequence",
-    "build_image_model",
-    "build_lens_model",
-    "build_light_model",
-    "build_point_source_model",
-    "build_psf",
     "e1_e2_to_q_phi",
     "ellipticity_from_q_phi",
     "q_phi_to_e1_e2",

@@ -43,12 +43,12 @@ evaluation.
 | Component | Implementation and responsibility |
 |---|---|
 | Parameter proposals | [`priors.py`](../src/simulation/priors.py): deterministic physical and observation draws. |
-| Backend adapter | [`models.py`](../src/simulation/models.py): lazy imports, backend status, model constructors, parameter conventions. |
+| Model conventions | [`models.py`](../src/simulation/models.py): analytic controls, backend status, and parameter conventions; backend constructors are used directly inside renderers. |
 | Analytic and extended controls | [`render.py`](../src/simulation/render.py): SIS controls and extended-source rendering. |
 | Observation formation | [`observation.py`](../src/simulation/observation.py): extended light, solved point images, Gaussian blurring, and detector noise. |
 | Release generation | [`generate.py`](../src/simulation/generate.py): FITS/array/JSON products, manifests, diagnostics, and rejection logs. |
 | Staged-release assembly | [`assemble.py`](../src/simulation/assemble.py): combines stage artifacts without renaming parents. |
-| Engineering release | [`pipeline.py`](../src/pipeline.py), `build_engineering_release`: generation, splitting, validation, checksums, and audit mirror. |
+| Engineering release | [`pipeline.py`](../src/pipeline.py), `build_engineering_release`: generation, splitting, validation, and audit mirror. |
 | Matched interventions | [`counterfactual.py`](../src/simulation/counterfactual.py): parent-state rerenders, protected targets, ancestry checks, and canonical identity checks. |
 | Processing | [`preprocess.py`](../src/processing/preprocess.py): FITS reading, crop/pad geometry, masks, background estimation, normalization, and fallback variance. |
 | Data contract | [`dataset.py`](../src/data/dataset.py): strict product loading and separation of model inputs, targets, and provenance. |
@@ -147,7 +147,7 @@ magnitude without applying the renderer's profile and unit conventions.
 For the SIE draw, parameter and noise seeds are derived through
 `SeedSequence([release_seed, 3003, index])`. Observation draws use a generator
 seeded from `parameter_seed + 17`; stress draws use `parameter_seed + 7001`.
-Saved parameter/noise seeds and configuration hashes support reproducibility.
+Saved parameter/noise seeds and resolved configurations support reproducibility.
 
 ## Scene construction
 
@@ -293,7 +293,7 @@ as the index. Typical product groups are:
 | `psf/` | Gaussian kernels and associated metadata. |
 | `geometry/`, `background/`, `transforms/`, `noise/` | Geometry, estimated background, normalization, and generating-noise records. |
 | `parameters/`, `diagnostics/` | Privileged truth, solved roots, amplitudes, multiplicity, and scene summaries. |
-| Release-level records | `manifest.csv`, run manifest, rejection log, split reports, engineering report, and checksums where applicable. |
+| Release-level records | `manifest.csv`, run manifest, rejection log, split reports, engineering report. |
 
 The exact schema is defined in [dataset_schema.md](dataset_schema.md).
 Review previews live under `results/previews/simulated/<release>/` and are not

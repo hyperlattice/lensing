@@ -6,8 +6,7 @@ import numpy as np
 import pytest
 import torch
 
-from src.data.benchmark_contract_v1 import sha256
-from src.ml.observation_bank_v1 import ObservationBank
+from src.data.observation_bank_v1 import ObservationBank
 from src.ml.robustness_training_v1 import ARMS, train_arm
 from src.simulation.adaptive_integration_v1 import adaptive_clean, pixel_fluxes
 from src.simulation.precise_point_renderer_v1 import fourth_order_amplitudes
@@ -25,9 +24,9 @@ def fixture_bank(root, role, seed):
             a = np.full(shape, .3+i*.2, dtype=np.float32)
             p = root/f"{i}-{k}.npy"
             np.save(p,a)
-            products[k] = {"path": p.name, "sha256": sha256(p)}
+            products[k] = {"path": p.name}
         p = {"parent_system_id": parent, "role": role, "parameter_seed": seed+i,
-             "noise_seed": seed+100+i, "ancestry_ids": [], "latent_sha256": f"{role}-{i}"}
+             "noise_seed": seed+100+i, "ancestry_ids": [], "latent_id": f"{role}-{i}"}
         if role=="target_adaptation":
             p["images"] = [products["base"]]
         else:
@@ -39,13 +38,35 @@ def fixture_bank(root, role, seed):
     label.write_text(json.dumps(targets))
     m = {"schema":"observation_bank_v1", "stage":"unit_fixture", "role":role, "parents":records,
          "exclusion_ledger":[],"condition_access":"gaussian_only",
-         "targets": None if role=="target_adaptation" else {"path":label.name,"sha256":sha256(label)}}
+         "targets": None if role=="target_adaptation" else {"path":label.name}}
     path = root/"bank.json"
     path.write_text(json.dumps(m))
     return path
 
 
-def test_all_eight_arms_share_init_parent_exposure_and_reject_final_roles(tmp_path):
+def test_qualified_bank_loads_without_historical_renderer_source(tmp_path):
+    path = fixture_bank(tmp_path / "target", "target_adaptation", 1000)
+    report = tmp_path / "qualification.json"
+    report.write_text(json.dumps({"passed": True, "rendering_factor": "fixture"}))
+    document = json.loads(path.read_text())
+    document.update(stage="qualified_development", rendering_factor="fixture",
+                    image_unit="electrons_per_second",
+                    target_definition="lenstronomy_SIE_circularized_parameter_arcsec",
+                    qualification={"path": str(report)})
+    path.write_text(json.dumps(document))
+    bank = ObservationBank(path, expected_role="target_adaptation")
+    np.testing.assert_array_equal(bank.target_image(bank.parents[0]["parent_system_id"], 0),
+                                  np.full((32, 32), .3, dtype=np.float32))
+
+
+def test_all_eight_arms_share_init_parent_exposure_and_reject_final_roles(tmp_path, monkeypatch):
+    from src.ml.model import build_model
+    initial_states=[]
+    def capture_model(config):
+        model=build_model(config)
+        initial_states.append({k:v.clone() for k,v in model.state_dict().items()})
+        return model
+    monkeypatch.setattr("src.ml.robustness_training_v1.build_model",capture_model)
     source = ObservationBank(fixture_bank(tmp_path/"source","source_train",1000),expected_role="source_train",allow_fixture=True)
     dev = ObservationBank(fixture_bank(tmp_path/"dev","source_development",2000),expected_role="source_development",allow_fixture=True)
     target = ObservationBank(fixture_bank(tmp_path/"target","target_adaptation",3000),expected_role="target_adaptation",allow_fixture=True)
@@ -57,8 +78,11 @@ def test_all_eight_arms_share_init_parent_exposure_and_reject_final_roles(tmp_pa
         reports.append(train_arm(config,seed=720401,arm=arm,source=source,development=dev,
             target=target if "+MMD" in arm else None,output=tmp_path/arm,
             probabilities=[.7,.05,.05,.05,.05,.05,.05],allow_fixture=True))
-    assert len({r["parent_schedule_sha256"] for r in reports})==1
-    assert len({r["initial_weights_sha256"] for r in reports})==1
+    schedules=[json.loads((tmp_path/arm/"sampling_controls.json").read_text())["parent_schedule"] for arm in sorted(ARMS)]
+    assert all(schedule==schedules[0] for schedule in schedules)
+    for state in initial_states[1:]:
+        for key in state:
+            torch.testing.assert_close(state[key],initial_states[0][key],rtol=0,atol=0)
     assert {r["source_exposures"] for r in reports}=={8}
     assert all(r["target_exposures"]==(8 if "+MMD" in r["arm"] else 0) for r in reports)
     assert all(np.isfinite(r["validation_mae_arcsec"]) and not r["final_images_accessed"] for r in reports)
@@ -85,7 +109,7 @@ def test_latent_alias_cannot_cross_source_roles_with_new_ids_and_seeds(tmp_path)
     source=ObservationBank(fixture_bank(tmp_path/"source","source_train",1000),expected_role="source_train",allow_fixture=True)
     path=fixture_bank(tmp_path/"dev","source_development",2000)
     document=json.loads(path.read_text())
-    document["parents"][0]["latent_sha256"]=source.parents[0]["latent_sha256"]
+    document["parents"][0]["latent_id"]=source.parents[0]["latent_id"]
     path.write_text(json.dumps(document))
     dev=ObservationBank(path,expected_role="source_development",allow_fixture=True)
     cfg={"optimizer_updates":1,"validation_interval_updates":1,"batch_size":2,"torch_threads":2,"mmd_weight":0.}

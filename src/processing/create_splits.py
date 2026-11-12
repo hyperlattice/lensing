@@ -1,4 +1,3 @@
-import hashlib
 import json
 from pathlib import Path
 
@@ -183,7 +182,7 @@ def ancestry_components(manifest, group_columns=ANCESTRY_COLUMNS):
     for index, sample_id in enumerate(manifest["sample_id"].astype(str)):
         members.setdefault(groups.find(index), []).append(sample_id)
     component_ids = {
-        root: "group-" + hashlib.sha256("\n".join(sorted(sample_ids)).encode("utf-8")).hexdigest()[:16]
+        root: "group-" + min(sample_ids)
         for root, sample_ids in members.items()
     }
     return pd.DataFrame(

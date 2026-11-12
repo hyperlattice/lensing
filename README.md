@@ -39,8 +39,8 @@ Each working area has its own guide: [source code](src/README.md),
 [notebooks](notebooks/README.md). Contributor conventions are in
 [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Check repository references with `python -m scripts.check_repository` and run
-the dataset-free analytic smoke with `python -m src.simulation.smoke_test`.
+Check repository references with `python -m scripts.check_repository`. Analytic
+and rendering checks are part of the test suite described below.
 See [artifact tracking policy](docs/artifact_policy.md) before staging outputs.
 
 ## Data and previews
@@ -211,9 +211,9 @@ available:
 python -B -m src.testing.validate_simulations data/simulations/sim-eng1000-v1/manifest.csv
 ```
 
-The engineering checksum ledger is in
-`data/simulations/sim-eng1000-v1/checksums.sha256`; its tracked audit copy is
-under `data/manifests/sim-eng1000-v1/`.
+New releases record configurations, seeds, paths, and sample identities.
+Historical checksum files remain as archived evidence; maintained workflows
+do not generate or enforce them.
 
 ## Scientific boundary
 

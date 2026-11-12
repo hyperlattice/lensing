@@ -10,19 +10,18 @@ import torch
 import yaml
 
 from test_ml_baseline import _seed_suite, _write_release
-from src.ml.experiments_v2 import run_seed_suite
+from src.ml.experiments import run_seed_suite
 from src.ml.matched_training import paired_schedule, run
 
 
-def test_versioned_suite_complete_control_schema_and_resume(tmp_path):
+def test_suite_complete_control_schema_and_resume(tmp_path):
     torch.set_num_threads(2)
     suite = _seed_suite(tmp_path)
     report = run_seed_suite(suite, device_request="cpu")
-    output = Path(suite["output"] + "-controls-v2")
-    assert not Path(suite["output"]).exists()
+    output = Path(suite["output"])
     assert set(report["runs"][0]["run_controls"]) == {
         "max_train_samples", "max_validation_samples", "train_sample_count",
-        "train_sample_ids_sha256", "sample_selection_id"}
+        "train_sample_ids", "sample_selection_id"}
     assert run_seed_suite(suite, device_request="cpu", resume=True)["seed_count"] == 2
     path = output / "seed-17" / "training_summary.json"
     summary = json.loads(path.read_text())

@@ -38,7 +38,6 @@ def _bootstrap_mean(values, *, resamples=10000, seed=6031):
 
 def _candidate_predictions(candidate_root, family):
     frames = []
-    hashes = {}
     for seed in (12001, 12002, 12003):
         path = candidate_root / family / f"seed-{seed}" / "validation_predictions.csv"
         if not path.exists():
@@ -48,12 +47,10 @@ def _candidate_predictions(candidate_root, family):
             raise ValueError(f"Unexpected seed labels in {path}")
         frame["seed"] = seed
         frame["intervention_id"] = frame["stratum"].map(STRATUM_INTERVENTION)
-        frame["checkpoint_sha256"] = frame["checkpoint_sha256"].astype(str)
         if frame["intervention_id"].isna().any():
             raise ValueError(f"Unknown validation stratum in {path}")
-        hashes[str(seed)] = frame["checkpoint_sha256"].iloc[0]
         frames.append(frame)
-    return pd.concat(frames, ignore_index=True), hashes
+    return pd.concat(frames, ignore_index=True)
 
 
 def audit_scale_aware_mitigations(
@@ -89,7 +86,6 @@ def audit_scale_aware_mitigations(
         "theta_E_arcsec_true",
         "baseline_prediction_arcsec",
         "baseline_absolute_error_arcsec",
-        "checkpoint_sha256",
     ]
     baseline = baseline[baseline_columns]
 
@@ -98,7 +94,7 @@ def audit_scale_aware_mitigations(
     paired_frames = []
     summaries = {}
     for family in ("pixel_target", "metadata"):
-        candidate, checkpoint_hashes = _candidate_predictions(candidate_root, family)
+        candidate = _candidate_predictions(candidate_root, family)
         candidate = candidate.rename(
             columns={
                 "theta_E_arcsec_predicted": "candidate_prediction_arcsec",
@@ -141,7 +137,6 @@ def audit_scale_aware_mitigations(
                 "paired_delta_mae_arcsec": float(parent["effect"].mean()),
                 "bootstrap_95_low_arcsec": interval[0],
                 "bootstrap_95_high_arcsec": interval[1],
-                "checkpoint_sha256_by_seed": json.dumps(checkpoint_hashes, sort_keys=True),
             }
             family_effects.append(row)
             all_effects.append(row)
@@ -189,13 +184,13 @@ def audit_scale_aware_mitigations(
             canonical["paired_delta_mae_arcsec"] <= float(practical_effect_arcsec)
         )
         summaries[family] = {
-            "checkpoint_sha256_by_seed": checkpoint_hashes,
             "baseline_comparisons": family_effects,
             "candidate_scale_penalties": own_scale_effects,
             "lowers_error_at_both_shifted_scales": shifted_lowers_error,
             "canonical_degradation_at_most_threshold": canonical_noninferior,
             "utility_rule_passed": shifted_lowers_error and canonical_noninferior,
         }
+
         for (seed, stratum), group in candidate.groupby(["seed", "stratum"]):
             seed_metrics.append(
                 {
@@ -207,10 +202,8 @@ def audit_scale_aware_mitigations(
                     "p95_absolute_error_arcsec": float(
                         group["candidate_absolute_error_arcsec"].quantile(0.95)
                     ),
-                    "checkpoint_sha256": checkpoint_hashes[str(seed)],
                 }
             )
-
     effects_frame = pd.DataFrame(all_effects)
     effects_frame.to_csv(output_dir / "paired_effects.csv", index=False)
     pd.DataFrame(seed_metrics).to_csv(output_dir / "per_seed_metrics.csv", index=False)
@@ -268,7 +261,6 @@ def audit_scale_aware_mitigations(
         lines.append("")
     lines.extend(
         [
-            "Full per-seed metrics, paired predictions, effects, and checkpoint hashes are in the neighboring CSV and JSON files.",
             "",
         ]
     )

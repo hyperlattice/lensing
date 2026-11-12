@@ -1,11 +1,9 @@
 # Machine-learning quickstart
 
-Start with the [experiment index](experiments.md) for current configuration
-locations. The historical `src.ml.experiments` seed runner has a known
-`run_controls` verification mismatch with current training summaries; both
-associated test failures predate the cleanup. See the
-[validation record](maintenance/cleanup_validation.md). Its recorded results
-remain historical evidence; maintenance has not rerun those experiments.
+Start with the [experiment index](experiments.md) for current commands and
+configuration locations. The seed runners have been consolidated into
+`src.ml.experiments`, including the complete training-control schema. Existing
+research results remain historical records; this refactor has not rerun them.
 
 ## Controlled Huber-delta experiments
 
@@ -22,15 +20,16 @@ python -B -m src.ml.compare --reference results/ml/theta-e-cnn-seeds-v1 --candid
 ```
 
 Use a new `--output` for a fresh run; completed outputs are protected. Resume
-requires unchanged source and configuration. The comparison reads verified
+requires matching scientific settings and saved data identities. The comparison reads verified
 validation prediction tables and checks matching samples, targets, seeds, and
 release/split identities. It adds threshold fractions, the slope/intercept of
 predicted versus true radius, and prediction-range diagnostics to both old and
 new results without loading any images.
 
-The conservative gate requires MAE improvement of at least 0.01 arcsec, no
-increase in mean P95 or mean worst-bin absolute bias, and MAE improvement on
-every seed. It is a development rule, not a significance test. Fractions within
+The historical development rule required MAE improvement of at least 0.01 arcsec,
+no increase in mean P95 or mean worst-bin absolute bias, and improvement on every
+seed. Current comparisons report the metrics directly; that historical selection
+rule is retained only when interpreting the recorded ablation. Fractions within
 0.05 and 0.10 arcsec are threshold measures for regression, not classification
 accuracy. The fitted slope/intercept diagnoses point-prediction bias; it is
 not uncertainty calibration.
@@ -123,7 +122,7 @@ After accepting the model and checkpoint based on validation:
 python -m src.ml.evaluate --checkpoint results/ml/theta-e-cnn-baseline-v1/best.pt --split test
 ```
 
-This verifies both the release and split hashes before inference, then writes:
+This checks recorded split sample IDs before inference, then writes:
 
 - `evaluation-test/report.md`: short human interpretation;
 - `evaluation-test/metrics.json`: model, baseline, subgroup, and worst-case metrics;
@@ -178,7 +177,7 @@ For a fresh repeat, choose a new output directory:
 python -m src.ml.experiments --experiment theta-e-cnn-seeds-v1 --output results/ml/theta-e-cnn-seeds-v1-repeat
 ```
 
-The runner never loads test images or calculates test metrics. It hashes the release and all split manifests to record their identity. The model still receives only normalized images; normalization uses the training split, and validation MAE selects the checkpoint independently for each seed. All seeds are reported; a particularly lucky seed is not the benchmark result.
+The runner never loads test images or calculates test metrics. It records explicit split sample IDs. The model still receives only normalized images; normalization uses the training split, and validation MAE selects the checkpoint independently for each seed. All seeds are reported; a particularly lucky seed is not the benchmark result.
 
 ## 8. Read the seed comparison
 
@@ -190,15 +189,18 @@ Open these files in `results/ml/theta-e-cnn-seeds-v1`:
 | `seed_comparison.png` | MAE/RMSE/P95 for each seed and systematic errors versus true radius |
 | `per_seed_metrics.csv` | Exact validation metrics, best epochs, and runtimes |
 | `validation_target_bins.csv` | Counts and errors for every seed and fixed radius bin |
-| `aggregate_validation.json` | Machine-readable summary, run records, hashes, and environments |
-| `resolved_suite.json` | Frozen suite settings, base config, source hashes, and release identity |
+| `aggregate_validation.json` | Machine-readable summary, run records, sample IDs, and environments |
+| `resolved_suite.json` | Suite settings, base config, training controls, and release identity |
 | `seed-12001/`, `seed-12002/`, `seed-12003/` | Individual checkpoints, normalization, resolved configs, training histories, predictions, and plots |
 
 P90 and P95 are absolute-error thresholds that contain 90% and 95% of the validation examples. A good mean MAE can coexist with a poor P95, so inspect both. Radius-bin bias shows whether small or large lenses are systematically overestimated or underestimated. The default bins are `[0.5, 1.0)`, `[1.0, 1.5)`, and `[1.5, 2.0]` arcsec; out-of-range and empty groups remain visible in the CSV/JSON.
 
 The headline is the arithmetic mean of the individual seeds' validation MAEs with their **sample standard deviation** (`ddof=1`). This spread measures sensitivity to initialization, dropout, and training order on one fixed data split. It is not a confidence interval, an ensemble score, or variation over different data splits. Compare future models on the same seeds and examine paired changes; a gain smaller than the baseline seed variation is inconclusive. Three seeds alone do not establish significance.
 
-Every training run now records the seed, resolved-config hash, release/split hashes, checkpoint and prediction hashes, Python/package versions, device and CPU-thread details, Git revision, and hashes of the Python source. Checkpoints remain ignored by Git.
+Every training run records resolved settings, seeds, split sample IDs,
+Python/package versions, device details, Git revision, and dirty status.
+Content hashing and checksum verification have been removed. A dirty revision
+alone does not reproduce uncommitted edits. Checkpoints remain ignored by Git.
 
 The first full three-seed benchmark completed with validation MAEs of `0.08836`, `0.08587`, and `0.10206` arcsec: a mean of `0.09210` with sample standard deviation `0.00872` arcsec. Mean P95 was `0.23782` arcsec. It took about seven minutes on CPU, and seed 12001 exactly reproduced the original validation predictions. All three seeds overestimated small radii and underestimated large radii; mean bin biases were `+0.0466` arcsec for `[0.5, 1.0)` and `-0.0507` arcsec for `[1.5, 2.0]`. These are the reference findings for future comparisons. See [the recorded report](../results/ml/theta-e-cnn-seeds-v1/report.md).
 
@@ -210,6 +212,11 @@ An occupied output directory is protected. To verify and reuse completed seeds:
 python -m src.ml.experiments --experiment theta-e-cnn-seeds-v1 --resume
 ```
 
-Add the same `--output`, `--device`, and `--smoke` options if they were used originally. Resume requires matching configurations, environment, source, data identities, and checkpoint/prediction hashes. Missing seed directories are trained; completed seeds are reused. An interrupted seed with incomplete artifacts is rejected: preserve it in another directory and resume, or start the suite with a new `--output`. Resume works at completed-seed boundaries and does not restore partially trained optimizer state.
+Use the same `--output` and `--smoke` settings originally requested. Completed
+seeds can be reused after source or machine changes. Resume checks scientific
+settings, data identities, and saved prediction sample IDs, while preserving
+the original run metadata. It never trains missing or interrupted seeds; choose
+a new output for fresh training. This prevents mixing new fits into an older
+suite after code edits.
 
 The first implementation milestone covers the registry, seed runner, aggregation, tail errors, and radius-bin diagnostics. Input-channel adapters, loss/architecture comparisons, robustness studies, and uncertainty remain the subsequent notebook phases.

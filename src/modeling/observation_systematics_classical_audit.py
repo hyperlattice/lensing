@@ -10,7 +10,6 @@ import numpy as np
 import pandas as pd
 import yaml
 
-from src.ml.data import file_sha256
 from src.modeling.pixel_scale_geometric_baseline import (
     ALLOWED_VALIDATION_COLUMNS,
     detect_point_image_peaks,
@@ -54,7 +53,6 @@ def evaluate_classical_observation_systematics(
         raise ValueError("Training-split mean fallback is not finite and positive")
 
     predictions = []
-    manifest_hashes = {}
     for stratum, intervention_id in config["validation_interventions"].items():
         split_path = release / "splits" / f"validation__{intervention_id}.csv"
         frame = pd.read_csv(split_path, usecols=ALLOWED_VALIDATION_COLUMNS)
@@ -62,7 +60,6 @@ def evaluate_classical_observation_systematics(
             raise ValueError(f"Expected 150 independent parents in {split_path}")
         if set(frame["split"].astype(str)) != {"validation"}:
             raise ValueError(f"Non-validation records found in {split_path}")
-        manifest_hashes[str(intervention_id)] = file_sha256(split_path)
         for row in frame.to_dict(orient="records"):
             image = np.load(release / row["observed_science_path"])
             variance = np.load(release / row["variance_path"])
@@ -172,11 +169,6 @@ def evaluate_classical_observation_systematics(
     summary = {
         "experiment_id": config["experiment_id"],
         "protocol": protocol_path,
-        "protocol_sha256": file_sha256(protocol_path),
-        "release_manifest_sha256": file_sha256(release / "manifest.csv"),
-        "training_split_manifest_sha256": file_sha256(train_manifest),
-        "validation_split_manifest_sha256": manifest_hashes,
-        "cnn_prediction_sha256": file_sha256(config["cnn_predictions"]),
         "training_mean_fallback_theta_E_arcsec": fallback,
         "fitted_conditions": list(config["validation_interventions"].values()),
         "point_image_approximation": True,

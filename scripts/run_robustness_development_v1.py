@@ -11,8 +11,7 @@ from pathlib import Path
 import numpy as np
 import yaml
 
-from src.data.benchmark_contract_v1 import sha256
-from src.ml.observation_bank_v1 import ObservationBank
+from src.data.observation_bank_v1 import ObservationBank
 from src.ml.robustness_training_v1 import ARMS,train_arm
 from src.ml.source_policy_scoring_v1 import source_error_matrix,score_allocation
 
@@ -59,8 +58,7 @@ def run(action,config_path=CONFIG):
                         output=folder,probabilities=policy["probabilities"])
                     _,score=source_error_matrix(folder/"final.pt",dev)
                     record={"arm":arm,"information_access":label,"trial":trial,"seed":seed,
-                        "settings":settings,"source_score":score,"run":result,
-                        "allocation_sha256":sha256(policy_path)}
+                        "settings":settings,"source_score":score,"run":result}
                     (folder/"source_selection.json").write_text(json.dumps(record,indent=2)+"\n")
                     records.append(record)
                     print(json.dumps({"arm":label,"trial":trial,"seed":seed,"source_score_arcsec":score["shared_source_score_arcsec"]}),flush=True)

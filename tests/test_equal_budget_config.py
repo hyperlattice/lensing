@@ -1,11 +1,11 @@
 """Preserve the recorded comparison and reject settings drift before data access."""
 from copy import deepcopy
-import hashlib
 import json
 from pathlib import Path
 
 import pytest
 import yaml
+import pandas as pd
 
 from scripts import run_equal_budget_final_v1 as runner
 
@@ -13,9 +13,8 @@ from scripts import run_equal_budget_final_v1 as runner
 def seal_config(config):
     root = Path(config["output"])
     root.mkdir(exist_ok=True)
-    digest = hashlib.sha256(json.dumps(config, sort_keys=True, allow_nan=False).encode("utf-8")).hexdigest()
     (root / "resolved_config.json").write_text(
-        json.dumps({"config": config, "config_sha256": digest}), encoding="utf-8")
+        json.dumps({"config": config}), encoding="utf-8")
 
 
 def test_default_comparison_retains_recorded_budget_and_pairing():
@@ -78,3 +77,34 @@ def test_invalid_comparison_definition_rejected(tmp_path, change):
     path.write_text(yaml.safe_dump(config), encoding="utf-8")
     with pytest.raises(ValueError):
         runner.load_config(path)
+
+
+def test_scoring_repeats_from_saved_predictions(tmp_path):
+    config=runner.load_config()
+    config.update(output=str(tmp_path),holdout=str(tmp_path/"holdout.csv"),seeds=[11,12])
+    config["bootstrap"]["resamples"]=100
+    seal_config(config)
+    truth=[]
+    predictions=[]
+    for parent in range(3):
+        target=1.+parent*.2
+        for condition in config["conditions"]:
+            row={"sample_id":f"p{parent}-{condition}","parent_sample_id":f"p{parent}",
+                 "condition":condition}
+            truth.append({**row,"theta_E_arcsec":target})
+            for arm,offset in (("C",.2),("G",.1),("R",.08)):
+                for seed in config["seeds"]:
+                    predictions.append({**row,"arm":arm,"seed":seed,
+                        "theta_E_arcsec_predicted":target+offset+(seed-11)*.01})
+    holdout=Path(config["holdout"])
+    pd.DataFrame(truth).to_csv(holdout,index=False)
+    prediction_path=tmp_path/"predictions_before_scoring.csv"
+    pd.DataFrame(predictions).to_csv(prediction_path,index=False)
+    (tmp_path/"predictions_complete.json").write_text(json.dumps({"prediction_path":str(prediction_path)}))
+    runner.score(config)
+    first=(tmp_path/"final_report.json").read_bytes()
+    runner.score(config)
+    assert (tmp_path/"final_report.json").read_bytes()==first
+    holdout.write_text(holdout.read_text()+"\n")
+    runner.score(config)
+    assert (tmp_path/"final_report.json").read_bytes()==first

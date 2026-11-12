@@ -15,7 +15,7 @@ from src.processing.geometry import (
 from src.processing.background import estimate_scalar_background
 from src.processing.normalization import normalize_image
 from src.processing.noise import estimate_scalar_variance
-from src.processing.preprocessing_config import config_hash, load_config
+from src.processing.preprocessing_config import load_config
 
 
 METADATA_PATH = Path("data/labels/derived/metadata.csv")
@@ -187,7 +187,7 @@ def main(
 ):
     config_path = Path(config_path) if config_path is not None else Path("configs/preprocessing/default.yaml")
     config = load_config(config_path)
-    configuration_hash = config_hash(config)
+    configuration_id = config_path.stem
     metadata_path = Path(metadata_path) if metadata_path is not None else (
         ENRICHED_METADATA_PATH if ENRICHED_METADATA_PATH.exists() else METADATA_PATH
     )
@@ -229,9 +229,8 @@ def main(
     ]
     if dry_run:
         summary = {
-            "run_id": f"preprocess-{configuration_hash[:12]}",
+            "run_id": f"preprocess-{configuration_id}",
             "config_path": config_path.as_posix(),
-            "config_hash": configuration_hash,
             "code_version": CODE_VERSION,
             "metadata_path": metadata_path.as_posix(),
             "input_root": metadata_path.parent.as_posix(),
@@ -270,14 +269,14 @@ def main(
         variance_path = variance_output_dir / f"{sample_id}.npy"
         noise_model_path = noise_output_dir / f"{sample_id}.json"
 
+        product_paths = (output_path, science_path, invalid_mask_path, coverage_mask_path, background_mask_path, geometry_path, background_path, normalization_path, variance_path, noise_model_path)
+        existing = next((path for path in product_paths if path.exists()), None)
+        if existing is not None and not overwrite:
+            raise FileExistsError(f"Output exists and overwrite is disabled: {existing}")
+        image_unit = row.get("image_unit", row.get("bunit", "unknown"))
+        if _is_missing(image_unit):
+            image_unit = "unknown"
         try:
-            product_paths = (output_path, science_path, invalid_mask_path, coverage_mask_path, background_mask_path, geometry_path, background_path, normalization_path, variance_path, noise_model_path)
-            existing = next((path for path in product_paths if path.exists()), None)
-            if existing is not None and not overwrite:
-                raise FileExistsError(f"Output exists and overwrite is disabled: {existing}")
-            image_unit = row.get("image_unit", row.get("bunit", "unknown"))
-            if _is_missing(image_unit):
-                image_unit = "unknown"
             processed = preprocess_image(
                 raw_path,
                 target_shape=tuple(config["geometry"]["target_shape"]),
@@ -291,24 +290,24 @@ def main(
                 noise_floor=config["variance"].get("noise_floor", 1e-6),
                 noise_correlation_assumption=config["variance"].get("correlation_assumption", "unknown"),
             )
-            raw = processed["raw"]
-            cleaned = processed["cleaned"]
-            normalized = processed["normalized"]
-
-            np.save(output_path, normalized)
-            np.save(science_path, processed["science"])
-            np.save(invalid_mask_path, processed["invalid_mask"])
-            np.save(coverage_mask_path, processed["coverage_mask"])
-            np.save(background_mask_path, processed["background_mask"])
-            geometry_path.write_text(json.dumps(processed["geometry_transform"].to_dict(), indent=2, sort_keys=True) + "\n", encoding="utf-8")
-            background_path.write_text(json.dumps(processed["background"].to_dict(), indent=2, sort_keys=True) + "\n", encoding="utf-8")
-            normalization_path.write_text(json.dumps(processed["normalization"].to_dict(), indent=2, sort_keys=True) + "\n", encoding="utf-8")
-            np.save(variance_path, processed["variance"].values)
-            noise_model_path.write_text(json.dumps(processed["variance"].to_dict(), indent=2, sort_keys=True) + "\n", encoding="utf-8")
-        except Exception as exc:
+        except (OSError, ValueError) as exc:
             failures.append({"sample_id": sample_id, "error_type": type(exc).__name__, "message": str(exc)})
             continue
 
+        raw = processed["raw"]
+        cleaned = processed["cleaned"]
+        normalized = processed["normalized"]
+
+        np.save(output_path, normalized)
+        np.save(science_path, processed["science"])
+        np.save(invalid_mask_path, processed["invalid_mask"])
+        np.save(coverage_mask_path, processed["coverage_mask"])
+        np.save(background_mask_path, processed["background_mask"])
+        geometry_path.write_text(json.dumps(processed["geometry_transform"].to_dict(), indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        background_path.write_text(json.dumps(processed["background"].to_dict(), indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        normalization_path.write_text(json.dumps(processed["normalization"].to_dict(), indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        np.save(variance_path, processed["variance"].values)
+        noise_model_path.write_text(json.dumps(processed["variance"].to_dict(), indent=2, sort_keys=True) + "\n", encoding="utf-8")
         row["lens_id"] = _row_value(row, "lens_id", "lens")
         row["raw_path"] = raw_path.as_posix()
         row["science_path"] = science_path.as_posix()
@@ -368,7 +367,7 @@ def main(
             image_unit = "unknown"
         _set_default(row, "image_unit", image_unit)
         _set_default(row, "calibration_status", "unknown")
-        _set_default(row, "processing_config_id", f"preprocessing-v2-{configuration_hash[:12]}")
+        _set_default(row, "processing_config_id", f"preprocessing-v2-{configuration_id}")
         _set_default(row, "processing_version", config["preprocessing_version"])
         _set_default(row, "background_status", "unknown")
         _set_default(row, "source_type", "unknown")
@@ -389,9 +388,8 @@ def main(
 
     manifest.to_csv(manifest_path, index=False)
     summary = {
-        "run_id": f"preprocess-{configuration_hash[:12]}",
+        "run_id": f"preprocess-{configuration_id}",
         "config_path": config_path.as_posix(),
-        "config_hash": configuration_hash,
         "code_version": CODE_VERSION,
         "metadata_path": metadata_path.as_posix(),
         "input_root": metadata_path.parent.as_posix(),

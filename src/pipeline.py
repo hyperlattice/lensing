@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import shutil
 import time
@@ -32,31 +31,12 @@ from src.simulation.generate import (
 from src.testing.validate_simulations import validate_run
 
 
-def _sha256(path):
-    digest = hashlib.sha256()
-    with Path(path).open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
 def _write_json(path, value):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
-def _write_checksum_manifest(root, output_name="checksums.sha256"):
-    """Hash every release artifact except the checksum manifest itself."""
-
-    root = Path(root)
-    output_path = root / output_name
-    files = sorted(
-        path for path in root.rglob("*") if path.is_file() and path.resolve() != output_path.resolve()
-    )
-    lines = [f"{_sha256(path)}  {path.relative_to(root).as_posix()}" for path in files]
-    output_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
-    return output_path, files
 
 
 def _require_fresh_directory(path, overwrite=False):
@@ -136,7 +116,6 @@ def prepare_real_release(
         "release_id": release_id,
         "release_type": "real_castles_preprocessing_v2",
         "manifest_path": manifest_path.as_posix(),
-        "manifest_sha256": _sha256(manifest_path),
         "observation_count": int(len(processed)),
         "lens_count": int(processed["lens_id"].nunique()),
         "metadata_rows": int(len(metadata)),
@@ -212,7 +191,7 @@ def build_engineering_release(
     split_seed=4201,
     overwrite=False,
 ):
-    """Generate, validate, split, checksum, and freeze an engineering release."""
+    """Generate, validate, and split an engineering release."""
 
     started = time.perf_counter()
     output_dir = Path(output_dir)
@@ -265,9 +244,7 @@ def build_engineering_release(
         "release_id": release_id,
         "release_type": "simulation_engineering",
         "config_path": Path(config_path).as_posix(),
-        "config_sha256": _sha256(config_path),
         "manifest_path": manifest_path.as_posix(),
-        "manifest_sha256": _sha256(manifest_path),
         "requested_parent_count": int(count),
         "accepted_parent_count": int(run["count_accepted"]),
         "observation_count": int(len(manifest)),
@@ -281,7 +258,6 @@ def build_engineering_release(
         "passed": bool(all(gates.values())),
         "validation": validation,
         "split_report": split_report,
-        "runtime_seconds_before_checksum": time.perf_counter() - started,
         "limitations": [
             "The release uses analytic sources and Gaussian PSFs, not empirical HST morphologies or PSFs.",
             "Noise is independent Poisson plus read noise and omits correlated detector/resampling effects.",
@@ -290,14 +266,6 @@ def build_engineering_release(
         ],
     }
     _write_json(output_dir / "engineering_release.json", release_report)
-    checksum_path, files = _write_checksum_manifest(output_dir)
-    release_report["artifact_count"] = len(files)
-    release_report["artifact_bytes"] = int(sum(path.stat().st_size for path in files))
-    release_report["checksum_manifest_path"] = checksum_path.as_posix()
-    release_report["runtime_seconds"] = time.perf_counter() - started
-    _write_json(output_dir / "engineering_release.json", release_report)
-    # Refresh the checksum entry for the report after adding final size/runtime fields.
-    checksum_path, files = _write_checksum_manifest(output_dir)
 
     audit_dir.mkdir(parents=True, exist_ok=True)
     compact_files = {
@@ -305,7 +273,6 @@ def build_engineering_release(
         output_dir / "run_manifest.json": audit_dir / "run_manifest.json",
         output_dir / "rejection_log.csv": audit_dir / "rejection_log.csv",
         output_dir / "engineering_release.json": audit_dir / "engineering_release.json",
-        checksum_path: audit_dir / "checksums.sha256",
     }
     for split_name in ("train", "validation", "test", "assignments"):
         compact_files[output_dir / "splits" / f"{split_name}.csv"] = (

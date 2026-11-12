@@ -10,7 +10,6 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
-import hashlib
 import json
 from pathlib import Path
 import time
@@ -20,12 +19,12 @@ import pandas as pd
 import torch
 import yaml
 
-from src.ml.data import TorchLensDataset, compute_training_statistics, file_sha256
+from src.ml.data import TorchLensDataset, compute_training_statistics
 from src.ml.engine import seed_everything, select_device, write_json
 from src.ml.losses import build_loss
 from src.ml.metrics import regression_metrics
 from src.ml.model import build_model
-from src.ml.provenance import config_sha256, environment_record, source_provenance
+from src.ml.provenance import environment_record, source_provenance
 
 
 def paired_schedule(shapes, parents, *, updates, batch_size, seed):
@@ -103,18 +102,7 @@ def _inputs(config):
     validation_groups = set(validation.dataset.metadata.iloc[validation.indices]["parent_system_id"].astype(str))
     if train_groups & validation_groups:
         raise ValueError("Training and validation parent overlap")
-    paths = [Path(config[key]) / "splits" / split for key, split in
-             [("canonical_release", "train.csv"), ("canonical_release", "validation.csv"),
-              ("randomized_release", "train.csv")]]
-    # Hash the actual model-input arrays too, not just paths in manifests.
-    input_hashes = {}
-    for dataset in (canonical, randomized, validation):
-        for value in dataset.dataset.metadata.iloc[dataset.indices]["processed_path"]:
-            path = dataset.release / str(value)
-            input_hashes[path.as_posix()] = file_sha256(path)
-    identity = {"split_hashes": {str(path): file_sha256(path) for path in paths},
-                "input_arrays_sha256": input_hashes,
-                "training_parent_count": len(by_id), "validation_parent_count": len(val),
+    identity = {"training_parent_count": len(by_id), "validation_parent_count": len(val),
                 "test_images_accessed": 0, "target_simulator_images_accessed": 0}
     return standard, varied, val, stats, parents, canonical_indices, identity
 
@@ -129,7 +117,6 @@ def train_pair(config, seed, output, inputs, device, source):
     schedule_record = {"randomized_sample_ids": [[varied[i][2] for i in batch] for batch in schedule],
                        "parent_sample_ids": [[parents[i] for i in batch] for batch in schedule]}
     write_json(pair_output / "paired_schedule.json", schedule_record)
-    schedule_hash = file_sha256(pair_output / "paired_schedule.json")
     exposure_counts = Counter(parents[i] for batch in schedule for i in batch)
     write_json(pair_output / "parent_exposures.json", dict(exposure_counts))
     runs = []
@@ -138,9 +125,6 @@ def train_pair(config, seed, output, inputs, device, source):
         folder.mkdir()
         seed_everything(seed)
         model = build_model(config["model"]).to(device)
-        # Compare tensor values via a deterministic digest rather than torch ZIP metadata.
-        initial_hash = hashlib.sha256(b"".join(t.detach().cpu().numpy().tobytes()
-                                               for t in model.state_dict().values())).hexdigest()
         optimizer = torch.optim.AdamW(model.parameters(), lr=config["learning_rate"],
                                      weight_decay=config["weight_decay"])
         loss_function = build_loss({"kind": "huber", "delta": config["huber_delta"]})
@@ -167,9 +151,7 @@ def train_pair(config, seed, output, inputs, device, source):
             checkpoint = {"format_version": 2, "experiment_id": config["experiment_id"],
                           "model_state": model.state_dict(), "model_config": model.model_config,
                           "statistics": stats, "seed": seed, "arm": arm,
-                          "optimizer_updates": update, "target_field": "theta_E_arcsec",
-                          "config_sha256": config_sha256(config),
-                          "paired_schedule_sha256": schedule_hash}
+                          "optimizer_updates": update, "target_field": "theta_E_arcsec"}
             if metrics["mae_arcsec"] < best:
                 best, best_update = metrics["mae_arcsec"], update
                 torch.save(checkpoint, folder / "best_validation.pt")
@@ -182,13 +164,8 @@ def train_pair(config, seed, output, inputs, device, source):
                    "primary_checkpoint": "final.pt", "primary_validation_metrics": metrics,
                    "best_validation_update_secondary": best_update,
                    "run_controls": {"optimizer_updates": len(schedule), "batch_size": config["batch_size"],
-                                    "image_exposures": len(schedule) * config["batch_size"],
-                                    "parent_schedule_sha256": config_sha256(schedule_record["parent_sample_ids"]),
-                                    "paired_schedule_sha256": schedule_hash,
-                                    "normalization_sha256": config_sha256(stats), "initial_weights_sha256": initial_hash},
+                                    "image_exposures": len(schedule) * config["batch_size"]},
                    "pixels_processed": pixels, "runtime_seconds": time.perf_counter() - started,
-                   "checkpoint_sha256": file_sha256(folder / "final.pt"),
-                   "predictions_sha256": file_sha256(folder / "final_validation_predictions.csv"),
                    "source": source, "test_images_accessed": 0, "target_simulator_images_accessed": 0}
         write_json(folder / "summary.json", summary)
         runs.append(summary)
@@ -219,8 +196,7 @@ def run(config_path, *, device_request="cpu"):
     output.mkdir(parents=True, exist_ok=True)
     source = source_provenance()
     write_json(output / "started.json", {"config": config, "source": source,
-                                         "environment": environment_record(device),
-                                         "config_file_sha256": file_sha256(config_path)})
+                                         "environment": environment_record(device)})
     inputs = _inputs(config)
     write_json(output / "input_identity.json", inputs[-1])
     write_json(output / "normalization.json", inputs[3])

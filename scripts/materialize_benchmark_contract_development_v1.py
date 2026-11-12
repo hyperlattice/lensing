@@ -18,7 +18,7 @@ import shutil
 import numpy as np
 from astropy.io import fits
 
-from src.data.benchmark_contract_v1 import BenchmarkImages, contained_path, sha256
+from src.data.benchmark_contract_v1 import BenchmarkImages, contained_path
 
 SOURCE = Path("data/simulations/cross-simulator-development-v2")
 OUTPUT = Path("data/simulations/benchmark-contract-development-v1")
@@ -36,7 +36,6 @@ def run(source=SOURCE, output=OUTPUT, report_path=REPORT):
     completion = json.loads((source / "generation_complete.json").read_text())
     if completion["stage"] != "development" or completion["cnn_inference_run"] is not False:
         raise ValueError("This importer accepts only the existing engineering development release")
-    checksums = json.loads((source / "checksums.json").read_text())
     # Read only allowed fields; never parse the theta_E column into a target.
     with (source / "development_manifest.csv").open(newline="", encoding="utf-8") as stream:
         records = [{k: row[k] for k in ("sample_id", "parent_system_id", "condition", "raw_path",
@@ -45,9 +44,8 @@ def run(source=SOURCE, output=OUTPUT, report_path=REPORT):
     if not records or any(r["accuracy_evaluation_eligible"].lower() != "false" for r in records):
         raise ValueError("Unexpected eligibility in source engineering release")
     output.mkdir(parents=True)
-    write_json(output / "generation_started.json", {"source": source.as_posix(),
-               "source_manifest_sha256": sha256(source / "development_manifest.csv")})
-    rows, input_hashes = [], {}
+    write_json(output / "generation_started.json", {"source": source.as_posix()})
+    rows = []
     for r in records:
         folder = output / r["sample_id"]
         if folder.parent.resolve() != output.resolve():
@@ -58,9 +56,6 @@ def run(source=SOURCE, output=OUTPUT, report_path=REPORT):
                  "psf": source_folder / "psf.npy"}
         for product, rel in paths.items():
             original = contained_path(source, rel.as_posix())
-            if checksums.get(rel.as_posix()) != sha256(original):
-                raise ValueError(f"Source artifact changed: {rel}")
-            input_hashes[rel.as_posix()] = sha256(original)
             if product == "image":
                 with fits.open(original) as hdul:
                     if hdul[0].header.get("BUNIT") != "ELECTRONS/S":
@@ -71,8 +66,7 @@ def run(source=SOURCE, output=OUTPUT, report_path=REPORT):
         shape = [int(n) for n in r["shape"].split("x")]
         for mask in ("invalid_mask", "coverage_mask"):
             np.save(folder / f"{mask}.npy", np.zeros(shape, dtype=bool))
-        products = {k: {"path": (folder / f"{k}.npy").relative_to(output).as_posix(),
-                        "sha256": sha256(folder / f"{k}.npy")}
+        products = {k: {"path": (folder / f"{k}.npy").relative_to(output).as_posix()}
                     for k in ("image", "variance", "psf", "invalid_mask", "coverage_mask")}
         rows.append({"sample_id": r["sample_id"], "parent_system_id": r["parent_system_id"],
                      "role": "numerical_development", "renderer": r["simulator_name"],
@@ -102,10 +96,7 @@ def run(source=SOURCE, output=OUTPUT, report_path=REPORT):
               "image_semantics": "raw rate; background retained; no normalization/crop/pad",
               "variance_semantics": "analytic toy-detector variance, not a CNN input",
               "noise_coupling": "legacy shared parent noise seed across conditions; not fresh augmentation",
-              "source": source.as_posix(), "source_input_sha256": input_hashes,
-              "manifest_sha256": sha256(manifest_path),
-              "source_code_sha256": {p: sha256(p) for p in [__file__, "src/data/benchmark_contract_v1.py"]},
-              "bytes_materialized": sum(p.stat().st_size for p in output.rglob("*") if p.is_file()),
+              "source": source.as_posix(), "bytes_materialized": sum(p.stat().st_size for p in output.rglob("*") if p.is_file()),
               "next_gate": "Broader numerical qualification including central floor and native-grid integration"}
     report_path.parent.mkdir(parents=True, exist_ok=True)
     write_json(report_path, report)

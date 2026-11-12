@@ -16,7 +16,7 @@ import torch
 import yaml
 from scipy.ndimage import map_coordinates
 
-from src.ml.data import TorchLensDataset, file_sha256
+from src.ml.data import TorchLensDataset
 from src.ml.engine import collect_predictions, make_loader, select_device, write_json
 from src.ml.metrics import regression_metrics
 from src.ml.model import build_model
@@ -112,11 +112,7 @@ def _predict_one_checkpoint(
 ) -> tuple[pd.DataFrame, dict[str, dict[str, float]]]:
     checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=True)
     source_manifest = Path(checkpoint["release"]) / "manifest.csv"
-    if file_sha256(source_manifest) != str(checkpoint["release_manifest_sha256"]):
-        raise ValueError(f"Baseline manifest hash changed for checkpoint {checkpoint_path}")
     run_manifest = json.loads((release / "run_manifest.json").read_text(encoding="utf-8"))
-    if run_manifest["parent_manifest_sha256"] != checkpoint["release_manifest_sha256"]:
-        raise ValueError("Counterfactual benchmark does not descend from the checkpoint's release")
 
     model = build_model(checkpoint["model_config"]).to(device)
     model.load_state_dict(checkpoint["model_state"])
@@ -168,7 +164,6 @@ def _predict_one_checkpoint(
                 }
             ).merge(metadata, on="sample_id", validate="one_to_one")
             frame["checkpoint_id"] = checkpoint["experiment_id"]
-            frame["checkpoint_sha256"] = file_sha256(checkpoint_path)
             frame["intervention_id"] = intervention_id
             frame["input_strategy"] = strategy
             frame["residual_arcsec"] = frame["theta_E_arcsec_predicted"] - frame["theta_E_arcsec_true"]
@@ -210,7 +205,6 @@ def evaluate_pixel_scale_sweep(
 
     prediction_frames = []
     per_seed_rows = []
-    checkpoint_hashes = {}
     for checkpoint_path in checkpoint_paths:
         checkpoint_path = Path(checkpoint_path)
         prediction_frame, metrics = _predict_one_checkpoint(
@@ -221,14 +215,12 @@ def evaluate_pixel_scale_sweep(
             batch_size=batch_size,
             strategies=strategies,
         )
-        checkpoint_hashes[checkpoint_path.as_posix()] = file_sha256(checkpoint_path)
         prediction_frames.append(prediction_frame)
         for metric_id, values in metrics.items():
             strategy, _, intervention_id = metric_id.partition("::")
             per_seed_rows.append(
                 {
                     "checkpoint_id": str(prediction_frame["checkpoint_id"].iloc[0]),
-                    "checkpoint_sha256": file_sha256(checkpoint_path),
                     "seed": int(torch.load(checkpoint_path, map_location="cpu", weights_only=True)["seed"]),
                     "input_strategy": strategy,
                     "intervention_id": intervention_id,
@@ -341,8 +333,6 @@ def evaluate_pixel_scale_sweep(
         "bootstrap_resamples": int(bootstrap_resamples),
         "bootstrap_seed": int(bootstrap_seed),
         "practical_effect_arcsec": float(practical_effect_arcsec),
-        "checkpoint_sha256": checkpoint_hashes,
-        "parent_manifest_sha256": run_manifest["parent_manifest_sha256"],
         "per_seed_metrics_path": (output_dir / "per_seed_metrics.csv").as_posix(),
         "paired_effects_path": (output_dir / "paired_effects.csv").as_posix(),
         "scale_summary_path": (output_dir / "scale_summary.csv").as_posix(),

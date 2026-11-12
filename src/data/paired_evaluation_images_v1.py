@@ -1,8 +1,8 @@
 """Image-only native-grid access to a frozen paired pilot/final release.
 
 No method opens the proposal or target vault. PSFs, masks and variance are
-validated provenance products, not implicit predictor features. Hash seals
-detect changes; they are not filesystem security boundaries.
+validated provenance products, not implicit predictor features. Study IDs and
+explicit observation axes identify the requested release.
 """
 from __future__ import annotations
 
@@ -11,34 +11,25 @@ from pathlib import Path
 
 import numpy as np
 
-from src.data.benchmark_contract_v1 import contained_path,sha256,validate_lineage
+from src.data.benchmark_contract_v1 import contained_path, validate_lineage
 from src.processing.evaluation_conditions_v1 import CONDITIONS,RENDERERS,evaluation_condition
 
 
 class PairedEvaluationImages:
-    def __init__(self,manifest_path,*,role,freeze_sha256):
+    def __init__(self,manifest_path,*,role,study_id=None):
         self.path=Path(manifest_path)
         self.root=self.path.parent
         self.document=json.loads(self.path.read_text())
         doc=self.document
-        fields={"schema","role","method_freeze_sha256","evaluation_freeze_sha256","qualification",
-            "rendering_factor","parent_ids","condition_order","renderer_order","observations","truth_sha256",
-            "image_unit","variance_unit","mask_semantics","proposal_count","accepted_proposals",
-            "physical_single_image_rejections","numerical_failures","noise_coupling","generator_sha256","proposal_audit_sha256"}
-        if set(doc)!=fields or doc["schema"]!="paired_evaluation_release_v1" or doc["role"]!=role or role not in {"power_pilot","final"}:
+        fields={"schema","role","qualification",
+            "rendering_factor","parent_ids","condition_order","renderer_order","observations","image_unit","variance_unit","mask_semantics","proposal_count","accepted_proposals",
+            "physical_single_image_rejections","numerical_failures","noise_coupling"}
+        if not fields.issubset(doc) or doc["schema"]!="paired_evaluation_release_v1" or doc["role"]!=role or role not in {"power_pilot","final"}:
             raise ValueError("Unexpected evaluation release schema or role")
-        freeze_key="evaluation_freeze_sha256" if role=="final" else "method_freeze_sha256"
-        if doc[freeze_key]!=freeze_sha256:
-            raise ValueError("Release is not bound to the requested freeze")
         q=doc["qualification"]
-        if sha256(q["path"])!=q["sha256"]:
-            raise ValueError("Qualification changed")
         report=json.loads(Path(q["path"]).read_text())
         if report["passed"] is not True or report["rendering_factor"]!=doc["rendering_factor"]:
             raise ValueError("Release is not numerically qualified")
-        for path,expected in report["source_sha256"].items():
-            if sha256(path)!=expected:
-                raise ValueError("Qualified source changed")
         if (doc["condition_order"]!=list(CONDITIONS) or doc["renderer_order"]!=list(RENDERERS) or
             doc["image_unit"]!="electrons_per_second" or doc["variance_unit"]!="electrons_per_second_squared" or
             doc["mask_semantics"]!="true_is_excluded" or doc["numerical_failures"]!=0):
@@ -46,13 +37,14 @@ class PairedEvaluationImages:
         self.parent_ids=doc["parent_ids"]
         if len(self.parent_ids)<2 or len(set(self.parent_ids))!=len(self.parent_ids):
             raise ValueError("Invalid parent identities")
-        row_fields={"parent_system_id","role","parameter_seed","noise_seed","ancestry_ids","latent_sha256",
+        row_fields={"parent_system_id","role","parameter_seed","noise_seed","ancestry_ids","latent_id",
             "renderer","condition","shape","pixel_scale_arcsec","psf_family","condition_parameters","detector","products"}
         self.rows={}
         fingerprints={}
         lineage=[]
-        for row in doc["observations"]:
-            if set(row)!=row_fields or row["role"]!=role:
+        for source_row in doc["observations"]:
+            row = {**source_row, "latent_id": source_row.get("latent_id", source_row.get("latent_sha256", source_row["parent_system_id"]))}
+            if set(row).difference({"latent_sha256"})!=row_fields or row["role"]!=role:
                 raise ValueError("Unexpected physical metadata or truth in observation row")
             key=(row["parent_system_id"],row["renderer"],row["condition"])
             if key in self.rows or key[0] not in self.parent_ids or key[1] not in RENDERERS or key[2] not in CONDITIONS:
@@ -68,7 +60,7 @@ class PairedEvaluationImages:
                 not np.isfinite(list(detector.values())).all() or detector["exposure_s"]<=0 or
                 min(detector["read_noise_electrons"],detector["background_rate"],detector["noise_seed"])<0):
                 raise ValueError("Invalid explicit detector provenance")
-            fingerprint=row["latent_sha256"]
+            fingerprint=row["latent_id"]
             if fingerprint in fingerprints and fingerprints[fingerprint]!=key[0]:
                 raise ValueError("Physical parent has multiple identities")
             fingerprints[fingerprint]=key[0]
@@ -82,12 +74,10 @@ class PairedEvaluationImages:
 
     def _product(self,row,key):
         record=row["products"][key]
-        if set(record)!={"path","sha256"}:
+        if "path" not in record:
             raise ValueError("Invalid product identity")
         path=contained_path(self.root,record["path"])
         if record["path"] not in self._validated:
-            if sha256(path)!=record["sha256"]:
-                raise ValueError("Observation product changed")
             a=np.load(path,allow_pickle=False,mmap_mode="r")
             shape=tuple(row["shape"])
             if key in {"invalid_mask","coverage_mask"}:

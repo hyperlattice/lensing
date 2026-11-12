@@ -1,4 +1,4 @@
-"""Exactly-once frozen analysis after every prediction method has been sealed.
+"""Repeatable frozen analysis after every prediction method has been sealed.
 
 Produces measured claim gates and descriptive results, including failures.
 This script does not choose methods, endpoints, conditions or sample sizes.
@@ -14,7 +14,7 @@ import numpy as np
 from src.ml.confirmatory_statistics_v1 import crossed_paired_difference,paired_variance_components
 from src.ml.confirmatory_endpoints_v1 import crossed_tail_difference,seed_t_sensitivity
 from src.ml.frozen_analysis_v1 import BOOTSTRAP,contrast_specification
-from src.ml.study_freeze_v1 import verify_evaluation_freeze,open_truth_after_predictions,create_once
+from src.ml.study_freeze_v1 import load_evaluation_freeze,open_truth_after_predictions
 from src.processing.evaluation_conditions_v1 import CONDITIONS,RENDERERS,PRIMARY_CONDITIONS
 
 
@@ -58,7 +58,7 @@ def descriptive(prediction,truth):
 
 
 def run(freeze_path):
-    frozen=verify_evaluation_freeze(freeze_path)
+    frozen=load_evaluation_freeze(freeze_path)
     if frozen["design"]["bootstrap"]!=BOOTSTRAP or frozen["design"]["contrasts"]!=contrast_specification():
         raise ValueError("Frozen analysis differs from the implemented pre-outcome specification")
     if (frozen["design"]["condition_order"]!=list(CONDITIONS) or
@@ -68,11 +68,12 @@ def run(freeze_path):
     sealed=json.loads((output/"predictions_complete.json").read_text())
     values={}
     parent_ids=None
-    # Identity and hashes are rechecked by the truth-opening gate below.
-    for path in sealed["prediction_sha256"]:
+    for path in sealed.get("prediction_files", list(sealed.get("prediction_sha256", {}))):
         with np.load(path,allow_pickle=False) as arrays:
             if parent_ids is None:
                 parent_ids=arrays["parent_ids"].tolist()
+            elif arrays["parent_ids"].tolist()!=parent_ids:
+                raise ValueError("Prediction parent axes differ")
             values[str(arrays["arm"].item())]=arrays["prediction_arcsec"].copy()
     truth_mapping=open_truth_after_predictions(freeze_path)
     truth=np.asarray([truth_mapping[p] for p in parent_ids],dtype=float)
@@ -83,15 +84,16 @@ def run(freeze_path):
     for spec in contrast_specification():
         result=score_contrast(errors[spec["candidate"]],errors[spec["comparator"]],spec)
         contrasts.append(result)
-        # Checkpoint intermediate analysis results without opening truth again.
-        create_once(output/f"contrast-{len(contrasts):02d}.json",result)
+        (output/f"contrast-{len(contrasts):02d}.json").write_text(
+            json.dumps(result,indent=2,sort_keys=True,allow_nan=False)+"\n",encoding="utf-8")
     report={"stage":"final_confirmatory_analysis","parent_count":len(truth),
         "seed_ids":frozen["design"]["seed_ids"],"condition_order":list(CONDITIONS),"renderer_order":list(RENDERERS),
         "bootstrap":BOOTSTRAP,"contrasts":contrasts,"descriptive":{arm:descriptive(v,truth) for arm,v in values.items()},
         "primary_claim_gate_passed":contrasts[0]["superiority_claim_gate_passed"],
         "scope":"conditional synthetic two/four-image SIE population, shared observation pipeline, scalar radius point regression",
         "unsupported_claims":["real-data accuracy","posterior calibration","universal paper superiority","exact published model reproduction"]}
-    create_once(output/"final_analysis.json",report)
+    (output/"final_analysis.json").write_text(
+        json.dumps(report,indent=2,sort_keys=True,allow_nan=False)+"\n",encoding="utf-8")
     lines=["# Frozen paired evaluation result","",f"Independent parents: {len(truth)}; paired training seeds: {len(frozen['design']['seed_ids'])}.",
         "Single-model errors averaged; no prediction ensemble. All differences are candidate minus comparator in arcseconds.","",
         "| Contrast | MAE difference | One-sided upper bound | Alpha | All claim gates passed |",
@@ -102,8 +104,7 @@ def run(freeze_path):
         lines.append(f"| {spec['candidate']} vs {spec['comparator']} | {e['difference_arcsec']:.6f} | {e['upper_one_sided_arcsec']:.6f} | {spec['alpha_one_sided']:.3f} | {item['superiority_claim_gate_passed']} |")
     lines.extend(["","A superiority claim requires upper bound below -0.005 arcsec and all canonical/tail guardrails.",
         "These are synthetic common-benchmark method ports. The result does not establish real-data or universal paper superiority.",""])
-    with (output/"result_overview.md").open("x",encoding="utf-8") as stream:
-        stream.write("\n".join(lines))
+    (output/"result_overview.md").write_text("\n".join(lines),encoding="utf-8")
     print(json.dumps({"primary_claim_gate_passed":report["primary_claim_gate_passed"],"report":str(output/"final_analysis.json")}))
 
 

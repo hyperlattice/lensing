@@ -1,7 +1,7 @@
 # Source-code map
 
 `src` is organized by responsibility. `pipeline.py` is the public command-line
-entry point; `main.py` is a compatibility wrapper for the same CLI. The code
+entry point (`python -m src.pipeline`). The code
 uses the repository root as its working directory, so paths in commands and
 configs are repository-relative.
 
@@ -21,7 +21,7 @@ The dependency direction is deliberate: `data` defines the contract;
 does not contain scientific calculations itself.
 
 The reliability-study modules retain their phase-based filenames because the
-frozen protocols, input hashes, and final package identify those exact paths.
+recorded protocols and final package identify those exact paths.
 See [the study guide](../docs/reliability_study/README.md) before changing a
 workflow used by a reported phase. New analyses should use descriptive names
 based on their scientific purpose and receive a versioned configuration and

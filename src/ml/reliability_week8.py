@@ -21,13 +21,13 @@ from torch.utils.data import DataLoader, Dataset
 
 from src.data.dataset import LensDataset
 from src.data.schema import validate_row
-from src.ml.data import TorchLensDataset, compute_training_statistics, file_sha256
+from src.ml.data import TorchLensDataset, compute_training_statistics
 from src.ml.engine import collect_predictions, make_loader, seed_everything, select_device, train_one_epoch, write_json
 from src.ml.losses import build_loss
 from src.ml.metrics import improvement_fraction, mean_baseline_metrics, regression_metrics, target_bin_metrics
 from src.ml.model import build_model
 from src.ml.plots import plot_predictions, plot_training_history
-from src.ml.provenance import config_sha256, environment_record, source_provenance
+from src.ml.provenance import environment_record, source_provenance
 from src.simulation.counterfactual import _render_parent, apply_intervention
 from src.ml.scale_aware_train import ShapeBucketBatchSampler
 
@@ -227,8 +227,6 @@ def _render_randomized_row(parent: dict[str, Any], draw: dict[str, Any], release
 def create_randomized_release(config: dict[str, Any], release: Path) -> dict[str, Any]:
     if release.exists() and (release / "run_manifest.json").exists():
         summary = json.loads((release / "run_manifest.json").read_text(encoding="utf-8"))
-        if summary.get("manifest_sha256") != file_sha256(release / "manifest.csv"):
-            raise ValueError("Committed Week 8 release manifest hash no longer matches its run manifest")
         return summary
     if release.exists() and any(release.iterdir()) and not (release / "manifest.csv").exists():
         raise FileExistsError(f"Week 8 release has unrecognized partial contents: {release}")
@@ -317,10 +315,6 @@ def _validate_randomized_release(config: dict[str, Any], release: Path) -> dict[
     draws = pd.read_csv(assignment_path)
     summary = {
         "release": release.as_posix(),
-        "source_train_split_sha256": file_sha256(CANONICAL_RELEASE / "splits" / "train.csv"),
-        "source_validation_split_sha256": file_sha256(CANONICAL_RELEASE / "splits" / "validation.csv"),
-        "randomization_assignment_sha256": file_sha256(assignment_path),
-        "manifest_sha256": file_sha256(release / "manifest.csv"),
         "train_row_count": int(len(train_frame)),
         "train_unique_parent_count": int(train_frame["parent_system_id"].nunique()),
         "validation_row_count": int(len(validation_frame)),
@@ -432,10 +426,6 @@ def _train_randomized_seed(config: dict[str, Any], output_dir: Path, *, device_r
         weight_decay=float(config["weight_decay"]),
     )
     loss_function = build_loss({"kind": "huber", "delta": float(config.get("huber_delta", 1.0))})
-    split_hashes = {
-        split: file_sha256(release / "splits" / f"{split}.csv")
-        for split in ("train", "validation", "test")
-    }
     write_json(output_dir / "resolved_config.json", config)
     history = []
     best_mae = float("inf")
@@ -474,14 +464,11 @@ def _train_randomized_seed(config: dict[str, Any], output_dir: Path, *, device_r
                         "experiment_id": config["experiment_id"],
                         "parent_baseline_id": config.get("parent_baseline_id"),
                         "seed": int(config["seed"]),
-                        "config_sha256": config_sha256(config),
                         "model_state": model.state_dict(),
                         "model_config": model.model_config,
                         "statistics": statistics,
                         "target_field": "theta_E_arcsec",
                         "release": release.as_posix(),
-                        "release_manifest_sha256": statistics["release_manifest_sha256"],
-                        "split_manifest_sha256": split_hashes,
                         "best_epoch": best_epoch,
                         "validation_metrics": metrics,
                         "torch_version": str(torch.__version__),
@@ -532,11 +519,9 @@ def _train_randomized_seed(config: dict[str, Any], output_dir: Path, *, device_r
         "parent_baseline_id": config.get("parent_baseline_id"),
         "seed": int(config["seed"]),
         "status": "trained_validation_selected",
-        "config_sha256": config_sha256(config),
         "environment": environment_record(device),
         "provenance": source_provenance(),
         "release_id": release.name,
-        "release_manifest_sha256": file_sha256(release / "manifest.csv"),
         "train_samples": len(train_data),
         "training_parent_count": 700,
         "training_metrics": train_metrics,
@@ -551,9 +536,7 @@ def _train_randomized_seed(config: dict[str, Any], output_dir: Path, *, device_r
         "epochs_completed": len(history),
         "trainable_parameters": model.trainable_parameter_count,
         "statistics": statistics,
-        "split_manifest_sha256": split_hashes,
         "checkpoint_path": checkpoint_path.as_posix(),
-        "checkpoint_sha256": file_sha256(checkpoint_path),
         "test_samples_accessed": 0,
         "runtime_seconds": None if resumed else time.perf_counter() - started,
         "resumed_from_best_checkpoint": resumed,
@@ -609,7 +592,6 @@ def _predict_randomized(config: dict[str, Any], release: Path, output: Path, *, 
                         "condition": condition,
                         "seed": int(seed),
                         "theta_E_arcsec_predicted": float(prediction),
-                        "checkpoint_sha256": file_sha256(checkpoint_path),
                     }
                 )
     predictions = pd.DataFrame(rows)
@@ -793,8 +775,6 @@ def score_mitigation(config: dict[str, Any], predictions: pd.DataFrame, output: 
     summary = {
         "experiment_id": "WEEK8-TARGETED-RANDOMIZATION",
         "protocol": "archive/docs/reliability_study/protocol_v1.8.md",
-        "protocol_sha256": file_sha256(Path("archive/docs/reliability_study/protocol_v1.8.md")),
-        "training_release_manifest_sha256": file_sha256(RANDOMIZED_RELEASE / "manifest.csv"),
         "training_parent_count": 700,
         "training_row_count": 1400,
         "validation_parent_count": 150,

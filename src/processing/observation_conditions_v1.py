@@ -1,6 +1,6 @@
 """Torch-free physical observation cells for isolated simulation environments.
 
-This is the data-pipeline counterpart of the hash-preserved ML policy v1.
+This is the data-pipeline counterpart of the recorded ML policy v1.
 Parity tests ensure their cell definitions remain identical.
 """
 import numpy as np

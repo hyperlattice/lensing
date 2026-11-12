@@ -1,7 +1,5 @@
 """Load and validate the versioned preprocessing configuration."""
 
-import hashlib
-import json
 from pathlib import Path
 
 import yaml
@@ -57,9 +55,3 @@ def load_config(path=CONFIG_PATH):
     if errors:
         raise ValueError("Invalid preprocessing configuration: " + "; ".join(errors))
     return config
-
-
-def config_hash(config):
-    """Return a stable SHA-256 hash for a loaded configuration."""
-    payload = json.dumps(config, sort_keys=True, separators=(",", ":")).encode("utf-8")
-    return hashlib.sha256(payload).hexdigest()

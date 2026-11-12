@@ -11,11 +11,6 @@ import numpy as np
 from src.processing.psf import convolve_same, gaussian_psf
 
 from src.simulation.models import (
-    build_image_model,
-    build_light_model,
-    build_lens_model,
-    build_point_source_model,
-    build_psf,
     ellipticity_from_q_phi,
     sie_kwargs,
     shear_kwargs,
@@ -134,6 +129,13 @@ def render_observation_scene(
     """Render clean and PSF-convolved SIE/extended/point-source components."""
 
     os.environ.setdefault("NUMBA_DISABLE_JIT", "1")
+
+    from lenstronomy.Data.psf import PSF
+    from lenstronomy.ImSim.image_model import ImageModel
+    from lenstronomy.LensModel.lens_model import LensModel
+    from lenstronomy.LightModel.light_model import LightModel
+    from lenstronomy.PointSource.point_source import PointSource
+
     shape = tuple(parameters.get("shape", (256, 256)) if shape is None else shape)
     pixel_scale = float(
         parameters.get("pixel_scale_arcsec", 0.05)
@@ -151,9 +153,9 @@ def render_observation_scene(
     if has_shear and not {"gamma1", "gamma2"}.issubset(parameters):
         raise ValueError("External shear requires both gamma1 and gamma2")
     lens_model_list = ["SIE", "SHEAR"] if has_shear else ["SIE"]
-    lens = build_lens_model(lens_model_list)
-    source = build_light_model(["SERSIC_ELLIPSE"])
-    lens_light = build_light_model(["SERSIC_ELLIPSE"])
+    lens = LensModel(lens_model_list=lens_model_list)
+    source = LightModel(light_model_list=["SERSIC_ELLIPSE"])
+    lens_light = LightModel(light_model_list=["SERSIC_ELLIPSE"])
     saved_positions_x = parameters.get("point_positions_x_arcsec")
     saved_positions_y = parameters.get("point_positions_y_arcsec")
     saved_amplitudes = parameters.get("point_amplitudes")
@@ -165,8 +167,8 @@ def render_observation_scene(
     if use_saved_positions:
         point_source = None
     else:
-        point_source = build_point_source_model(
-            ["SOURCE_POSITION"],
+        point_source = PointSource(
+            point_source_type_list=["SOURCE_POSITION"],
             lens_model=lens,
             fixed_magnification_list=[True],
             additional_images_list=[True],
@@ -215,8 +217,8 @@ def render_observation_scene(
         transform_pix2angle=np.array([[pixel_scale, 0.0], [0.0, pixel_scale]]),
     )
     numerics = {"supersampling_factor": int(supersampling_factor)}
-    no_psf = build_psf(psf_type="NONE")
-    clean_renderer = build_image_model(
+    no_psf = PSF(psf_type="NONE")
+    clean_renderer = ImageModel(
         data,
         no_psf,
         lens_model_class=lens,
@@ -251,7 +253,7 @@ def render_observation_scene(
         positions_y = tuple(float(value) for value in np.asarray(positions_y, dtype=float).ravel())
         amplitudes = tuple(float(value) for value in np.asarray(amplitudes, dtype=float).ravel())
     if not positions_x or len(positions_x) != len(positions_y) or len(positions_x) != len(amplitudes):
-        raise RuntimeError("lenstronomy did not produce a valid point-source list")
+        raise FloatingPointError("lenstronomy did not produce a valid point-source list")
     clean_scene = np.asarray(
         clean_renderer.image(
             kwargs_lens=kwargs_lens,
@@ -283,9 +285,9 @@ def render_observation_scene(
     )
     expected_scene = np.asarray(convolve_same(clean_scene + point_scene, psf_kernel), dtype=np.float32)
     if expected_scene.shape != shape or not np.isfinite(expected_scene).all() or not np.isfinite(clean_scene).all():
-        raise RuntimeError("lenstronomy produced invalid observation scene products")
+        raise FloatingPointError("lenstronomy produced invalid observation scene products")
     if np.any(expected_scene < -1e-8):
-        raise RuntimeError("Expected scene contains negative flux before detector noise")
+        raise FloatingPointError("Expected scene contains negative flux before detector noise")
     return ObservationScene(
         clean_scene=clean_scene,
         expected_scene=expected_scene,

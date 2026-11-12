@@ -62,7 +62,6 @@ PRIVILEGED_FIELDS = {
     "image_count_physical",
     "image_count_detectable",
     "lens_equation_max_residual_arcsec",
-    "config_hash",
 }
 MODEL_INPUT_METADATA_FIELDS = {
     "domain",

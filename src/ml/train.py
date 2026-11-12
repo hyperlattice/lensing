@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import argparse
 import copy
-import hashlib
 import json
 import time
 from pathlib import Path
@@ -13,7 +12,7 @@ import pandas as pd
 import torch
 import yaml
 
-from src.ml.data import TorchLensDataset, compute_training_statistics, file_sha256
+from src.ml.data import TorchLensDataset, compute_training_statistics
 from src.ml.engine import (
     collect_predictions,
     make_loader,
@@ -29,7 +28,7 @@ from src.ml.metrics import (
 from src.ml.model import build_model
 from src.ml.losses import build_loss
 from src.ml.plots import plot_predictions, plot_training_history
-from src.ml.provenance import config_sha256, environment_record, source_provenance
+from src.ml.provenance import environment_record, source_provenance
 
 
 DEFAULT_CONFIG = Path("configs/ml/baseline.yaml")
@@ -87,19 +86,16 @@ def train_experiment(
             raise ValueError("Use train_sample_ids or max_train_samples, not both")
         if not train_sample_ids or len(train_sample_ids) != len(set(train_sample_ids)):
             raise ValueError("train_sample_ids must be a nonempty list without duplicates")
-        sample_ids_sha256 = hashlib.sha256("\n".join(train_sample_ids).encode("utf-8")).hexdigest()
         config["training_selection"] = {
             "selection_id": str(sample_selection_id or "explicit_sample_ids"),
             "sample_count": len(train_sample_ids),
-            "ordered_sample_ids_sha256": sample_ids_sha256,
+            "ordered_sample_ids": train_sample_ids,
         }
-    else:
-        sample_ids_sha256 = None
     controls = {
         "max_train_samples": max_train_samples,
         "max_validation_samples": max_validation_samples,
         "train_sample_count": None if train_sample_ids is None else len(train_sample_ids),
-        "train_sample_ids_sha256": sample_ids_sha256,
+        "train_sample_ids": train_sample_ids,
         "sample_selection_id": None if train_sample_ids is None else str(sample_selection_id or "explicit_sample_ids"),
     }
     for field in ("max_train_samples", "max_validation_samples", "train_sample_count"):
@@ -150,8 +146,8 @@ def train_experiment(
         num_workers=config.get("num_workers", 0),
     )
     model = build_model(config["model"]).to(device)
-    split_manifest_sha256 = {
-        split: file_sha256(release / "splits" / f"{split}.csv")
+    split_sample_ids = {
+        split: pd.read_csv(release / "splits" / f"{split}.csv", usecols=["sample_id"])["sample_id"].astype(str).tolist()
         for split in ("train", "validation", "test")
     }
     optimizer = torch.optim.AdamW(
@@ -195,14 +191,11 @@ def train_experiment(
                     "format_version": 1,
                     "experiment_id": config["experiment_id"],
                     "seed": config["seed"],
-                    "config_sha256": config_sha256(config),
                     "model_state": model.state_dict(),
                     "model_config": model.model_config,
                     "statistics": statistics,
                     "target_field": config["target_field"],
                     "release": release.as_posix(),
-                    "release_manifest_sha256": statistics["release_manifest_sha256"],
-                    "split_manifest_sha256": split_manifest_sha256,
                     "best_epoch": best_epoch,
                     "validation_metrics": validation_metrics,
                     "torch_version": str(torch.__version__),
@@ -267,25 +260,22 @@ def train_experiment(
         "experiment_id": config["experiment_id"],
         "parent_baseline_id": config.get("parent_baseline_id"),
         "seed": config["seed"],
-        "config_sha256": config_sha256(config),
         "run_controls": controls,
         "environment": environment_record(device),
         "provenance": provenance,
         "release_id": release.name,
-        "release_manifest_sha256": statistics["release_manifest_sha256"],
         "status": "trained_validation_only",
         "device": str(device),
         "torch_version": str(torch.__version__),
         "train_samples": len(training),
         "training_metrics": training_metrics,
-        "training_predictions_sha256": file_sha256(output_dir / "training_predictions.csv"),
         "validation_samples": len(validation),
         "test_samples_accessed": 0,
         "best_epoch": best_epoch,
         "epochs_completed": len(history),
         "trainable_parameters": model.trainable_parameter_count,
         "statistics": statistics,
-        "split_manifest_sha256": split_manifest_sha256,
+        "split_sample_ids": split_sample_ids,
         "validation_metrics": best_metrics,
         "validation_target_bins": target_bin_metrics(
             best_validation["targets"], best_validation["predictions"], bin_edges
@@ -295,8 +285,6 @@ def train_experiment(
             best_metrics["mae_arcsec"], baseline["mae_arcsec"]
         ),
         "checkpoint_path": checkpoint_path.as_posix(),
-        "checkpoint_sha256": file_sha256(checkpoint_path),
-        "validation_predictions_sha256": file_sha256(output_dir / "validation_predictions.csv"),
         "runtime_seconds": time.perf_counter() - started,
         "scientific_scope": "in-domain synthetic validation only; test and real data not accessed",
     }

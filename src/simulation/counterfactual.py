@@ -5,7 +5,6 @@ from __future__ import annotations
 import argparse
 import copy
 import csv
-import hashlib
 import json
 import re
 from pathlib import Path
@@ -37,7 +36,6 @@ TRUTH_AND_ID_FIELDS = {
     "split_group_id",
     "sample_id",
     "simulation_id",
-    "config_hash",
 }
 ALLOWED_PARAMETER_OVERRIDES = {
     "pixel_scale_arcsec",
@@ -79,10 +77,6 @@ ANCESTRY_FIELDS = (
     "source_template_id",
     "background_template_id",
 )
-
-
-def _sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def _safe_id(value: str) -> str:
@@ -599,8 +593,6 @@ def create_counterfactual_benchmark(
             "parent_system_id": str(source_row["parent_system_id"]),
             "split": split_by_sample[parent_sample_id],
             "theta_E_arcsec": float(source_row["theta_E_arcsec"]),
-            "source_manifest_sha256": _sha256(parent_manifest_path),
-            "source_parameter_sha256": _sha256(parameter_source),
             "parameters": canonical_parameters,
         })
         state_relative_path = _relative(state_path, output_root)
@@ -714,7 +706,7 @@ def create_counterfactual_benchmark(
                 if errors:
                     raise ValueError(f"Generated manifest row failed schema validation: {errors}")
                 descendants.append(updated)
-            except Exception as error:
+            except (ValueError, FloatingPointError) as error:
                 rejections.append({
                     "sample_id": sample_id,
                     "parent_sample_id": parent_sample_id,
@@ -787,7 +779,6 @@ def create_counterfactual_benchmark(
     summary = {
         "benchmark_version": BENCHMARK_VERSION,
         "parent_manifest_path": parent_manifest_path.as_posix(),
-        "parent_manifest_sha256": _sha256(parent_manifest_path),
         "selection_seed": int(selection_seed),
         "selected_parent_count": int(len(selected)),
         "descendant_count": int(len(benchmark_manifest)),

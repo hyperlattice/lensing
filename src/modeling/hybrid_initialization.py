@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 import time
 from pathlib import Path
@@ -40,14 +39,6 @@ OBSERVATION_COLUMNS = (
     "coverage_mask_path",
     "psf_path",
 )
-
-
-def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for block in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
 
 
 def _json_value(value):
@@ -181,7 +172,6 @@ def run(config_path=CONFIG):
     checkpoint_paths = [Path(item) for item in config["week8_checkpoints"]]
     if seeds != [12001, 12002, 12003]:
         raise ValueError(f"Unexpected frozen Week 8 checkpoint seeds: {seeds}")
-    checkpoint_hashes = {seed: _sha256(path) for seed, path in zip(seeds, checkpoint_paths)}
 
     train_path = Path(config["training_mean_source"])
     train_targets = pd.read_csv(train_path, usecols=["theta_E_arcsec"])["theta_E_arcsec"]
@@ -192,18 +182,10 @@ def run(config_path=CONFIG):
     week8_prediction_path = Path(config["week8_predictions"])
     week8_predictions = pd.read_csv(week8_prediction_path)
     required_prediction_columns = {
-        "parent_sample_id", "condition", "seed", "theta_E_arcsec_predicted", "checkpoint_sha256"
+        "parent_sample_id", "condition", "seed", "theta_E_arcsec_predicted"
     }
     if not required_prediction_columns.issubset(week8_predictions.columns):
         raise ValueError("Week 8 prediction file is missing required prediction/provenance fields")
-    for seed, expected_hash in checkpoint_hashes.items():
-        actual = set(
-            week8_predictions.loc[week8_predictions["seed"].astype(int) == seed, "checkpoint_sha256"]
-            .astype(str)
-            .unique()
-        )
-        if actual != {expected_hash}:
-            raise ValueError(f"Week 8 seed {seed} predictions do not match the frozen checkpoint hash")
     if set(week8_predictions["condition"].astype(str).unique()) != set(CONDITIONS):
         raise ValueError("Week 8 predictions do not contain exactly the five frozen conditions")
     pred_counts = week8_predictions.groupby(["condition", "seed"])["parent_sample_id"].nunique()
@@ -216,15 +198,12 @@ def run(config_path=CONFIG):
     peak_config = config["peak_detection"]
     max_evaluations = int(config["fit"]["max_function_evaluations"])
     low_theta, high_theta = [float(value) for value in config["fit"]["theta_E_bounds_arcsec"]]
-    observation_digests = {}
     result_rows = []
-    manifest_digests = {}
     parent_sets = {}
 
     for condition in CONDITIONS:
         condition_config = config["validation_conditions"][condition]
         manifest_path, release, manifest = _load_condition_observations(condition_config)
-        manifest_digests[condition] = _sha256(manifest_path)
         parent_sets[condition] = set(manifest["parent_sample_id"].astype(str))
         for row in manifest.to_dict(orient="records"):
             parent = str(row["parent_sample_id"])
@@ -235,7 +214,6 @@ def run(config_path=CONFIG):
                 product_path = release / str(row[field])
                 if not product_path.exists():
                     raise FileNotFoundError(product_path)
-                observation_digests[product_path.as_posix()] = _sha256(product_path)
                 arrays[field] = np.load(product_path)
             detection = detect_point_image_peaks(
                 arrays["observed_science_path"],
@@ -296,7 +274,6 @@ def run(config_path=CONFIG):
                             "failure_class": fit.get("failure_class", "none"),
                             "fit_message": fit.get("message"),
                             "ml_initializer_prediction_arcsec": ml_prediction,
-                            "week8_checkpoint_sha256": checkpoint_hashes[seed],
                         }
                     )
 
@@ -308,7 +285,6 @@ def run(config_path=CONFIG):
     # This file is intentionally target-free and is committed before the validation labels are opened.
     predictions_path = output / "hybrid_fit_predictions_before_scoring.csv"
     pd.DataFrame(result_rows).to_csv(predictions_path, index=False)
-    predictions_sha256 = _sha256(predictions_path)
 
     validation_labels_path = Path("data/simulations/sim-eng1000-v1/splits/validation.csv")
     validation_labels = pd.read_csv(
@@ -434,14 +410,9 @@ def run(config_path=CONFIG):
         len(primary_effects) == len(CONDITIONS)
         and (primary_effects["low"] > 0).all()
     )
-    observation_product_manifest_digest = hashlib.sha256(
-        json.dumps(observation_digests, sort_keys=True, separators=(",", ":")).encode("utf-8")
-    ).hexdigest()
     summary = {
         "experiment_id": config["experiment_id"],
         "protocol": str(config["protocol"]),
-        "protocol_sha256": _sha256(Path(config["protocol"])),
-        "config_sha256": _sha256(config_path),
         "training_mean_theta_E_arcsec": training_mean,
         "validation_parent_count": 150,
         "condition_count": len(CONDITIONS),
@@ -459,17 +430,10 @@ def run(config_path=CONFIG):
         "ml_speedup_supports_95_interval_above_zero_vs_training_mean_all_conditions": speedup_supported,
         "predictions_written_before_target_join": True,
         "predictions_path": str(predictions_path),
-        "predictions_sha256": predictions_sha256,
         "scored_path": str(scored_path),
         "historical_test_accessed": False,
         "real_data_labels_accessed": False,
         "truth_sidecar_used_for_detection_initialization_or_fitting": False,
-        "week8_checkpoint_hashes": {str(seed): value for seed, value in checkpoint_hashes.items()},
-        "week8_prediction_file_sha256": _sha256(week8_prediction_path),
-        "training_split_sha256": _sha256(train_path),
-        "validation_condition_manifest_sha256": manifest_digests,
-        "observation_product_hash_count": len(observation_digests),
-        "observation_products_manifest_sha256": observation_product_manifest_digest,
         "limitations": [
             "The classical control is an observation-only SIS/SIE point-image geometry fit, not a full pixel-likelihood fit.",
             "Two-image cases use a closed-form SIS fit and cannot show optimizer initialization speed differences.",
@@ -485,7 +449,7 @@ def run(config_path=CONFIG):
         f"- Validation systems: **{summary['validation_parent_count']}** in each of **{summary['condition_count']}** conditions.",
         f"- Fit records: **{summary['fit_row_count']}** across three CNN seeds and three starts.",
         f"- Three/four-peak parent-condition-seed cases: **{summary['optimizer_fit_row_count_ge3'] // len(STARTS)}** (198 parent-condition pairs across 150 parents).",
-        f"- Week 8 randomized checkpoints verified by SHA-256: **{len(checkpoint_hashes)}**.",
+        f"- Week 8 randomized checkpoint count: **{len(checkpoint_paths)}**.",
         f"- Fit predictions saved before label join: **{summary['predictions_written_before_target_join']}**.",
         f"- Historical test and real-data labels accessed: **{summary['historical_test_accessed']} / {summary['real_data_labels_accessed']}**.",
         "",
@@ -536,5 +500,4 @@ if __name__ == "__main__":
         "experiment_id", "fit_row_count", "optimizer_fit_row_count_ge3",
         "ml_speedup_supports_95_interval_above_zero_vs_training_mean_all_conditions",
         "predictions_written_before_target_join", "historical_test_accessed", "real_data_labels_accessed",
-        "predictions_sha256", "protocol_sha256",
     )}, indent=2, sort_keys=True))

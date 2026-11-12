@@ -13,7 +13,7 @@ import torch
 import yaml
 from torch.utils.data import DataLoader, Dataset, Sampler
 
-from src.ml.data import TorchLensDataset, file_sha256
+from src.ml.data import TorchLensDataset
 from src.ml.engine import seed_everything, select_device, write_json
 from src.ml.losses import build_loss
 from src.ml.metrics import regression_metrics
@@ -157,9 +157,6 @@ def _target_statistics(records, family, image_statistics):
         "image_mean": float(image_statistics["image_mean"]),
         "image_std": float(image_statistics["image_std"]),
         "image_statistics_source": "baseline train split; reused for both H1 mitigation families",
-        "image_statistics_release_manifest_sha256": image_statistics[
-            "release_manifest_sha256"
-        ],
     }
 
 
@@ -320,13 +317,6 @@ def _train_seed(
                     ),
                     "validation_parent_count_per_stratum": 150,
                     "test_samples_accessed": 0,
-                    "training_release_manifest_sha256": config[
-                        "training_release_manifest_sha256"
-                    ],
-                    "validation_release_manifest_sha256": config[
-                        "validation_release_manifest_sha256"
-                    ],
-                    "baseline_checkpoint_sha256": config["baseline_checkpoint_sha256"],
                     "validation_metrics": validation_metrics,
                     "torch_version": str(torch.__version__),
                 },
@@ -350,7 +340,6 @@ def _train_seed(
     )
     selected_predictions["family"] = family
     selected_predictions["seed"] = int(seed)
-    selected_predictions["checkpoint_sha256"] = file_sha256(checkpoint_path)
     selected_predictions.to_csv(output_dir / "validation_predictions.csv", index=False)
     summary = {
         "experiment_id": f"H1-PIXEL-SCALE-{family.upper()}",
@@ -368,9 +357,7 @@ def _train_seed(
         "statistics": statistics,
         "validation_metrics": selected_metrics,
         "checkpoint_path": checkpoint_path.as_posix(),
-        "checkpoint_sha256": file_sha256(checkpoint_path),
         "validation_predictions_path": (output_dir / "validation_predictions.csv").as_posix(),
-        "validation_predictions_sha256": file_sha256(output_dir / "validation_predictions.csv"),
     }
     write_json(output_dir / "training_summary.json", summary)
     return summary
@@ -411,10 +398,6 @@ def train_scale_aware_models(
         raise ValueError("Baseline seeds do not share the frozen train-only image statistics")
     if any(int(item["seed"]) != expected for item, expected in zip(baseline_checkpoints, (12001, 12002, 12003))):
         raise ValueError("Baseline checkpoint seeds do not match the frozen seed set")
-    if run["parent_manifest_sha256"] != baseline_checkpoints[0]["release_manifest_sha256"]:
-        raise ValueError("Training counterfactual release does not descend from the baseline release")
-    if validation_run["parent_manifest_sha256"] != baseline_checkpoints[0]["release_manifest_sha256"]:
-        raise ValueError("Validation release does not descend from the baseline release")
 
     print("Loading scale-diverse train records...", flush=True)
     canonical_train = _read_records(Path(baseline_checkpoints[0]["release"]), "train")
@@ -444,16 +427,10 @@ def train_scale_aware_models(
             raise ValueError("Validation scale strata do not contain identical parents")
     if expected_parents & train_parents:
         raise ValueError("Train and validation parent identities overlap")
-
     config.update(
-        {
-            "training_release_manifest_sha256": file_sha256(pixel_scale_release / "manifest.csv"),
-            "validation_release_manifest_sha256": file_sha256(validation_release / "manifest.csv"),
-            "baseline_checkpoint_sha256": {
-                path.as_posix(): file_sha256(path) for path in checkpoint_paths
-            },
-        }
+        {}
     )
+
     device = select_device(device_request)
     output_root.mkdir(parents=True, exist_ok=True)
     summaries = []

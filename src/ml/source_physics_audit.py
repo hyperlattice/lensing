@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 from pathlib import Path
 
@@ -16,7 +15,6 @@ import pandas as pd
 import torch
 import yaml
 
-from src.ml.data import file_sha256
 from src.ml.engine import select_device, write_json
 from src.ml.metrics import regression_metrics
 from src.ml.observation_systematics_audit import _bootstrap_interval, _predict_checkpoint
@@ -39,10 +37,6 @@ W5_PEAK_DETECTION = {
     "minimum_peak_separation_arcsec": 0.30,
     "maximum_peaks": 4,
 }
-
-
-def _sha256(path: str | Path) -> str:
-    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
 def _metric_or_none(targets, predictions):
@@ -408,13 +402,8 @@ def evaluate_source_physics(
     summary = {
         "experiment_id": "WEEK5-SOURCE-PHYSICS",
         "protocol": "archive/docs/reliability_study/protocol_v1.5.md",
-        "protocol_sha256": file_sha256("archive/docs/reliability_study/protocol_v1.5.md"),
-        "config_sha256": file_sha256(config_path),
-        "release_manifest_sha256": file_sha256(release / "manifest.csv"),
-        "parent_manifest_sha256": run_manifest["parent_manifest_sha256"],
         "source_parent_count": int(len(validation_ids)),
         "condition_count_including_canonical": len(interventions),
-        "cnn_checkpoint_hashes": {path.as_posix(): file_sha256(path) for path in checkpoints},
         "historical_test_split_accessed": False,
         "source_family_alternative_available": False,
         "mass_family_alternative_available": False,
@@ -493,10 +482,6 @@ def main():
         summary["multiplicity_agreement"] = agreement.to_dict(orient="records")
         summary["multiplicity_scoring_join"] = "parent_sample_id + intervention_id, followed by target consistency check at 1e-5 arcsec"
         summary["multiplicity_scored_parent_condition_rows"] = int(len(scored))
-        summary["reproducibility_hashes"] = {
-            "config": file_sha256(args.config),
-            "audit_code": file_sha256(__file__),
-        }
         write_json(summary_path, summary)
         print(json.dumps({"scored_rows": len(scored), "condition_count": int(len(agreement)), "agreement": summary["multiplicity_agreement"]}, indent=2))
         return 0

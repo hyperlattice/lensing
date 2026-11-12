@@ -9,10 +9,6 @@ from typing import Any, Mapping
 import numpy as np
 
 from src.simulation.models import (
-    build_image_model,
-    build_light_model,
-    build_lens_model,
-    build_psf,
     ellipticity_from_q_phi,
     sie_kwargs,
     shear_kwargs,
@@ -235,6 +231,11 @@ def _render_extended_source(
     tests and numerical convergence checks.
     """
 
+    from lenstronomy.Data.psf import PSF
+    from lenstronomy.ImSim.image_model import ImageModel
+    from lenstronomy.LensModel.lens_model import LensModel
+    from lenstronomy.LightModel.light_model import LightModel
+
     shape = tuple(parameters.get("shape", (256, 256)) if shape is None else shape)
     pixel_scale = float(
         parameters.get("pixel_scale_arcsec", 0.05)
@@ -260,9 +261,9 @@ def _render_extended_source(
     if has_shear and not {"gamma1", "gamma2"}.issubset(parameters):
         raise ValueError("External shear requires both gamma1 and gamma2")
     lens_model_list = [lens_profile, "SHEAR"] if has_shear else [lens_profile]
-    lens = build_lens_model(lens_model_list)
-    source = build_light_model(["SERSIC_ELLIPSE"])
-    psf = build_psf(psf_type="NONE")
+    lens = LensModel(lens_model_list=lens_model_list)
+    source = LightModel(light_model_list=["SERSIC_ELLIPSE"])
+    psf = PSF(psf_type="NONE")
 
     from lenstronomy.Data.imaging_data import ImageData
 
@@ -273,7 +274,7 @@ def _render_extended_source(
         dec_at_xy_0=-((shape[0] - 1) / 2.0) * pixel_scale,
         transform_pix2angle=np.array([[pixel_scale, 0.0], [0.0, pixel_scale]]),
     )
-    renderer = build_image_model(
+    renderer = ImageModel(
         data,
         psf,
         lens_model_class=lens,
@@ -314,7 +315,7 @@ def _render_extended_source(
     )
     image = np.asarray(image, dtype=np.float32)
     if image.shape != shape or not np.isfinite(image).all():
-        raise RuntimeError("lenstronomy produced an invalid extended-source image")
+        raise FloatingPointError("lenstronomy produced an invalid extended-source image")
     return SIEExtendedRender(
         image=image,
         lens_parameters=lens_parameters,

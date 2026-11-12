@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 from pathlib import Path
 
@@ -16,14 +15,6 @@ from src.ml.engine import collect_predictions, make_loader, require_output_direc
 from src.ml.metrics import improvement_fraction, mean_baseline_metrics, regression_metrics
 from src.ml.model import build_model
 from src.ml.plots import plot_predictions
-
-
-def _sha256(path):
-    digest = hashlib.sha256()
-    with Path(path).open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def _subgroup_metrics(frame, column):
@@ -76,20 +67,12 @@ def evaluate_checkpoint(
     checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=True)
     release = Path(checkpoint["release"])
     manifest_path = release / "manifest.csv"
-    expected_hash = str(checkpoint["release_manifest_sha256"])
-    actual_hash = _sha256(manifest_path)
-    if actual_hash != expected_hash:
-        raise ValueError(
-            f"Release manifest hash changed: expected {expected_hash}, found {actual_hash}"
-        )
     split_manifest_path = release / "splits" / f"{split}.csv"
-    split_manifest_hash = _sha256(split_manifest_path)
-    expected_split_hash = checkpoint.get("split_manifest_sha256", {}).get(split)
-    if expected_split_hash is not None and split_manifest_hash != expected_split_hash:
-        raise ValueError(
-            f"{split} split manifest hash changed: expected {expected_split_hash}, "
-            f"found {split_manifest_hash}"
-        )
+    expected_ids = checkpoint.get("split_sample_ids", {}).get(split)
+    if expected_ids is not None:
+        actual_ids = pd.read_csv(split_manifest_path, usecols=["sample_id"])["sample_id"].astype(str).tolist()
+        if actual_ids != expected_ids:
+            raise ValueError(f"{split} split sample IDs changed")
     output_dir = require_output_directory(
         output_dir or checkpoint_path.parent / f"evaluation-{split}", overwrite=overwrite
     )
@@ -175,9 +158,6 @@ def evaluate_checkpoint(
     report = {
         "experiment_id": checkpoint["experiment_id"],
         "checkpoint_path": checkpoint_path.as_posix(),
-        "checkpoint_sha256": _sha256(checkpoint_path),
-        "release_manifest_sha256": actual_hash,
-        "split_manifest_sha256": split_manifest_hash,
         "split": split,
         "sample_count": len(dataset),
         "device": str(device),

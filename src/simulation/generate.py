@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import argparse
 import csv
-import hashlib
 import json
 import os
 from pathlib import Path
@@ -31,10 +30,6 @@ from src.simulation.render import render_from_parameters, render_sie_extended_so
 
 GENERATOR_VERSION = "0.1.0"
 DEFAULT_CONFIG = Path("configs/simulation/pilot.yaml")
-
-
-def _config_hash(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def _write_json(path: Path, value: Any) -> None:
@@ -131,7 +126,6 @@ def _manifest_row(
     output_root: Path,
     paths: dict[str, Path],
     preprocess: dict[str, Any],
-    config_hash: str,
 ) -> dict[str, Any]:
     variance = preprocess["variance"]
     background = preprocess["background"]
@@ -168,7 +162,7 @@ def _manifest_row(
         "pixel_scale": parameters["pixel_scale_arcsec"],
         "pixel_scale_x": parameters["pixel_scale_arcsec"],
         "pixel_scale_y": parameters["pixel_scale_arcsec"],
-        "processing_config_id": f"simulation-preprocessing-{config_hash[:12]}",
+        "processing_config_id": "simulation-preprocessing-v2",
         "processing_version": "2.0.0",
         "background_status": background.status,
         "background_method": background.method,
@@ -201,7 +195,6 @@ def _manifest_row(
         "simulator_version": GENERATOR_VERSION,
         "parameter_seed": parameters["parameter_seed"],
         "noise_seed": parameters["noise_seed"],
-        "config_hash": config_hash,
     }
 
 
@@ -225,7 +218,6 @@ def generate_sis_controls(
     if output_root.exists() and any(output_root.iterdir()) and not overwrite:
         raise FileExistsError(f"Output directory is not empty and overwrite is disabled: {output_root}")
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
-    config_hash = _config_hash(config_path)
     output_root.mkdir(parents=True, exist_ok=True)
     directories = {
         name: output_root / name
@@ -318,7 +310,6 @@ def generate_sis_controls(
                     "simulator_name": "lensing-analytic-sis-control",
                     "simulator_version": GENERATOR_VERSION,
                     "config_path": config_path.as_posix(),
-                    "config_hash": config_hash,
                     "backend_reference": backend_status().to_dict(),
                     "solutions": [solution.to_dict() for solution in render.solutions],
                 },
@@ -333,10 +324,9 @@ def generate_sis_controls(
                     output_root=output_root,
                     paths=paths,
                     preprocess=processed,
-                    config_hash=config_hash,
                 )
             )
-        except Exception as exc:
+        except (ValueError, FloatingPointError) as exc:
             rejections.append(
                 {
                     "sample_id": sample_id,
@@ -371,7 +361,6 @@ def generate_sis_controls(
         "generator_version": GENERATOR_VERSION,
         "simulation_id": simulation_id,
         "config_path": config_path.as_posix(),
-        "config_hash": config_hash,
         "seed": int(seed),
         "count_requested": int(count),
         "count_attempted": int(count),
@@ -400,7 +389,6 @@ def _sie_manifest_row(
     output_root: Path,
     paths: dict[str, Path],
     preprocess: dict[str, Any],
-    config_hash: str,
     simulator_version: str,
 ) -> dict[str, Any]:
     variance = preprocess["variance"]
@@ -438,7 +426,7 @@ def _sie_manifest_row(
         "pixel_scale": parameters["pixel_scale_arcsec"],
         "pixel_scale_x": parameters["pixel_scale_arcsec"],
         "pixel_scale_y": parameters["pixel_scale_arcsec"],
-        "processing_config_id": f"simulation-preprocessing-{config_hash[:12]}",
+        "processing_config_id": "simulation-preprocessing-v2",
         "processing_version": "2.0.0",
         "background_status": background.status,
         "background_method": background.method,
@@ -477,7 +465,6 @@ def _sie_manifest_row(
         "simulator_version": simulator_version,
         "parameter_seed": parameters["parameter_seed"],
         "noise_seed": parameters["noise_seed"],
-        "config_hash": config_hash,
     }
 
 
@@ -504,7 +491,6 @@ def generate_sie_extended(
     if output_root.exists() and any(output_root.iterdir()) and not overwrite:
         raise FileExistsError(f"Output directory is not empty and overwrite is disabled: {output_root}")
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
-    config_hash = _config_hash(config_path)
     simulator_version = backend_status().version or "unavailable"
     output_root.mkdir(parents=True, exist_ok=True)
     directories = {
@@ -611,7 +597,6 @@ def generate_sie_extended(
                     "simulator_name": "lenstronomy",
                     "simulator_version": simulator_version,
                     "config_path": config_path.as_posix(),
-                    "config_hash": config_hash,
                     "backend_reference": backend_status().to_dict(),
                 },
             )
@@ -625,11 +610,10 @@ def generate_sie_extended(
                     output_root=output_root,
                     paths=paths,
                     preprocess=processed,
-                    config_hash=config_hash,
                     simulator_version=simulator_version,
                 )
             )
-        except Exception as exc:
+        except (ValueError, FloatingPointError) as exc:
             rejections.append(
                 {
                     "sample_id": sample_id,
@@ -661,7 +645,6 @@ def generate_sie_extended(
         "generator_version": GENERATOR_VERSION,
         "simulation_id": simulation_id,
         "config_path": config_path.as_posix(),
-        "config_hash": config_hash,
         "seed": int(seed),
         "count_requested": int(count),
         "count_attempted": int(count),
@@ -718,7 +701,6 @@ def _observation_manifest_row(
     preprocess: dict[str, Any],
     output_root: Path,
     paths: dict[str, Path],
-    config_hash: str,
     detectable_threshold: float,
     simulator_version: str,
 ) -> dict[str, Any]:
@@ -765,7 +747,7 @@ def _observation_manifest_row(
         "pixel_scale": parameters["pixel_scale_arcsec"],
         "pixel_scale_x": parameters["pixel_scale_arcsec"],
         "pixel_scale_y": parameters["pixel_scale_arcsec"],
-        "processing_config_id": f"simulation-preprocessing-{config_hash[:12]}",
+        "processing_config_id": "simulation-preprocessing-v2",
         "processing_version": "2.0.0",
         "background_status": background.status,
         "background_method": background.method,
@@ -820,7 +802,6 @@ def _observation_manifest_row(
         "simulator_version": simulator_version,
         "parameter_seed": parameters["parameter_seed"],
         "noise_seed": parameters["noise_seed"],
-        "config_hash": config_hash,
     }
 
 
@@ -847,7 +828,6 @@ def generate_observation_pilot(
     if output_root.exists() and any(output_root.iterdir()) and not overwrite:
         raise FileExistsError(f"Output directory is not empty and overwrite is disabled: {output_root}")
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
-    config_hash = _config_hash(config_path)
     simulator_version = backend_status().version or "unavailable"
     effects = config["pilot"]["observation_effects"]
     detectable_threshold = float(effects["detectable_amplitude_threshold"])
@@ -1039,7 +1019,6 @@ def generate_observation_pilot(
                 "simulator_name": "lenstronomy",
                 "simulator_version": simulator_version,
                 "config_path": config_path.as_posix(),
-                "config_hash": config_hash,
                 "backend_reference": backend_status().to_dict(),
                 "lens_parameters": scene.lens_parameters,
                 "shear_parameters": scene.shear_parameters,
@@ -1061,12 +1040,11 @@ def generate_observation_pilot(
                     preprocess=processed,
                     output_root=output_root,
                     paths=paths,
-                    config_hash=config_hash,
                     detectable_threshold=detectable_threshold,
                     simulator_version=simulator_version,
                 )
             )
-        except Exception as exc:
+        except (ValueError, FloatingPointError) as exc:
             rejections.append({
                 "sample_id": sample_id,
                 "parent_system_id": parent_id,
@@ -1094,7 +1072,6 @@ def generate_observation_pilot(
         "simulation_id": simulation_id,
         "simulation_stage": stage_name,
         "config_path": config_path.as_posix(),
-        "config_hash": config_hash,
         "seed": int(seed),
         "count_requested": int(count),
         "count_attempted": int(count),

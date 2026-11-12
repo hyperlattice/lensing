@@ -7,7 +7,6 @@ or real-domain accuracy claims.
 from __future__ import annotations
 
 import argparse
-import hashlib
 import importlib.metadata
 import json
 from pathlib import Path
@@ -64,12 +63,10 @@ def run(config_path=CONFIG, *, generate=False):
     config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     validation_path = Path(config["validation_report"])
     validation = json.loads(validation_path.read_text(encoding="utf-8"))
-    if not validation["passed"] or validation["adapter_sha256"] != hashlib.sha256(Path(adapter.__file__).read_bytes()).hexdigest():
+    if not validation['passed']:
         raise ValueError("Missing, failed or stale light/image development controls")
     report = {"experiment_id":config["experiment_id"],"stage":"development",
-              "cnn_inference_run":False, "config_sha256":hashlib.sha256(config_path.read_bytes()).hexdigest(),
-              "python":platform.python_version(), "deflection_controls":deflection_controls(config),
-              "light_image_validation_sha256":hashlib.sha256(validation_path.read_bytes()).hexdigest(),
+              "cnn_inference_run":False, "python":platform.python_version(), "deflection_controls":deflection_controls(config),
               "light_image_development_controls_passed":True}
     report_path = Path(config["report"])
     if not report["deflection_controls"]["passed"]:
@@ -84,7 +81,7 @@ def run(config_path=CONFIG, *, generate=False):
     if output.exists() and any(output.iterdir()):
         raise FileExistsError("Use a new development release ID; existing outputs are immutable")
     output.mkdir(parents=True,exist_ok=True)
-    _json(output/"generation_started.json",{"config_sha256":report["config_sha256"]})
+    _json(output/"generation_started.json",{})
     source_config_path = Path(config["source_config"])
     source_config = yaml.safe_load(source_config_path.read_text(encoding="utf-8"))
     rows, failures = [], []
@@ -133,9 +130,6 @@ def run(config_path=CONFIG, *, generate=False):
     report.update({"requested_parents":int(config["parent_count"]),
                    "requested_observations":int(config["parent_count"])*len(config["conditions"]),
                    "accepted_observations":len(rows),"rejected_observations":len(failures),
-                   "source_config_sha256":hashlib.sha256(source_config_path.read_bytes()).hexdigest(),
-                   "source_hashes":{str(path):hashlib.sha256(path.read_bytes()).hexdigest() for path in
-                       [Path(__file__),Path(adapter.__file__),Path("src/simulation/priors.py")]},
                    "environment":{name:importlib.metadata.version(name) for name in
                        ["autolens","autogalaxy","autoarray","autofit","numpy","scipy","astropy"]},
                    "failures":failures,
@@ -143,9 +137,6 @@ def run(config_path=CONFIG, *, generate=False):
                                   "Light/image controls passed on a development grid and four parents only; central floor differs",
                                   "Project-owned root search, integration, PSF and detector code",
                                   "Shared physical proposal and preprocessing; no real-instrument calibration"]})
-    hashes = {path.relative_to(output).as_posix():hashlib.sha256(path.read_bytes()).hexdigest()
-              for path in sorted(output.rglob("*")) if path.is_file()}
-    _json(output/"checksums.json",hashes)
     _json(output/"generation_complete.json",report)
     _json(report_path,report)
     if failures:

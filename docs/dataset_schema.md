@@ -162,11 +162,11 @@ with `source_template_id` and `background_template_id` so asset families
 can also be split without leakage.
 
 The exact parameter dictionary is stored at `parameters_path`. It must record
-the model, all generating parameters, configuration hash, and random streams.
+the model, all generating parameters, configuration settings, and random streams.
 `parameter_seed` controls physical parameter draws and `noise_seed` controls
 observation/noise draws. `simulator_name` and `simulator_version` are
 required for generated rows. A run-level record should also retain code
-version, environment, input hashes, attempted/accepted counts, and rejected
+version, environment, input paths, attempted/accepted counts, and rejected
 configurations.
 
 ## 6. Quality and eligibility

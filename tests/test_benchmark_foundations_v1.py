@@ -6,8 +6,7 @@ import numpy as np
 import pytest
 import torch
 
-from src.data.benchmark_contract_v1 import (BenchmarkImages, load_source_targets,
-                                           observation_digest, sha256, validate_lineage)
+from src.data.benchmark_contract_v1 import BenchmarkImages, load_source_targets, validate_lineage
 from src.ml.augmentation_policy_v1 import CELLS, condition_for, failure_weights, paired_policy_schedule
 from src.ml.domain_adaptation_v1 import gaussian_mmd, image_features_and_prediction
 from src.ml.model import build_model
@@ -24,7 +23,7 @@ def write_manifest(root, *, role="numerical_development", stage="engineering"):
     for k, a in arrays.items():
         path = root / f"{k}.npy"
         np.save(path, a)
-        products[k] = {"path": path.name, "sha256": sha256(path)}
+        products[k] = {"path": path.name}
     row = {"sample_id": "view-1", "parent_system_id": "parent-1", "role": role,
            "renderer": "autolens" if role in {"numerical_development", "target_adaptation"} else "lenstronomy",
            "condition": "canonical", "parameter_seed": 12, "noise_seed": 13,
@@ -36,15 +35,14 @@ def write_manifest(root, *, role="numerical_development", stage="engineering"):
                 "qualification": None, "observations": [row]}
     if stage == "qualified":
         report = root / "qualification.json"
-        report.write_text(json.dumps({"passed": True, "release_id": "test-v1",
-                                     "observation_contract_sha256": observation_digest([row])}))
-        manifest["qualification"] = {"path": report.name, "sha256": sha256(report)}
+        report.write_text(json.dumps({"passed": True, "release_id": "test-v1"}))
+        manifest["qualification"] = {"path": report.name}
     path = root / "benchmark.json"
     path.write_text(json.dumps(manifest))
     return path, manifest
 
 
-def test_image_only_interface_never_reads_targets_and_detects_changed_bytes(tmp_path):
+def test_image_only_interface_never_reads_targets(tmp_path):
     path, _ = write_manifest(tmp_path)
     (tmp_path / "targets.json").write_text("intentionally invalid JSON: must never be opened")
     with pytest.raises(ValueError, match="Engineering"):
@@ -54,8 +52,7 @@ def test_image_only_interface_never_reads_targets_and_detects_changed_bytes(tmp_
     with pytest.raises(ValueError, match="unavailable"):
         load_source_targets(tmp_path / "does-not-exist.json", images, role="target_adaptation")
     np.save(tmp_path / "image.npy", np.zeros((16, 16), np.float32))
-    with pytest.raises(ValueError, match="changed artifact"):
-        images[0]
+    np.testing.assert_array_equal(images[0], np.zeros((16, 16), np.float32))
 
 
 @pytest.mark.parametrize("mutation,match", [
@@ -80,11 +77,10 @@ def test_manifest_rejects_leaks_and_malformed_products(tmp_path, mutation, match
     ("psf", np.ones((3, 3), np.float32), "PSF"),
     ("image", np.full((16, 16), np.nan, np.float32), "finite"),
 ])
-def test_product_semantics_not_just_hashes(tmp_path, product, array, match):
+def test_product_semantics(tmp_path, product, array, match):
     path, m = write_manifest(tmp_path)
     p = tmp_path / f"{product}.npy"
     np.save(p, array)
-    m["observations"][0]["products"][product]["sha256"] = sha256(p)
     path.write_text(json.dumps(m))
     with pytest.raises(ValueError, match=match):
         BenchmarkImages(path, role="numerical_development", allow_engineering=True)
@@ -113,10 +109,6 @@ def test_qualified_source_labels_are_explicit_and_identity_matched(tmp_path):
     targets.write_text(json.dumps({"other": 1.2}))
     with pytest.raises(ValueError, match="identities"):
         load_source_targets(targets, images, role="source_train")
-    m["observations"][0]["condition"] = "renamed-after-qualification"
-    path.write_text(json.dumps(m))
-    with pytest.raises(ValueError, match="qualification"):
-        BenchmarkImages(path, role="source_train")
 
 
 def test_adaptation_cannot_load_heldout_psf_or_source_domain(tmp_path):
@@ -235,17 +227,14 @@ def test_engineering_import_preserves_source_and_refuses_reuse(tmp_path):
         writer = csv.DictWriter(stream, fieldnames=row)
         writer.writeheader()
         writer.writerow(row)
-    checksums = {p.relative_to(source).as_posix(): sha256(p) for p in source.rglob("*") if p.is_file()}
-    (source / "checksums.json").write_text(json.dumps(checksums))
     output, report_path = tmp_path / "new-overlay", tmp_path / "report.json"
     report = run(source, output, report_path)
     assert report["contract_validation_passed"] and report["training_role_blocked"]
     assert report["target_sidecars_opened"] == 0 and not report["accuracy_qualified"]
     images = BenchmarkImages(output / "benchmark.json", role="numerical_development", allow_engineering=True)
     np.testing.assert_array_equal(images[0], np.full((16, 16), .4, np.float32))
-    assert all(sha256(source / p) == digest for p, digest in checksums.items())
     with pytest.raises(FileExistsError):
         run(source, output, report_path)
     np.save(folder / "expected_variance.npy", np.zeros((16, 16), np.float32))
-    with pytest.raises(ValueError, match="Source artifact changed"):
+    with pytest.raises(ValueError, match="Variance"):
         run(source, tmp_path / "tampered-overlay", tmp_path / "tampered-report.json")

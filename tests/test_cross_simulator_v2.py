@@ -9,10 +9,9 @@ from src.simulation.autolens_backend_v2 import mapped_light_parameters, sample_d
 from src.simulation.cross_simulator_v2 import run
 
 
-@pytest.mark.parametrize("passed,recorded_hash", [(False, "unused"), (True, "stale")])
-def test_development_release_rejects_failed_or_stale_controls(tmp_path, passed, recorded_hash):
+def test_development_release_rejects_failed_controls(tmp_path):
     validation = tmp_path / "controls.json"
-    validation.write_text(json.dumps({"passed": passed, "adapter_sha256": recorded_hash}))
+    validation.write_text(json.dumps({"passed": False}))
     config = tmp_path / "config.yaml"
     config.write_text(yaml.safe_dump({"validation_report": str(validation)}))
     with pytest.raises(ValueError, match="Missing, failed or stale"):

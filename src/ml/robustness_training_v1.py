@@ -7,7 +7,6 @@ update sees the identical prescribed source-parent batch across policies.
 from __future__ import annotations
 
 from collections import Counter, defaultdict
-import hashlib
 import json
 from pathlib import Path
 import time
@@ -21,7 +20,6 @@ from src.ml.domain_adaptation_v1 import image_features_and_prediction
 from src.ml.engine import seed_everything, write_json
 from src.ml.model import build_model
 from src.ml.provenance import source_provenance, environment_record
-from src.data.benchmark_contract_v1 import sha256
 
 ARMS = {"C", "N", "G", "T", "R", "C+MMD", "G+MMD", "R+MMD"}
 
@@ -85,7 +83,7 @@ def train_arm(config, *, seed, arm, source, development, target, output, probabi
     validate_lineage(source_lineage)
     fingerprints={}
     for parent in source_lineage:
-        fingerprint=parent["latent_sha256"]
+        fingerprint=parent["latent_id"]
         if fingerprint in fingerprints and fingerprints[fingerprint]!=parent["role"]:
             raise ValueError("Physical latent fingerprint overlaps across roles")
         fingerprints[fingerprint]=parent["role"]
@@ -97,7 +95,6 @@ def train_arm(config, *, seed, arm, source, development, target, output, probabi
     torch.set_num_threads(config["torch_threads"])
     seed_everything(seed)
     model = build_model(config["model"])
-    initial = hashlib.sha256(b"".join(v.detach().numpy().tobytes() for v in model.state_dict().values())).hexdigest()
     optimizer = torch.optim.AdamW(model.parameters(), lr=config["learning_rate"], weight_decay=config["weight_decay"])
     policy = arm.split("+")[0]
     probabilities = probabilities if policy == "R" else np.ones(len(CELLS))/len(CELLS)
@@ -107,20 +104,17 @@ def train_arm(config, *, seed, arm, source, development, target, output, probabi
     target_rng = np.random.default_rng(np.random.SeedSequence([seed, 50001]))
     historical_rng = np.random.default_rng(np.random.SeedSequence([seed, 50002]))
     write_json(output/"started.json", {"seed": seed, "arm": arm, "config": config,
-        "input_bank_sha256": {str(b.path): sha256(b.path) for b in (source, development, target) if b is not None},
-        "statistics": stats, "initial_weights_sha256": initial,
-        "target_information_access":None if target is None else target.document["condition_access"],
+        "statistics": stats, "target_information_access":None if target is None else target.document["condition_access"],
         "source": source_provenance(), "environment": environment_record(torch.device("cpu"))})
     parent_schedule = [row["parents"] for row in schedule]
-    schedule_hash = hashlib.sha256(json.dumps(parent_schedule).encode()).hexdigest()
     write_json(output/"sampling_controls.json",{
+        "parent_schedule":parent_schedule,
         "source_parent_order":source_ids,"cell_probabilities":np.asarray(probabilities).tolist(),
         "cell_order":list(CELLS),"schedule_seed":seed+100000,
         "target_seed_sequence":[seed,50001],"historical_seed_sequence":[seed,50002],
         "parent_exposures":dict(Counter(p for row in schedule for p in row["parents"])),
         "scheduled_cell_counts":dict(Counter(row["cell"] for row in schedule)),
-        "full_schedule_sha256":hashlib.sha256(json.dumps(schedule,sort_keys=True).encode()).hexdigest(),
-        "parent_schedule_sha256":schedule_hash,"reconstruction":"paired_policy_schedule with recorded NumPy version; source-only C/N/T ignore scheduled cell"})
+        "reconstruction":"paired_policy_schedule with recorded NumPy version; source-only C/N/T ignore scheduled cell"})
     history, pixels, started = [], 0, time.perf_counter()
     actual_views=Counter()
     loss_fn = torch.nn.HuberLoss(delta=config["huber_delta"])
@@ -170,21 +164,17 @@ def train_arm(config, *, seed, arm, source, development, target, output, probabi
             print(json.dumps({"arm": arm, "seed": seed, **record}), flush=True)
     checkpoint = {"model_state": model.state_dict(), "model_config": model.model_config,
                   "statistics": stats, "arm": arm, "seed": seed, "optimizer_updates": len(schedule),
-                  "target_information_access":None if target is None else target.document["condition_access"],
-                  "sampling_controls_sha256":sha256(output/"sampling_controls.json")}
+                  "target_information_access":None if target is None else target.document["condition_access"]}
     torch.save(checkpoint, output/"final.pt")
     write_json(output/"source_validation_predictions.json", val)
     write_json(output/"history.json", history)
     report = {"stage": purpose, "arm": arm, "seed": seed,
               "validation_mae_arcsec": val["mae_arcsec"], "optimizer_updates": len(schedule),
-              "batch_size": config["batch_size"], "parent_schedule_sha256": schedule_hash,
-              "initial_weights_sha256": initial, "source_exposures": len(schedule)*config["batch_size"],
+              "batch_size": config["batch_size"], "source_exposures": len(schedule)*config["batch_size"],
               "target_exposures": len(schedule)*config["batch_size"] if adaptation else 0,
               "pixels_processed": pixels, "runtime_seconds": time.perf_counter()-started,
-              "checkpoint_sha256": sha256(output/"final.pt"), "final_images_accessed": False,
+              "final_images_accessed": False,
               "target_information_access":None if target is None else target.document["condition_access"],
-              "target_regression_labels_accessed": False,"realized_source_view_counts":dict(actual_views),
-              "started_sha256":sha256(output/"started.json"),
-              "sampling_controls_sha256":sha256(output/"sampling_controls.json")}
+              "target_regression_labels_accessed": False,"realized_source_view_counts":dict(actual_views)}
     write_json(output/"complete.json", report)
     return report

@@ -32,12 +32,17 @@ are recorded in [`docs/maintenance/cleanup_v1.md`](docs/maintenance/cleanup_v1.m
 
 Treat a reported experiment as an immutable record. Give changed scientific
 settings a new configuration and experiment or release ID. Record the parent
-experiment, random seeds, software environment, source hashes, and output
+experiment, random seeds, software environment, Git revision and dirty status, and output
 locations. Do not use test-split or blind-holdout results to choose later model
 settings. Keep simulator truth separate from model inputs and actual-observation
 labels separate from synthetic targets.
 
-The Week 11 holdout freeze is hash-locked. Its source paths, configurations,
+Completed-result analysis may be repeated from saved predictions and truth.
+Keep their identity checks; current renderer source and training checkpoints
+are unnecessary for this analysis. A dirty Git revision alone does not capture
+uncommitted source edits, so commit the code used for a reported experiment.
+
+The original Week 11 record retains historical checksums. Its source paths, configurations,
 protocol, and exactly-once evaluation record are part of the evidence. Do not
 rename or edit those inputs while presenting the existing result as the same
 frozen run. Maintenance work that changes them needs a separately versioned
@@ -48,7 +53,7 @@ study record.
 Place reusable logic in the package that owns the responsibility; keep command
 parsing at the CLI boundary. Prefer descriptive module and function names for
 new code. The existing `reliability_week*.py` modules retain their names
-because study records and hashes identify those frozen phase workflows.
+because study records identify those phase workflows.
 
 Document scientific interfaces with docstrings. State the purpose, units,
 coordinate convention, assumptions, and meaningful failure conditions when

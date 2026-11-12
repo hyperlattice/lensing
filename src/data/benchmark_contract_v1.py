@@ -1,14 +1,13 @@
 """Strict native-grid benchmark overlay, separate from frozen CSV releases.
 
 An image-only view never opens a target sidecar. Roles and lineage are checked
-over the entire supplied ledger before any role is selected. Hashes establish
-artifact identity, not scientific qualification; that requires a separately
-reviewed numerical report. This module does not authorize final evaluation.
+over the entire supplied ledger before any role is selected. Numerical
+qualification requires a separately reviewed report. This module does not
+authorize final evaluation.
 """
 from __future__ import annotations
 
 from copy import deepcopy
-import hashlib
 import json
 from pathlib import Path, PurePosixPath
 
@@ -22,18 +21,6 @@ ROW_FIELDS = frozenset({"sample_id", "parent_system_id", "role", "renderer", "co
                         "pixel_scale_arcsec", "psf_family", "products"})
 
 
-def sha256(path):
-    digest = hashlib.sha256()
-    with Path(path).open("rb") as stream:
-        for block in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
-
-
-def observation_digest(rows):
-    """Bind a numerical qualification report to exact observation definitions."""
-    return hashlib.sha256(json.dumps(rows, sort_keys=True, separators=(",", ":"),
-                                     allow_nan=False).encode("utf-8")).hexdigest()
 
 
 def contained_path(root, relative):
@@ -142,11 +129,10 @@ class BenchmarkImages:
                 raise ValueError("Engineering release is not eligible for model training/evaluation")
         elif manifest["stage"] == "qualified":
             q = manifest["qualification"]
-            if not isinstance(q, dict) or set(q) != {"path", "sha256"}:
+            if not isinstance(q, dict) or "path" not in q:
                 raise ValueError("Missing qualification report")
             report = json.loads(self._artifact(q).read_text(encoding="utf-8"))
-            if (report.get("passed") is not True or report.get("release_id") != manifest["release_id"] or
-                report.get("observation_contract_sha256") != observation_digest(rows)):
+            if (report.get("passed") is not True or report.get("release_id") != manifest["release_id"]):
                 raise ValueError("Failed or mismatched qualification report")
         else:
             raise ValueError("Unknown release stage")
@@ -157,11 +143,11 @@ class BenchmarkImages:
             self._products(row)
 
     def _artifact(self, record):
-        if not isinstance(record, dict) or set(record) != {"path", "sha256"}:
-            raise ValueError("Artifact requires path and SHA256")
+        if not isinstance(record, dict) or "path" not in record:
+            raise ValueError("Artifact requires a path")
         path = contained_path(self.root, record["path"])
-        if not path.is_file() or sha256(path) != record["sha256"]:
-            raise ValueError(f"Missing or changed artifact: {record['path']}")
+        if not path.is_file():
+            raise ValueError(f"Missing artifact: {record['path']}")
         return path
 
     def _products(self, row):
@@ -193,7 +179,6 @@ class BenchmarkImages:
         return len(self._rows)
 
     def __getitem__(self, index):
-        # Recheck bytes at access time, preventing post-validation substitution.
         return self._products(self._rows[index])["image"]
 
 

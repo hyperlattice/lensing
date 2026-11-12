@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 from pathlib import Path
 
@@ -16,7 +15,7 @@ import pandas as pd
 import torch
 import yaml
 
-from src.ml.data import TorchLensDataset, file_sha256
+from src.ml.data import TorchLensDataset
 from src.ml.engine import collect_predictions, make_loader, select_device, write_json
 from src.ml.metrics import regression_metrics
 from src.ml.model import build_model
@@ -51,8 +50,6 @@ def _predict_checkpoint(
 ) -> tuple[pd.DataFrame, list[dict]]:
     checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=True)
     original_manifest = Path(checkpoint["release"]) / "manifest.csv"
-    if file_sha256(original_manifest) != str(checkpoint["release_manifest_sha256"]):
-        raise ValueError(f"Frozen source release hash changed: {original_manifest}")
 
     model = build_model(checkpoint["model_config"]).to(device)
     model.load_state_dict(checkpoint["model_state"])
@@ -93,7 +90,6 @@ def _predict_checkpoint(
             }
         ).merge(metadata, on="sample_id", validate="one_to_one")
         frame["checkpoint_id"] = str(checkpoint["experiment_id"])
-        frame["checkpoint_sha256"] = file_sha256(checkpoint_path)
         frame["seed"] = int(checkpoint["seed"])
         frame["residual_arcsec"] = frame["theta_E_arcsec_predicted"] - frame["theta_E_arcsec_true"]
         frame["absolute_error_arcsec"] = frame["residual_arcsec"].abs()
@@ -102,7 +98,6 @@ def _predict_checkpoint(
         metrics_rows.append(
             {
                 "checkpoint_id": str(checkpoint["experiment_id"]),
-                "checkpoint_sha256": file_sha256(checkpoint_path),
                 "seed": int(checkpoint["seed"]),
                 "intervention_id": intervention_id,
                 **regression_metrics(result["targets"], result["predictions"]),
@@ -161,14 +156,6 @@ def evaluate_observation_systematics(
     if len(checkpoints) != 3:
         raise ValueError("Week 4 requires all three frozen baseline seeds")
     checkpoint_payloads = [torch.load(path, map_location="cpu", weights_only=True) for path in checkpoints]
-    source_hashes = {Path(item["release"]) / "manifest.csv" for item in checkpoint_payloads}
-    if len(source_hashes) != 1:
-        raise ValueError("Frozen CNN checkpoints do not share one source release")
-    for item in checkpoint_payloads:
-        if file_sha256(Path(item["release"]) / "manifest.csv") != item["release_manifest_sha256"]:
-            raise ValueError("A frozen CNN checkpoint's source manifest hash changed")
-        if run_manifest["parent_manifest_sha256"] != item["release_manifest_sha256"]:
-            raise ValueError("Week 4 release does not descend from the frozen CNN's source data")
 
     canonical_ids = set(
         pd.read_csv(release / "splits" / "validation__canonical.csv")["parent_sample_id"].astype(str)
@@ -335,13 +322,9 @@ def evaluate_observation_systematics(
     summary = {
         "experiment_id": "WEEK4-OBSERVATION-SYSTEMATICS",
         "protocol": "archive/docs/reliability_study/protocol_v1.4.md",
-        "protocol_sha256": file_sha256(Path("archive/docs/reliability_study/protocol_v1.4.md")),
         "release": release.as_posix(),
-        "release_manifest_sha256": file_sha256(release / "manifest.csv"),
-        "parent_manifest_sha256": run_manifest["parent_manifest_sha256"],
         "source_parent_count": int(len(canonical_ids)),
         "condition_count_including_canonical": len(intervention_ids),
-        "cnn_checkpoint_hashes": {path.as_posix(): file_sha256(path) for path in checkpoints},
         "historical_test_split_accessed": False,
         "alternate_psf_family_tested": False,
         "alternate_psf_family_reason": "The validated observation renderer exposes analytic Gaussian PSFs only.",

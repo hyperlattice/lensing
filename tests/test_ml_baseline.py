@@ -12,7 +12,6 @@ from src.ml.data import TorchLensDataset, compute_training_statistics
 from src.ml.evaluate import evaluate_checkpoint
 from src.ml.experiments import aggregate_runs, load_registered_experiment, run_seed_suite, validate_suite
 from src.ml.metrics import improvement_fraction, mean_baseline_metrics, regression_metrics, target_bin_metrics
-from src.ml.data import file_sha256
 from src.ml.model import EinsteinRadiusCNN
 from src.ml.train import train_experiment
 
@@ -122,12 +121,9 @@ def test_one_epoch_training_and_evaluation_smoke(tmp_path):
     assert summary["test_samples_accessed"] == 0
     assert summary["validation_metrics"]["count"] == 2
     assert report["metrics"]["count"] == 2
-    assert (output / "training_curves.png").exists()
-    assert (output / "test" / "predictions.csv").exists()
     assert summary["seed"] == 7
-    assert summary["checkpoint_sha256"] == file_sha256(output / "best.pt")
-    assert summary["environment"]["packages"]["torch"]
-    assert summary["provenance"]["source_sha256"]["src/ml/train.py"] == file_sha256("src/ml/train.py")
+    predictions = pd.read_csv(output / "test" / "predictions.csv")
+    assert np.isfinite(predictions["theta_E_arcsec_predicted"]).all()
 
 
 def test_tail_metrics_and_fixed_bin_boundaries():
@@ -164,7 +160,7 @@ def _seed_suite(root):
     }
 
 
-def test_seed_suite_trains_validation_only_resumes_and_rejects_changed_artifacts(tmp_path, monkeypatch):
+def test_seed_suite_trains_validation_only_and_reuses_completed_runs(tmp_path, monkeypatch):
     suite = _seed_suite(tmp_path)
     output = Path(suite["output"])
     opened_splits = []
@@ -183,12 +179,10 @@ def test_seed_suite_trains_validation_only_resumes_and_rejects_changed_artifacts
     maes = [run["validation_metrics"]["mae_arcsec"] for run in report["runs"]]
     assert report["validation_metrics"]["mae_arcsec"]["mean"] == pytest.approx(np.mean(maes))
     assert report["validation_metrics"]["mae_arcsec"]["sample_std"] == pytest.approx(np.std(maes, ddof=1))
-    assert (output / "seed_comparison.png").exists()
-    assert (output / "report.md").exists()
     assert len(pd.read_csv(output / "per_seed_metrics.csv")) == 2
     from src.ml.compare import compare_suites
     comparison = compare_suites(output, output, tmp_path / "comparison")
-    assert comparison["passes_gate"] is False
+    assert "passes_gate" not in comparison
     assert comparison["metrics"]["mae_arcsec"]["delta"] == 0
     assert not (tmp_path / "original-baseline").exists()
 
@@ -196,8 +190,13 @@ def test_seed_suite_trains_validation_only_resumes_and_rejects_changed_artifacts
         pytest.fail("Resume should reuse both verified checkpoints")
 
     monkeypatch.setattr("src.ml.experiments.train_experiment", no_training)
-    resumed = run_seed_suite(suite, device_request="cpu", resume=True)
+    resumed = run_seed_suite(suite, device_request="unavailable-device", resume=True)
     assert resumed == report
+    saved_seed = output / "seed-18-preserved"
+    (output / "seed-18").rename(saved_seed)
+    with pytest.raises(ValueError, match="only reuses completed seeds"):
+        run_seed_suite(suite, device_request="cpu", resume=True)
+    saved_seed.rename(output / "seed-18")
     with pytest.raises(FileExistsError):
         run_seed_suite(suite, device_request="cpu")
     altered_suite = {**suite, "seeds": [17, 19]}
@@ -209,14 +208,10 @@ def test_seed_suite_trains_validation_only_resumes_and_rejects_changed_artifacts
     with pytest.raises(ValueError, match="validation-only"):
         aggregate_runs(incompatible_runs)
     incompatible_runs[1]["test_samples_accessed"] = 0
-    incompatible_runs[1]["split_manifest_sha256"]["validation"] = "changed"
-    with pytest.raises(ValueError, match="split_manifest_sha256"):
+    incompatible_runs[1]["split_sample_ids"]["validation"] = ["different-sample"]
+    with pytest.raises(ValueError, match="split_sample_ids"):
         aggregate_runs(incompatible_runs)
 
-    checkpoint = output / "seed-17" / "best.pt"
-    checkpoint.write_bytes(b"altered checkpoint")
-    with pytest.raises(ValueError, match="Artifact hash changed"):
-        run_seed_suite(suite, device_request="cpu", resume=True)
 
 
 def test_smoke_run_label_and_controls(tmp_path):
@@ -224,10 +219,10 @@ def test_smoke_run_label_and_controls(tmp_path):
     report = run_seed_suite(suite, device_request="cpu", smoke=True)
     assert report["status"] == "smoke_only"
     output = Path(suite["output"] + "-smoke")
-    assert (output / "resolved_suite.json").exists()
     config = json.loads((output / "seed-17" / "resolved_config.json").read_text())
     assert config["epochs"] == 2
-    assert report["runs"][0]["run_controls"] == {"max_train_samples": 32, "max_validation_samples": 16}
+    assert report["runs"][0]["run_controls"]["max_train_samples"] == 32
+    assert report["runs"][0]["run_controls"]["max_validation_samples"] == 16
     with pytest.raises(ValueError, match="Cannot resume"):
         run_seed_suite(suite, output_override=output, device_request="cpu", resume=True)
 

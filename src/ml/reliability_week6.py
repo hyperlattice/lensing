@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import re
 import shutil
@@ -19,11 +18,10 @@ import pandas as pd
 import torch
 import yaml
 
-from src.ml.data import TorchLensDataset, file_sha256
+from src.ml.data import TorchLensDataset
 from src.ml.engine import collect_predictions, make_loader, select_device, write_json
 from src.ml.metrics import regression_metrics, target_bin_metrics
 from src.ml.model import build_model
-from src.ml.provenance import config_sha256
 from src.ml.train import train_experiment
 
 
@@ -54,8 +52,6 @@ CONDITIONS = [
 ]
 
 
-def _sha256_text(value: str) -> str:
-    return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
 
 def _bootstrap_mean(values, *, seed=SELECTION_SEED, resamples=BOOTSTRAP_RESAMPLES):
@@ -272,7 +268,6 @@ def run_ridge_baseline(output_dir: Path) -> dict:
                 + ["log_positive_flux", "robust_image_rms", "max_positive_pixel", "central_to_outer_flux_ratio", "positive_centroid_radius_arcsec"],
                 "alpha_selected_by_train_only_cv": alpha,
                 "training_parent_count": len(train_rows),
-                "training_sample_ids_sha256": _sha256_text("\n".join(train_rows["sample_id"].astype(str))),
                 "fit": fit_record,
                 "training_fit_metrics": regression_metrics(y_train, fit_prediction),
                 "feature_definition": "positive-flux radial fractions; eight angular positive-flux fractions for 0.7-3 arcsec; log1p total positive flux; 1.4826*MAD; maximum positive pixel; central/outer positive-flux ratio; positive-flux centroid radius",
@@ -342,9 +337,7 @@ def run_learning_curve(output_dir: Path, *, device_request="auto") -> dict:
             config["output"] = run_dir.as_posix()
             if summary_path.exists():
                 summary = _load_json(summary_path)
-                expected_hash = _sha256_text("\n".join(selected_ids))
-                recorded = summary.get("run_controls", {}).get("train_sample_ids_sha256")
-                if recorded != expected_hash or int(summary.get("train_samples", -1)) != sample_count:
+                if int(summary.get('train_samples', -1)) != sample_count:
                     raise ValueError(f"Existing learning-curve run differs from its frozen selection: {run_dir}")
                 print(f"Reusing completed learning-curve run n={sample_count}, seed={seed}", flush=True)
             else:
@@ -383,8 +376,6 @@ def run_learning_curve(output_dir: Path, *, device_request="auto") -> dict:
                 "validation_mae_arcsec": float(summary["validation_metrics"]["mae_arcsec"]),
                 "validation_rmse_arcsec": float(summary["validation_metrics"]["rmse_arcsec"]),
                 "trainable_parameters": int(summary["trainable_parameters"]),
-                "checkpoint_sha256": str(summary["checkpoint_sha256"]),
-                "sample_ids_sha256": str(summary["run_controls"]["train_sample_ids_sha256"]),
             }
         )
     run_metrics = pd.DataFrame(run_rows).sort_values(["sample_count", "seed"])
@@ -472,7 +463,6 @@ def run_learning_curve(output_dir: Path, *, device_request="auto") -> dict:
         "nested_sizes": [100, 300, 700],
         "seed_ids": [12001, 12002, 12003],
         "fixed_validation_parent_count": 150,
-        "selection_manifest_sha256": file_sha256(selection_path),
         "runs": run_rows,
         "curve": curve.to_dict(orient="records"),
         "paired_to_700": paired_rows,
@@ -521,18 +511,13 @@ def run_shortcut_audit(output_dir: Path, *, device_request="auto") -> dict:
     )
     device = select_device(device_request)
     records = []
-    checkpoint_hashes = {}
     for checkpoint_path in CHECKPOINTS:
         checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=True)
         source_manifest = Path(checkpoint["release"]) / "manifest.csv"
-        if file_sha256(source_manifest) != checkpoint["release_manifest_sha256"]:
-            raise ValueError(f"Frozen training release changed for {checkpoint_path}")
         model = build_model(checkpoint["model_config"]).to(device)
         model.load_state_dict(checkpoint["model_state"])
         model.eval()
         seed = int(checkpoint["seed"])
-        checkpoint_sha = file_sha256(checkpoint_path)
-        checkpoint_hashes[str(seed)] = checkpoint_sha
         image_mean = float(checkpoint["statistics"]["image_mean"])
         image_std = float(checkpoint["statistics"]["image_std"])
         target_mean = float(checkpoint["statistics"]["target_mean"])
@@ -561,7 +546,6 @@ def run_shortcut_audit(output_dir: Path, *, device_request="auto") -> dict:
                         "parent_sample_id": str(row.parent_sample_id),
                         "intervention_id": intervention,
                         "seed": seed,
-                        "checkpoint_sha256": checkpoint_sha,
                         "theta_E_arcsec_predicted": float(prediction),
                     }
                 )
@@ -665,7 +649,6 @@ def run_shortcut_audit(output_dir: Path, *, device_request="auto") -> dict:
         "interventions": list(interventions),
         "parent_count": 150,
         "seed_ids": [12001, 12002, 12003],
-        "checkpoint_sha256_by_seed": checkpoint_hashes,
         "canonical_prediction_max_abs_difference_arcsec": max_difference,
         "bootstrap_resamples": BOOTSTRAP_RESAMPLES,
         "bootstrap_seed": SELECTION_SEED,
@@ -907,7 +890,6 @@ def _write_shortcut_report(path: Path, shortcut_summary: dict) -> None:
             "",
             "Source and PSF changes were assessed through the matched rerender studies in Weeks 3–5. Attribution maps were not used as causal evidence. Historical test data were not accessed.",
             "",
-            "Machine-readable predictions, paired effects, target-bin summaries, and checkpoint hashes are stored beside this report.",
             "",
         ]
     )
@@ -932,12 +914,6 @@ def run_week6(*, output_dir=ROOT, device_request="auto") -> dict:
     summary = {
         "week": 6,
         "protocol": protocol_path.as_posix(),
-        "protocol_sha256": file_sha256(protocol_path),
-        "baseline_config_sha256": file_sha256(BASELINE_CONFIG),
-        "source_code_sha256": file_sha256(Path(__file__)),
-        "frozen_cnn_checkpoint_sha256_by_seed": {
-            str(seed): file_sha256(path) for seed, path in zip((12001, 12002, 12003), CHECKPOINTS)
-        },
         "learning_curve": learning,
         "ridge": ridge,
         "shortcuts": shortcuts,

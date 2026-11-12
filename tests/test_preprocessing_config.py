@@ -6,13 +6,12 @@ import numpy as np
 from astropy.io import fits
 
 from src.processing.preprocess import main
-from src.processing.preprocessing_config import config_hash, load_config, validate_config
+from src.processing.preprocessing_config import load_config, validate_config
 
 
-def test_preprocessing_config_loads_and_hash_is_stable():
+def test_preprocessing_config_loads():
     config = load_config("configs/preprocessing/default.yaml")
     assert validate_config(config) == []
-    assert config_hash(config) == config_hash(config)
 
 
 def test_invalid_preprocessing_config_is_rejected_before_processing(tmp_path):
@@ -82,3 +81,32 @@ def test_preprocessing_writes_shared_geometry_and_mask_products(tmp_path):
     coverage = np.load(products / "masks" / "sample-a_coverage.npy")
     assert coverage[0, 0]
     assert not coverage[127, 127]
+
+
+@pytest.mark.parametrize("failure_stage,error_type", [
+    ("preprocess_image", RuntimeError),
+    ("np.save", PermissionError),
+])
+def test_preprocessing_propagates_execution_errors(tmp_path, monkeypatch, failure_stage, error_type):
+    raw = tmp_path / "sample.fits"
+    fits.PrimaryHDU(np.ones((2, 2), dtype=np.float32)).writeto(raw)
+    metadata = tmp_path / "metadata.csv"
+    pd.DataFrame({"sample_id": ["sample-a"], "raw_path": [str(raw)]}).to_csv(metadata, index=False)
+
+    def fail(*args, **kwargs):
+        raise error_type("injected failure")
+
+    monkeypatch.setattr(f"src.processing.preprocess.{failure_stage}", fail)
+    with pytest.raises(error_type, match="injected failure"):
+        main(metadata_path=metadata, output_dir=tmp_path / "products",
+             manifest_path=tmp_path / "manifest.csv")
+
+
+def test_preprocessing_records_missing_input(tmp_path):
+    metadata = tmp_path / "metadata.csv"
+    pd.DataFrame({"sample_id": ["missing"], "raw_path": [str(tmp_path / "missing.fits")]}).to_csv(metadata, index=False)
+    summary = main(metadata_path=metadata, output_dir=tmp_path / "products",
+                   manifest_path=tmp_path / "manifest.csv")
+    assert summary["accepted_count"] == 0
+    assert summary["failed_count"] == 1
+    assert summary["failures"][0]["error_type"] == "FileNotFoundError"

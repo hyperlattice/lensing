@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 from pathlib import Path
 
 import numpy as np
@@ -10,14 +9,6 @@ import torch
 from torch.utils.data import Dataset
 
 from src.data.dataset import LensDataset
-
-
-def file_sha256(path):
-    digest = hashlib.sha256()
-    with Path(path).open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 class TorchLensDataset(Dataset):
@@ -147,7 +138,5 @@ def compute_training_statistics(dataset):
         "target_mean": float(target_values.mean()),
         "target_std": target_std,
         "release_manifest": manifest_path.as_posix(),
-        "release_manifest_sha256": file_sha256(manifest_path),
         "source_split_manifest": dataset.dataset.manifest_path.as_posix(),
-        "source_split_manifest_sha256": file_sha256(dataset.dataset.manifest_path),
     }

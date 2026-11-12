@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 from pathlib import Path
 
@@ -31,14 +30,6 @@ SIMULATION_COLUMNS = [
     "simulator_version", "intervention_id", "normalization_method", "split",
 ]
 ANNULI = ((0.0, 0.5), (0.5, 1.0), (1.0, 1.5), (1.5, 2.5), (2.5, 4.0))
-
-
-def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for block in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
 
 
 def _shape(value, fallback):
@@ -267,7 +258,6 @@ def run(config_path=CONFIG):
         raise ValueError("Real and synthetic image IDs unexpectedly overlap")
 
     records = []
-    product_hash_entries = []
     exclusions = []
     real_root = Path(config["real_products_root"])
     sim_root = Path(config["simulation_release"])
@@ -327,18 +317,17 @@ def run(config_path=CONFIG):
                     for key in ("psf_fwhm_arcsec", "psf_method", "mass_model", "source_type", "simulator_name", "simulator_version", "intervention_id"):
                         record[key] = row.get(key)
                 records.append(record)
-                product_hash_entries.append((product_path.as_posix(), _sha256(product_path)))
-            except Exception as exc:
+            except (OSError, ValueError) as exc:
                 exclusions.append({"domain": domain, "sample_id": sample_id, "reason": str(exc)})
 
+    pd.DataFrame(exclusions, columns=["domain", "sample_id", "reason"]).to_csv(output / "exclusions.csv", index=False)
     observations = pd.DataFrame(records)
-    if observations.loc[observations["domain"] == "castles_real", "sample_id"].nunique() != 137:
+    if observations.empty or observations.loc[observations["domain"] == "castles_real", "sample_id"].nunique() != 137:
         raise ValueError("At least one required CASTLES image was excluded; inspect exclusions.csv")
     if observations.loc[observations["domain"] == "synthetic_week8_train", "sample_id"].nunique() != 1400:
         raise ValueError("At least one frozen synthetic training image was excluded; inspect exclusions.csv")
 
     observations.to_csv(output / "per_observation_features.csv", index=False)
-    pd.DataFrame(exclusions, columns=["domain", "sample_id", "reason"]).to_csv(output / "exclusions.csv", index=False)
     feature_fields = [
         "pixel_scale_arcsec", "field_of_view_x_arcsec", "field_of_view_y_arcsec",
         "processed_field_of_view_x_arcsec", "processed_field_of_view_y_arcsec", "native_height", "native_width",
@@ -399,27 +388,16 @@ def run(config_path=CONFIG):
     plt.close(fig)
 
     metadata_missingness = quality.loc[quality["domain"] == "castles_real"].set_index("field")["missing_fraction"].to_dict()
-    product_manifest_hash = hashlib.sha256(
-        json.dumps(sorted(product_hash_entries), separators=(",", ":")).encode("utf-8")
-    ).hexdigest()
     sim_run_path = Path(config["simulation_run_manifest"])
     summary = {
         "experiment_id": config["experiment_id"],
         "protocol": config["protocol"],
-        "protocol_sha256": _sha256(Path(config["protocol"])),
-        "config_sha256": _sha256(config_path),
-        "analysis_source_sha256": _sha256(Path(__file__)),
-        "real_metadata_sha256": _sha256(real_metadata_path),
-        "real_processed_metadata_sha256": _sha256(real_products_path),
-        "simulation_train_split_sha256": _sha256(simulation_split_path),
-        "simulation_run_manifest_sha256": _sha256(sim_run_path),
         "real_observation_count": int(observations.loc[observations["domain"] == "castles_real", "sample_id"].nunique()),
         "real_lens_system_count": int(observations.loc[observations["domain"] == "castles_real", "cluster_id"].nunique()),
         "synthetic_training_view_count": int(observations.loc[observations["domain"] == "synthetic_week8_train", "sample_id"].nunique()),
         "synthetic_independent_parent_count": int(observations.loc[observations["domain"] == "synthetic_week8_train", "cluster_id"].nunique()),
         "excluded_row_count": int(len(exclusions)),
-        "processed_image_product_count": len(product_hash_entries),
-        "processed_image_products_manifest_sha256": product_manifest_hash,
+        "processed_image_product_count": len(observations),
         "real_metadata_missing_fraction": metadata_missingness,
         "real_parameter_labels_read": False,
         "real_model_predictions_scored": False,
@@ -483,7 +461,6 @@ def run(config_path=CONFIG):
             "2. Obtain independent, uncertainty-qualified Einstein-radius references and document model/decomposition provenance; do not treat a single heterogeneous catalog value as exact truth.",
             "3. Preserve raw calibrated science, variance, bad-pixel/coverage masks, PSF products, filter/instrument metadata, exposure, and full crop/normalization provenance.",
             "4. Calibrate simulator source/lens morphology, mass-profile, PSF, detector/background/noise, pixel scale, and selection distributions against those products.",
-            "5. Freeze checkpoints, preprocessing, eligible lens IDs, metrics, and scorer before predictions. Save and hash predictions before a separate custodian joins labels once.",
             "6. Report system-level paired uncertainty and label/reference uncertainty; keep a separate blind test set unavailable during all model development.",
             "",
             "## Limitations",
@@ -500,5 +477,5 @@ if __name__ == "__main__":
     print(json.dumps({key: result[key] for key in (
         "experiment_id", "real_observation_count", "real_lens_system_count",
         "synthetic_training_view_count", "synthetic_independent_parent_count", "excluded_row_count",
-        "real_parameter_labels_read", "historical_test_accessed", "protocol_sha256",
+        "real_parameter_labels_read", "historical_test_accessed",
     )}, indent=2, sort_keys=True))

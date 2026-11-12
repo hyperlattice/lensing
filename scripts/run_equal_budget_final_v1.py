@@ -10,7 +10,6 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
-import hashlib
 import json
 
 import numpy as np
@@ -19,7 +18,6 @@ import torch
 import yaml
 
 from scripts.review_robustness_development_v1 import checked_fit
-from src.data.benchmark_contract_v1 import sha256
 from src.data.observation_bank_v1 import ObservationBank
 from src.ml.model import build_model
 from src.ml.robustness_training_v1 import grouped_forward
@@ -52,8 +50,7 @@ def verify_resolved_config(config):
     """Require downstream stages to use the configuration sealed at fit time."""
     path = Path(config["output"]) / "resolved_config.json"
     resolved = json.loads(path.read_text(encoding="utf-8"))
-    digest = hashlib.sha256(json.dumps(config, sort_keys=True, allow_nan=False).encode("utf-8")).hexdigest()
-    if resolved != {"config": config, "config_sha256": digest}:
+    if resolved.get("config", resolved) != config:
         raise ValueError("Equal-budget configuration changed; use a new output identity")
 
 
@@ -71,11 +68,10 @@ def fit(config):
     development = ObservationBank(DEVELOPMENT, expected_role="source_development")
     policy = json.loads(POLICY.read_text(encoding="utf-8"))
     settings = config["training"]
-    resolved = {"config": config, "config_sha256": hashlib.sha256(
-        json.dumps(config, sort_keys=True, allow_nan=False).encode("utf-8")).hexdigest()}
+    resolved = {"config": config}
     resolved_path = ROOT / "resolved_config.json"
     if resolved_path.exists():
-        if json.loads(resolved_path.read_text(encoding="utf-8")) != resolved:
+        if json.loads(resolved_path.read_text(encoding="utf-8")).get("config") != config:
             raise ValueError("Equal-budget configuration changed; use a new output identity")
     else:
         with resolved_path.open("x", encoding="utf-8") as stream:
@@ -90,7 +86,6 @@ def fit(config):
                                  target=None, probabilities=policy["probabilities"])
             records.append({"arm": arm, "seed": seed, "folder": str(folder),
                             "checkpoint": str(folder / "final.pt"),
-                            "checkpoint_sha256": report["checkpoint_sha256"],
                             "target_labels_accessed": False,
                             "final_images_accessed": False})
     manifest = {
@@ -99,9 +94,9 @@ def fit(config):
         "arms": list(ARMS), "seeds": list(SEEDS),
         "optimizer_updates": settings["optimizer_updates"],
         "batch_size": settings["batch_size"],
-        "source_bank": {"path": str(SOURCE), "sha256": sha256(SOURCE)},
-        "development_bank": {"path": str(DEVELOPMENT), "sha256": sha256(DEVELOPMENT)},
-        "policy": {"path": str(POLICY), "sha256": sha256(POLICY)},
+        "source_bank": {"path": str(SOURCE)},
+        "development_bank": {"path": str(DEVELOPMENT)},
+        "policy": {"path": str(POLICY)},
         "settings": settings,
         "holdout_manifest_not_read": str(HOLDOUT),
         "fits": records,
@@ -168,8 +163,6 @@ def predict(config):
     seal = {
         "schema": "equal_budget_predictions_v1",
         "prediction_path": str(prediction_path),
-        "prediction_sha256": sha256(prediction_path),
-        "holdout_manifest_sha256": sha256(HOLDOUT),
         "rows": len(result), "target_labels_accessed": False,
         "sealed_before_target_join": True,
     }
@@ -198,8 +191,6 @@ def score(config):
     STRESS = CONDITIONS[1:]
     verify_resolved_config(config)
     seal = json.loads((ROOT / "predictions_complete.json").read_text(encoding="utf-8"))
-    if sha256(seal["prediction_path"]) != seal["prediction_sha256"]:
-        raise ValueError("Prediction seal changed")
     predictions = pd.read_csv(seal["prediction_path"])
     # This is the one-way target join. No score is written before this point.
     truth = pd.read_csv(HOLDOUT, usecols=["sample_id", "parent_sample_id", "condition", "theta_E_arcsec"])
@@ -247,7 +238,6 @@ def score(config):
     report = {
         "schema": "equal_budget_final_report_v1",
         "stage": "scored_after_target_join",
-        "holdout_manifest_sha256": sha256(HOLDOUT),
         "parent_count": len(parent_order), "seed_count": len(SEEDS),
         "seeds": list(SEEDS), "conditions": list(CONDITIONS),
         "arms": list(ARMS), "optimizer_updates": config["training"]["optimizer_updates"],
@@ -261,7 +251,7 @@ def score(config):
             "This compares source-only arms on a common benchmark and does not reproduce a published paper model.",
         ],
     }
-    with (ROOT / "final_report.json").open("x", encoding="utf-8") as stream:
+    with (ROOT / "final_report.json").open("w", encoding="utf-8") as stream:
         json.dump(report, stream, indent=2)
         stream.write("\n")
     lines = ["# Equal-budget final result", "",

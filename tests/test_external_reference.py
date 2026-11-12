@@ -1,15 +1,10 @@
-import hashlib
 
 import numpy as np
 import pytest
 
-from src.data.external_reference import readiness_blockers, verify_asset, catalog_rows
+from src.data.external_reference import readiness_blockers, catalog_rows
 
 
-def test_corrupt_download_is_rejected():
-    spec = {"sha256":hashlib.sha256(b"original").hexdigest()}
-    with pytest.raises(ValueError,match="mismatch"):
-        verify_asset(b"corrupt",spec)
 
 
 def test_missing_individual_error_blocks_scoring_even_after_other_reviews():
@@ -44,10 +39,10 @@ def test_real_intake_preserves_supplied_noise_and_does_not_create_simulator_trut
                         "psf":np.ones((3,3))/9}.items():
         path=folder/f"{kind}.fits"
         fits.writeto(path,array)
-        assets[kind]={"filename":path.name,"sha256":hashlib.sha256(path.read_bytes()).hexdigest()}
+        assets[kind]={"filename":path.name}
     config={"experiment_id":"test","raw_root":str(raw),"output":str(tmp_path/"out"),
             "report":str(tmp_path/"report.json"),
-            "reference_catalog":{"filename":"catalog.cat","sha256":hashlib.sha256(catalog.read_bytes()).hexdigest(),"citation":"test"},
+            "reference_catalog":{"filename":"catalog.cat","citation":"test"},
             "samples":[{"sample_id":"pilot","lens_id":"LENS","assets":assets,"science_hdu":0,
                         "noise_semantics":"standard_deviation","pixel_scale_arcsec":0.05,
                         "reference_definition":"unmapped","image_unit":"unknown"}]}

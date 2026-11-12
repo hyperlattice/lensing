@@ -1,5 +1,10 @@
 # Cleanup validation
 
+This records the earlier cleanup. The later simplification consolidated the
+seed runners and fixed the control-schema mismatch described below; it also
+retired the standalone simulation smoke in favor of the existing tests.
+Historical test results here are preserved as recorded.
+
 Validation ran on `richard_changes`, relative to `e76b72d`. No production
 training, holdout inference/scoring or scientific result regeneration was
 performed. Tests used small temporary fixtures.

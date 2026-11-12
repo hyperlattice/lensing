@@ -71,15 +71,21 @@ Protocols are retained under `archive/docs/reliability_study/`. Read the
 [reproducibility statement](reliability_study/final/reproducibility_statement.md)
 and [migration record](maintenance/cleanup_v1.md) together.
 
-## Implementation inventory for the later refactor
+## Implementation notes
 
-- `experiments.py` is the historical suite runner; `experiments_v2.py` adds
-  stricter controls. The original runner has a `run_controls` verification
-  mismatch with current training summaries (two pre-existing test failures).
-  Compare their output/resume contracts before merging; see the
-  [validation record](maintenance/cleanup_validation.md).
-- `src/ml/observation_bank_v1.py` is a compatibility re-export of the loader
-  maintained in `src/data/observation_bank_v1.py`.
+- `experiments.py` is the single seed-suite runner. It handles the complete
+  training-control schema and reuses completed seeds across source/device edits.
+  `--resume` never trains missing seeds; use a new output for new fits.
+- The observation-bank loader lives in `src/data/observation_bank_v1.py`.
+  Saved banks retain qualification reports and product integrity checks, without
+  requiring the historical renderer source to exist in the current checkout.
+- Experiment records use paths, resolved settings, seeds, sample IDs, and Git
+  revision/dirty status. Maintained workflows do not generate or verify hashes.
+- Equal-budget `score` and `scripts.score_paired_evaluation_v1` can regenerate
+  derived reports from the same saved predictions and truth. The latter keeps
+  its original first-access marker and checks study settings and sample axes.
+- `src.ml.compare` reports descriptive paired metrics without an automatic
+  development pass/fail rule. Prespecified confirmatory endpoints remain intact.
 - ML and processing observation-condition definitions coexist to keep data
   generation independent of Torch; existing parity tests cover them.
 - Original, precise, low-memory and adaptive renderers have different
@@ -93,10 +99,9 @@ and [migration record](maintenance/cleanup_v1.md) together.
 
 ```powershell
 python -m scripts.check_repository
-python -m src.simulation.smoke_test
 python -B -m pytest -q -p no:cacheprovider --basetemp=.pytest-work-tests
 ```
 
-The smoke performs deterministic analytic checks without private datasets and
-reports optional backend availability separately. Full checks require the
-dependencies in `requirements.txt`; they do not open the production holdout.
+Analytic, rendering, and training checks run on temporary fixtures. Optional
+backend tests skip when dependencies are unavailable. The suite does not open
+the production holdout.

@@ -24,7 +24,6 @@ from src.simulation.independent_sie import (
     independent_sie_magnification,
     solve_independent_sie_images,
 )
-from src.simulation.models import build_light_model
 from src.simulation.observation import (
     _deposit_bilinear,
     observation_psf,
@@ -48,7 +47,9 @@ def render_independent_expected_scene(
     if any(abs(float(parameters.get(key, 0.0))) > 0.0 for key in ("gamma1", "gamma2")):
         raise ValueError("Week 7 independent renderer is frozen for the no-shear SIE proposal")
     if light_model is None:
-        light_model = build_light_model(["SERSIC_ELLIPSE"])
+        from lenstronomy.LightModel.light_model import LightModel
+
+        light_model = LightModel(light_model_list=["SERSIC_ELLIPSE"])
 
     height, width = shape
     high_height, high_width = height * supersampling, width * supersampling

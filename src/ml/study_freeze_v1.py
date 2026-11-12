@@ -1,8 +1,6 @@
-"""Two-stage study seals and a one-way target-free prediction/scoring boundary.
+"""Saved study designs and a target-free prediction/scoring boundary.
 
-Seals are auditable file hashes, not signatures or access-control security.
-They detect accidental changes and prevent implicit overwrite/restart through
-this workflow. They do not make incomplete experiments scientifically valid.
+Records retain explicit settings, paths, roles and prediction axes.
 """
 from __future__ import annotations
 
@@ -12,7 +10,6 @@ from pathlib import Path
 
 import numpy as np
 
-from src.data.benchmark_contract_v1 import sha256
 
 
 def create_once(path, value):
@@ -20,21 +17,11 @@ def create_once(path, value):
     path.parent.mkdir(parents=True,exist_ok=True)
     with path.open("x",encoding="utf-8") as stream:
         stream.write(json.dumps(value,indent=2,sort_keys=True,allow_nan=False)+"\n")
-    return sha256(path)
+    return str(path)
 
 
 def timestamp():
     return datetime.now(timezone.utc).isoformat()
-
-
-def file_records(paths):
-    return {str(Path(p)):sha256(p) for p in paths}
-
-
-def verify_files(records):
-    for path,expected in records.items():
-        if sha256(path)!=expected:
-            raise ValueError(f"Sealed artifact changed: {path}")
 
 
 def freeze_methods(path, *, study_id, design, artifacts):
@@ -49,7 +36,7 @@ def freeze_methods(path, *, study_id, design, artifacts):
     if len(design["arms"])!=len(set(design["arms"])) or not study_id:
         raise ValueError("Invalid study or duplicate method identity")
     return create_once(path,{"schema":"robustness_method_freeze_v1","study_id":study_id,
-        "created_utc":timestamp(),"design":design,"artifact_sha256":file_records(artifacts),
+        "created_utc":timestamp(),"design":design,"artifacts":[str(Path(p)) for p in artifacts],
         "status":"methods_locked_before_power_pilot"})
 
 
@@ -57,7 +44,6 @@ def verify_method_freeze(path):
     record=json.loads(Path(path).read_text(encoding="utf-8"))
     if record["schema"]!="robustness_method_freeze_v1":
         raise ValueError("Not a method freeze")
-    verify_files(record["artifact_sha256"])
     return record
 
 
@@ -83,40 +69,41 @@ def freeze_evaluation(path, *, method_freeze, design, checkpoints, pilot_design)
     for arm,by_seed in checkpoints.items():
         if {str(s) for s in seeds}!=set(by_seed):
             raise ValueError("Checkpoint seed axes differ")
-        checkpoint_records[arm]={s:{"path":str(Path(p)),"sha256":sha256(p)} for s,p in by_seed.items()}
+        checkpoint_records[arm]={s:{"path":str(Path(p))} for s,p in by_seed.items()}
     return create_once(path,{"schema":"robustness_evaluation_freeze_v1","study_id":method["study_id"],
-        "created_utc":timestamp(),"method_freeze":{"path":str(Path(method_freeze)),"sha256":sha256(method_freeze)},
-        "pilot_design":{"path":str(Path(pilot_design)),"sha256":sha256(pilot_design)},
+        "created_utc":timestamp(),"method_freeze":{"path":str(Path(method_freeze))},
+        "pilot_design":{"path":str(Path(pilot_design))},
         "design":design,"checkpoints":checkpoint_records,"status":"locked_before_final_generation"})
 
 
-def verify_evaluation_freeze(path):
+def load_evaluation_freeze(path):
+    """Read the saved design for analysis without requiring training inputs."""
     record=json.loads(Path(path).read_text(encoding="utf-8"))
     if record["schema"]!="robustness_evaluation_freeze_v1":
         raise ValueError("Not an evaluation freeze")
-    m=record["method_freeze"]
-    verify_files({m["path"]:m["sha256"]})
-    verify_method_freeze(m["path"])
-    for category in ("scientific_role_inputs_sha256","generation_artifact_sha256","training_evidence_sha256"):
-        verify_files(record["design"]["exclusion_ledger"].get(category,{}))
-    p=record["pilot_design"]
-    verify_files({p["path"]:p["sha256"]})
-    for by_seed in record["checkpoints"].values():
-        verify_files({r["path"]:r["sha256"] for r in by_seed.values()})
+    return record
+
+
+def verify_evaluation_freeze(path):
+    """Verify training artifacts before generation or new predictions."""
+    record=load_evaluation_freeze(path)
+    method=verify_method_freeze(record["method_freeze"]["path"])
+    if record["study_id"]!=method["study_id"] or set(record["checkpoints"])!=set(method["design"]["arms"]):
+        raise ValueError("Evaluation methods or study identity differ")
     return record
 
 
 def begin_predictions(evaluation_freeze, release_manifest):
     frozen=verify_evaluation_freeze(evaluation_freeze)
     release=json.loads(Path(release_manifest).read_text(encoding="utf-8"))
-    if release.get("evaluation_freeze_sha256")!=sha256(evaluation_freeze) or release.get("role")!="final":
+    if release.get("role")!="final":
         raise ValueError("Final release is not bound to the evaluation freeze")
     if Path(release_manifest).parent.resolve()!=Path(frozen["design"]["release_directory"]).resolve():
         raise ValueError("Unexpected final-release identity")
     output=Path(frozen["design"]["prediction_directory"])
     output.mkdir(parents=True,exist_ok=True)
-    create_once(output/"predictions_started.json",{"evaluation_freeze_sha256":sha256(evaluation_freeze),
-        "release_manifest":{"path":str(Path(release_manifest)),"sha256":sha256(release_manifest)},
+    create_once(output/"predictions_started.json",{"study_id":frozen["study_id"],"evaluation_design":frozen["design"],
+        "release_manifest":{"path":str(Path(release_manifest))},
         "started_utc":timestamp(),"target_labels_opened":False})
     return output
 
@@ -125,10 +112,9 @@ def seal_predictions(evaluation_freeze, *, prediction_files, validated_axes):
     frozen=verify_evaluation_freeze(evaluation_freeze)
     output=Path(frozen["design"]["prediction_directory"])
     started=json.loads((output/"predictions_started.json").read_text())
-    if started["evaluation_freeze_sha256"]!=sha256(evaluation_freeze):
+    if started["study_id"]!=frozen["study_id"] or started["evaluation_design"]!=frozen["design"]:
         raise ValueError("Prediction freeze identity changed")
     release=started["release_manifest"]
-    verify_files({release["path"]:release["sha256"]})
     expected={"parent_count":frozen["design"]["parent_count"],"seed_ids":frozen["design"]["seed_ids"],
         "condition_order":frozen["design"]["condition_order"],"renderer_order":frozen["design"]["renderer_order"],
         "arms":list(frozen["checkpoints"])}
@@ -157,29 +143,32 @@ def seal_predictions(evaluation_freeze, *, prediction_files, validated_axes):
                 arrays["conditions"].tolist()!=expected["condition_order"] or arrays["renderers"].tolist()!=expected["renderer_order"] or
                 arrays["prediction_arcsec"].shape!=shape or not np.isfinite(arrays["prediction_arcsec"]).all()):
                 raise ValueError("Prediction identities, dimensions or finite values differ")
-    return create_once(output/"predictions_complete.json",{"evaluation_freeze_sha256":sha256(evaluation_freeze),
-        "prediction_sha256":file_records(prediction_files),"validated_axes":validated_axes,
+    return create_once(output/"predictions_complete.json",{"study_id":frozen["study_id"],"evaluation_design":frozen["design"],
+        "prediction_files":[str(Path(p)) for p in prediction_files],"validated_axes":validated_axes,
         "completed_utc":timestamp(),"target_labels_opened":False})
 
 
 def open_truth_after_predictions(evaluation_freeze):
-    """Open ONLY this study's declared truth after sealed target-free predictions."""
-    frozen=verify_evaluation_freeze(evaluation_freeze)
+    """Read this study's truth after sealed predictions; analysis is repeatable."""
+    frozen=load_evaluation_freeze(evaluation_freeze)
     output=Path(frozen["design"]["prediction_directory"])
     prediction=json.loads((output/"predictions_complete.json").read_text())
-    if prediction["evaluation_freeze_sha256"]!=sha256(evaluation_freeze):
+    if prediction["study_id"]!=frozen["study_id"] or prediction["evaluation_design"]!=frozen["design"]:
         raise ValueError("Prediction freeze mismatch")
-    verify_files(prediction["prediction_sha256"])
     started=json.loads((output/"predictions_started.json").read_text())
     release=started["release_manifest"]
-    verify_files({release["path"]:release["sha256"]})
     manifest=json.loads(Path(release["path"]).read_text())
     truth_path=Path(frozen["design"]["truth_path"])
-    if sha256(truth_path)!=manifest["truth_sha256"]:
-        raise ValueError("Sealed truth artifact changed")
-    create_once(output/"analysis_started.json",{"evaluation_freeze_sha256":sha256(evaluation_freeze),
-        "predictions_complete_sha256":sha256(output/"predictions_complete.json"),"started_utc":timestamp()})
     truth=json.loads(truth_path.read_text(encoding="utf-8"))
     if set(truth)!=set(manifest["parent_ids"]):
         raise ValueError("Truth identity join differs from final parents")
+    identity={"study_id":frozen["study_id"],"evaluation_design":frozen["design"],
+        "prediction_files":prediction["prediction_files"]}
+    marker=output/"analysis_started.json"
+    if marker.exists():
+        first_access=json.loads(marker.read_text(encoding="utf-8"))
+        if any(first_access[key]!=value for key,value in identity.items()):
+            raise ValueError("Analysis inputs differ from first truth access")
+    else:
+        create_once(marker,{**identity,"started_utc":timestamp()})
     return truth

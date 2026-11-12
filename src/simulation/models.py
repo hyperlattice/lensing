@@ -1,4 +1,4 @@
-"""Project-level wrappers around the optional lenstronomy model API.
+"""Lens-model conventions and analytic controls.
 
 The rest of the project uses explicit conventions: angles are radians, axis ratios
 are minor/major, coordinates are ``(x, y)`` in arcseconds, and image arrays are
@@ -17,13 +17,9 @@ import importlib.util
 import math
 import sys
 from dataclasses import asdict, dataclass
-from typing import Any, Mapping, Sequence
+from typing import Any, Sequence
 
 import numpy as np
-
-
-class SimulationBackendUnavailable(ImportError):
-    """Raised when a backend-dependent simulation operation cannot run."""
 
 
 @dataclass(frozen=True)
@@ -74,15 +70,6 @@ def _require_scalar(value: Any, name: str, *, positive: bool = False) -> float:
     return number
 
 
-def _normalise_model_list(models: str | Sequence[str], name: str) -> list[str]:
-    if isinstance(models, str):
-        models = [models]
-    values = [str(model) for model in models]
-    if not values:
-        raise ValueError(f"{name} must contain at least one model")
-    return values
-
-
 def ellipticity_from_q_phi(q: Any, phi_rad: Any) -> tuple[float, float]:
     """Convert axis ratio and orientation to lenstronomy's ``(e1, e2)``."""
 
@@ -107,7 +94,7 @@ def q_phi_to_e1_e2(
         return analytic
     if backend != "lenstronomy":
         raise ValueError("backend must be 'analytic' or 'lenstronomy'")
-    _, param_util = _load_lenstronomy()
+    from lenstronomy.Util import param_util
     e1, e2 = param_util.phi_q2_ellipticity(float(phi_rad), float(q))
     return float(e1), float(e2)
 
@@ -128,7 +115,7 @@ def e1_e2_to_q_phi(
         return float(phi), float(q)
     if backend != "lenstronomy":
         raise ValueError("backend must be 'analytic' or 'lenstronomy'")
-    _, param_util = _load_lenstronomy()
+    from lenstronomy.Util import param_util
     phi, q = param_util.ellipticity2phi_q(e1_value, e2_value)
     return float(phi), float(q)
 
@@ -224,141 +211,3 @@ def sis_deflection(
     alpha_x = np.where(radius == 0, 0.0, theta_E * x_shift / safe_radius)
     alpha_y = np.where(radius == 0, 0.0, theta_E * y_shift / safe_radius)
     return alpha_x.astype(float), alpha_y.astype(float)
-
-
-def _load_lenstronomy() -> tuple[dict[str, Any], Any]:
-    """Import the backend lazily and provide a consistent project error."""
-
-    status = backend_status()
-    if not status.available:
-        raise SimulationBackendUnavailable(
-            "lenstronomy is unavailable. Install requirements.txt "
-            "or use the analytic controls."
-        )
-    try:
-        from lenstronomy.Data.psf import PSF
-        from lenstronomy.ImSim.image_model import ImageModel
-        from lenstronomy.LensModel.lens_model import LensModel
-        from lenstronomy.LightModel.light_model import LightModel
-        from lenstronomy.PointSource.point_source import PointSource
-        from lenstronomy.Util import param_util
-        from lenstronomy.Workflow.fitting_sequence import FittingSequence
-    except Exception as exc:  # pragma: no cover - depends on optional environment
-        raise SimulationBackendUnavailable(
-            f"lenstronomy {status.version} could not be imported: {exc}"
-        ) from exc
-    return (
-        {
-            "LensModel": LensModel,
-            "LightModel": LightModel,
-            "PointSource": PointSource,
-            "PSF": PSF,
-            "ImageModel": ImageModel,
-            "FittingSequence": FittingSequence,
-        },
-        param_util,
-    )
-
-
-def build_lens_model(
-    lens_model_list: str | Sequence[str] = ("SIE",),
-    *,
-    z_lens: float | None = None,
-    z_source: float | None = None,
-    **kwargs: Any,
-) -> Any:
-    """Construct a lenstronomy ``LensModel`` through the project boundary."""
-
-    classes, _ = _load_lenstronomy()
-    parameters: dict[str, Any] = {
-        "lens_model_list": _normalise_model_list(lens_model_list, "lens_model_list"),
-        **kwargs,
-    }
-    if z_lens is not None:
-        parameters["z_lens"] = _require_scalar(z_lens, "z_lens")
-    if z_source is not None:
-        parameters["z_source"] = _require_scalar(z_source, "z_source")
-    return classes["LensModel"](**parameters)
-
-
-def build_light_model(
-    light_model_list: str | Sequence[str] = ("SERSIC_ELLIPSE",),
-    **kwargs: Any,
-) -> Any:
-    """Construct a lenstronomy ``LightModel``."""
-
-    classes, _ = _load_lenstronomy()
-    parameters = {"light_model_list": _normalise_model_list(light_model_list, "light_model_list"), **kwargs}
-    return classes["LightModel"](**parameters)
-
-
-def build_point_source_model(
-    point_source_type_list: str | Sequence[str] = ("UNLENSED",),
-    *,
-    lens_model: Any = None,
-    **kwargs: Any,
-) -> Any:
-    """Construct a lenstronomy ``PointSource``."""
-
-    classes, _ = _load_lenstronomy()
-    parameters = {
-        "point_source_type_list": _normalise_model_list(
-            point_source_type_list, "point_source_type_list"
-        ),
-        "lens_model": lens_model,
-        **kwargs,
-    }
-    return classes["PointSource"](**parameters)
-
-
-def build_psf(**kwargs: Any) -> Any:
-    """Construct a lenstronomy ``PSF``."""
-
-    classes, _ = _load_lenstronomy()
-    return classes["PSF"](**kwargs)
-
-
-def build_image_model(
-    data_class: Any,
-    psf_class: Any,
-    *,
-    lens_model_class: Any = None,
-    source_model_class: Any = None,
-    lens_light_model_class: Any = None,
-    point_source_class: Any = None,
-    **kwargs: Any,
-) -> Any:
-    """Construct lenstronomy's image renderer from already-built components."""
-
-    classes, _ = _load_lenstronomy()
-    parameters = {
-        "data_class": data_class,
-        "psf_class": psf_class,
-        "lens_model_class": lens_model_class,
-        "source_model_class": source_model_class,
-        "lens_light_model_class": lens_light_model_class,
-        "point_source_class": point_source_class,
-        **kwargs,
-    }
-    return classes["ImageModel"](**parameters)
-
-
-def build_fitting_sequence(
-    kwargs_data_joint: Mapping[str, Any],
-    kwargs_model: Mapping[str, Any],
-    kwargs_constraints: Mapping[str, Any],
-    kwargs_likelihood: Mapping[str, Any],
-    kwargs_params: Mapping[str, Any],
-    **kwargs: Any,
-) -> Any:
-    """Construct lenstronomy's fitting workflow without starting a sampler."""
-
-    classes, _ = _load_lenstronomy()
-    return classes["FittingSequence"](
-        dict(kwargs_data_joint),
-        dict(kwargs_model),
-        dict(kwargs_constraints),
-        dict(kwargs_likelihood),
-        dict(kwargs_params),
-        **kwargs,
-    )

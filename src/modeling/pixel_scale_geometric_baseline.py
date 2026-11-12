@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import os
 from pathlib import Path
@@ -15,7 +14,7 @@ from scipy.ndimage import gaussian_filter, maximum_filter
 from scipy.optimize import least_squares
 from scipy.signal import fftconvolve
 
-from src.simulation.models import build_lens_model, sie_kwargs
+from src.simulation.models import sie_kwargs
 
 
 DEFAULT_CONFIG = Path("configs/reliability/classical_pixel_scale.yaml")
@@ -38,14 +37,6 @@ SCALE_FILES = {
     "low": "pixel-scale-004",
     "high": "pixel-scale-006",
 }
-
-
-def _sha256(path):
-    digest = hashlib.sha256()
-    with Path(path).open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def _estimate_center(image, valid, pixel_scale, *, sigma_arcsec, search_radius_arcsec):
@@ -234,7 +225,9 @@ def fit_point_image_geometry(
         }
 
     os.environ.setdefault("NUMBA_DISABLE_JIT", "1")
-    lens_model = build_lens_model(["SIE"])
+    from lenstronomy.LensModel.lens_model import LensModel
+
+    lens_model = LensModel(lens_model_list=["SIE"])
 
     def residual(values):
         theta_e, axis_ratio, phi, beta_x, beta_y = [float(value) for value in values]
@@ -324,10 +317,8 @@ def evaluate_classical_pixel_scale(config_path=DEFAULT_CONFIG, output_dir=DEFAUL
 
     release = Path(config["validation_release"])
     all_records = []
-    source_hashes = {"training_split_manifest": _sha256(train_manifest)}
     for stratum, intervention_id in config["validation_interventions"].items():
         manifest_path, observations = _load_validation_observations(release, intervention_id)
-        source_hashes[f"validation_{stratum}_manifest"] = _sha256(manifest_path)
         for index, row in enumerate(observations.to_dict(orient="records"), start=1):
             root = release
             image = np.load(root / row["observed_science_path"])
@@ -501,9 +492,6 @@ def evaluate_classical_pixel_scale(config_path=DEFAULT_CONFIG, output_dir=DEFAUL
         "parameters_sidecars_or_position_diagnostics_loaded": False,
         "historical_test_split_accessed": False,
         "fallback_theta_E_arcsec_training_mean": fallback_theta_e,
-        "source_hashes": source_hashes,
-        "prediction_sha256": _sha256(output_dir / "predictions.csv"),
-        "cnn_reference_sha256": _sha256(baseline_path),
         "scale_metrics_path": (output_dir / "scale_metrics.csv").as_posix(),
         "paired_predictions_path": (output_dir / "paired_predictions.csv").as_posix(),
         "classical_scale_effects_path": (output_dir / "classical_scale_effects.csv").as_posix(),
