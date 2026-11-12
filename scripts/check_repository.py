@@ -1,46 +1,65 @@
-"""Read-only checks of maintained configuration paths and documentation links.
+"""Check the maintained workflow; historical documents use their recorded checkout."""
 
-Historical archive/output records are not rewritten. Missing links to optional
-private data/results are reported separately from broken source references.
-"""
 from __future__ import annotations
 
-import argparse
 import ast
-from pathlib import Path
 import re
+from pathlib import Path
 from urllib.parse import unquote
+
+import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG_PATH = re.compile(r"(?<![\w/])configs/[A-Za-z0-9_./-]+\.yaml")
-PROTOCOL_PATH = re.compile(r"(?<![\w/])(?:archive/)?docs/reliability_study/protocol_[\w.]+\.md")
 LINK = re.compile(r"\[[^\]\n]*\]\(([^)\n]+)\)")
+CURRENT_DOCS = (
+    "README.md",
+    "CONTRIBUTING.md",
+    "src/README.md",
+    "scripts/README.md",
+    "configs/README.md",
+    "docs/README.md",
+    "docs/study.md",
+    "docs/reproduction.md",
+    "docs/data_contract.md",
+    "docs/rendering.md",
+    "docs/migration.md",
+)
 
 
-def check():
-    errors, optional = [], []
-    config_count = 0
-    import yaml
-
-    for path in sorted((ROOT / "configs").rglob("*.yaml")):
-        config = yaml.safe_load(path.read_text(encoding="utf-8"))
-        if not isinstance(config, dict):
-            errors.append(f"{path.relative_to(ROOT)}: expected a configuration mapping")
-        config_count += 1
-    paths = [ROOT / "README.md", ROOT / "CONTRIBUTING.md"]
-    for directory in ("src", "scripts", "tests", "configs", "docs"):
-        paths.extend(p for p in (ROOT / directory).rglob("*")
-                     if p.suffix in {".py", ".yaml", ".md"} and p.is_file()
-                     and "__pycache__" not in p.parts
-                     and not p.is_relative_to(ROOT / "docs/archive"))
-    for path in sorted(set(paths)):
+def check() -> int:
+    """Validate active imports/configuration references without opening scientific data."""
+    errors = []
+    optional = []
+    configurations = sorted((ROOT / "configs").rglob("*.yaml"))
+    for path in configurations:
+        if path.parent != ROOT / "configs":
+            errors.append(f"Nested active configuration: {path.relative_to(ROOT)}")
+        if not isinstance(yaml.safe_load(path.read_text(encoding="utf-8")), dict):
+            errors.append(f"Expected configuration mapping: {path.relative_to(ROOT)}")
+    paths = [ROOT / name for name in CURRENT_DOCS]
+    for directory in ("src", "scripts", "tests"):
+        paths.extend((ROOT / directory).rglob("*.py"))
+    paths.extend(configurations)
+    for path in paths:
         text = path.read_text(encoding="utf-8")
         if path.suffix == ".py":
-            ast.parse(text, filename=str(path))
-        for pattern in (CONFIG_PATH, PROTOCOL_PATH):
-            for target in set(pattern.findall(text)):
-                if not (ROOT / target).is_file():
-                    errors.append(f"{path.relative_to(ROOT)}: missing {target}")
+            tree = ast.parse(text, filename=str(path))
+            for node in ast.walk(tree):
+                modules = []
+                if isinstance(node, ast.ImportFrom) and node.module:
+                    modules.append(node.module)
+                elif isinstance(node, ast.Import):
+                    modules.extend(alias.name for alias in node.names)
+                for module in modules:
+                    if not module.startswith(("src.", "scripts.")):
+                        continue
+                    target = ROOT.joinpath(*module.split("."))
+                    if not target.with_suffix(".py").is_file() and not target.is_dir():
+                        errors.append(f"{path.relative_to(ROOT)}: missing import {module}")
+        for target in set(CONFIG_PATH.findall(text)):
+            if not (ROOT / target).is_file():
+                errors.append(f"{path.relative_to(ROOT)}: missing {target}")
         if path.suffix != ".md":
             continue
         for target in LINK.findall(text):
@@ -48,27 +67,24 @@ def check():
             if not target or "://" in target or target.startswith("mailto:"):
                 continue
             resolved = (path.parent / target).resolve()
-            if resolved.exists():
-                continue
-            message = f"{path.relative_to(ROOT)}: missing link {target}"
-            if resolved.is_relative_to(ROOT / "data") or resolved.is_relative_to(ROOT / "results"):
-                optional.append(message)
-            else:
-                errors.append(message)
+            if not resolved.exists():
+                message = f"{path.relative_to(ROOT)}: missing link {target}"
+                if resolved.is_relative_to(ROOT / "data") or resolved.is_relative_to(
+                    ROOT / "results"
+                ):
+                    optional.append(message)
+                else:
+                    errors.append(message)
     for message in sorted(set(errors)):
         print(f"FAIL: {message}")
     for message in sorted(set(optional)):
         print(f"OPTIONAL ARTIFACT: {message}")
-    print(f"Checked {config_count} YAML configurations and {len(set(paths))} maintained text files")
-    print(f"Broken references: {len(set(errors))}; unavailable optional artifacts: {len(set(optional))}")
-    return 1 if errors else 0
-
-
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.parse_args()
-    return check()
+    print(f"Checked {len(configurations)} configurations and {len(paths)} maintained files")
+    print(
+        f"Broken references: {len(set(errors))}; unavailable optional artifacts: {len(set(optional))}"
+    )
+    return int(bool(errors))
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    raise SystemExit(check())
