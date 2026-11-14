@@ -1,0 +1,8 @@
+{
+  "schema": "cgr_seed_validation_predictions_v1",
+  "prediction_path": "results\\reports\\cgr_seed_validation_v1\\predictions_before_scoring.csv",
+  "prediction_sha256": "60aa014f8b465b3df96ea9f9e813359ee45d9fd21aa2a85a5f59f7c012c19fd8",
+  "holdout_manifest_sha256": "b2d66af01e86d118b41003a0d2f41b0aab259fce2458643dc91c46830a58ad0c",
+  "rows": 22500,
+  "truth_opened_before_prediction_seal": false
+}

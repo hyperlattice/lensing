@@ -1,0 +1,54 @@
+{
+  "arm": "G",
+  "config": {
+    "batch_size": 16,
+    "fit_purpose": "development_only",
+    "huber_delta": 1.0,
+    "learning_rate": 0.001,
+    "mmd_weight": 0.0,
+    "model": {
+      "channels": [
+        4,
+        8,
+        16,
+        32
+      ],
+      "dropout": 0.1,
+      "hidden_features": 64,
+      "pooled_size": 4
+    },
+    "optimizer_updates": 880,
+    "torch_threads": 6,
+    "validation_interval_updates": 440,
+    "weight_decay": 0.0001
+  },
+  "environment": {
+    "cuda_version": null,
+    "device": "cpu",
+    "device_name": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel",
+    "machine": "AMD64",
+    "packages": {
+      "PyYAML": "6.0.2",
+      "matplotlib": "3.10.8",
+      "numpy": "2.3.5",
+      "pandas": "2.3.3",
+      "torch": "2.8.0"
+    },
+    "platform": "Windows",
+    "processor": "Intel64 Family 6 Model 141 Stepping 1, GenuineIntel",
+    "python": "3.13.6",
+    "torch_num_threads": 6
+  },
+  "seed": 730001,
+  "source": {
+    "git_revision": "3a8105478c3a2220678b1cf10348e998a3073338",
+    "working_tree_dirty": true
+  },
+  "statistics": {
+    "image_mean": 0.030129621202548,
+    "image_std": 0.030515149575102644,
+    "target_mean": 1.25138766811604,
+    "target_std": 0.4220701810005381
+  },
+  "target_information_access": null
+}

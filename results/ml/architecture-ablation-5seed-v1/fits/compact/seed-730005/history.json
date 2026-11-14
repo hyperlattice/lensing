@@ -1,0 +1,14 @@
+[
+  {
+    "mmd_loss": 0.0,
+    "supervised_loss": 0.042599380016326904,
+    "update": 440,
+    "validation_mae_arcsec": 0.12931753294759354
+  },
+  {
+    "mmd_loss": 0.0,
+    "supervised_loss": 0.03973615914583206,
+    "update": 880,
+    "validation_mae_arcsec": 0.10284451238472103
+  }
+]

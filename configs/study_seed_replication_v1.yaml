@@ -1,0 +1,32 @@
+# Additional paired random-seed replication of the frozen C/G/R experiment.
+# Uses the original source banks, reconstructed and exactly verified R policy,
+# model, optimizer budget, and synthetic holdout; adds seeds 730011--730015.
+schema_version: 1
+output: results/ml/cgr-seed-replication-v1
+source_train: data/simulations/robustness-study-source-train-v4/bank.json
+source_development: data/simulations/robustness-study-source-development-v4/bank.json
+policy: results/ml/cgr-seed-replication-v1/policy/policy.json
+holdout: data/simulations/reliability-blind-holdout-v1/splits/holdout.csv
+seeds: [730011, 730012, 730013, 730014, 730015]
+arms: [C, G, R]
+conditions: [canonical, pixel-scale-004, pixel-scale-006, exposure-half, read-noise-double]
+bootstrap:
+  resamples: 10000
+  stress_seed: 8731
+  canonical_seed: 8732
+training:
+  experiment_id: cgr-seed-replication-v1
+  fit_purpose: confirmatory_fit
+  optimizer_updates: 880
+  validation_interval_updates: 440
+  batch_size: 16
+  torch_threads: 6
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  huber_delta: 1.0
+  mmd_weight: 0.0
+  model:
+    channels: [8, 16, 32, 64]
+    pooled_size: 4
+    hidden_features: 128
+    dropout: 0.1

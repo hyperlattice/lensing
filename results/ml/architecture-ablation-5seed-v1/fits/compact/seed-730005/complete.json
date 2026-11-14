@@ -1,0 +1,24 @@
+{
+  "arm": "G",
+  "batch_size": 16,
+  "final_images_accessed": false,
+  "optimizer_updates": 880,
+  "pixels_processed": 949687440,
+  "realized_source_view_counts": {
+    "exposure-half": 1952,
+    "fresh-noise": 1888,
+    "gaussian-fwhm-075": 1808,
+    "gaussian-fwhm-125": 2336,
+    "pixel-scale-004": 2000,
+    "pixel-scale-006": 2320,
+    "read-noise-double": 1776
+  },
+  "runtime_seconds": 125.52264220000507,
+  "seed": 730005,
+  "source_exposures": 14080,
+  "stage": "development_only",
+  "target_exposures": 0,
+  "target_information_access": null,
+  "target_regression_labels_accessed": false,
+  "validation_mae_arcsec": 0.10284451238472103
+}

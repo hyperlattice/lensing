@@ -1,0 +1,153 @@
+{
+  "schema": "architecture_ablation_5seed_v1",
+  "arm": "G_uniform_variation",
+  "architectures": {
+    "compact": {
+      "channels": [
+        4,
+        8,
+        16,
+        32
+      ],
+      "pooled_size": 4,
+      "hidden_features": 64,
+      "dropout": 0.1,
+      "trainable_parameters": 62397
+    },
+    "reference": {
+      "channels": [
+        8,
+        16,
+        32,
+        64
+      ],
+      "pooled_size": 4,
+      "hidden_features": 128,
+      "dropout": 0.1,
+      "trainable_parameters": 248409
+    }
+  },
+  "parent_count": 150,
+  "holdout_observation_count": 750,
+  "seed_count": 5,
+  "seeds": [
+    730001,
+    730002,
+    730003,
+    730004,
+    730005
+  ],
+  "four_stress_mae_by_seed_arcsec": {
+    "compact": {
+      "730001": 0.11695120124351854,
+      "730002": 0.12352568374360146,
+      "730003": 0.11626609523285955,
+      "730004": 0.11986825504244748,
+      "730005": 0.11240074641182699
+    },
+    "reference": {
+      "730001": 0.10991926353987908,
+      "730002": 0.11274268385578094,
+      "730003": 0.10341534010853858,
+      "730004": 0.10695187532108856,
+      "730005": 0.10561031472183446
+    }
+  },
+  "metrics": [
+    {
+      "architecture": "compact",
+      "condition": "canonical",
+      "mae_arcsec": 0.09219697456458369,
+      "rmse_arcsec": 0.12248716897908003,
+      "bias_arcsec": 0.004896172679074244
+    },
+    {
+      "architecture": "compact",
+      "condition": "pixel-scale-004",
+      "mae_arcsec": 0.14683271109143106,
+      "rmse_arcsec": 0.18725671473143699,
+      "bias_arcsec": 0.002202016747601462
+    },
+    {
+      "architecture": "compact",
+      "condition": "pixel-scale-006",
+      "mae_arcsec": 0.10866124550666878,
+      "rmse_arcsec": 0.1407366628673032,
+      "bias_arcsec": -0.010031477613640195
+    },
+    {
+      "architecture": "compact",
+      "condition": "exposure-half",
+      "mae_arcsec": 0.10834911918273049,
+      "rmse_arcsec": 0.14537411629991223,
+      "bias_arcsec": -0.021655784053993595
+    },
+    {
+      "architecture": "compact",
+      "condition": "read-noise-double",
+      "mae_arcsec": 0.10736650955857288,
+      "rmse_arcsec": 0.14773047430637815,
+      "bias_arcsec": -0.011098666512362527
+    },
+    {
+      "architecture": "reference",
+      "condition": "canonical",
+      "mae_arcsec": 0.08234489110445561,
+      "rmse_arcsec": 0.11150877248650329,
+      "bias_arcsec": 0.006066403306134179
+    },
+    {
+      "architecture": "reference",
+      "condition": "pixel-scale-004",
+      "mae_arcsec": 0.13375796730843995,
+      "rmse_arcsec": 0.17201374229254765,
+      "bias_arcsec": -0.0021307426327391143
+    },
+    {
+      "architecture": "reference",
+      "condition": "pixel-scale-006",
+      "mae_arcsec": 0.09968884510344195,
+      "rmse_arcsec": 0.130522129206921,
+      "bias_arcsec": -0.008087863607597714
+    },
+    {
+      "architecture": "reference",
+      "condition": "exposure-half",
+      "mae_arcsec": 0.0982057695201814,
+      "rmse_arcsec": 0.136453997954516,
+      "bias_arcsec": -0.013152692718696958
+    },
+    {
+      "architecture": "reference",
+      "condition": "read-noise-double",
+      "mae_arcsec": 0.09925900010563396,
+      "rmse_arcsec": 0.14241080251652333,
+      "bias_arcsec": -0.009264105084928241
+    },
+    {
+      "architecture": "compact",
+      "condition": "four-stress",
+      "mae_arcsec": 0.11780239633485082,
+      "rmse_arcsec": 0.15638878813377544,
+      "bias_arcsec": null
+    },
+    {
+      "architecture": "reference",
+      "condition": "four-stress",
+      "mae_arcsec": 0.1077278955094243,
+      "rmse_arcsec": 0.14622353092215223,
+      "bias_arcsec": null
+    }
+  ],
+  "contrast_four_stress": {
+    "compact_minus_reference_four_stress_arcsec": 0.010074500825426493,
+    "bootstrap_95_low_arcsec": 0.007528803767078324,
+    "bootstrap_95_high_arcsec": 0.012557051070522757,
+    "bootstrap_seed": 8731,
+    "bootstrap_resamples": 10000
+  },
+  "limitations": [
+    "Exploratory five-seed capacity check; the primary C/G/R result uses ten seeds.",
+    "The comparison uses the same synthetic holdout and does not validate real data."
+  ]
+}

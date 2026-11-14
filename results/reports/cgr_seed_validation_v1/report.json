@@ -1,0 +1,289 @@
+{
+  "parent_count": 150,
+  "observation_count": 750,
+  "arms": [
+    "C",
+    "G",
+    "R"
+  ],
+  "seeds": [
+    730001,
+    730002,
+    730003,
+    730004,
+    730005,
+    730006,
+    730007,
+    730008,
+    730009,
+    730010
+  ],
+  "seed_count_per_arm": 10,
+  "optimizer_updates_per_fit": 880,
+  "metrics_by_arm": {
+    "C": {
+      "canonical_mae_mean_arcsec": 0.09153609429462628,
+      "canonical_mae_sd_across_seeds_arcsec": 0.005194814761290352,
+      "four_stress_mae_mean_arcsec": 0.14125136223552376,
+      "four_stress_mae_sd_across_seeds_arcsec": 0.0058238969773326595
+    },
+    "G": {
+      "canonical_mae_mean_arcsec": 0.08759083821122447,
+      "canonical_mae_sd_across_seeds_arcsec": 0.011760296489047233,
+      "four_stress_mae_mean_arcsec": 0.11150689069700656,
+      "four_stress_mae_sd_across_seeds_arcsec": 0.008870113577921631
+    },
+    "R": {
+      "canonical_mae_mean_arcsec": 0.09236612822755272,
+      "canonical_mae_sd_across_seeds_arcsec": 0.010102486009137265,
+      "four_stress_mae_mean_arcsec": 0.10738465701417126,
+      "four_stress_mae_sd_across_seeds_arcsec": 0.005558885938878689
+    }
+  },
+  "metrics_by_seed": {
+    "C": {
+      "730001": {
+        "canonical_mae_arcsec": 0.09991759238737863,
+        "four_stress_mae_arcsec": 0.1468468479372646
+      },
+      "730002": {
+        "canonical_mae_arcsec": 0.08959431709746403,
+        "four_stress_mae_arcsec": 0.14255888256506016
+      },
+      "730003": {
+        "canonical_mae_arcsec": 0.09804000662612805,
+        "four_stress_mae_arcsec": 0.14286173827540644
+      },
+      "730004": {
+        "canonical_mae_arcsec": 0.08612078868623231,
+        "four_stress_mae_arcsec": 0.14114166405787984
+      },
+      "730005": {
+        "canonical_mae_arcsec": 0.08721739067435026,
+        "four_stress_mae_arcsec": 0.1474438237555788
+      },
+      "730006": {
+        "canonical_mae_arcsec": 0.09258965084957023,
+        "four_stress_mae_arcsec": 0.14411370219706246
+      },
+      "730007": {
+        "canonical_mae_arcsec": 0.08314111368803928,
+        "four_stress_mae_arcsec": 0.12664845569467276
+      },
+      "730008": {
+        "canonical_mae_arcsec": 0.09327195949147511,
+        "four_stress_mae_arcsec": 0.1418455493083818
+      },
+      "730009": {
+        "canonical_mae_arcsec": 0.09198970879313362,
+        "four_stress_mae_arcsec": 0.14085832383644656
+      },
+      "730010": {
+        "canonical_mae_arcsec": 0.09347841465249138,
+        "four_stress_mae_arcsec": 0.1381946347274846
+      }
+    },
+    "G": {
+      "730001": {
+        "canonical_mae_arcsec": 0.08070539178095582,
+        "four_stress_mae_arcsec": 0.10991926304317369
+      },
+      "730002": {
+        "canonical_mae_arcsec": 0.09259588130147996,
+        "four_stress_mae_arcsec": 0.1127426828623702
+      },
+      "730003": {
+        "canonical_mae_arcsec": 0.08127905710506005,
+        "four_stress_mae_arcsec": 0.10341533981051536
+      },
+      "730004": {
+        "canonical_mae_arcsec": 0.08048237594897399,
+        "four_stress_mae_arcsec": 0.10695187681120467
+      },
+      "730005": {
+        "canonical_mae_arcsec": 0.07666174819371531,
+        "four_stress_mae_arcsec": 0.10561031442381125
+      },
+      "730006": {
+        "canonical_mae_arcsec": 0.10637413536834935,
+        "four_stress_mae_arcsec": 0.12932552886025353
+      },
+      "730007": {
+        "canonical_mae_arcsec": 0.07537057807294692,
+        "four_stress_mae_arcsec": 0.10145244823553314
+      },
+      "730008": {
+        "canonical_mae_arcsec": 0.08491330413899471,
+        "four_stress_mae_arcsec": 0.11495370727789488
+      },
+      "730009": {
+        "canonical_mae_arcsec": 0.10885054444115876,
+        "four_stress_mae_arcsec": 0.12319341404812012
+      },
+      "730010": {
+        "canonical_mae_arcsec": 0.08867536576060996,
+        "four_stress_mae_arcsec": 0.10750433159718888
+      }
+    },
+    "R": {
+      "730001": {
+        "canonical_mae_arcsec": 0.09127438178381304,
+        "four_stress_mae_arcsec": 0.1190483475078932
+      },
+      "730002": {
+        "canonical_mae_arcsec": 0.10002050801533127,
+        "four_stress_mae_arcsec": 0.11414669118613704
+      },
+      "730003": {
+        "canonical_mae_arcsec": 0.10513282895733957,
+        "four_stress_mae_arcsec": 0.10833301332305997
+      },
+      "730004": {
+        "canonical_mae_arcsec": 0.08677002259237615,
+        "four_stress_mae_arcsec": 0.10701464284460788
+      },
+      "730005": {
+        "canonical_mae_arcsec": 0.08613872112769405,
+        "four_stress_mae_arcsec": 0.10311285309269277
+      },
+      "730006": {
+        "canonical_mae_arcsec": 0.11256768589362925,
+        "four_stress_mae_arcsec": 0.10877902692352696
+      },
+      "730007": {
+        "canonical_mae_arcsec": 0.08572739051268759,
+        "four_stress_mae_arcsec": 0.1008756359949835
+      },
+      "730008": {
+        "canonical_mae_arcsec": 0.08278931683998508,
+        "four_stress_mae_arcsec": 0.10528196400300543
+      },
+      "730009": {
+        "canonical_mae_arcsec": 0.0838137241288314,
+        "four_stress_mae_arcsec": 0.10383884942693883
+      },
+      "730010": {
+        "canonical_mae_arcsec": 0.0894267024238399,
+        "four_stress_mae_arcsec": 0.10341554583886699
+      }
+    }
+  },
+  "four_stress_paired_contrasts": {
+    "G_minus_C": {
+      "mean_difference_arcsec": -0.029744471538517236,
+      "parent_bootstrap_95_low_arcsec": -0.03698164324622129,
+      "parent_bootstrap_95_high_arcsec": -0.022676315581482927,
+      "seed_bootstrap_95_low_arcsec": -0.03472011356903472,
+      "seed_bootstrap_95_high_arcsec": -0.024478650849380622,
+      "seeds_candidate_lower_mae": 10,
+      "seeds_candidate_higher_mae": 0,
+      "seed_differences_arcsec": {
+        "730001": -0.03692758489409092,
+        "730002": -0.029816199702689977,
+        "730003": -0.039446398464891105,
+        "730004": -0.03418978724667518,
+        "730005": -0.041833509331767556,
+        "730006": -0.014788173336808945,
+        "730007": -0.025196007459139594,
+        "730008": -0.026891842030486945,
+        "730009": -0.01766490978832642,
+        "730010": -0.030690303130295728
+      }
+    },
+    "R_minus_G": {
+      "mean_difference_arcsec": -0.0041222336828353094,
+      "parent_bootstrap_95_low_arcsec": -0.008228010886137333,
+      "parent_bootstrap_95_high_arcsec": -8.704056223654788e-05,
+      "seed_bootstrap_95_low_arcsec": -0.01012480736429236,
+      "seed_bootstrap_95_high_arcsec": 0.0013475813198110674,
+      "seeds_candidate_lower_mae": 6,
+      "seeds_candidate_higher_mae": 4,
+      "seed_differences_arcsec": {
+        "730001": 0.009129084464719509,
+        "730002": 0.0014040083237668514,
+        "730003": 0.004917673512544645,
+        "730004": 6.276603340323206e-05,
+        "730005": -0.002497461331118467,
+        "730006": -0.020546501936726577,
+        "730007": -0.0005768122405496391,
+        "730008": -0.009671743274889417,
+        "730009": -0.019354564621181326,
+        "730010": -0.004088785758321909
+      }
+    },
+    "R_minus_C": {
+      "mean_difference_arcsec": -0.033866705221352544,
+      "parent_bootstrap_95_low_arcsec": -0.042823712731118777,
+      "parent_bootstrap_95_high_arcsec": -0.025072130202917094,
+      "seed_bootstrap_95_low_arcsec": -0.03713070054295509,
+      "seed_bootstrap_95_high_arcsec": -0.030718913321267163,
+      "seeds_candidate_lower_mae": 10,
+      "seeds_candidate_higher_mae": 0,
+      "seed_differences_arcsec": {
+        "730001": -0.027798500429371417,
+        "730002": -0.028412191378923125,
+        "730003": -0.03452872495234646,
+        "730004": -0.034127021213271956,
+        "730005": -0.04433097066288603,
+        "730006": -0.035334675273535524,
+        "730007": -0.025772819699689233,
+        "730008": -0.036563585305376366,
+        "730009": -0.03701947440950775,
+        "730010": -0.03477908888861764
+      }
+    }
+  },
+  "uncertainty_note": "Parent-bootstrap intervals hold the ten trained seeds fixed; seed-to-seed spread is reported separately.",
+  "limitations": [
+    "This scores the existing 30 fits; no new model fits were trained.",
+    "All seed comparisons reuse the same frozen synthetic holdout, so they are not an independent test cohort.",
+    "The holdout was previously scored by older project models.",
+    "The results do not validate real telescope data or a different simulator."
+  ],
+  "prediction_sha256": "60aa014f8b465b3df96ea9f9e813359ee45d9fd21aa2a85a5f59f7c012c19fd8",
+  "holdout_manifest_sha256": "b2d66af01e86d118b41003a0d2f41b0aab259fce2458643dc91c46830a58ad0c",
+  "checkpoint_sha256": {
+    "C/730001": "810c503006c84f3ebb99d265f11023a01b960a7fc3dbf888d03215b0dc595f3d",
+    "C/730002": "322d7d4ffe9815687f53bf475f62835cb95df0319651e903f11dea690f62ebdf",
+    "C/730003": "4b73a71cbbeb4bad89e8325fa680dd000f80cf3e2474a1809daac07f708e5375",
+    "C/730004": "58ca97f12b2fccb1309dcee6ec1514beb8a2cd8a9e6fea768bf8980491fc78c1",
+    "C/730005": "f05fc561a52c9f6cb5c46a7f8c0526aff4fb47fff1acd3cc4a887861e5368710",
+    "C/730006": "c782ebf56752d176a053511084cd62c3dc82e3bc6f971710ecc3b82f2db3d15c",
+    "C/730007": "318c59b29750af50a06a01663a21e39ec16b031cd5ad6fda4b8f1f896f7a0ceb",
+    "C/730008": "fa4af18c1aa1a0449e1026077fe53730a068f5e205f3444c99deb68c17522feb",
+    "C/730009": "dbc14adc390d0a009b3e8e198366b4231e5543c7aa687fd99e4957c08aeba8cb",
+    "C/730010": "1fca5999d0ac202b13b5acee6d84b7da095fc0140a8f2005e9e164515eb0fcc0",
+    "G/730001": "6c6330e9c9b1560bb7d3b616c156d95714411f0cee2dfcacb3d4ebe2af7ba54c",
+    "G/730002": "b367c5ef2982c3b904e3cf20c1a9d1f9ee469dc9845aa301974c0722d42080f8",
+    "G/730003": "a3990759ac628913fa2385d74db544a6dcec5755facbc895ade3684e88f0dc7a",
+    "G/730004": "a0de274dbf41ad170497ffd4e41229aebf7baf16c78c7a14668de2b35f4a78a6",
+    "G/730005": "1f4c018f92b971401480b992d7a0b9d4911c2433c0bf795aa6f6bce57e46d495",
+    "G/730006": "ee233f7848828327678e468468f4ef6960df06623a9b49264a507f135b7d104b",
+    "G/730007": "73d7f6d169713d26d0e5cc3a12c1c12756290dcdc281f6bce4b1c4bbf9cc9586",
+    "G/730008": "2f6b1f13d843a52e8cd441f2cb1c1115fc0fbc38aae64c7d541c9f46cae81380",
+    "G/730009": "02f330980fe6dfa05a6909f7b2f2a01d4306be2eb0fb88d71e8aac2f4fcd75d8",
+    "G/730010": "484f4b65cea2ef81db0b087c9e699cb2493b1181c8023334ba28199645c5030c",
+    "R/730001": "266ce98ea5abb2d7809992e46d5d1181fcf1aa36315855c668acdb904c225118",
+    "R/730002": "d050597f98dccc90df0d4968c9c1d57c0123c50d84b0d9787802963bd10da337",
+    "R/730003": "b1c6e6c07e00945ca59b6e2d4c389499e5dde0719367cca1661bc6dbf74f3424",
+    "R/730004": "602425ff40cd88af5022fc04cf2a35ad3ccc3ca36226f5630a30d5dc680487e1",
+    "R/730005": "d987e79ee63d4a15de0d5e1a4333db92ec892e8edd9a25d7910779e44befc256",
+    "R/730006": "e1f51b090874eb34243d7323c000f19b86a6d285b95a6961182b3c69f64a4727",
+    "R/730007": "7a2d471b9ce0383a85d92bae6c226388928040041a3f84a743bdce483bad2464",
+    "R/730008": "00f3f2ef99f41062f77caea1418a9a6a048847e8a0f0a99c8e7d0d0225ff9f20",
+    "R/730009": "1204456cca0819b6b37bb4fe065ecf7e54d88bb7f4587b17190af524e6747109",
+    "R/730010": "26ef44b26a6b5ffcbaf5dfb3b5e722544465d796be2afc42de61a62cc7016174"
+  },
+  "model_config": {
+    "channels": [
+      8,
+      16,
+      32,
+      64
+    ],
+    "pooled_size": 4,
+    "hidden_features": 128,
+    "dropout": 0.1,
+    "metadata_features": 0
+  }
+}
