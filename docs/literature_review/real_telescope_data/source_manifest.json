@@ -1,0 +1,214 @@
+{
+  "checked_date": "2026-11-12",
+  "dinos_commit": "6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb",
+  "sources": [
+    {
+      "file": "sources/BELLS_mass_params.csv",
+      "source_url": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/BELLS_mass_params.csv",
+      "bytes": 9424,
+      "sha256": "1d5eeddc9feed02779b4742b8d0051a21f372afdbd109f30efa17f33c97598d7",
+      "md5": "7f152513d30c3a0a7cccea8d53c43c07",
+      "representation": "downloaded file or parsed API JSON snapshot"
+    },
+    {
+      "file": "sources/dinos_data_listing.json",
+      "source_url": "https://api.github.com/repos/Project-Dinos/dinos-i/contents/2_dolphin_modelling/data",
+      "bytes": 130209,
+      "sha256": "4c2008825b6e3c927a306773c4ffa990a9d5666bfa9ce6947f972163a59b151e",
+      "md5": "c2a39ed9de3234545f05050a216d8ff9",
+      "representation": "downloaded file or parsed API JSON snapshot"
+    },
+    {
+      "file": "sources/dinos_example_listing.json",
+      "source_url": "https://api.github.com/repos/Project-Dinos/dinos-i/contents/2_dolphin_modelling/data/SDSSJ0037-0942",
+      "bytes": 9052,
+      "sha256": "933be755aa507a822e4ac843e0bca464b8b58443a04eeb2ac1b3280a506cc7a6",
+      "md5": "ca21b8d998b2aa04771055e5a5a95923",
+      "representation": "downloaded file or parsed API JSON snapshot"
+    },
+    {
+      "file": "sources/dinos_extract_mass_params.ipynb",
+      "source_url": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/extract_mass_params_from_chains.ipynb",
+      "bytes": 7054,
+      "sha256": "ace206c701599521562d1325b5522b2fc039aeacce481b2911ba9f2d3b2cddd3",
+      "md5": "60540dd069d332a7badf6a16e771b999",
+      "representation": "downloaded file or parsed API JSON snapshot"
+    },
+    {
+      "file": "sources/dinos_reference_listing.json",
+      "source_url": "https://api.github.com/repos/Project-Dinos/dinos-i/contents/3_model_parameters/Data",
+      "bytes": 9902,
+      "sha256": "2f9b497cc6053802824c27b28a0b1c2b5521b8e62318fdeac6759382e13f5f4b",
+      "md5": "55900b480f784d9b260f53fb2fa6f297",
+      "representation": "downloaded file or parsed API JSON snapshot"
+    },
+    {
+      "file": "sources/dinos_repository_tree.json",
+      "source_url": "https://api.github.com/repos/Project-Dinos/dinos-i/git/trees/main?recursive=1",
+      "bytes": 349029,
+      "sha256": "331dc985bfa6e7c4af8323351519822b976b545c4d6062bd7925d1e5ee05d086",
+      "md5": "bd1c59ad2c8d4b4c01da19fed97b48db",
+      "representation": "downloaded file or parsed API JSON snapshot"
+    },
+    {
+      "file": "sources/euclid_catalog.csv",
+      "source_url": "https://zenodo.org/records/15025832/files/q1_discovery_engine_lens_catalog.csv?download=1",
+      "bytes": 422423,
+      "sha256": "ee5e60cd507413eabf3da8ffa37a3c527212da00feb29083cf516a86d6f26877",
+      "md5": "21f9540189a8ea11a9165a80c341858b",
+      "representation": "downloaded file or parsed API JSON snapshot"
+    },
+    {
+      "file": "sources/euclid_example_102018665_NEG570040238507752998.fits",
+      "source_url": "https://zenodo.org/records/15025832/files/lens.zip?download=1#lens/102018665_NEG570040238507752998/102018665_NEG570040238507752998.fits",
+      "bytes": 2949120,
+      "sha256": "181f83c94c675bfbde394a8261abd5cdab829b8942ebb55b58c49a43f6378242",
+      "md5": "214c034c1dce1fc04d0318871fee71c3",
+      "representation": "downloaded file or parsed API JSON snapshot"
+    },
+    {
+      "file": "sources/euclid_lens_zip_listing.json",
+      "source_url": "https://zenodo.org/records/15025832/files/lens.zip?download=1",
+      "bytes": 727798,
+      "sha256": "8b620a1b4bf86ceb42afdeaee87ed577b996f386f9b65ac8a60aa0edc2578f16",
+      "md5": "03cd23957c944066c08be609254b5d30",
+      "representation": "derived ZIP member directory"
+    },
+    {
+      "file": "sources/euclid_mass.csv",
+      "source_url": "https://zenodo.org/records/15025832/files/modeling_lens_mass.csv?download=1",
+      "bytes": 322960,
+      "sha256": "f2a52616a1ac65137b34abe0892d251e18e2c60e9a64c459914102f44ec49db5",
+      "md5": "f62e07d7cd7ec4206c014d5a58376f00",
+      "representation": "downloaded file or parsed API JSON snapshot"
+    },
+    {
+      "file": "sources/image_SDSSJ0037-0942_F606W.h5",
+      "source_url": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/2_dolphin_modelling/data/SDSSJ0037-0942/image_SDSSJ0037-0942_F606W.h5",
+      "bytes": 241416,
+      "sha256": "d49cb927c5e4de4819d09ac4f093ec5e8c9c7e4b7fed5cd34a54258bd4fbecc4",
+      "md5": "a019f69e272fb073351c58e957d2cfd1",
+      "representation": "downloaded file or parsed API JSON snapshot"
+    },
+    {
+      "file": "sources/photzpt_values.csv",
+      "source_url": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/photzpt_values.csv",
+      "bytes": 8716,
+      "sha256": "1499e77159cf135d16bd9920414c0bd6d4e5e9cdbc117da0fc1454c44ea6e259",
+      "md5": "315bed851fc1d9736519ad63fa60f0e2",
+      "representation": "downloaded file or parsed API JSON snapshot"
+    },
+    {
+      "file": "sources/psf_SDSSJ0037-0942_F606W.h5",
+      "source_url": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/2_dolphin_modelling/data/SDSSJ0037-0942/psf_SDSSJ0037-0942_F606W.h5",
+      "bytes": 16932,
+      "sha256": "fb5710f0b902eae1834a7068ee561b61c5692885a8580267c4fc1b7e0ee6e89c",
+      "md5": "5c95afdeb134cae6f6ecb5336b546788",
+      "representation": "downloaded file or parsed API JSON snapshot"
+    },
+    {
+      "file": "sources/SL2S_mass_params.csv",
+      "source_url": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/SL2S_mass_params.csv",
+      "bytes": 11778,
+      "sha256": "75b430e4e48f454f3154653d7b7f847c6f8ac7a287e5e34bf9c41f34e06bc1da",
+      "md5": "3da914606508116b90e052925bdeee2d",
+      "representation": "downloaded file or parsed API JSON snapshot"
+    },
+    {
+      "file": "sources/SLACS_mass_params.csv",
+      "source_url": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/SLACS_mass_params.csv",
+      "bytes": 16866,
+      "sha256": "c2fe37f6c4d9d8e7645e3925c803d5eeaef574e0bb1d3506beb39a264491c36d",
+      "md5": "3396291428a96cf038185c7c1f1f7aef",
+      "representation": "downloaded file or parsed API JSON snapshot"
+    },
+    {
+      "file": "sources/tdcosmo_xxvi_metadata.json",
+      "source_url": "https://zenodo.org/api/records/19421439",
+      "bytes": 4534,
+      "sha256": "6f0421f94acbfa8323232690692489ec371c6b487f3785fd17d277b9a7664293",
+      "md5": "60d3f523b292393320c22140e209d242",
+      "representation": "downloaded API JSON"
+    },
+    {
+      "file": "sources/tdcosmo_doubles_tree.json",
+      "source_url": "https://api.github.com/repos/brady-ryan/doubles_modeling/git/trees/main?recursive=1",
+      "bytes": 16930,
+      "sha256": "2153a98361d2a88cef3ff3f1238f9b8cd57886cc9d1fb00d06e405ab700dc531",
+      "md5": "bddfefe63040970575963336ee79ebcc",
+      "representation": "downloaded API JSON"
+    },
+    {
+      "file": "sources/dinos_preprocessor.ipynb",
+      "source_url": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/1_HST_lens_processing/3_Pre-Processor.ipynb",
+      "bytes": 164525,
+      "sha256": "3c3a49ad28b71557364c2388b916a0268eebaca7a52a2c0c781b93bf1965796d",
+      "md5": "db7853d8af3283f4ca4693c9de5c2c37",
+      "representation": "commit-pinned preparation notebook; follow-up HST pilot"
+    },
+    {
+      "file": "sources/dinos_drizzler.ipynb",
+      "source_url": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/1_HST_lens_processing/2_Drizzler.ipynb",
+      "bytes": 365172,
+      "sha256": "c9d2f7c2d95e3621e53a502c08d76f8cd98f546f2285b3a74167167c3a836e11",
+      "md5": "5c7c1bfd8c07fd1ca9d5858820feac91",
+      "representation": "commit-pinned preparation notebook; follow-up HST pilot"
+    },
+    {
+      "file": "sources/dinos_downloader.ipynb",
+      "source_url": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/1_HST_lens_processing/1_Downloader.ipynb",
+      "bytes": 28330,
+      "sha256": "7bd8167a4ba943002da823da026cfa0f3b439601396db648812ba506833552a8",
+      "representation": "commit-pinned source/settings inspected during archive follow-up"
+    },
+    {
+      "file": "sources/astroobject_image_data_new.py",
+      "source_url": "https://raw.githubusercontent.com/sibirrer/AstroObjectAnalyser/334a928193e6baef1e5ebae2f51182333a052b7e/astroObjectAnalyser/image_data_new.py",
+      "bytes": 14119,
+      "sha256": "351cbb04596a960eba1a536f80d1e55dc5fe4dceddb525acdea1db263c3b1192",
+      "representation": "commit-pinned source/settings inspected during archive follow-up"
+    },
+    {
+      "file": "sources/astroobject_image_data.py",
+      "source_url": "https://raw.githubusercontent.com/sibirrer/AstroObjectAnalyser/334a928193e6baef1e5ebae2f51182333a052b7e/astroObjectAnalyser/image_data.py",
+      "bytes": 20707,
+      "sha256": "3625619c1f1af2b7d36112e2d51e325cd188bdd9ce0dc101e367f51320a513e7",
+      "representation": "commit-pinned source/settings inspected during archive follow-up"
+    },
+    {
+      "file": "sources/SDSSJ0008-0004_config.yml",
+      "source_url": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/2_dolphin_modelling/settings/SDSSJ0008-0004_config.yml",
+      "bytes": 2578,
+      "sha256": "0c9a02659e45d64af15cfb7f7f73b966a0a0cf0d231c94dc68ab918bde7118d5",
+      "representation": "commit-pinned source/settings inspected during archive follow-up"
+    },
+    {
+      "file": "sources/SDSSJ0029-0055_config.yml",
+      "source_url": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/2_dolphin_modelling/settings/SDSSJ0029-0055_config.yml",
+      "bytes": 2485,
+      "sha256": "4a52cd44f024cb335ff46b19ca2ca7c357b296b9ff7b72315950ac750a1c0d30",
+      "representation": "commit-pinned source/settings inspected during archive follow-up"
+    },
+    {
+      "file": "sources/SDSSJ0037-0942_config.yml",
+      "source_url": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/2_dolphin_modelling/settings/SDSSJ0037-0942_config.yml",
+      "bytes": 233737,
+      "sha256": "550d99d78286df075f35389a1b1c18cf10ce4367666d09952d1ba4223f4fed58",
+      "representation": "commit-pinned source/settings inspected during archive follow-up"
+    },
+    {
+      "file": "sources/SL2SJ0214-0405_config.yml",
+      "source_url": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/2_dolphin_modelling/settings/SL2SJ0214-0405_config.yml",
+      "bytes": 146666,
+      "sha256": "0aa72c66efa5a08c1f2e154884ca91d596c3dfe322f9b4bbeee8564a4cd2f214",
+      "representation": "commit-pinned source/settings inspected during archive follow-up"
+    },
+    {
+      "file": "sources/SDSSJ0151+0049_config.yml",
+      "source_url": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/2_dolphin_modelling/settings/SDSSJ0151+0049_config.yml",
+      "bytes": 1741,
+      "sha256": "aa31ed53a3e4a997e806178561670c814ec78c6e2e53eb8744489e75a5b100f2",
+      "representation": "commit-pinned source/settings inspected during archive follow-up"
+    }
+  ]
+}

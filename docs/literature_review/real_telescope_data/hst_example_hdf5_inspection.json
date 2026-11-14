@@ -1,0 +1,82 @@
+{
+  "h5py_version": "3.16.0",
+  "files": {
+    "image_SDSSJ0037-0942_F606W.h5": [
+      {
+        "name": "background_rms",
+        "attributes": {},
+        "shape": [],
+        "dtype": "float64",
+        "value": "0.00028316018256272727"
+      },
+      {
+        "name": "dec_at_xy_0",
+        "attributes": {},
+        "shape": [],
+        "dtype": "float64",
+        "value": "3.909189606034976"
+      },
+      {
+        "name": "dec_shift",
+        "attributes": {},
+        "shape": [],
+        "dtype": "float64",
+        "value": "0.0141"
+      },
+      {
+        "name": "exposure_time",
+        "attributes": {},
+        "shape": [
+          140,
+          140
+        ],
+        "dtype": "float64"
+      },
+      {
+        "name": "image_data",
+        "attributes": {},
+        "shape": [
+          140,
+          140
+        ],
+        "dtype": "float32"
+      },
+      {
+        "name": "ra_at_xy_0",
+        "attributes": {},
+        "shape": [],
+        "dtype": "float64",
+        "value": "2.99410034391032"
+      },
+      {
+        "name": "ra_shift",
+        "attributes": {},
+        "shape": [],
+        "dtype": "float64",
+        "value": "-0.0499"
+      },
+      {
+        "name": "transform_pix2angle",
+        "attributes": {},
+        "shape": [
+          2,
+          2
+        ],
+        "dtype": "float64",
+        "value": "[[ 0.00657432 -0.04934718]\n [-0.04930265 -0.00654292]]"
+      }
+    ],
+    "psf_SDSSJ0037-0942_F606W.h5": [
+      {
+        "name": "kernel_point_source",
+        "attributes": {},
+        "shape": [
+          61,
+          61
+        ],
+        "dtype": ">f4"
+      }
+    ]
+  },
+  "note": "h5py installed into isolated temporary directory; no project dependencies modified"
+}

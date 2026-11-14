@@ -1,0 +1,459 @@
+{
+  "schema": "hst_compatibility_audit_v1",
+  "created_utc": "2026-11-12T18:25:38.032538+00:00",
+  "role": "compatibility_development",
+  "reserved_system_ids": [
+    "SDSSJ0008-0004",
+    "SDSSJ0029-0055",
+    "SDSSJ0037-0942",
+    "SL2SJ0214-0405",
+    "SDSSJ0151+0049"
+  ],
+  "manifest_sha256": "39f09be993d1f0456e8ac6881d5a8cc54e8b539984ab50ddb683f2d1c905644f",
+  "implementation_sha256": "0bae0e4613f76a24d60c94e6b69f1738470e9ba3ff2fc0d0f7255e714a091855",
+  "source_commit": "6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb",
+  "environment": {
+    "python": "3.10.11",
+    "numba_disable_jit": "1",
+    "numpy": "2.2.6",
+    "h5py": "3.16.0",
+    "lenstronomy": "1.14.2",
+    "matplotlib": "3.10.9"
+  },
+  "system_count": 5,
+  "array_validation_passed": true,
+  "model_input_ready": false,
+  "predictions_generated": false,
+  "reference_convention_control": {
+    "control": "SIE_versus_EPL_gamma_two_deflections",
+    "evaluated_parameter_pairs": 9,
+    "positions_per_pair": 4,
+    "maximum_component_difference_arcsec": 3.4482861011042587e-10,
+    "absolute_tolerance_arcsec": 1e-06,
+    "passed": true,
+    "observed_reference_equivalence_established": false
+  },
+  "systems": [
+    {
+      "system_id": "SDSSJ0008-0004",
+      "survey": "SLACS",
+      "band": "F606W",
+      "role": "compatibility_development",
+      "reference": {
+        "median_arcsec": 1.2247385141457758,
+        "error_lower": 0.009388933172922664,
+        "error_upper": 0.008104905069579393,
+        "definition": "lenstronomy_EPL_theta_E_arcsec",
+        "table_source": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/SLACS_mass_params.csv",
+        "table_sha256": "c2fe37f6c4d9d8e7645e3925c803d5eeaef574e0bb1d3506beb39a264491c36d"
+      },
+      "sources": {
+        "image": {
+          "path": "C:\\Users\\richa\\Desktop\\charlie_lensing\\data\\raw\\external\\hst_compatibility_pilot\\SDSSJ0008-0004\\image_SDSSJ0008-0004_F606W.h5",
+          "sha256": "5393575ff00f18c4aecf2e64ac1025711a3cef6fc094f0b46fd5f3b36598871d"
+        },
+        "psf": {
+          "path": "C:\\Users\\richa\\Desktop\\charlie_lensing\\data\\raw\\external\\hst_compatibility_pilot\\SDSSJ0008-0004\\psf_SDSSJ0008-0004_F606W.h5",
+          "sha256": "4adc1fcd3c4e007ac05107afeeaa1233cab24ca187299c05de763959c77f793d"
+        }
+      },
+      "native_products": {
+        "path": "results\\reports\\hst_compatibility_pilot\\products\\SDSSJ0008-0004_F606W.npz",
+        "sha256": "8814c594974d62e60ed2a7063daf03cc489d0f26d89c7cb9969a5cd4c8bc51b3"
+      },
+      "array_validation_passed": true,
+      "model_input_ready": false,
+      "shape_yx": [
+        130,
+        130
+      ],
+      "image_dtype": "float32",
+      "raw_intensity_percentiles_0_1_50_99_100": [
+        -0.0027486456092447042,
+        -0.0014464897103607655,
+        0.0005995377723593265,
+        0.008081787722185181,
+        0.040126994252204895
+      ],
+      "unit_attribute": null,
+      "unit_calibration_verified": false,
+      "pixel_scale_equal_area_arcsec": 0.04976007532966647,
+      "pixel_edge_lengths_xy_arcsec": [
+        0.04973410805301177,
+        0.04978605752624852
+      ],
+      "pixel_anisotropy_ratio": 1.0010704517762257,
+      "field_edge_lengths_xy_arcsec": [
+        6.46543404689153,
+        6.472187478412307
+      ],
+      "canonical_field_edge_lengths_xy_arcsec": [
+        12.8,
+        12.8
+      ],
+      "canonical_edge_support": false,
+      "background_rms_raw_units": 0.000755488425493125,
+      "exposure_range": [
+        11200.0,
+        11200.0
+      ],
+      "psf_shape_yx": [
+        61,
+        61
+      ],
+      "psf_sum_original": 0.9921056541274993,
+      "psf_sum_normalized": 1.0,
+      "mask": {
+        "present": false,
+        "semantics": "not_reviewed"
+      },
+      "blockers": [
+        "flux_unit_and_training_normalization_unresolved",
+        "centering_and_usable_coverage_not_reviewed",
+        "EPL_reference_versus_SIE_target_requires_scientific_decision",
+        "galaxy_galaxy_sources_differ_from_simulated_point_sources",
+        "full_noise_covariance_not_available_in_hdf5",
+        "native_cutout_edges_smaller_than_canonical_field"
+      ],
+      "science_processing": "native_values_preserved_no_resampling_or_normalization"
+    },
+    {
+      "system_id": "SDSSJ0029-0055",
+      "survey": "SLACS",
+      "band": "F606W",
+      "role": "compatibility_development",
+      "reference": {
+        "median_arcsec": 0.9446925904908946,
+        "error_lower": 0.0027388519742362893,
+        "error_upper": 0.002650566573654256,
+        "definition": "lenstronomy_EPL_theta_E_arcsec",
+        "table_source": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/SLACS_mass_params.csv",
+        "table_sha256": "c2fe37f6c4d9d8e7645e3925c803d5eeaef574e0bb1d3506beb39a264491c36d"
+      },
+      "sources": {
+        "image": {
+          "path": "C:\\Users\\richa\\Desktop\\charlie_lensing\\data\\raw\\external\\hst_compatibility_pilot\\SDSSJ0029-0055\\image_SDSSJ0029-0055_F606W.h5",
+          "sha256": "1941ecd28d0ba8ffd16290bc12f4d2cb17273dd944a8b10540032fd676143025"
+        },
+        "psf": {
+          "path": "C:\\Users\\richa\\Desktop\\charlie_lensing\\data\\raw\\external\\hst_compatibility_pilot\\SDSSJ0029-0055\\psf_SDSSJ0029-0055_F606W.h5",
+          "sha256": "d83d697d53d5f48abe199a1451cfc3f7dc61372031854e7d4a2ad0cc2ed3f1e2"
+        }
+      },
+      "native_products": {
+        "path": "results\\reports\\hst_compatibility_pilot\\products\\SDSSJ0029-0055_F606W.npz",
+        "sha256": "7091e967f909efeaa9297a1f4a373a88081270fc8ef148b92a1b5015f4f16dbb"
+      },
+      "array_validation_passed": true,
+      "model_input_ready": false,
+      "shape_yx": [
+        140,
+        140
+      ],
+      "image_dtype": "float32",
+      "raw_intensity_percentiles_0_1_50_99_100": [
+        -0.00021467417536769062,
+        0.0004077288406551816,
+        0.0019919811747968197,
+        0.03588334895670397,
+        0.25141701102256775
+      ],
+      "unit_attribute": null,
+      "unit_calibration_verified": false,
+      "pixel_scale_equal_area_arcsec": 0.049760054595306566,
+      "pixel_edge_lengths_xy_arcsec": [
+        0.04973479188278844,
+        0.04978533277136006
+      ],
+      "pixel_anisotropy_ratio": 1.0010670298861495,
+      "field_edge_lengths_xy_arcsec": [
+        6.962870863590382,
+        6.969946587990409
+      ],
+      "canonical_field_edge_lengths_xy_arcsec": [
+        12.8,
+        12.8
+      ],
+      "canonical_edge_support": false,
+      "background_rms_raw_units": 0.00029631189324636365,
+      "exposure_range": [
+        30800.0,
+        30800.0
+      ],
+      "psf_shape_yx": [
+        61,
+        61
+      ],
+      "psf_sum_original": 0.9920548586479754,
+      "psf_sum_normalized": 1.0,
+      "mask": {
+        "present": false,
+        "semantics": "not_reviewed"
+      },
+      "blockers": [
+        "flux_unit_and_training_normalization_unresolved",
+        "centering_and_usable_coverage_not_reviewed",
+        "EPL_reference_versus_SIE_target_requires_scientific_decision",
+        "galaxy_galaxy_sources_differ_from_simulated_point_sources",
+        "full_noise_covariance_not_available_in_hdf5",
+        "native_cutout_edges_smaller_than_canonical_field"
+      ],
+      "science_processing": "native_values_preserved_no_resampling_or_normalization"
+    },
+    {
+      "system_id": "SDSSJ0037-0942",
+      "survey": "SLACS",
+      "band": "F606W",
+      "role": "compatibility_development",
+      "reference": {
+        "median_arcsec": 1.475673703841136,
+        "error_lower": 0.006625489589695555,
+        "error_upper": 0.01006488475548073,
+        "definition": "lenstronomy_EPL_theta_E_arcsec",
+        "table_source": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/SLACS_mass_params.csv",
+        "table_sha256": "c2fe37f6c4d9d8e7645e3925c803d5eeaef574e0bb1d3506beb39a264491c36d"
+      },
+      "sources": {
+        "image": {
+          "path": "C:\\Users\\richa\\Desktop\\charlie_lensing\\data\\raw\\external\\hst_compatibility_pilot\\SDSSJ0037-0942\\image_SDSSJ0037-0942_F606W.h5",
+          "sha256": "d49cb927c5e4de4819d09ac4f093ec5e8c9c7e4b7fed5cd34a54258bd4fbecc4"
+        },
+        "psf": {
+          "path": "C:\\Users\\richa\\Desktop\\charlie_lensing\\data\\raw\\external\\hst_compatibility_pilot\\SDSSJ0037-0942\\psf_SDSSJ0037-0942_F606W.h5",
+          "sha256": "fb5710f0b902eae1834a7068ee561b61c5692885a8580267c4fc1b7e0ee6e89c"
+        }
+      },
+      "native_products": {
+        "path": "results\\reports\\hst_compatibility_pilot\\products\\SDSSJ0037-0942_F606W.npz",
+        "sha256": "22bb48f31aab5f4241e760e4a6c23fd66bd2931fdd17dcd044fe4b64a8d34e65"
+      },
+      "array_validation_passed": true,
+      "model_input_ready": false,
+      "shape_yx": [
+        140,
+        140
+      ],
+      "image_dtype": "float32",
+      "raw_intensity_percentiles_0_1_50_99_100": [
+        0.000324513966916129,
+        0.000949299011263065,
+        0.0037144517991691828,
+        0.08673475146293512,
+        0.32222530245780945
+      ],
+      "unit_attribute": null,
+      "unit_calibration_verified": false,
+      "pixel_scale_equal_area_arcsec": 0.04975903596418566,
+      "pixel_edge_lengths_xy_arcsec": [
+        0.0497390450945408,
+        0.0497790486240965
+      ],
+      "pixel_anisotropy_ratio": 1.001095586152911,
+      "field_edge_lengths_xy_arcsec": [
+        6.963466313235712,
+        6.96906680737351
+      ],
+      "canonical_field_edge_lengths_xy_arcsec": [
+        12.8,
+        12.8
+      ],
+      "canonical_edge_support": false,
+      "background_rms_raw_units": 0.00028316018256272727,
+      "exposure_range": [
+        30800.0,
+        30800.0
+      ],
+      "psf_shape_yx": [
+        61,
+        61
+      ],
+      "psf_sum_original": 0.9919700100999762,
+      "psf_sum_normalized": 0.9999999999999998,
+      "mask": {
+        "present": false,
+        "semantics": "not_reviewed"
+      },
+      "blockers": [
+        "flux_unit_and_training_normalization_unresolved",
+        "centering_and_usable_coverage_not_reviewed",
+        "EPL_reference_versus_SIE_target_requires_scientific_decision",
+        "galaxy_galaxy_sources_differ_from_simulated_point_sources",
+        "full_noise_covariance_not_available_in_hdf5",
+        "native_cutout_edges_smaller_than_canonical_field"
+      ],
+      "science_processing": "native_values_preserved_no_resampling_or_normalization"
+    },
+    {
+      "system_id": "SL2SJ0214-0405",
+      "survey": "SL2S",
+      "band": "F606W",
+      "role": "compatibility_development",
+      "reference": {
+        "median_arcsec": 1.2207574694114196,
+        "error_lower": 0.006039393476487076,
+        "error_upper": 0.006030662273723619,
+        "definition": "lenstronomy_EPL_theta_E_arcsec",
+        "table_source": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/SL2S_mass_params.csv",
+        "table_sha256": "75b430e4e48f454f3154653d7b7f847c6f8ac7a287e5e34bf9c41f34e06bc1da"
+      },
+      "sources": {
+        "image": {
+          "path": "C:\\Users\\richa\\Desktop\\charlie_lensing\\data\\raw\\external\\hst_compatibility_pilot\\SL2SJ0214-0405\\image_SL2SJ0214-0405_F606W.h5",
+          "sha256": "ffc32207b4f4013f2dfe2b7de65ada69199994863286255e8d10d1f2eb04b773"
+        },
+        "psf": {
+          "path": "C:\\Users\\richa\\Desktop\\charlie_lensing\\data\\raw\\external\\hst_compatibility_pilot\\SL2SJ0214-0405\\psf_SL2SJ0214-0405_F606W.h5",
+          "sha256": "24e52f493d92f3d28fa7f1de157b860aeb7809ce03ec0bdd198aa70a88980a40"
+        },
+        "mask": {
+          "path": "C:\\Users\\richa\\Desktop\\charlie_lensing\\data\\raw\\external\\hst_compatibility_pilot\\SL2SJ0214-0405\\mask_SL2SJ0214-0405_F606W.h5",
+          "sha256": "ca324d198f0d03304eb5ff9ecac48604a34a1b26568201ee93ac1ab80bd923e6"
+        }
+      },
+      "native_products": {
+        "path": "results\\reports\\hst_compatibility_pilot\\products\\SL2SJ0214-0405_F606W.npz",
+        "sha256": "30f5a1d944a80ad6f0102221b06488ec475543e1f0add642e5f6b1554ec67f78"
+      },
+      "array_validation_passed": true,
+      "model_input_ready": false,
+      "shape_yx": [
+        120,
+        120
+      ],
+      "image_dtype": "float32",
+      "raw_intensity_percentiles_0_1_50_99_100": [
+        -0.06775636970996857,
+        -0.031039658766239882,
+        0.0071017066948115826,
+        0.1661787362396719,
+        10.008975982666016
+      ],
+      "unit_attribute": null,
+      "unit_calibration_verified": false,
+      "pixel_scale_equal_area_arcsec": 0.05000153679552814,
+      "pixel_edge_lengths_xy_arcsec": [
+        0.05000309552554243,
+        0.04999997811410463
+      ],
+      "pixel_anisotropy_ratio": 1.0000623485633364,
+      "field_edge_lengths_xy_arcsec": [
+        6.000371463065092,
+        5.999997373692556
+      ],
+      "canonical_field_edge_lengths_xy_arcsec": [
+        12.8,
+        12.8
+      ],
+      "canonical_edge_support": false,
+      "background_rms_raw_units": 0.01425848528743,
+      "exposure_range": [
+        400.0,
+        400.0
+      ],
+      "psf_shape_yx": [
+        61,
+        61
+      ],
+      "psf_sum_original": 0.979300204926858,
+      "psf_sum_normalized": 1.0,
+      "mask": {
+        "present": true,
+        "semantics": "not_reviewed",
+        "nonzero_pixels": 146
+      },
+      "blockers": [
+        "flux_unit_and_training_normalization_unresolved",
+        "centering_and_usable_coverage_not_reviewed",
+        "EPL_reference_versus_SIE_target_requires_scientific_decision",
+        "galaxy_galaxy_sources_differ_from_simulated_point_sources",
+        "full_noise_covariance_not_available_in_hdf5",
+        "native_cutout_edges_smaller_than_canonical_field",
+        "upstream_mask_semantics_not_reviewed"
+      ],
+      "science_processing": "native_values_preserved_no_resampling_or_normalization"
+    },
+    {
+      "system_id": "SDSSJ0151+0049",
+      "survey": "BELLS",
+      "band": "F814W",
+      "role": "compatibility_development",
+      "reference": {
+        "median_arcsec": 0.6493469124641085,
+        "error_lower": 0.005477605004735597,
+        "error_upper": 0.0037367322434473937,
+        "definition": "lenstronomy_EPL_theta_E_arcsec",
+        "table_source": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/BELLS_mass_params.csv",
+        "table_sha256": "1d5eeddc9feed02779b4742b8d0051a21f372afdbd109f30efa17f33c97598d7"
+      },
+      "sources": {
+        "image": {
+          "path": "C:\\Users\\richa\\Desktop\\charlie_lensing\\data\\raw\\external\\hst_compatibility_pilot\\SDSSJ0151+0049\\image_SDSSJ0151+0049_F814W.h5",
+          "sha256": "a155ae880433cc26ac4306b0eb8c6dd44282a51a7fca604c5b560c4fa89de832"
+        },
+        "psf": {
+          "path": "C:\\Users\\richa\\Desktop\\charlie_lensing\\data\\raw\\external\\hst_compatibility_pilot\\SDSSJ0151+0049\\psf_SDSSJ0151+0049_F814W.h5",
+          "sha256": "7435de956891d0219bc203a1b709aefa921530a2d66fdf8fbc0ddf52017bbe8e"
+        }
+      },
+      "native_products": {
+        "path": "results\\reports\\hst_compatibility_pilot\\products\\SDSSJ0151+0049_F814W.npz",
+        "sha256": "adcfb9725cfcf88b9d607dc715cabac4e8c73f1b9cc38632b9c8553dce96eadd"
+      },
+      "array_validation_passed": true,
+      "model_input_ready": false,
+      "shape_yx": [
+        110,
+        110
+      ],
+      "image_dtype": "float32",
+      "raw_intensity_percentiles_0_1_50_99_100": [
+        -0.01827423833310604,
+        -0.0090100275631994,
+        0.007151962956413627,
+        0.3051154345273977,
+        2.520472288131714
+      ],
+      "unit_attribute": null,
+      "unit_calibration_verified": false,
+      "pixel_scale_equal_area_arcsec": 0.049999681663454816,
+      "pixel_edge_lengths_xy_arcsec": [
+        0.04999938799065347,
+        0.04999997533798119
+      ],
+      "pixel_anisotropy_ratio": 1.0000117473294226,
+      "field_edge_lengths_xy_arcsec": [
+        5.499932678971882,
+        5.499997287177931
+      ],
+      "canonical_field_edge_lengths_xy_arcsec": [
+        12.8,
+        12.8
+      ],
+      "canonical_edge_support": false,
+      "background_rms_raw_units": 0.005662656854838,
+      "exposure_range": [
+        978.456298828125,
+        2323.154296875
+      ],
+      "psf_shape_yx": [
+        61,
+        61
+      ],
+      "psf_sum_original": 0.9746821779611992,
+      "psf_sum_normalized": 1.0,
+      "mask": {
+        "present": false,
+        "semantics": "not_reviewed"
+      },
+      "blockers": [
+        "flux_unit_and_training_normalization_unresolved",
+        "centering_and_usable_coverage_not_reviewed",
+        "EPL_reference_versus_SIE_target_requires_scientific_decision",
+        "galaxy_galaxy_sources_differ_from_simulated_point_sources",
+        "full_noise_covariance_not_available_in_hdf5",
+        "native_cutout_edges_smaller_than_canonical_field"
+      ],
+      "science_processing": "native_values_preserved_no_resampling_or_normalization"
+    }
+  ]
+}

@@ -19,6 +19,10 @@ def main() -> None:
         command.add_argument("--config", type=Path, default=Path("configs/study.yaml"))
         if action in {"predict", "analyze"}:
             command.add_argument("--paired", action="store_true", help="Secondary renderer study")
+        if action in {"analyze", "plot"}:
+            command.add_argument(
+                "--report-output", type=Path, help="Separate primary reanalysis destination"
+            )
 
     development = commands.add_parser("develop")
     development.add_argument("stage", choices=("reference", "weights", "tune", "review"))
@@ -93,13 +97,15 @@ def main() -> None:
         from src.ml.analysis import score, score_paired
 
         if args.paired:
+            if args.report_output is not None:
+                parser.error("--report-output is for the primary analysis")
             score_paired()
         else:
-            score(config)
+            score(config, report_output=args.report_output)
     elif args.action == "plot":
         from src.ml.plots import plot
 
-        plot(config)
+        plot(config, report_output=args.report_output)
 
 
 if __name__ == "__main__":

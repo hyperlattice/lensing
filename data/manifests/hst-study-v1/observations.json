@@ -1,0 +1,215 @@
+{
+  "observations": [
+    {
+      "aliases": [],
+      "background_raw": null,
+      "band": "F606W",
+      "center": {
+        "evidence": "",
+        "method": "reviewed_external",
+        "xy": null
+      },
+      "center_tolerance_arcsec": null,
+      "cohort": "development",
+      "crop_shape_yx": null,
+      "eligibility": "pending",
+      "exclusion_reason": "",
+      "input_unit": null,
+      "observation_id": "SDSSJ0008-0004_F606W",
+      "pixel_transform_arcsec": null,
+      "psf": {
+        "key": "psf_normalized",
+        "path": "results\\reports\\hst_compatibility_pilot\\products\\SDSSJ0008-0004_F606W.npz",
+        "sha256": "8814c594974d62e60ed2a7063daf03cc489d0f26d89c7cb9969a5cd4c8bc51b3"
+      },
+      "psf_center_tolerance_pixels": null,
+      "psf_pixel_transform_arcsec": null,
+      "review": {
+        "centering": "",
+        "coverage_masks": "",
+        "morphology": "",
+        "photometry": "",
+        "psf": "",
+        "reference_convention": ""
+      },
+      "science": {
+        "key": "image_data",
+        "path": "results\\reports\\hst_compatibility_pilot\\products\\SDSSJ0008-0004_F606W.npz",
+        "sha256": "8814c594974d62e60ed2a7063daf03cc489d0f26d89c7cb9969a5cd4c8bc51b3"
+      },
+      "survey": "SLACS",
+      "system_id": "SDSSJ0008-0004",
+      "unit_multiplier": null,
+      "valid_mask": null
+    },
+    {
+      "aliases": [],
+      "background_raw": null,
+      "band": "F606W",
+      "center": {
+        "evidence": "",
+        "method": "reviewed_external",
+        "xy": null
+      },
+      "center_tolerance_arcsec": null,
+      "cohort": "development",
+      "crop_shape_yx": null,
+      "eligibility": "pending",
+      "exclusion_reason": "",
+      "input_unit": null,
+      "observation_id": "SDSSJ0029-0055_F606W",
+      "pixel_transform_arcsec": null,
+      "psf": {
+        "key": "psf_normalized",
+        "path": "results\\reports\\hst_compatibility_pilot\\products\\SDSSJ0029-0055_F606W.npz",
+        "sha256": "7091e967f909efeaa9297a1f4a373a88081270fc8ef148b92a1b5015f4f16dbb"
+      },
+      "psf_center_tolerance_pixels": null,
+      "psf_pixel_transform_arcsec": null,
+      "review": {
+        "centering": "",
+        "coverage_masks": "",
+        "morphology": "",
+        "photometry": "",
+        "psf": "",
+        "reference_convention": ""
+      },
+      "science": {
+        "key": "image_data",
+        "path": "results\\reports\\hst_compatibility_pilot\\products\\SDSSJ0029-0055_F606W.npz",
+        "sha256": "7091e967f909efeaa9297a1f4a373a88081270fc8ef148b92a1b5015f4f16dbb"
+      },
+      "survey": "SLACS",
+      "system_id": "SDSSJ0029-0055",
+      "unit_multiplier": null,
+      "valid_mask": null
+    },
+    {
+      "aliases": [],
+      "background_raw": null,
+      "band": "F606W",
+      "center": {
+        "evidence": "",
+        "method": "reviewed_external",
+        "xy": null
+      },
+      "center_tolerance_arcsec": null,
+      "cohort": "development",
+      "crop_shape_yx": null,
+      "eligibility": "pending",
+      "exclusion_reason": "",
+      "input_unit": null,
+      "observation_id": "SDSSJ0037-0942_F606W",
+      "pixel_transform_arcsec": null,
+      "psf": {
+        "key": "psf_normalized",
+        "path": "results\\reports\\hst_compatibility_pilot\\products\\SDSSJ0037-0942_F606W.npz",
+        "sha256": "22bb48f31aab5f4241e760e4a6c23fd66bd2931fdd17dcd044fe4b64a8d34e65"
+      },
+      "psf_center_tolerance_pixels": null,
+      "psf_pixel_transform_arcsec": null,
+      "review": {
+        "centering": "",
+        "coverage_masks": "",
+        "morphology": "",
+        "photometry": "",
+        "psf": "",
+        "reference_convention": ""
+      },
+      "science": {
+        "key": "image_data",
+        "path": "results\\reports\\hst_compatibility_pilot\\products\\SDSSJ0037-0942_F606W.npz",
+        "sha256": "22bb48f31aab5f4241e760e4a6c23fd66bd2931fdd17dcd044fe4b64a8d34e65"
+      },
+      "survey": "SLACS",
+      "system_id": "SDSSJ0037-0942",
+      "unit_multiplier": null,
+      "valid_mask": null
+    },
+    {
+      "aliases": [],
+      "background_raw": null,
+      "band": "F606W",
+      "center": {
+        "evidence": "",
+        "method": "reviewed_external",
+        "xy": null
+      },
+      "center_tolerance_arcsec": null,
+      "cohort": "development",
+      "crop_shape_yx": null,
+      "eligibility": "pending",
+      "exclusion_reason": "",
+      "input_unit": null,
+      "observation_id": "SL2SJ0214-0405_F606W",
+      "pixel_transform_arcsec": null,
+      "psf": {
+        "key": "psf_normalized",
+        "path": "results\\reports\\hst_compatibility_pilot\\products\\SL2SJ0214-0405_F606W.npz",
+        "sha256": "30f5a1d944a80ad6f0102221b06488ec475543e1f0add642e5f6b1554ec67f78"
+      },
+      "psf_center_tolerance_pixels": null,
+      "psf_pixel_transform_arcsec": null,
+      "review": {
+        "centering": "",
+        "coverage_masks": "",
+        "morphology": "",
+        "photometry": "",
+        "psf": "",
+        "reference_convention": ""
+      },
+      "science": {
+        "key": "image_data",
+        "path": "results\\reports\\hst_compatibility_pilot\\products\\SL2SJ0214-0405_F606W.npz",
+        "sha256": "30f5a1d944a80ad6f0102221b06488ec475543e1f0add642e5f6b1554ec67f78"
+      },
+      "survey": "SL2S",
+      "system_id": "SL2SJ0214-0405",
+      "unit_multiplier": null,
+      "valid_mask": null
+    },
+    {
+      "aliases": [],
+      "background_raw": null,
+      "band": "F814W",
+      "center": {
+        "evidence": "",
+        "method": "reviewed_external",
+        "xy": null
+      },
+      "center_tolerance_arcsec": null,
+      "cohort": "development",
+      "crop_shape_yx": null,
+      "eligibility": "pending",
+      "exclusion_reason": "",
+      "input_unit": null,
+      "observation_id": "SDSSJ0151+0049_F814W",
+      "pixel_transform_arcsec": null,
+      "psf": {
+        "key": "psf_normalized",
+        "path": "results\\reports\\hst_compatibility_pilot\\products\\SDSSJ0151+0049_F814W.npz",
+        "sha256": "adcfb9725cfcf88b9d607dc715cabac4e8c73f1b9cc38632b9c8553dce96eadd"
+      },
+      "psf_center_tolerance_pixels": null,
+      "psf_pixel_transform_arcsec": null,
+      "review": {
+        "centering": "",
+        "coverage_masks": "",
+        "morphology": "",
+        "photometry": "",
+        "psf": "",
+        "reference_convention": ""
+      },
+      "science": {
+        "key": "image_data",
+        "path": "results\\reports\\hst_compatibility_pilot\\products\\SDSSJ0151+0049_F814W.npz",
+        "sha256": "adcfb9725cfcf88b9d607dc715cabac4e8c73f1b9cc38632b9c8553dce96eadd"
+      },
+      "survey": "BELLS",
+      "system_id": "SDSSJ0151+0049",
+      "unit_multiplier": null,
+      "valid_mask": null
+    }
+  ],
+  "schema": "hst_observations_v1"
+}

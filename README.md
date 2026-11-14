@@ -45,7 +45,7 @@ in a code-only checkout. See [reproduction](docs/reproduction.md).
 ## Layout
 
 ```text
-configs/             Three flat YAML files: study, simulation, development
+configs/             Flat synthetic and HST configuration files
 src/data/            Stored image contracts, bank loading and qualification
 src/simulation/      Scene sampling, one renderer, backend adapters and generation
 src/ml/              Model, batches, policies, training, prediction, analysis and plots
@@ -60,6 +60,7 @@ archive/            Historical research records; use their original Git checkout
 
 Current documentation: [study](docs/study.md), [data contract](docs/data_contract.md),
 [rendering](docs/rendering.md), and [migration](docs/migration.md).
+The proposed HST transfer workflow is documented in [HST implementation](docs/hst_study.md).
 The manuscript is [paper.tex](submission/aaai27/reviewer_bundle/paper.tex).
 
 ## Checks

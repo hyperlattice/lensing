@@ -21,6 +21,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0", "ruff==0.17.4"]
+hst = ["h5py>=3.11"]
 autolens = [
     "autolens==2026.10.26.1",
     "autogalaxy==2026.10.26.1",

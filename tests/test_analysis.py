@@ -5,6 +5,7 @@ from copy import deepcopy
 from pathlib import Path
 from types import SimpleNamespace
 
+import numpy as np
 import pandas as pd
 import pytest
 import yaml
@@ -14,6 +15,27 @@ from src.ml import analysis, artifacts, predict, train
 runner = SimpleNamespace(
     load_config=artifacts.load_config, fit=train.fit, predict=predict.predict, score=analysis.score
 )
+
+
+def test_composite_bootstrap_averages_conditions_before_quantiles():
+    candidate = np.tile([1.0, 3.0], (2, 3, 1))
+    comparator = np.full_like(candidate, 2.0)
+    result = analysis._bootstrap_difference(candidate, comparator, draws=100)
+    assert result["difference_arcsec"] == 0.0
+    assert result["bootstrap_95_low_arcsec"] == 0.0
+    assert result["bootstrap_95_high_arcsec"] == 0.0
+
+
+def test_composite_bootstrap_matches_direct_with_unequal_condition_effects():
+    candidate = np.random.default_rng(12).uniform(size=(3, 5, 4))
+    comparator = np.random.default_rng(13).uniform(size=candidate.shape)
+    result = analysis._bootstrap_difference(candidate, comparator, seed=42, draws=80)
+    indices = np.random.default_rng(42).integers(0, 5, size=(80, 5))
+    direct = [candidate[:, ids, :].mean() - comparator[:, ids, :].mean() for ids in indices]
+    np.testing.assert_allclose(
+        [result["bootstrap_95_low_arcsec"], result["bootstrap_95_high_arcsec"]],
+        np.quantile(direct, [0.025, 0.975]),
+    )
 
 
 def seal_config(config):
@@ -140,6 +162,9 @@ def test_scoring_repeats_from_saved_predictions(tmp_path):
     )
     runner.score(config)
     first = (tmp_path / "final_report.json").read_bytes()
+    analysis.score(config, report_output=tmp_path / "corrected_analysis")
+    assert (tmp_path / "corrected_analysis" / "final_report.json").read_bytes() == first
+    assert (tmp_path / "final_report.json").read_bytes() == first
     runner.score(config)
     assert (tmp_path / "final_report.json").read_bytes() == first
     holdout.write_text(holdout.read_text() + "\n")

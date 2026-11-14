@@ -18,15 +18,44 @@ from src.simulation.observation import CONDITIONS as PAIRED_CONDITIONS
 from src.simulation.observation import RENDERERS
 
 
-def _prediction_for_checkpoint(
-    checkpoint_path: Path, rows: pd.DataFrame, config: dict[str, Any]
+@torch.inference_mode()
+def predict_images(
+    checkpoint_path: Path, images: list[np.ndarray], *, batch_size: int
 ) -> np.ndarray:
-    holdout_path = Path(config["holdout"])
+    """Predict physical radii from native images using checkpoint-only statistics.
+
+    The caller supplies images, never references or fitted HST normalization.
+    Image ordering is preserved across the native-shape groups.
+    """
+    if type(batch_size) is not int or batch_size < 1 or not images:
+        raise ValueError("Inference needs images and a positive integer batch size")
+    for array in images:
+        if array.ndim != 2 or array.dtype != np.float32 or not np.isfinite(array).all():
+            raise ValueError("Inference images must be finite two-dimensional float32 arrays")
     checkpoint = torch.load(checkpoint_path, map_location="cpu", weights_only=True)
     model = build_model(checkpoint["model_config"])
     model.load_state_dict(checkpoint["model_state"])
     model.eval()
     stats = checkpoint["statistics"]
+    if (
+        not np.isfinite(list(stats.values())).all()
+        or min(stats["image_std"], stats["target_std"]) <= 0
+    ):
+        raise ValueError("Checkpoint normalization must be finite with positive scales")
+    predictions = []
+    for start in range(0, len(images), batch_size):
+        _, output = grouped_forward(model, images[start : start + batch_size], stats)
+        predictions.extend((output.numpy() * stats["target_std"] + stats["target_mean"]).tolist())
+    result = np.asarray(predictions, dtype=float)
+    if not np.isfinite(result).all():
+        raise ValueError("Checkpoint produced non-finite radius predictions")
+    return result
+
+
+def _prediction_for_checkpoint(
+    checkpoint_path: Path, rows: pd.DataFrame, config: dict[str, Any]
+) -> np.ndarray:
+    holdout_path = Path(config["holdout"])
     images = []
     # Intentionally access only the image path, sample identity and condition.
     for value in rows["processed_path"].astype(str):
@@ -34,14 +63,7 @@ def _prediction_for_checkpoint(
         if array.ndim != 2 or array.dtype != np.float32 or not np.isfinite(array).all():
             raise ValueError(f"Invalid target-free holdout image: {value}")
         images.append(array)
-    predictions = []
-    batch_size = config["training"]["batch_size"]
-    for start in range(0, len(images), batch_size):
-        _, output = grouped_forward(model, images[start : start + batch_size], stats)
-        predictions.extend(
-            (output.detach().numpy() * stats["target_std"] + stats["target_mean"]).tolist()
-        )
-    return np.asarray(predictions, dtype=float)
+    return predict_images(checkpoint_path, images, batch_size=config["training"]["batch_size"])
 
 
 def predict(config: dict[str, Any]) -> None:
@@ -178,3 +200,70 @@ def predict_paired() -> None:
 
 def _checkpoint(arm, seed):
     return Path(f"results/ml/equal-budget-final-v1/fits/{arm}/seed-{seed}/final.pt")
+
+
+def predict_hst(config: dict[str, Any], cohort: str) -> None:
+    """Seal complete paired HST predictions without opening classical references."""
+    from src.data.hst import load_prepared, verify_confirmation
+    from src.ml.artifacts import (
+        create_once,
+        environment_record,
+        load_config,
+        seed_everything,
+        verified_hst_assets,
+    )
+
+    output = Path(config["output"])
+    destination = output / cohort
+    prediction_path = destination / "predictions_before_scoring.csv"
+    if prediction_path.exists() or (destination / "predictions_complete.json").exists():
+        raise FileExistsError("HST predictions already exist; analyze saved predictions")
+    if cohort == "confirmation":
+        verify_confirmation(config, images=True)
+    assets_path = output / "model_assets.json"
+    assets = verified_hst_assets(assets_path)
+    rows, images = load_prepared(config, cohort)
+    study = load_config(config["study_config"])
+    torch.set_num_threads(study["training"]["torch_threads"])
+    seed_everything(0)
+    records = []
+    for checkpoint in assets["checkpoints"]:
+        predictions = predict_images(
+            Path(checkpoint["path"]), images, batch_size=config["batch_size"]
+        )
+        for row, value in zip(rows, predictions, strict=True):
+            records.append(
+                {
+                    "system_id": row["system_id"],
+                    "observation_id": row["observation_id"],
+                    "survey": row["survey"],
+                    "band": row["band"],
+                    "arm": checkpoint["arm"],
+                    "seed": checkpoint["seed"],
+                    "theta_E_arcsec_predicted": float(value),
+                    "nonpositive_prediction": bool(value <= 0),
+                }
+            )
+    destination.mkdir(parents=True, exist_ok=True)
+    pd.DataFrame(records).to_csv(prediction_path, index=False, mode="x")
+    create_once(
+        destination / "predictions_complete.json",
+        {
+            "schema": "hst_predictions_v1",
+            "cohort": cohort,
+            "config": config,
+            "arms": assets["arms"],
+            "seeds": assets["seeds"],
+            "rows": len(records),
+            "systems": [row["system_id"] for row in rows],
+            "observation_ids": [row["observation_id"] for row in rows],
+            "prediction_sha256": sha256(prediction_path),
+            "assets_sha256": sha256(assets_path),
+            "prepared_manifest_sha256": sha256(
+                Path(config["prepared_root"]) / cohort / "manifest.json"
+            ),
+            "references_opened": False,
+            "environment": environment_record(torch.device("cpu")),
+            "sealed_before_reference_join": True,
+        },
+    )

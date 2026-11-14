@@ -1,0 +1,84 @@
+{
+  "arms": [
+    "C",
+    "G",
+    "R"
+  ],
+  "checkpoints": [],
+  "environment": {
+    "cuda_version": null,
+    "device": "cpu",
+    "device_name": "AMD64 Family 25 Model 117 Stepping 2, AuthenticAMD",
+    "machine": "AMD64",
+    "packages": {
+      "PyYAML": "6.0.3",
+      "matplotlib": "3.10.9",
+      "numpy": "2.2.6",
+      "pandas": "2.3.3",
+      "torch": "2.9.1+cpu"
+    },
+    "platform": "Windows",
+    "processor": "AMD64 Family 25 Model 117 Stepping 2, AuthenticAMD",
+    "python": "3.10.11",
+    "torch_num_threads": 8
+  },
+  "missing": [
+    "results\\ml\\equal-budget-final-v1\\fit_complete.json",
+    "results\\ml\\equal-budget-final-v1\\fits\\C\\seed-730001\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\C\\seed-730002\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\C\\seed-730003\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\C\\seed-730004\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\C\\seed-730005\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\C\\seed-730006\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\C\\seed-730007\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\C\\seed-730008\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\C\\seed-730009\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\C\\seed-730010\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\G\\seed-730001\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\G\\seed-730002\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\G\\seed-730003\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\G\\seed-730004\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\G\\seed-730005\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\G\\seed-730006\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\G\\seed-730007\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\G\\seed-730008\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\G\\seed-730009\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\G\\seed-730010\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\R\\seed-730001\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\R\\seed-730002\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\R\\seed-730003\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\R\\seed-730004\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\R\\seed-730005\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\R\\seed-730006\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\R\\seed-730007\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\R\\seed-730008\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\R\\seed-730009\\final.pt",
+    "results\\ml\\equal-budget-final-v1\\fits\\R\\seed-730010\\final.pt"
+  ],
+  "provenance": {
+    "git_revision": "3a8105478c3a2220678b1cf10348e998a3073338",
+    "working_tree_dirty": true
+  },
+  "ready": false,
+  "schema": "hst_model_assets_v1",
+  "seeds": [
+    730001,
+    730002,
+    730003,
+    730004,
+    730005,
+    730006,
+    730007,
+    730008,
+    730009,
+    730010
+  ],
+  "training_inputs_available": {
+    "holdout": false,
+    "policy": false,
+    "source_development": false,
+    "source_train": false
+  },
+  "training_manifest": "results\\ml\\equal-budget-final-v1\\fit_complete.json",
+  "training_manifest_sha256": null
+}

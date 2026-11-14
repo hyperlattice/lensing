@@ -94,6 +94,7 @@ def test_flat_configs_preserve_all_active_default_destinations():
     assert development["source_development"] == study["source_development"]
     assert sorted(path.name for path in Path("configs").glob("*.yaml")) == [
         "development.yaml",
+        "hst_study.yaml",
         "simulation.yaml",
         "study.yaml",
     ]

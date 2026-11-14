@@ -1,0 +1,70 @@
+{
+  "references": [
+    {
+      "alternatives": [],
+      "definition": "lenstronomy_EPL_theta_E_arcsec",
+      "error_lower": 0.009388933172922664,
+      "error_upper": 0.008104905069579393,
+      "interval_semantics": "median minus percentile16; percentile84 minus median",
+      "mass_model": "EPL + external shear",
+      "median_arcsec": 1.2247385141457758,
+      "source": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/SLACS_mass_params.csv",
+      "system_id": "SDSSJ0008-0004",
+      "table_sha256": "c2fe37f6c4d9d8e7645e3925c803d5eeaef574e0bb1d3506beb39a264491c36d",
+      "table_source": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/SLACS_mass_params.csv"
+    },
+    {
+      "alternatives": [],
+      "definition": "lenstronomy_EPL_theta_E_arcsec",
+      "error_lower": 0.0027388519742362893,
+      "error_upper": 0.002650566573654256,
+      "interval_semantics": "median minus percentile16; percentile84 minus median",
+      "mass_model": "EPL + external shear",
+      "median_arcsec": 0.9446925904908946,
+      "source": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/SLACS_mass_params.csv",
+      "system_id": "SDSSJ0029-0055",
+      "table_sha256": "c2fe37f6c4d9d8e7645e3925c803d5eeaef574e0bb1d3506beb39a264491c36d",
+      "table_source": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/SLACS_mass_params.csv"
+    },
+    {
+      "alternatives": [],
+      "definition": "lenstronomy_EPL_theta_E_arcsec",
+      "error_lower": 0.006625489589695555,
+      "error_upper": 0.01006488475548073,
+      "interval_semantics": "median minus percentile16; percentile84 minus median",
+      "mass_model": "EPL + external shear",
+      "median_arcsec": 1.475673703841136,
+      "source": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/SLACS_mass_params.csv",
+      "system_id": "SDSSJ0037-0942",
+      "table_sha256": "c2fe37f6c4d9d8e7645e3925c803d5eeaef574e0bb1d3506beb39a264491c36d",
+      "table_source": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/SLACS_mass_params.csv"
+    },
+    {
+      "alternatives": [],
+      "definition": "lenstronomy_EPL_theta_E_arcsec",
+      "error_lower": 0.006039393476487076,
+      "error_upper": 0.006030662273723619,
+      "interval_semantics": "median minus percentile16; percentile84 minus median",
+      "mass_model": "EPL + external shear",
+      "median_arcsec": 1.2207574694114196,
+      "source": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/SL2S_mass_params.csv",
+      "system_id": "SL2SJ0214-0405",
+      "table_sha256": "75b430e4e48f454f3154653d7b7f847c6f8ac7a287e5e34bf9c41f34e06bc1da",
+      "table_source": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/SL2S_mass_params.csv"
+    },
+    {
+      "alternatives": [],
+      "definition": "lenstronomy_EPL_theta_E_arcsec",
+      "error_lower": 0.005477605004735597,
+      "error_upper": 0.0037367322434473937,
+      "interval_semantics": "median minus percentile16; percentile84 minus median",
+      "mass_model": "EPL + external shear",
+      "median_arcsec": 0.6493469124641085,
+      "source": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/BELLS_mass_params.csv",
+      "system_id": "SDSSJ0151+0049",
+      "table_sha256": "1d5eeddc9feed02779b4742b8d0051a21f372afdbd109f30efa17f33c97598d7",
+      "table_source": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/BELLS_mass_params.csv"
+    }
+  ],
+  "schema": "hst_references_v1"
+}

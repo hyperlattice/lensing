@@ -1,0 +1,74 @@
+{
+  "image_SDSSJ0037-0942_F606W.h5": {
+    "background_rms": {
+      "finite": true,
+      "shape": [],
+      "min": 0.00028316018256272727,
+      "max": 0.00028316018256272727
+    },
+    "dec_at_xy_0": {
+      "finite": true,
+      "shape": [],
+      "min": 3.909189606034976,
+      "max": 3.909189606034976
+    },
+    "dec_shift": {
+      "finite": true,
+      "shape": [],
+      "min": 0.0141,
+      "max": 0.0141
+    },
+    "exposure_time": {
+      "finite": true,
+      "shape": [
+        140,
+        140
+      ],
+      "min": 30800.0,
+      "max": 30800.0
+    },
+    "image_data": {
+      "finite": true,
+      "shape": [
+        140,
+        140
+      ],
+      "min": 0.000324513966916129,
+      "max": 0.32222530245780945
+    },
+    "ra_at_xy_0": {
+      "finite": true,
+      "shape": [],
+      "min": 2.99410034391032,
+      "max": 2.99410034391032
+    },
+    "ra_shift": {
+      "finite": true,
+      "shape": [],
+      "min": -0.0499,
+      "max": -0.0499
+    },
+    "transform_pix2angle": {
+      "finite": true,
+      "shape": [
+        2,
+        2
+      ],
+      "min": -0.04934717716054138,
+      "max": 0.006574315104679659
+    },
+    "pixel_scale_area_arcsec": 0.04975903596418566
+  },
+  "psf_SDSSJ0037-0942_F606W.h5": {
+    "kernel_point_source": {
+      "finite": true,
+      "shape": [
+        61,
+        61
+      ],
+      "min": 1.484176436861162e-06,
+      "max": 0.14856936037540436
+    },
+    "psf_sum": 0.9919700100999762
+  }
+}

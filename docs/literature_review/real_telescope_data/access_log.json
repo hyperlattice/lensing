@@ -1,0 +1,84 @@
+{
+  "date": "2026-11-12",
+  "review_type": "targeted narrative data-access review",
+  "question": "Which actual telescope image releases can support independent C/G/R Einstein-radius regression evaluation?",
+  "coverage": [
+    "Dinos-I HST tables and image repository",
+    "Euclid Q1 image and classical fit deposit",
+    "LOS in SLACS II public inputs and outputs",
+    "HSC SuGOHI YattaLens references",
+    "historical local CASTLES intake limitations",
+    "TDCOSMO XXVI eight-quasar public release"
+  ],
+  "source_access": {
+    "Dinos-I": "selected full-text paper, README, GitHub API tree, reference tables, extraction notebook, one HDF5 image/PSF",
+    "Euclid Q1": "Zenodo description and API, two CSV files, remote ZIP directory, one FITS image",
+    "LOS in SLACS II": "selected full-text sections and Zenodo API metadata only",
+    "HSC SuGOHI": "selected full-text methods/results; no complete data intake",
+    "TDCOSMO XXVI": "selected current paper sections, journal correction link, README, Zenodo API and GitHub tree; correction retrieval failed"
+  },
+  "discovery_query_topics_reconstructed_not_exact_transcripts": [
+    "Dinos-I public HST imaging lens model parameters",
+    "Euclid Q1 lens mass modelling data",
+    "SLACS lens cutouts PSF MCMC public release",
+    "SuGOHI real Einstein radius YattaLens labels"
+  ],
+  "limitations": [
+    "Not exhaustive and no systematic-review completeness claimed",
+    "Metadata screens are not final eligibility",
+    "Reference labels have model-dependent uncertainty",
+    "One image example inspected per leading release",
+    "No C/G/R checkpoints evaluated",
+    "TDCOSMO XXVI published correction not retrieved; no final eligibility or numeric label adoption"
+  ],
+  "execution": "No training, scoring, or runtime dependency changes; h5py used from isolated temporary installation",
+  "exact_final_queries": [
+    "TDCOSMO public HST imaging data lens modelling PSF Einstein radius github STRIDES",
+    "H0LiCOW public data release imaging lens models GitHub WFI2033 RXJ1131",
+    "\"171886\" \"correction\" Brady",
+    "\"TDCOSMO XXVI\" \"correction\""
+  ],
+  "hst_compatibility_followup": {
+    "date": "2026-11-12",
+    "notebooks": [
+      "dinos_preprocessor.ipynb",
+      "dinos_drizzler.ipynb"
+    ],
+    "result": "Preprocessor subtracts background mean before HDF5 export; full photometric unit provenance remains unverified. Five-system intake is recorded separately in results/reports/hst_compatibility_pilot/audit.json."
+  },
+  "hst_archive_followup": {
+    "date": "2026-11-12",
+    "metadata_files": [
+      "mast_SDSSJ0037-0942_observations.json",
+      "mast_SDSSJ0037-0942_cone.json",
+      "mast_SDSSJ0037-0942_products.json",
+      "mast_header_probe.json"
+    ],
+    "queries": [
+      {
+        "service": "Mast.Caom.Filtered",
+        "result": "zero rows for wildcard target-name values"
+      },
+      {
+        "service": "Mast.Caom.Cone",
+        "ra": 9.471708333,
+        "dec": -9.705583333,
+        "radius": 0.005,
+        "pagesize": 500,
+        "page": 1
+      },
+      {
+        "service": "Mast.Caom.Products",
+        "obsid": "208003580",
+        "pagesize": 500,
+        "page": 1
+      }
+    ],
+    "reader_source_commit": "334a928193e6baef1e5ebae2f51182333a052b7e",
+    "scope": "One reserved system; bounded archive ranges saved separately; no final scoring",
+    "documentation": [
+      "https://hst-docs.stsci.edu/hstdhb/4-hst-data-analysis/4-6-analyzing-hst-images",
+      "https://spacetelescope.github.io/hst_notebooks/notebooks/DrizzlePac/drizzle_wfpc2/drizzle_wfpc2.html"
+    ]
+  }
+}

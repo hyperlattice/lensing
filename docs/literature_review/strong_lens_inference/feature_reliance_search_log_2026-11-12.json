@@ -1,0 +1,121 @@
+{
+  "date": "2026-11-12",
+  "type": "single-reviewer focused narrative/scoping extension",
+  "provider": "web search with primary-source retrieval; no direct exhaustive bibliographic database search",
+  "queries": [
+    {
+      "id": 1,
+      "query": "gravitational lens CNN interpretability shortcut occlusion Einstein radius Wilde Sheng Herle"
+    },
+    {
+      "id": 2,
+      "query": "\"The influence of correlated features\" Krell attribution neural networks"
+    },
+    {
+      "id": 3,
+      "query": "\"On the Foundations of Shortcut Learning\" Hermann"
+    },
+    {
+      "id": 4,
+      "query": "gravitational lensing regression counterfactual feature reliance neural network interpretability"
+    },
+    {
+      "id": 5,
+      "query": "site.proceedings.mlr.press sheng22a unsupervised gravitational lenses artifacts"
+    },
+    {
+      "id": 6,
+      "query": "site.arxiv.org \"Selection functions of strong lens\""
+    },
+    {
+      "id": 7,
+      "query": "site.arxiv.org \"Feature Reliance\" \"lensing\""
+    },
+    {
+      "id": 8,
+      "query": "site.arxiv.org counterfactual shortcut feature dependence regression synthetic data attribution"
+    },
+    {
+      "id": 9,
+      "query": "site.proceedings.mlr.press \"Axiomatic Attribution\""
+    },
+    {
+      "id": 10,
+      "query": "site.proceedings.mlr.press \"Testing with Concept Activation Vectors\""
+    },
+    {
+      "id": 11,
+      "query": "site.arxiv.org \"Sanity Checks for Saliency Maps\""
+    },
+    {
+      "id": 12,
+      "query": "site.arxiv.org \"A Benchmark for Interpretability Methods\""
+    },
+    {
+      "id": 13,
+      "query": "\"Detecting gravitational lenses\" \"Wilde\" arxiv 2022"
+    },
+    {
+      "id": 14,
+      "query": "\"LenNet\" \"1656917\""
+    },
+    {
+      "id": 15,
+      "query": "site.arxiv.org \"Shortcut Learning in Deep Neural Networks\""
+    },
+    {
+      "id": 16,
+      "query": "site.arxiv.org \"Right for the Right Reasons\" Ross Hughes Doshi"
+    },
+    {
+      "id": 17,
+      "query": "site.arxiv.org LenSiam 2023 strong gravitational lensing contrastive"
+    },
+    {
+      "id": 18,
+      "query": "site.arxiv.org \"Model Class Reliance\" Fisher Rudin Dominici"
+    }
+  ],
+  "selection": {
+    "existing_matrix": 60,
+    "added_works": 18,
+    "total_matrix": 78,
+    "added_selected_full_text": 4,
+    "added_abstract_or_publisher_summary": 14,
+    "existing_records_reconsulted": [
+      "pearson2019 (existing extraction only; numerical 34% claim not reverified)",
+      "gawade2025 (abstract and full-text page retrieved)",
+      "herle2024 (abstract)"
+    ],
+    "not_included": [
+      {
+        "work": "Ross et al. 2017 Right for the Right Reasons",
+        "reason": "Relevant further reading; outside the bounded selected extension, not duplicate or scientific-quality exclusion."
+      },
+      {
+        "work": "Stanford CS231n lens detection/regression course report",
+        "reason": "Teaching/course report; not used as principal scholarly evidence."
+      },
+      {
+        "work": "FitCF",
+        "reason": "NLP counterfactual generation; peripheral to the physical image-regression scope."
+      }
+    ],
+    "count_note": "No reconciled total search-hit or screened-record denominator was captured. Do not construct PRISMA counts from these selected works."
+  },
+  "retrieval_limits": [
+    "Wilde DOI redirect failed; arXiv abstract used; HTML retrieval failed.",
+    "Krell NOAA PDF retrieval failed; institutional abstract assessed; sample-size-specific assertions not extracted.",
+    "Lens-LeJEPA workshop abstract and PDF disagree on headline gain; no numerical gain repeated.",
+    "Only selected sections of four new works were assessed, not whole-paper systematic appraisal."
+  ],
+  "report_linkage": "ArXiv and published reports count together. Scimeca and Hedstrom arXiv text-overlap notices are recorded in matrix, not counted as separate studies.",
+  "snapshots": "Original November 4 metadata/BibTeX/PDF remain 60-work snapshots. Extension JSON and Markdown describe the additional 18.",
+  "raw_search_response_archive": "Not saved; exact query log and primary-source URLs preserved.",
+  "excluded_scope": [
+    "venue/deadline recommendations",
+    "new experiment execution",
+    "pooled performance estimates"
+  ],
+  "attribution": "Scientific Agent Skills arXiv:2609.00065 identity checked; outside topical evidence count"
+}

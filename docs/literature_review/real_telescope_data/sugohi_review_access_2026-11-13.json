@@ -1,0 +1,68 @@
+{
+  "date": "2026-11-13",
+  "scope": "Targeted public data compatibility review; no exhaustive-search or final-eligibility claim.",
+  "original_urls": [
+    "https://www.aanda.org/articles/aa/pdf/2019/05/aa32797-18.pdf",
+    "https://www-utap.phys.s.u-tokyo.ac.jp/~oguri/sugohi/",
+    "https://sites.google.com/usfca.edu/neuralens/publications?authuser=0"
+  ],
+  "reviewed_primary_sources": [
+    "https://arxiv.org/pdf/1802.03609",
+    "https://arxiv.org/html/2404.18897v3",
+    "https://doi.org/10.1093/mnras/staf935",
+    "https://sites.google.com/lbl.gov/neuralens",
+    "https://arxiv.org/html/2512.07823v2"
+  ],
+  "search_queries": [
+    "\"aa32797-18\" gravitational lens 2019",
+    "site:sites.google.com/usfca.edu/neuralens publications SuGOHI",
+    "Gawade 182 strong gravitational lens HSC YattaLens data github 2404.18897",
+    "\"The strong gravitational lens finding challenge\" Metcalf 2019 arxiv data",
+    "\"SuGOHI\" \"182\" data Gawade github",
+    "\"DESI Strong Lens Foundry I\" HST 51 data GIGA Lens",
+    "\"DESI Strong Lens Foundry V\" data modeled",
+    "\"Gawade\" \"staf935\" supplementary data",
+    "\"SuGOHI\" \"Einstein radius\" \"estimated\" catalog",
+    "\"2512.07823\" \"data\" \"github\"",
+    "\"staf935\" \"supplementary\"",
+    "site:hsc-release.mtk.nao.ac.jp \"0.168\" \"cutout\"",
+    "site:hsc-release.mtk.nao.ac.jp \"registration\" \"PSF\""
+  ],
+  "access_limits": {
+    "original_AA_pdf": "HTTP403; author preprint methods read instead",
+    "gawade_grade_B_supplement": "Publisher supplementary link resolved to article HTTP403; 157 rows not retrieved",
+    "HSC_public_archive_documentation": "Timed out; no science FITS/PSF access established",
+    "Foundry_V": "Version 2 HTML and Table 1 reviewed; images/posteriors not downloaded"
+  },
+  "catalog_criteria": {
+    "type": "GG",
+    "grade": [
+      "A",
+      "B"
+    ],
+    "catalog_radius_arcsec_inclusive": [
+      0.5,
+      2.0
+    ],
+    "missing_numeric_sentinel": -99,
+    "radius_column_index_zero_based": 7
+  },
+  "checks": {
+    "raw_schema_14_columns": true,
+    "grade_counts_reconcile": true,
+    "extracted_25_distinct_YL_references": true,
+    "candidate_pool_493_distinct_catalog_ids": true
+  },
+  "sha256": {
+    "sources/sugohi_catalog_2026-11-13.csv": "72fb96dc8d13851c20304b25b8889087d92df27cf1549e6522c8657befda4a55",
+    "sources/sugohi_index_2026-11-13.html": "97185d6b174f05ae9012541f076d27f9340f9825855a1a587edb403908515c76",
+    "sources/sugohi_small_query_2026-11-13.html": "6619f595d07572e335ab93e6d22014a5d8e0d61246aceb7b21010288a5b2be73",
+    "sources/gawade_2404_18897v3.html": "62ccd5525687b0c8ba009be528cae62093cc6f27218e2941a87c78a789858488",
+    "sugohi_candidate_pool_2026-11-13.csv": "3e6955c0641af2daa215325b05102a8414acb695ea232c008f4639bfb66463fc",
+    "sugohi_gawade_grade_a_references_2026-11-13.csv": "82fe4f29ca41074a15a843912d99fb969051a17ee403509eef7d36b444dfce96",
+    "sugohi_screening_2026-11-13.json": "0c5436b35c1ff9c440f2be5a57099bb8f1960c79c8e7f5f3f7813b6a354d867b"
+  },
+  "no_CNN_scored": true,
+  "science_images_downloaded": 0,
+  "final_added_lens_count": null
+}
