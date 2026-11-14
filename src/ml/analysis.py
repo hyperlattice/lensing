@@ -19,10 +19,19 @@ def _bootstrap_difference(
     values_a: np.ndarray, values_b: np.ndarray, seed: int = 8731, draws: int = 10000
 ) -> dict[str, float | int]:
     """Compare errors with axes [seed, parent, condition], resampling whole parents."""
+    if values_a.shape != values_b.shape or values_a.ndim != 3:
+        raise ValueError("Paired errors must have matching [seed, parent, condition] axes")
+    if min(values_a.shape) < 1 or not np.isfinite([values_a, values_b]).all():
+        raise ValueError("Paired errors must be nonempty and finite")
+    if type(draws) is not int or draws < 1:
+        raise ValueError("Bootstrap resamples must be a positive integer")
     rng = np.random.default_rng(seed)
     n = values_a.shape[1]
     indices = rng.integers(0, n, size=(draws, n))
-    diffs = values_a[:, indices].mean(axis=(0, 2)) - values_b[:, indices].mean(axis=(0, 2))
+    # Average fixed seeds and conditions BEFORE resampling independent parents.
+    # Each bootstrap draw is one composite contrast, not a mixture of conditions.
+    parent_differences = (values_a - values_b).mean(axis=(0, 2))
+    diffs = parent_differences[indices].mean(axis=1)
     return {
         "difference_arcsec": float((values_a - values_b).mean()),
         "bootstrap_95_low_arcsec": float(np.quantile(diffs, 0.025)),
@@ -32,9 +41,192 @@ def _bootstrap_difference(
     }
 
 
-def score(config: dict[str, Any]) -> None:
+def score_hst(config: dict[str, Any], cohort: str) -> dict[str, Any]:
+    """Analyze sealed reference agreement with physical lenses as independent units.
+
+    Seeds are averaged AFTER taking absolute disagreement. Bootstrap intervals
+    condition on those seeds; a seed ensemble has a different loss estimand.
+    This stage reads manifests and saved predictions, never image arrays.
+    """
+    from src.data.hst import load_prepared, read_references, verify_confirmation
+    from src.ml.artifacts import write_json
+
+    output = Path(config["output"])
+    root = output / cohort
+    if cohort == "confirmation":
+        verify_confirmation(config, images=False)
+    seal = json.loads((root / "predictions_complete.json").read_text(encoding="utf-8"))
+    prediction_path = root / "predictions_before_scoring.csv"
+    prepared_path = Path(config["prepared_root"]) / cohort / "manifest.json"
+    if (
+        seal["schema"] != "hst_predictions_v1"
+        or seal["cohort"] != cohort
+        or seal["config"] != config
+        or seal["references_opened"] is not False
+        or seal["sealed_before_reference_join"] is not True
+        or seal["prediction_sha256"] != sha256(prediction_path)
+        or seal["prepared_manifest_sha256"] != sha256(prepared_path)
+        or seal["assets_sha256"] != sha256(output / "model_assets.json")
+    ):
+        raise ValueError("HST prediction identity changed before analysis")
+    rows, _ = load_prepared(config, cohort, load_images=False)
+    systems = sorted(row["system_id"] for row in rows)
+    if set(seal["systems"]) != set(systems):
+        raise ValueError("Scored cohort differs from prediction cohort")
+    predictions = pd.read_csv(prediction_path)
+    keys = ["system_id", "arm", "seed"]
+    expected = pd.MultiIndex.from_product([systems, seal["arms"], seal["seeds"]], names=keys)
+    actual = pd.MultiIndex.from_frame(predictions[keys])
+    if (
+        len(predictions) != seal["rows"]
+        or actual.has_duplicates
+        or not actual.sort_values().equals(expected.sort_values())
+        or not np.isfinite(predictions["theta_E_arcsec_predicted"]).all()
+    ):
+        raise ValueError("HST predictions need one finite value per lens/arm/seed")
+    observations = {row["system_id"]: row["observation_id"] for row in rows}
+    if not predictions["observation_id"].equals(predictions["system_id"].map(observations)):
+        raise ValueError("Primary observations changed between preparation and prediction")
+    references = read_references(config, systems)
+    predictions["reference_arcsec"] = predictions["system_id"].map(
+        {key: value["median_arcsec"] for key, value in references.items()}
+    )
+    predictions["signed_disagreement_arcsec"] = (
+        predictions["theta_E_arcsec_predicted"] - predictions["reference_arcsec"]
+    )
+    predictions["absolute_disagreement_arcsec"] = abs(predictions["signed_disagreement_arcsec"])
+    per_lens = (
+        predictions.groupby(["system_id", "arm"], sort=True)
+        .agg(
+            mean_absolute_disagreement_arcsec=("absolute_disagreement_arcsec", "mean"),
+            mean_signed_disagreement_arcsec=("signed_disagreement_arcsec", "mean"),
+        )
+        .reset_index()
+    )
+    losses = per_lens.pivot(
+        index="system_id", columns="arm", values="mean_absolute_disagreement_arcsec"
+    )
+    changes = pd.DataFrame(
+        {
+            "system_id": losses.index,
+            "G_minus_C_arcsec": (losses["G"] - losses["C"]).values,
+            "R_minus_G_arcsec": (losses["R"] - losses["G"]).values,
+        }
+    )
+    metrics, contrasts = {}, {}
+    for arm in seal["arms"]:
+        frame = predictions[predictions["arm"] == arm]
+        lens_frame = per_lens[per_lens["arm"] == arm]
+        seed_metrics = frame.groupby("seed")["absolute_disagreement_arcsec"].mean()
+        metrics[arm] = {
+            "mean_absolute_disagreement_arcsec": float(
+                lens_frame["mean_absolute_disagreement_arcsec"].mean()
+            ),
+            "signed_bias_arcsec": float(lens_frame["mean_signed_disagreement_arcsec"].mean()),
+            "median_lens_mean_absolute_disagreement_arcsec": float(
+                lens_frame["mean_absolute_disagreement_arcsec"].median()
+            ),
+            "per_seed_mean_absolute_disagreement_arcsec": {
+                str(key): float(value) for key, value in seed_metrics.items()
+            },
+        }
+    for candidate, comparator in (("G", "C"), ("R", "G"), ("R", "C")):
+        candidate_losses = losses[candidate].to_numpy()[None, :, None]
+        comparator_losses = losses[comparator].to_numpy()[None, :, None]
+        contrast = {
+            "difference_arcsec": float((candidate_losses - comparator_losses).mean()),
+            "bootstrap_95_low_arcsec": None,
+            "bootstrap_95_high_arcsec": None,
+        }
+        if cohort == "confirmation":
+            contrast = _bootstrap_difference(
+                candidate_losses,
+                comparator_losses,
+                seed=config["bootstrap"]["seed"],
+                draws=config["bootstrap"]["resamples"],
+            )
+        contrasts[f"{candidate}_minus_{comparator}"] = contrast
+    survey_table = (
+        predictions.groupby(["survey", "arm"])
+        .agg(
+            mean_absolute_disagreement_arcsec=("absolute_disagreement_arcsec", "mean"),
+            system_count=("system_id", "nunique"),
+        )
+        .reset_index()
+    )
+    sensitivity = []
+    for system, reference in references.items():
+        for alternative in reference.get("alternatives", []):
+            if (
+                not np.isfinite(alternative["median_arcsec"])
+                or alternative["median_arcsec"] <= 0
+                or not alternative.get("definition")
+                or not alternative.get("source")
+                or not alternative.get("mass_model")
+            ):
+                raise ValueError(
+                    "Alternative references need a positive radius and model/source metadata"
+                )
+            for arm in seal["arms"]:
+                values = predictions.loc[
+                    (predictions["system_id"] == system) & (predictions["arm"] == arm),
+                    "theta_E_arcsec_predicted",
+                ]
+                sensitivity.append(
+                    {
+                        "system_id": system,
+                        "arm": arm,
+                        **alternative,
+                        "mean_absolute_disagreement_arcsec": float(
+                            abs(values - alternative["median_arcsec"]).mean()
+                        ),
+                    }
+                )
+    predictions.to_csv(root / "reference_disagreements.csv", index=False)
+    per_lens.to_csv(root / "per_lens_losses.csv", index=False)
+    changes.to_csv(root / "per_lens_changes.csv", index=False)
+    survey_table.to_csv(root / "survey_metrics.csv", index=False)
+    pd.DataFrame(
+        sensitivity,
+        columns=[
+            "system_id",
+            "arm",
+            "median_arcsec",
+            "definition",
+            "mass_model",
+            "source",
+            "mean_absolute_disagreement_arcsec",
+        ],
+    ).to_csv(root / "reference_sensitivity.csv", index=False)
+    report = {
+        "schema": "hst_analysis_v1",
+        "cohort": cohort,
+        "system_count": len(systems),
+        "seed_count": len(seal["seeds"]),
+        "metrics": metrics,
+        "contrasts": contrasts,
+        "references": references,
+        "reference_sha256": sha256(config["references"]),
+        "prediction_sha256": seal["prediction_sha256"],
+        "primary_contrast": "G_minus_C",
+        "secondary_comparisons": "descriptive",
+        "estimand": "mean_lens(mean_seed(abs(prediction-reference)))",
+        "limitations": [
+            "Agreement with model-dependent classical references, not exact physical truth.",
+            "Lens bootstrap conditions on the evaluated training seeds.",
+            "Selected eligible cohort, not survey-wide performance.",
+            "Development results are descriptive; no confidence intervals are reported.",
+        ],
+    }
+    write_json(root / "analysis.json", report)
+    return report
+
+
+def score(config: dict[str, Any], *, report_output: Path | None = None) -> None:
     """Join sealed primary predictions to truth and write the existing report files."""
     output_root, holdout_path = Path(config["output"]), Path(config["holdout"])
+    report_root = output_root if report_output is None else report_output
+    report_root.mkdir(parents=True, exist_ok=True)
     seeds, arms, conditions = config["seeds"], config["arms"], config["conditions"]
     stress_conditions = conditions[1:]
     verify_resolved_config(config)
@@ -49,6 +241,15 @@ def score(config: dict[str, Any]) -> None:
     )
     if len(joined) != len(predictions) or not np.isfinite(joined["theta_E_arcsec"]).all():
         raise ValueError("Prediction/truth join is incomplete")
+    expected_keys = pd.MultiIndex.from_product(
+        [sorted(truth["parent_sample_id"].unique()), arms, seeds, conditions],
+        names=["parent_sample_id", "arm", "seed", "condition"],
+    )
+    actual_keys = pd.MultiIndex.from_frame(joined[list(expected_keys.names)])
+    if actual_keys.has_duplicates or not actual_keys.sort_values().equals(
+        expected_keys.sort_values()
+    ):
+        raise ValueError("Primary predictions need one row per parent/arm/seed/condition")
     joined["absolute_error_arcsec"] = abs(
         joined["theta_E_arcsec_predicted"] - joined["theta_E_arcsec"]
     )
@@ -111,6 +312,8 @@ def score(config: dict[str, Any]) -> None:
         )
     report = {
         "schema": "equal_budget_final_report_v1",
+        "analysis_method": "parent_composite_bootstrap_v2",
+        "prediction_sha256": sha256(seal["prediction_path"]),
         "stage": "scored_after_target_join",
         "parent_count": len(parent_order),
         "seed_count": len(seeds),
@@ -128,7 +331,7 @@ def score(config: dict[str, Any]) -> None:
             "This compares source-only arms on a common benchmark and does not reproduce a published paper model.",
         ],
     }
-    with (output_root / "final_report.json").open("w", encoding="utf-8") as stream:
+    with (report_root / "final_report.json").open("w", encoding="utf-8") as stream:
         json.dump(report, stream, indent=2)
         stream.write("\n")
     lines = [
@@ -165,12 +368,12 @@ def score(config: dict[str, Any]) -> None:
             "",
         ]
     )
-    (output_root / "result_overview.md").write_text("\n".join(lines), encoding="utf-8")
+    (report_root / "result_overview.md").write_text("\n".join(lines), encoding="utf-8")
     print(
         json.dumps(
             {
                 "stage": "scored",
-                "report": str(output_root / "final_report.json"),
+                "report": str(report_root / "final_report.json"),
                 "four_stress": {
                     name: value for name, value in contrasts.items() if "four_stress" in name
                 },

@@ -2,7 +2,9 @@
 
 Run commands from the repository root after installing the project as described
 in the README. `configs/study.yaml`, `configs/simulation.yaml` and
-`configs/development.yaml` are the complete maintained configuration surface.
+`configs/development.yaml` define the maintained synthetic configuration surface.
+The separate [HST workflow](hst_study.md) uses `configs/hst_study.yaml` and reviewed
+observation/reference ledgers; its default scientific qualification choices are unresolved.
 There is no experiment registry or YAML inheritance.
 
 ## Existing input/output identities

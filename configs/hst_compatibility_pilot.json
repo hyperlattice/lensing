@@ -1,0 +1,160 @@
+{
+  "schema": "hst_compatibility_pilot_v1",
+  "role": "compatibility_development",
+  "source_commit": "6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb",
+  "selection_rule": "Three lexically first SLACS candidates (includes previously inspected example), first SL2S candidate, first BELLS candidate; optical F606W where available, otherwise F814W; fixed before any CNN prediction. Diagnostic convenience sample, not representative.",
+  "exclude_from_future_confirmation": true,
+  "comparison_grid": {
+    "shape": [
+      256,
+      256
+    ],
+    "pixel_scale_arcsec": 0.05,
+    "image_unit": "electrons_per_second",
+    "target_definition": "lenstronomy_SIE_circularized_parameter_arcsec"
+  },
+  "reference_error_semantics": "median minus percentile16; percentile84 minus median",
+  "systems": [
+    {
+      "system_id": "SDSSJ0008-0004",
+      "survey": "SLACS",
+      "band": "F606W",
+      "reference": {
+        "median_arcsec": 1.2247385141457758,
+        "error_lower": 0.009388933172922664,
+        "error_upper": 0.008104905069579393,
+        "definition": "lenstronomy_EPL_theta_E_arcsec",
+        "table_source": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/SLACS_mass_params.csv",
+        "table_sha256": "c2fe37f6c4d9d8e7645e3925c803d5eeaef574e0bb1d3506beb39a264491c36d"
+      },
+      "assets": {
+        "image": {
+          "repository_path": "2_dolphin_modelling/data/SDSSJ0008-0004/image_SDSSJ0008-0004_F606W.h5",
+          "git_blob_sha1": "9c3e89a45f2885aaa7d4c17c9287c4d15c483127",
+          "bytes": 209016
+        },
+        "psf": {
+          "repository_path": "2_dolphin_modelling/data/SDSSJ0008-0004/psf_SDSSJ0008-0004_F606W.h5",
+          "git_blob_sha1": "21ace96972c207960c754fd06c569b6bbf44d94b",
+          "bytes": 16932
+        }
+      }
+    },
+    {
+      "system_id": "SDSSJ0029-0055",
+      "survey": "SLACS",
+      "band": "F606W",
+      "reference": {
+        "median_arcsec": 0.9446925904908946,
+        "error_lower": 0.0027388519742362893,
+        "error_upper": 0.002650566573654256,
+        "definition": "lenstronomy_EPL_theta_E_arcsec",
+        "table_source": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/SLACS_mass_params.csv",
+        "table_sha256": "c2fe37f6c4d9d8e7645e3925c803d5eeaef574e0bb1d3506beb39a264491c36d"
+      },
+      "assets": {
+        "image": {
+          "repository_path": "2_dolphin_modelling/data/SDSSJ0029-0055/image_SDSSJ0029-0055_F606W.h5",
+          "git_blob_sha1": "0ca43ab1dc2f7350d35eedadbcc3112036737e14",
+          "bytes": 241416
+        },
+        "psf": {
+          "repository_path": "2_dolphin_modelling/data/SDSSJ0029-0055/psf_SDSSJ0029-0055_F606W.h5",
+          "git_blob_sha1": "da84d6b780b5be16fc16cc5aadf1e01836e8f275",
+          "bytes": 16932
+        }
+      }
+    },
+    {
+      "system_id": "SDSSJ0037-0942",
+      "survey": "SLACS",
+      "band": "F606W",
+      "reference": {
+        "median_arcsec": 1.475673703841136,
+        "error_lower": 0.006625489589695555,
+        "error_upper": 0.01006488475548073,
+        "definition": "lenstronomy_EPL_theta_E_arcsec",
+        "table_source": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/SLACS_mass_params.csv",
+        "table_sha256": "c2fe37f6c4d9d8e7645e3925c803d5eeaef574e0bb1d3506beb39a264491c36d"
+      },
+      "assets": {
+        "image": {
+          "repository_path": "2_dolphin_modelling/data/SDSSJ0037-0942/image_SDSSJ0037-0942_F606W.h5",
+          "git_blob_sha1": "8b7fa30fed8956f7970d8440b1ab5f87466d7d3f",
+          "bytes": 241416
+        },
+        "psf": {
+          "repository_path": "2_dolphin_modelling/data/SDSSJ0037-0942/psf_SDSSJ0037-0942_F606W.h5",
+          "git_blob_sha1": "f0e83869ca997fc0efaed811d715fec6f3c69633",
+          "bytes": 16932
+        }
+      }
+    },
+    {
+      "system_id": "SL2SJ0214-0405",
+      "survey": "SL2S",
+      "band": "F606W",
+      "reference": {
+        "median_arcsec": 1.2207574694114196,
+        "error_lower": 0.006039393476487076,
+        "error_upper": 0.006030662273723619,
+        "definition": "lenstronomy_EPL_theta_E_arcsec",
+        "table_source": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/SL2S_mass_params.csv",
+        "table_sha256": "75b430e4e48f454f3154653d7b7f847c6f8ac7a287e5e34bf9c41f34e06bc1da"
+      },
+      "assets": {
+        "image": {
+          "repository_path": "2_dolphin_modelling/data/SL2SJ0214-0405/image_SL2SJ0214-0405_F606W.h5",
+          "git_blob_sha1": "085894fc12d0450c7e7d05a87443e31f871c9c5c",
+          "bytes": 179016
+        },
+        "psf": {
+          "repository_path": "2_dolphin_modelling/data/SL2SJ0214-0405/psf_SL2SJ0214-0405_F606W.h5",
+          "git_blob_sha1": "9c5bc036179e5f41ea33a31784b3396511cb7bbc",
+          "bytes": 16932
+        },
+        "mask": {
+          "repository_path": "2_dolphin_modelling/data/SL2SJ0214-0405/mask_SL2SJ0214-0405_F606W.h5",
+          "git_blob_sha1": "7d46ca322ffa1a2d53a488ee7523f8ce1e27ec18",
+          "bytes": 59648
+        }
+      }
+    },
+    {
+      "system_id": "SDSSJ0151+0049",
+      "survey": "BELLS",
+      "band": "F814W",
+      "reference": {
+        "median_arcsec": 0.6493469124641085,
+        "error_lower": 0.005477605004735597,
+        "error_upper": 0.0037367322434473937,
+        "definition": "lenstronomy_EPL_theta_E_arcsec",
+        "table_source": "https://raw.githubusercontent.com/Project-Dinos/dinos-i/6810ea6d8b7f97e8a7c4699d2b81b5da311c64cb/3_model_parameters/Data/BELLS_mass_params.csv",
+        "table_sha256": "1d5eeddc9feed02779b4742b8d0051a21f372afdbd109f30efa17f33c97598d7"
+      },
+      "assets": {
+        "image": {
+          "repository_path": "2_dolphin_modelling/data/SDSSJ0151+0049/image_SDSSJ0151+0049_F814W.h5",
+          "git_blob_sha1": "b00b42538a64e0171184fe29c2f791f02edcd441",
+          "bytes": 103016
+        },
+        "psf": {
+          "repository_path": "2_dolphin_modelling/data/SDSSJ0151+0049/psf_SDSSJ0151+0049_F814W.h5",
+          "git_blob_sha1": "f5167a2fcc58991c4371f237c9b711c996f14e8c",
+          "bytes": 16932
+        }
+      }
+    }
+  ],
+  "archive_probe": {
+    "system_id": "SDSSJ0037-0942",
+    "observation_id": 208003580,
+    "product_uri": "mast:HST/product/hst_10798_89_wfpc2_pc_f606w_u9qc89_drz.fits",
+    "product_bytes": 166656960,
+    "ra_deg": 9.471708333333,
+    "dec_deg": -9.705583333333,
+    "coordinate_source": "https://doi.org/10.1088/0004-637X/705/2/1099",
+    "minimum_field_arcsec": 12.8,
+    "role": "compatibility_development"
+  }
+}

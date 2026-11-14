@@ -1,0 +1,26 @@
+# Proposed HST transfer workflow. Run commands from the repository root.
+# Null scientific choices must be resolved from development evidence, not CNN ranking.
+schema_version: 1
+study_config: configs/study.yaml
+observations: data/manifests/hst-study-v1/observations.json
+references: data/manifests/hst-study-v1/references.json
+reserved_manifest: configs/hst_compatibility_pilot.json
+pilot_audit: results/reports/hst_compatibility_pilot/audit.json
+prepared_root: data/releases/hst-study-v1
+output: results/ml/hst-transfer-v1
+batch_size: 16
+bootstrap:
+  resamples: 10000
+  seed: 14731
+bridge:
+  smoke_parent_count: 2
+  seed: 14732
+  offsets_xy_pixels: [[0.0, 0.0], [1.25, -0.75], [-0.5, 1.5]]
+  tolerances:
+    max_center_error_pixels: null
+    max_unit_roundtrip_abs: null
+    max_geometry_error_arcsec: null
+    max_psf_sum_error: null
+eligibility_rules: null
+primary_band_rule: null
+reference_strategy: null

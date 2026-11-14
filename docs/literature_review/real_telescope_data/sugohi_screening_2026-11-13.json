@@ -1,0 +1,62 @@
+{
+  "checked_date": "2026-11-13",
+  "catalog_source": "https://www-utap.phys.s.u-tokyo.ac.jp/~oguri/sugohi/download_list.php?file=list_ra_asc_public.csv",
+  "raw_catalog_sha256": "72fb96dc8d13851c20304b25b8889087d92df27cf1549e6522c8657befda4a55",
+  "raw_catalog_has_header": false,
+  "columns": [
+    "catalog_id",
+    "ra_deg",
+    "dec_deg",
+    "lens_spec_z",
+    "source_spec_z",
+    "lens_photo_z",
+    "source_photo_z",
+    "catalog_radius_arcsec",
+    "lens_i_mag",
+    "source_i_mag",
+    "lens_source_type",
+    "discovery_method",
+    "grade",
+    "references"
+  ],
+  "raw_rows": 3961,
+  "unique_catalog_ids": 3960,
+  "grade_counts": {
+    "ungraded": 606,
+    "B": 1266,
+    "C": 1764,
+    "A": 325
+  },
+  "type_counts": {
+    "GG": 2781,
+    "CG": 655,
+    "GQ": 215,
+    "unspecified": 310
+  },
+  "grade_AB_galaxy_galaxy": 1182,
+  "grade_AB_GG_positive_catalog_radius": 530,
+  "grade_AB_GG_catalog_radius_0p5_to_2p0": 493,
+  "range_selected_grades": {
+    "B": 378,
+    "A": 115
+  },
+  "grade_AB_galaxy_quasar": 106,
+  "catalog_radius_uncertainty_column": false,
+  "grade_A_YL_references_extracted": 25,
+  "grade_A_YL_published_radius_0p5_to_2p0": 23,
+  "grade_B_supplement": "157 reported; not retrieved: publisher HTTP403",
+  "gawade_model_quality": {
+    "reported_good": 122,
+    "reported_poor": 60,
+    "per_system_flags_retrieved": false
+  },
+  "science_images_downloaded": 0,
+  "catalog_cutout_links_checked": "PNG previews in small public query; not science FITS",
+  "independent_additional_systems_after_HST_crossmatch": null,
+  "eligibility": "Candidate/reference screening only; no model predictions and no qualified new evaluation sample.",
+  "range_selected_unique_catalog_ids": 493,
+  "duplicate_catalog_ids": [
+    "092647+050003"
+  ],
+  "catalog_row_count_is_not_an_independent_lens_count": true
+}

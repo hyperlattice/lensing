@@ -22,6 +22,25 @@ from src.simulation import backends as external
 from src.simulation.observation import psf_kernel, sample_detector
 
 
+def native_square_transform(condition: dict[str, Any]) -> np.ndarray | None:
+    """Validate an optional rotated/reflected square-pixel angular transform.
+
+    Default conditions retain their original arithmetic. Sheared/anisotropic
+    pixels need a separately validated PSF integration and are rejected here.
+    """
+    if "pixel_transform_arcsec" not in condition:
+        return None
+    matrix = np.asarray(condition["pixel_transform_arcsec"], dtype=float)
+    scale = float(condition["pixel_scale_arcsec"])
+    if (
+        matrix.shape != (2, 2)
+        or not np.isfinite(matrix).all()
+        or not np.allclose(matrix.T @ matrix, np.eye(2) * scale**2, rtol=1e-8, atol=1e-12)
+    ):
+        raise ValueError("Renderer requires orthogonal square native pixels")
+    return matrix
+
+
 class SceneEngine:
     """Cache physical profiles and point roots once per parent, not per view."""
 
@@ -167,6 +186,7 @@ class SceneEngine:
         h, w = condition["shape"]
         tile_rows = max(1, min(tile_rows, 262144 // (w * factor * factor)))
         scale = float(condition["pixel_scale_arcsec"])
+        transform = native_square_transform(condition)
         if (
             type(factor) is not int
             or factor < 1
@@ -182,6 +202,8 @@ class SceneEngine:
             y = ((np.arange(start * factor, stop * factor) + 0.5) / factor - h / 2) * scale
             xx, yy = np.meshgrid(x, y)
             xy = np.column_stack((xx.ravel(), yy.ravel()))
+            if transform is not None:
+                xy = (xy / scale) @ transform.T
             source_xy = xy - self.alpha(xy)
             flux = self.light("source", source_xy) + self.light("lens_light", xy)
             clean[start:stop] = (
@@ -200,8 +222,12 @@ class SceneEngine:
         scale = condition["pixel_scale_arcsec"]
         point_scene = np.zeros(shape, dtype=float)
         positions, amplitudes = self.points()
-        for (x, y), amplitude in zip(positions, amplitudes):
-            px, py = x / scale + (shape[1] - 1) / 2, y / scale + (shape[0] - 1) / 2
+        transform = native_square_transform(condition)
+        pixel_positions = positions / scale
+        if transform is not None:
+            pixel_positions = np.linalg.solve(transform, positions.T).T
+        for (x, y), amplitude in zip(pixel_positions, amplitudes):
+            px, py = x + (shape[1] - 1) / 2, y + (shape[0] - 1) / 2
             ix, iy = int(np.floor(px)), int(np.floor(py))
             if min(ix, iy) < 0 or ix + 1 >= shape[1] or iy + 1 >= shape[0]:
                 raise ValueError("Point image outside the common native field")
@@ -284,6 +310,7 @@ def pixel_fluxes(
     """Integrate selected native pixels using midpoint subpixels and bounded chunks."""
     h, w = condition["shape"]
     scale = float(condition["pixel_scale_arcsec"])
+    transform = native_square_transform(condition)
     indices = np.asarray(pixel_indices, dtype=int)
     if (
         indices.ndim != 1
@@ -303,6 +330,8 @@ def pixel_fluxes(
         stop = min(start + chunk_pixels, len(indices))
         centers = np.column_stack((xx[start:stop] - (w - 1) / 2, yy[start:stop] - (h - 1) / 2))
         xy = ((centers[:, None] + offsets[None]) * scale).reshape(-1, 2)
+        if transform is not None:
+            xy = (xy / scale) @ transform.T
         beta = xy - engine.alpha(xy)
         brightness = engine.light("source", beta) + engine.light("lens_light", xy)
         output[start:stop] = brightness.reshape(stop - start, -1).mean(1) * scale**2

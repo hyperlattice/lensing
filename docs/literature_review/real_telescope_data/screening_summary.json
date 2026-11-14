@@ -1,0 +1,55 @@
+{
+  "einstein_radius": {
+    "range_and_interval_pass": 291,
+    "grades": {
+      "A": 172,
+      "B": 111,
+      "C": 8
+    },
+    "exclusions": {
+      "outside_radius_range": 31,
+      "missing_value_or_interval": 13
+    }
+  },
+  "einstein_radius_effective": {
+    "range_and_interval_pass": 285,
+    "grades": {
+      "A": 171,
+      "B": 106,
+      "C": 8
+    },
+    "exclusions": {
+      "outside_radius_range": 37,
+      "missing_value_or_interval": 13
+    }
+  },
+  "euclid_mass_rows": 335,
+  "euclid_mass_grade_counts": {
+    "A": 193,
+    "B": 133,
+    "C": 8,
+    "unmatched": 1
+  },
+  "dinos": {
+    "SLACS": {
+      "reference_rows": 34,
+      "range_pass": 34,
+      "matching_image_directories": 34,
+      "positive_errors": 34
+    },
+    "SL2S": {
+      "reference_rows": 24,
+      "range_pass": 23,
+      "matching_image_directories": 23,
+      "positive_errors": 23
+    },
+    "BELLS": {
+      "reference_rows": 19,
+      "range_pass": 19,
+      "matching_image_directories": 19,
+      "positive_errors": 19
+    }
+  },
+  "dinos_data_directories": 154,
+  "readiness": "Reference/range screening only; target mapping, image quality and calibration unreviewed. No CNN scored."
+}

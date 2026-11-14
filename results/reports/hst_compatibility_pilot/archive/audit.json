@@ -1,0 +1,142 @@
+{
+  "schema": "hst_archive_compatibility_v1",
+  "created_utc": "2026-11-12T18:27:34.546574+00:00",
+  "system_id": "SDSSJ0037-0942",
+  "role": "compatibility_development",
+  "manifest_sha256": "39f09be993d1f0456e8ac6881d5a8cc54e8b539984ab50ddb683f2d1c905644f",
+  "implementation_sha256": "1a8092142d9d25f9565814dab91ac8028e72d78a272ec2d0cc075aa0b52ad519",
+  "archive_probe": {
+    "system_id": "SDSSJ0037-0942",
+    "observation_id": 208003580,
+    "product_uri": "mast:HST/product/hst_10798_89_wfpc2_pc_f606w_u9qc89_drz.fits",
+    "product_bytes": 166656960,
+    "ra_deg": 9.471708333333,
+    "dec_deg": -9.705583333333,
+    "coordinate_source": "https://doi.org/10.1088/0004-637X/705/2/1099",
+    "minimum_field_arcsec": 12.8,
+    "role": "compatibility_development"
+  },
+  "archive_shape_yx": [
+    3744,
+    3705
+  ],
+  "cutout_shape_yx": [
+    282,
+    282
+  ],
+  "pixel_scales_xy_arcsec": [
+    0.0455359999999968,
+    0.04553599999999968
+  ],
+  "cutout_field_edges_xy_arcsec": [
+    12.841151999999099,
+    12.84115199999991
+  ],
+  "archive_slices_yx": [
+    [
+      780,
+      1062
+    ],
+    [
+      2408,
+      2690
+    ]
+  ],
+  "covered_fraction": 1.0,
+  "centering_diagnostic": {
+    "catalog_position_xy_pixels": [
+      140.62313638076648,
+      140.9464861607371
+    ],
+    "brightest_pixel_yx": [
+      132,
+      127
+    ],
+    "brightest_to_catalog_offset_arcsec_approx": 0.7421522315801513,
+    "brightest_pixel_is_not_a_verified_lens_center": true,
+    "recentering_applied": false
+  },
+  "SCI_BUNIT": "counts",
+  "drizzle_output_units": [
+    "cps"
+  ],
+  "ATODGAIN_electrons_per_DN": 7.0,
+  "EXPTIME_seconds": 4400.0,
+  "PHOTFLAM": 1.888331e-18,
+  "WHTTYPE": null,
+  "unit_evidence": {
+    "header_supported_unit": "DN_per_second",
+    "candidate_electron_rate_multiplier": 7.0,
+    "interpretation_uses_drizzle_metadata": true,
+    "conversion_applied": false,
+    "Dinos_HDF5_units_established": false,
+    "documentation": "https://hst-docs.stsci.edu/hstdhb/4-hst-data-analysis/4-6-analyzing-hst-images"
+  },
+  "unit_conversion_applied": false,
+  "PSF_transferred_from_Dinos": false,
+  "model_input_ready": false,
+  "predictions_generated": false,
+  "source_ranges": [
+    {
+      "url": "https://mast.stsci.edu/api/v0.1/Download/file?uri=mast%3AHST%2Fproduct%2Fhst_10798_89_wfpc2_pc_f606w_u9qc89_drz.fits",
+      "start": 0,
+      "length": 1048576,
+      "total_file_bytes": 166656960,
+      "retrieved_utc": "2026-11-12T18:23:09.392791+00:00",
+      "etag": "\"6a6d3585-9eefbc0\"",
+      "last_modified": "Fri, 31 Jul 2026 23:53:41 GMT",
+      "sha256": "00f470203c9df03a810241c5aca4dbfb23b51e206d912735c3f469f756531aff"
+    },
+    {
+      "url": "https://mast.stsci.edu/api/v0.1/Download/file?uri=mast%3AHST%2Fproduct%2Fhst_10798_89_wfpc2_pc_f606w_u9qc89_drz.fits",
+      "start": 86400,
+      "length": 1048576,
+      "total_file_bytes": 166656960,
+      "retrieved_utc": "2026-11-12T18:23:09.807702+00:00",
+      "etag": "\"6a6d3585-9eefbc0\"",
+      "last_modified": "Fri, 31 Jul 2026 23:53:41 GMT",
+      "sha256": "99507ff2b68cd7db5400eb26ec964eaad953c673d1e4e167f98f02e985d0cf5a"
+    },
+    {
+      "url": "https://mast.stsci.edu/api/v0.1/Download/file?uri=mast%3AHST%2Fproduct%2Fhst_10798_89_wfpc2_pc_f606w_u9qc89_drz.fits",
+      "start": 55581120,
+      "length": 1048576,
+      "total_file_bytes": 166656960,
+      "retrieved_utc": "2026-11-12T18:23:10.131961+00:00",
+      "etag": "\"6a6d3585-9eefbc0\"",
+      "last_modified": "Fri, 31 Jul 2026 23:53:41 GMT",
+      "sha256": "ce5b16421dcac390e830b0bbf1e45cef71e54e5a0fc43ea656d8d1318a203ebf"
+    },
+    {
+      "url": "https://mast.stsci.edu/api/v0.1/Download/file?uri=mast%3AHST%2Fproduct%2Fhst_10798_89_wfpc2_pc_f606w_u9qc89_drz.fits",
+      "start": 11654640,
+      "length": 4179240,
+      "total_file_bytes": 166656960,
+      "retrieved_utc": "2026-11-12T18:23:11.855742+00:00",
+      "etag": "\"6a6d3585-9eefbc0\"",
+      "last_modified": "Fri, 31 Jul 2026 23:53:41 GMT",
+      "sha256": "316e933f4e588d2bde103092899194b5307a172ac878dec0e74421699761afe1"
+    },
+    {
+      "url": "https://mast.stsci.edu/api/v0.1/Download/file?uri=mast%3AHST%2Fproduct%2Fhst_10798_89_wfpc2_pc_f606w_u9qc89_drz.fits",
+      "start": 67149360,
+      "length": 4179240,
+      "total_file_bytes": 166656960,
+      "retrieved_utc": "2026-11-12T18:23:15.206436+00:00",
+      "etag": "\"6a6d3585-9eefbc0\"",
+      "last_modified": "Fri, 31 Jul 2026 23:53:41 GMT",
+      "sha256": "2a77339101de536b4f2252c9a526e3a4959fb8b0a06c4178b1f7ef1f03d038a5"
+    }
+  ],
+  "retrieved_bytes_including_header_probes": 11504208,
+  "native_cutout": {
+    "path": "results\\reports\\hst_compatibility_pilot\\archive\\SDSSJ0037-0942_native_wide.fits",
+    "sha256": "740bc729a015b6bd2d68b5856ecb8e42db75cb16e6b4806f1317a33e7d7e42e3"
+  },
+  "blockers": [
+    "interpret_legacy_BUNIT_with_drizzle_metadata_and_instrument_documentation",
+    "new_archive_processing_requires_matching_PSF_and_noise_review",
+    "background_and_training_photometry_not_matched",
+    "observational_reference_and_source_mismatch_remain"
+  ]
+}

@@ -1,6 +1,14 @@
 # Strong-lens inference literature review
 
-Review cutoff: **4 November 2026**. Scope: automated galaxy-scale lens mass inference, especially Einstein radius, observation/simulation mismatch, uncertainty and real-data validation.
+**Real telescope data:** [verified HST and Euclid sources, candidate manifests, and compatibility gates](../real_telescope_data/README.md), checked 12 November 2026. This includes actual table screening and downloaded image examples; no observational CNN scoring has been performed.
+
+**Candidate directions and data:** [limitations-based shortlist and compatibility assessment](new_directions_and_data_2026-11-12.md), with [search/extraction record](directions_search_2026-11-12.json). The master evidence matrix now contains **92 works**. No checked external dataset is established as a drop-in expansion. Earlier counts below describe dated review stages.
+
+**Latest novelty check:** [verification of directions 1-3](novelty_verification_2026-11-12.md) revises earlier optimistic novelty ratings after closer prior-art assessment. The master matrix now has **87 works**, including nine further additions and a deeper Pearson 2019 extraction. [Follow-up search/extraction log](novelty_verification_2026-11-12.json). Earlier counts below describe dated snapshots.
+
+Original review cutoff: **4 November 2026**. Scope: automated galaxy-scale lens mass inference, especially Einstein radius, observation/simulation mismatch, uncertainty and real-data validation.
+
+**12 November extension:** [CNN feature reliance review and ranked directions](feature_reliance_review_2026-11-12.md), [18 additional evidence records](feature_reliance_extension_2026-11-12.json), and [search log](feature_reliance_search_log_2026-11-12.json). The master evidence matrix now has **78 works**. The original bibliography, metadata, coverage, verification and PDF below remain **60-work November 4 snapshots**; they do not include the extension. Four new works received selected full-text-section assessment and fourteen abstract/publisher-summary assessment. No systematic completeness or independent-study count is claimed.
 
 - [Review and proposed scientific direction](review.md)
 - [Readable bibliography](references.md): 60 unique topical scholarly works, with status and access depth.

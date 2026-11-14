@@ -1,0 +1,172 @@
+<html> <head>
+<meta http-equiv="Content-Type"
+content="text/html">
+<title>SuGOHI (HSC) Lens Candidate List</title>
+  <style>
+    div.padded {
+      padding-top: 10px;
+      padding-right: 10px;
+      padding-bottom: 10px;
+      padding-left: 20px;
+    }  
+  </style>
+</head>
+
+<body>
+<h2>Survey of Gravitationally-lensed Objects in HSC Imaging (SuGOHI) Candidate List</h2>
+
+<p><a href="download_list.php?file=list_ra_asc_public.csv">Download the full catalog</a></p>
+
+<p>Objects within 3 arcsec are merged in the catalog</a></p>
+
+<hr>
+<h4>References</h4>
+<ul>
+  <li><a href="https://academic.oup.com/pasj/article/70/SP1/S29/4102352"> SuGOHI I, Sonnenfeld et al. PASJ, 70, S29 (2018)</a>&nbsp&nbsp[<a href="https://arxiv.org/abs/1704.01585">arXiv:1704.01585</a>]
+  <li><a href="https://iopscience.iop.org/article/10.3847/1538-4357/aae381"> SuGOHI II, Wong et al. ApJ, 867, 107 (2018)</a>&nbsp&nbsp[<a href="https://arxiv.org/abs/1809.07341">arXiv:1809.07341</a>]
+  <li><a href="https://www.aanda.org/articles/aa/abs/2019/10/aa35743-19/aa35743-19.html"> SuGOHI III, Sonnenfeld et al. A&amp;A, 630, A71 (2019)</a>&nbsp&nbsp[<a href="https://arxiv.org/abs/1904.10465">arXiv:1904.10465</a>]
+  <li><a href="https://www.aanda.org/articles/aa/abs/2020/04/aa37030-19/aa37030-19.html">SuGOHI IV, Chan et al. A&amp;A, 636, A87 (2020)</a> [<a href="https://arxiv.org/abs/1911.02587">arXiv:1911.02587</a>]
+  <li><a href="https://academic.oup.com/mnras/article-abstract/495/1/1291/5823146?redirectedFrom=fulltext">SuGOHI V, Jaelani et al. MNRAS, 495, 1291 (2020)</a> [<a href="https://arxiv.org/abs/2002.01611">arXiv:2002.01611</a>]
+  <li><a href="https://www.aanda.org/articles/aa/full_html/2020/10/aa38067-20/aa38067-20.html">SuGOHI VI, Sonnenfeld et al. A&amp;A, 642, A148 (2020)</a> [<a href="https://arxiv.org/abs/2004.00634">arXiv:2004.00634</a>]
+  <li><a href="https://academic.oup.com/mnras/article-abstract/502/1/1487/6105347?redirectedFrom=fulltext">SuGOHI VII, Jaelani et al. MNRAS, 502, 1487 (2021)</a> [<a href="https://arxiv.org/abs/2006.16584">arXiv:2006.16584</a>]
+  <li><a href="https://academic.oup.com/pasj/article-abstract/74/5/1209/6673454?redirectedFrom=fulltext">SuGOHI VIII, Wong et al. PASJ, 74, 1209 (2022)</a> [<a href="https://arxiv.org/abs/2203.12805">arXiv:2203.12805</a>]
+  <li><a href="https://academic.oup.com/mnras/article/527/3/6253/7284395">SuGOHI IX, Chan et al. MNRAS, 527, 6253 (2024)</a> [<a href="https://arxiv.org/abs/2304.05425">arXiv:2304.05425</a>]
+  <li><a href="https://academic.oup.com/mnras/article/535/2/1625/7842018">SuGOHI X, Jaelani et al. MNRAS, 535, 1625 (2024)</a> [<a href="https://arxiv.org/abs/2312.07333">arXiv:2312.07333</a>]
+  <li><a href="https://www.aanda.org/articles/aa/full_html/2021/09/aa41758-21/aa41758-21.html">HOLISMOKES. VI, Canameras et al. A&amp;A 653, L6 (2021)</a> [<a href="https://arxiv.org/abs/2107.07829">arXiv:2107.07829</a>]
+  <li><a href="https://www.aanda.org/articles/aa/full_html/2022/06/aa43203-22/aa43203-22.html">HOLISMOKES. VIII, Shu et al. A&amp;A 662, A4 (2022)</a> [<a href="https://arxiv.org/abs/2201.11135">arXiv:2201.11135</a>]
+  <li><a href="https://www.aanda.org/articles/aa/full_html/2025/01/aa50927-24/aa50927-24.html">HOLISMOKES. XIII, Schuldt et al. A&amp;A 693, A291 (2025)</a> [<a href="https://arxiv.org/abs/2405.20383">arXiv:2405.20383</a>]
+  <li><a href="https://www.aanda.org/articles/aa/full_html/2025/07/aa54425-25/aa54425-25.html">HOLISMOKES. XVI, Schuldt et al. A&amp;A 699, A350 (2025)</a> [<a href="https://arxiv.org/abs/2503.07733">arXiv:2503.07733</a>]
+</ul>    
+<hr>
+<ul>
+<li>Lens Candidates Query<br><br>
+<form action="cand.php" method="post">
+<input type="submit" value="Show list"> <input type="reset" value="Reset"><br><br>
+<br>
+Output format:
+<input type="radio" name="outfmt" value="html" CHECKED> HTML    <input type="radio" name="outfmt" value="csv"> csv
+<br>
+<br>
+Select grades:
+<p>
+<input type="checkbox" id="getgradea" name="gradea" value="ok" CHECKED>Grade A (definitely a lens)
+<br>
+<input type="checkbox" id="getgradeb" name="gradeb" value="ok" CHECKED><label for="getgradeb">Grade B (probably a lens)</label> 
+<br>
+<input type="checkbox" id="getgradec" name="gradec" value="ok" CHECKED><label for="getgradec">Grade C (possibly a lens)</label>
+</p>
+Lens type:
+<p>
+<input type="checkbox" id="galscale" name="galaxy" value="ok" CHECKED><label for="galscale">Galaxy scale</label> 
+<br>
+<input type="checkbox" id="groupscale" name="group" value="ok" CHECKED><label for="groupscale">Group/cluster scale</label> 
+<br>
+</p>
+Source type:
+<p>
+<input type="checkbox" id="gsource" name="gsource" value="ok" CHECKED><label for="gsource">Galaxy source</label> 
+<br>
+<input type="checkbox" id="qsource" name="qsource" value="ok" CHECKED><label for="qsource">Quasar source</label> 
+<br>
+</p>
+Spectroscopy:
+<p>
+<input type="checkbox" name="ylspecz" value="ok" CHECKED>W/ lens spec-z <input type="checkbox" name="nlspecz" value="ok" CHECKED>No lens spec-z
+<br>
+<input type="checkbox" name="ysspecz" value="ok" CHECKED>W/ source spec-z <input type="checkbox" name="nsspecz" value="ok" CHECKED>No source spec-z
+<br>
+</p>
+<br>
+Combine with positional constraints:
+<div class="padded"> 
+<input type="radio" name="position" value="box" CHECKED> Rectangular search:
+<p> 
+ra range: from <input type="text" name="ramin" value="0.0" size=6> to 
+<input type="text" name="ramax" value="360.0" size=6> <br>
+dec range: from <input type="text" name="decmin" value="-90.0" size=6> to 
+<input type="text" name="decmax" value="90.0" size=6> <br>
+</p>
+</div>
+<div class="padded">
+<input type="radio" name="position" value="radial" > Radial search:
+<p>
+ra: <input type="text" name="ra0" value="0.0" size=6> dec: <input type="text" name="dec0" value="0.0" size=6> radius (arcmin) <input type="text" name="radius" value="1.0" size=6>
+</div>
+</p>
+Show columns:
+<br>
+<input type="checkbox" name="showname" value="ok" CHECKED>Name
+<br>
+<input type="checkbox" name="showimg" value="ok" CHECKED>Cutout
+<br>
+<input type="checkbox" name="showra" value="ok" CHECKED>RA
+<br>
+<input type="checkbox" name="showdec" value="ok" CHECKED>Dec
+<br>
+<input type="checkbox" name="showzl" value="ok" CHECKED>Lens spec-z
+<br>
+<input type="checkbox" name="showzs" value="ok" CHECKED>Source spec-z
+<br>
+<input type="checkbox" name="showzlphot" value="ok" >Lens photo-z
+<br>
+<input type="checkbox" name="showzsphot" value="ok" >Source photo-z
+<br>
+<input type="checkbox" name="showrein" value="ok" >Einstein radius
+<br>
+<input type="checkbox" name="showlmagi" value="ok" >Lens mag_i
+<br>
+<input type="checkbox" name="showsmagi" value="ok" >Source mag_i
+<br>
+<input type="checkbox" name="showtype" value="ok" CHECKED>Lens-source type
+<br>
+<input type="checkbox" name="showdisc" value="ok" CHECKED>Discovery method
+<br>
+<input type="checkbox" name="showgrade" value="ok" CHECKED>Grade
+<br>
+<input type="checkbox" name="showref" value="ok" CHECKED>Reference
+</li>
+
+<br>
+
+Sort by:
+<br>
+<input type="radio" name="sort" value="ra" CHECKED> RA
+<br>
+<input type="radio" name="sort" value="dec"> Dec
+<br>
+<input type="radio" name="sort" value="z_lens"> z_lens (spec)
+<br>
+<input type="radio" name="sort" value="z_source"> z_source (spec)
+<br>
+<input type="radio" name="sort" value="zl_phot"> z_lens (phot)
+<br>
+<input type="radio" name="sort" value="zs_phot"> z_source (phot)
+<br>
+<input type="radio" name="sort" value="Rein"> Rein
+<br>
+<input type="radio" name="sort" value="lens_mag_i"> lens i mag
+<br>
+<input type="radio" name="sort" value="source_mag_i"> source i mag
+<br>
+<input type="radio" name="sort" value="type"> type
+<br>
+<input type="radio" name="sort" value="grade"> grade
+
+<br><br>
+
+Sort order:
+<br>
+<input type="radio" name="order" value="asc" CHECKED> ascending
+<br>
+<input type="radio" name="order" value="des"> descending
+
+<br><br>
+
+<input type="submit" value="Show list"> <input type="reset" value="Reset">
+
+</form>
+</ul>
+<hr>
+
+
+</body> </html>

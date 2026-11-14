@@ -10,6 +10,26 @@ import pytest
 from src.simulation.backends import deflections_xy, mapped_light_parameters, mass_profile
 from src.simulation.independent import independent_sie_deflection
 from src.simulation.observation import psf_kernel, sample_detector
+from src.simulation.render import SceneEngine, native_square_transform, pixel_fluxes
+
+
+def test_rotated_native_square_grid_matches_direct_image_rotation():
+    record = json.loads((Path(__file__).parent / "fixtures/render_reference.json").read_text())
+    engine = SceneEngine(record["parameters"], "lenstronomy")
+    condition = {**record["condition"], "shape": [128, 128]}
+    scale = condition["pixel_scale_arcsec"]
+    rotated = {**condition, "pixel_transform_arcsec": [[0, -scale], [scale, 0]]}
+    reference = engine.expected(condition, factor=4)
+    actual = engine.expected(rotated, factor=4)
+    np.testing.assert_allclose(actual["expected"], np.rot90(reference["expected"]), atol=1e-10)
+    # Independent selected-pixel integration exercises adaptive quadrature's path.
+    indices = np.array([30 * 128 + 40, 62 * 128 + 65])
+    fluxes = pixel_fluxes(engine, rotated, indices, factor=4)
+    np.testing.assert_allclose(fluxes, actual["clean"].ravel()[indices], atol=1e-12)
+    with pytest.raises(ValueError, match="orthogonal square"):
+        native_square_transform(
+            {**condition, "pixel_transform_arcsec": [[scale, 0.01], [0, scale]]}
+        )
 
 
 def test_detector_units_background_and_same_seed_are_explicit():

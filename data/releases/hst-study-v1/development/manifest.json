@@ -1,0 +1,104 @@
+{
+  "cohort": "development",
+  "cohort_sha256": "088ceea5116afd2b66b10238c794cf6461bb332eba05bd3031e6498d7c1f3d3d",
+  "implementation": {
+    "scripts/hst_study.py": "a299a0be0cfbedfe9ac9bf0244dc1a469a0be7add65416e1ec196807b5a92b10",
+    "src/data/dataset.py": "8c360d75651ff17b66f17dfce3c6f957b7b396e3190aa165ddd8adbb19efb99f",
+    "src/data/hst.py": "842a08a0e57c3ee84d7ceefd2db351cfeb94947ab90a634dcdd125e85a1d18b4",
+    "src/data/schema.py": "59b8953f976a3381374af106f0b048798a7d4b6f8c2edf8ec6df14661b3a4472",
+    "src/ml/analysis.py": "18c4c11f77471954b174feede00f468dee5b61248ebba718b0c2a67584d02093",
+    "src/ml/artifacts.py": "43c2c40cdd36aa6c519d2783de8fdf91f27e160301fa0fd6af673216d87b652c",
+    "src/ml/data.py": "b7620e4dab6ed1f3484e4a19859a4294dbaf9a1254bdf5f11e6a0d6ad5103151",
+    "src/ml/model.py": "2dfe69f0d8009ce064723329f4e41f23a1fa5e5a81848c5f9585ba553563be08",
+    "src/ml/predict.py": "5a22af77b4cedb1efc8bfb5bec87af057bccb2453ea9ecd167b3d4fb0eb8cabb",
+    "src/simulation/backends.py": "58a97df6c083ce9f193332f44f61e5e0c0730ce548f1da5525d2120ff4f90924",
+    "src/simulation/hst_bridge.py": "2e224ed42ee8eba73554ca0c50d07e44517fc34d9029ba35e6aa6384552f1042",
+    "src/simulation/observation.py": "a56991a2f20768a8a339bd03e7442a1fb733f7c09ab6e991007ac725d79070a6",
+    "src/simulation/render.py": "35f5326715008af141bb9fd47f0f45c062f8a41c93790bb9cda876cc374bedc1"
+  },
+  "ledger": [
+    {
+      "blockers": [
+        "centering",
+        "photometry",
+        "psf",
+        "coverage_masks",
+        "reference_convention",
+        "morphology"
+      ],
+      "eligibility": "pending",
+      "exclusion_reason": "",
+      "observation_id": "SDSSJ0008-0004_F606W",
+      "prepared": false,
+      "system_id": "SDSSJ0008-0004"
+    },
+    {
+      "blockers": [
+        "centering",
+        "photometry",
+        "psf",
+        "coverage_masks",
+        "reference_convention",
+        "morphology"
+      ],
+      "eligibility": "pending",
+      "exclusion_reason": "",
+      "observation_id": "SDSSJ0029-0055_F606W",
+      "prepared": false,
+      "system_id": "SDSSJ0029-0055"
+    },
+    {
+      "blockers": [
+        "centering",
+        "photometry",
+        "psf",
+        "coverage_masks",
+        "reference_convention",
+        "morphology"
+      ],
+      "eligibility": "pending",
+      "exclusion_reason": "",
+      "observation_id": "SDSSJ0037-0942_F606W",
+      "prepared": false,
+      "system_id": "SDSSJ0037-0942"
+    },
+    {
+      "blockers": [
+        "centering",
+        "photometry",
+        "psf",
+        "coverage_masks",
+        "reference_convention",
+        "morphology"
+      ],
+      "eligibility": "pending",
+      "exclusion_reason": "",
+      "observation_id": "SL2SJ0214-0405_F606W",
+      "prepared": false,
+      "system_id": "SL2SJ0214-0405"
+    },
+    {
+      "blockers": [
+        "centering",
+        "photometry",
+        "psf",
+        "coverage_masks",
+        "reference_convention",
+        "morphology"
+      ],
+      "eligibility": "pending",
+      "exclusion_reason": "",
+      "observation_id": "SDSSJ0151+0049_F814W",
+      "prepared": false,
+      "system_id": "SDSSJ0151+0049"
+    }
+  ],
+  "observations": [],
+  "observations_sha256": "739e2d7c3912c21492c34997b91d9d33d374403f667a930d98fc9590b41b22da",
+  "provenance": {
+    "git_revision": "3a8105478c3a2220678b1cf10348e998a3073338",
+    "working_tree_dirty": true
+  },
+  "reserved_sha256": "39f09be993d1f0456e8ac6881d5a8cc54e8b539984ab50ddb683f2d1c905644f",
+  "schema": "hst_prepared_v1"
+}

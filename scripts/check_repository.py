@@ -24,6 +24,7 @@ CURRENT_DOCS = (
     "docs/data_contract.md",
     "docs/rendering.md",
     "docs/migration.md",
+    "docs/hst_study.md",
 )
 
 
