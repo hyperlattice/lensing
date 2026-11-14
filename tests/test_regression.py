@@ -6,12 +6,11 @@ from pathlib import Path
 import numpy as np
 import pytest
 import torch
-import yaml
 from conftest import fixture_bank
 
 from src.data.dataset import ObservationBank
 from src.ml.analysis import _bootstrap_difference
-from src.ml.artifacts import load_config
+from src.ml.artifacts import load_config, load_development_config
 from src.ml.train import train_arm
 from src.simulation.render import SceneEngine
 
@@ -84,17 +83,41 @@ def test_bootstrap_resamples_whole_parents_with_seeds_and_views_together():
     )
 
 
-def test_flat_configs_preserve_all_active_default_destinations():
+def test_consolidated_config_profiles_preserve_destinations_and_shared_controls():
     study = load_config()
     assert study["output"] == "results/ml/equal-budget-final-v1"
     assert study["policy"] == "results/ml/robustness-development-v4/allocation/policy.json"
-    development = yaml.safe_load(Path("configs/development.yaml").read_text())
+    development = load_development_config()
     assert development["output"] == "results/ml/robustness-development-v4"
     assert development["source_train"] == study["source_train"]
     assert development["source_development"] == study["source_development"]
+    for key in (
+        "optimizer_updates",
+        "validation_interval_updates",
+        "batch_size",
+        "torch_threads",
+        "learning_rate",
+        "weight_decay",
+        "huber_delta",
+        "mmd_weight",
+        "model",
+    ):
+        assert development[key] == study["training"][key]
+
+    replication = load_config(profile="seed_replication")
+    assert replication["output"] == "results/ml/cgr-seed-replication-v1"
+    assert replication["policy"] == "results/ml/cgr-seed-replication-v1/policy/policy.json"
+    assert replication["seeds"] == [730011, 730012, 730013, 730014, 730015]
+    assert replication["source_train"] == study["source_train"]
+    assert replication["source_development"] == study["source_development"]
+    assert replication["holdout"] == study["holdout"]
+    assert replication["training"]["optimizer_updates"] == study["training"]["optimizer_updates"]
+    assert replication["training"]["model"] == study["training"]["model"]
+
     assert sorted(path.name for path in Path("configs").glob("*.yaml")) == [
-        "development.yaml",
         "hst_study.yaml",
         "simulation.yaml",
         "study.yaml",
     ]
+    assert Path("data/manifests/hst_compatibility_pilot_v1.json").is_file()
+    assert not Path("configs/hst_compatibility_pilot.json").exists()

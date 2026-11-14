@@ -162,9 +162,49 @@ def sha256(path: str | Path) -> str:
 DEFAULT_CONFIG = Path("configs/study.yaml")
 
 
-def load_config(path: str | Path = DEFAULT_CONFIG) -> dict[str, Any]:
-    """Read settings only; never inspect data banks, checkpoints or holdout."""
-    config = yaml.safe_load(Path(path).read_text(encoding="utf-8"))
+def _validate_study_document(document: object) -> dict[str, Any]:
+    """Validate the consolidated study document's top-level structure."""
+    required = {"study_config_schema", "shared", "profiles", "development"}
+    if (
+        not isinstance(document, dict)
+        or set(document) != required
+        or document["study_config_schema"] != 1
+        or not isinstance(document["shared"], dict)
+        or not isinstance(document["profiles"], dict)
+        or set(document["profiles"]) != {"primary", "seed_replication"}
+        or not isinstance(document["development"], dict)
+        or not isinstance(document["shared"].get("training"), dict)
+    ):
+        raise ValueError("Unexpected consolidated study configuration")
+    return document
+
+
+def load_config(
+    path: str | Path = DEFAULT_CONFIG,
+    *,
+    profile: str = "primary",
+) -> dict[str, Any]:
+    """Load one synthetic fit profile without inspecting scientific inputs.
+
+    Older standalone fit configurations remain accepted for explicit primary
+    runs. New runs select ``primary`` or ``seed_replication`` from study.yaml.
+    """
+    document = yaml.safe_load(Path(path).read_text(encoding="utf-8"))
+    if isinstance(document, dict) and "study_config_schema" in document:
+        document = _validate_study_document(document)
+        if profile not in document["profiles"]:
+            raise ValueError(f"Unknown study profile: {profile}")
+        shared = document["shared"]
+        selected = document["profiles"][profile]
+        if not isinstance(selected, dict) or not isinstance(selected.get("training"), dict):
+            raise ValueError(f"Invalid study profile: {profile}")
+        config = {**shared, **selected}
+        config["training"] = {**shared["training"], **selected["training"]}
+    else:
+        if profile != "primary":
+            raise ValueError("Named profiles require the consolidated study.yaml")
+        config = document
+
     required = {
         "schema_version",
         "output",
@@ -197,6 +237,30 @@ def load_config(path: str | Path = DEFAULT_CONFIG) -> dict[str, Any]:
     ):
         raise ValueError("Expected positive integer bootstrap controls")
     return config
+
+
+def load_development_config(path: str | Path = DEFAULT_CONFIG) -> dict[str, Any]:
+    """Return source-only development settings with shared training controls."""
+    document = yaml.safe_load(Path(path).read_text(encoding="utf-8"))
+    if isinstance(document, dict) and "stage" in document:
+        return document
+
+    document = _validate_study_document(document)
+    shared = document["shared"]
+    development = document["development"]
+    if not isinstance(development, dict):
+        raise ValueError("Invalid development configuration")
+
+    return {
+        "experiment_id": development["experiment_id"],
+        "stage": development["stage"],
+        "output": development["output"],
+        "source_train": shared["source_train"],
+        "source_development": shared["source_development"],
+        "reference_seeds": development["reference_seeds"],
+        "tuning_seeds": development["tuning_seeds"],
+        **shared["training"],
+    }
 
 
 def verify_resolved_config(config: dict[str, Any]) -> None:

@@ -23,7 +23,7 @@ import numpy as np
 
 from src.data.schema import contained_path
 
-DEFAULT_MANIFEST = Path("configs/hst_compatibility_pilot.json")
+DEFAULT_MANIFEST = Path("data/manifests/hst_compatibility_pilot_v1.json")
 DEFAULT_DATA = Path("data/raw/external/hst_compatibility_pilot")
 DEFAULT_OUTPUT = Path("results/reports/hst_compatibility_pilot")
 MAX_ASSET_BYTES = 5_000_000

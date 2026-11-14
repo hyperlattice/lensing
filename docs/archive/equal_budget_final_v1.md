@@ -1,12 +1,11 @@
 # Equal-budget final comparison (item 1)
 
-The maintained runner accepts `--config configs/ml/equal_budget.yaml` and is
-invoked from repository root as `python -m scripts.run_equal_budget_final_v1`.
-The YAML extracts the recorded settings without changing the comparison.
-New fits save `resolved_config.json`, required by prediction/scoring; historical
-completed runs remain associated with their original runner. See the
-[experiment index](experiments.md) for input availability and the
-[cleanup record](maintenance/cleanup_v1.md) for provenance boundaries.
+The maintained runner is `python -m scripts.study`, using the `primary` profile
+in `configs/study.yaml`. New fits save `resolved_config.json`, required by
+prediction/scoring; historical completed runs remain associated with their
+original runner. See the
+[experiment index](../experiments.md) for input availability and the
+[cleanup record](../maintenance/cleanup_v1.md) for provenance boundaries.
 
 This rapid study addresses the first missing priority: a fair, independent
 source-only comparison under a common training budget. It fits three arms:
@@ -23,9 +22,9 @@ for the same parent draws. The source training and development banks are the
 qualified v4 banks. The holdout is the existing 150-parent blind release with
 canonical, pixel-scale, exposure, and read-noise conditions.
 
-`scripts/run_equal_budget_final_v1.py fit` never opens the holdout. The
-`predict` action reads only image paths and seals predictions. The `score`
-action performs the target join afterward and reports per-condition MAE, RMSE,
+The `train` action never opens the holdout. The `predict` action reads only
+image paths and seals predictions. The `analyze` action performs the target
+join afterward and reports per-condition MAE, RMSE,
 bias, four-stress composite MAE, and parent-bootstrap intervals for G-C, R-G,
 and R-C. The R-G contrast is the primary comparison for whether targeted
 variation adds value beyond uniform variation.

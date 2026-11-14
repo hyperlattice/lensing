@@ -40,7 +40,7 @@ common benchmark or faithful reproduction. The manuscript should therefore
 avoid published-method superiority, simulator-transfer and real-data claims.
 
 Submission packaging is now prepared: the current manuscript draft is
-[`manuscript_submission_v2.md`](reliability_study/final/manuscript_submission_v2.md),
+[`manuscript_submission_v2.md`](../reliability_study/final/manuscript_submission_v2.md),
 the two equal-budget figures are under
 `results/ml/equal-budget-final-v1/figures/`, and the artifact/environment
 checklist is [`reproducibility_checklist_submission_v1.md`](reproducibility_checklist_submission_v1.md).

@@ -43,7 +43,7 @@ The intended explanation is a testable description of model behaviour. The study
 
 ## 3. How this differs from the current manuscript
 
-The [current manuscript](../submission/aaai27/reviewer_bundle/paper.tex) compares canonical training, uniform observation variation, and failure-weighted observation sampling under matched final training budgets. Its [equal-budget report](equal_budget_final_v1.md) documents an improvement from uniform variation and an inconclusive additional benefit from failure weighting.
+The [current manuscript](../submission/aaai27/reviewer_bundle/paper.tex) compares canonical training, uniform observation variation, and failure-weighted observation sampling under matched final training budgets. Its [equal-budget report](archive/equal_budget_final_v1.md) documents an improvement from uniform variation and an inconclusive additional benefit from failure weighting.
 
 That comparison asks whether a training package helps. The new proposal asks **what the model depends on, why a particular failure occurs, and whether a diagnosis predicts a useful training intervention**.
 
@@ -54,7 +54,7 @@ There is useful existing groundwork:
 - [Counterfactual rendering](../src/simulation/counterfactual.py) supports controlled changes to foreground light, source properties, and observing conditions while protecting the target and identity fields.
 - [Source-physics configurations](../configs/reliability/source_physics.yaml) specify source-profile, size, position, and shear interventions.
 - The [earlier shortcut audit](../src/ml/reliability_week6.py) uses masks, brightness changes, and rotations.
-- The [existing claim-evidence map](reliability_study/final/claim_evidence_map.md) correctly distinguishes sensitivity to an image region from proof of an invalid shortcut.
+- The [existing claim-evidence map](archive/reliability_study/final/claim_evidence_map.md) correctly distinguishes sensitivity to an image region from proof of an invalid shortcut.
 
 These components are starting points. Their presence does not establish that all required datasets and checkpoints are available or that the proposed study has already been implemented.
 

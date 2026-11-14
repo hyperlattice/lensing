@@ -54,7 +54,7 @@ that are not identical to ours. Gawade et al. provide simulation-realism and
 HSC-oriented evidence beyond this study. Cross-code comparison is also
 established in classical lens modeling (e.g. Galan et al.). A full comparison
 matrix, including target access, metrics and permitted claims, is in
-[`step3_claim_comparison_matrix_2026-11-01.md`](../../../archive/docs/step3_claim_comparison_matrix_2026-11-01.md).
+[`step3_claim_comparison_matrix_2026-11-01.md`](../../../docs/archive/step3_claim_comparison_matrix_2026-11-01.md).
 
 Accordingly, the contribution claimed here is a matched-budget synthetic
 robustness measurement and reproducible benchmark record, not a new universal
@@ -179,13 +179,13 @@ accuracy or superiority over published methods.
 
 ## 7. Reproducibility artifacts
 
-- Equal-budget protocol and result: [`equal_budget_final_v1.md`](../../equal_budget_final_v1.md).
+- Equal-budget protocol and result: [`equal_budget_final_v1.md`](../../archive/equal_budget_final_v1.md).
 - Equal-budget machine-readable report:
   `results/ml/equal-budget-final-v1/final_report.json`.
-- Renderer audit: [`cross_simulator_rapid_v2_audit.md`](../../../archive/docs/cross_simulator_rapid_v2_audit.md).
+- Renderer audit: [`cross_simulator_rapid_v2_audit.md`](../../../docs/archive/cross_simulator_rapid_v2_audit.md).
 - Renderer identity record:
   `results/ml/cross-simulator-rapid-v2/renderer_identity_audit.json`.
 - Prior-work and claim matrix:
-  [`step3_claim_comparison_matrix_2026-11-01.md`](../../../archive/docs/step3_claim_comparison_matrix_2026-11-01.md).
+  [`step3_claim_comparison_matrix_2026-11-01.md`](../../../docs/archive/step3_claim_comparison_matrix_2026-11-01.md).
 - Submission reproducibility checklist:
-  [`reproducibility_checklist_submission_v1.md`](../../../archive/docs/reproducibility_checklist_submission_v1.md).
+  [`reproducibility_checklist_submission_v1.md`](../../../docs/archive/reproducibility_checklist_submission_v1.md).

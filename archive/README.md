@@ -6,14 +6,14 @@ is not the current source of truth and it is not part of the workshop upload.
 
 ## Contents
 
-- `docs/`: dated reports, superseded protocols, planning notes, and research
-  audits.
+- Historical Markdown, literature reviews, and planning notes are centralized in
+  [`docs/archive/`](../docs/archive/). The maintained documentation index is
+  [`docs/README.md`](../docs/README.md).
 - `scripts/`: development, renderer-qualification, benchmark-intake, and
   cross-simulator scripts that are not needed by the current paper workflow.
 - `configs/`: configuration files with no active source, test, or current-script
   references.
 - `notebooks/`: the earlier ML planning notebook.
-- `root/`: scratch and planning files that were previously at repository root.
 - `reference/`: local reference material used while drafting.
 - `private/`: author-kit files and internal notes. This subtree is ignored by
   Git and should not be uploaded.

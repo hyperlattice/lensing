@@ -45,7 +45,7 @@ in a code-only checkout. See [reproduction](docs/reproduction.md).
 ## Layout
 
 ```text
-configs/             Flat synthetic and HST configuration files
+configs/             Shared synthetic-study profiles, simulation and HST settings
 src/data/            Stored image contracts, bank loading and qualification
 src/simulation/      Scene sampling, one renderer, backend adapters and generation
 src/ml/              Model, batches, policies, training, prediction, analysis and plots

@@ -17,6 +17,12 @@ def main() -> None:
     for action in ("train", "predict", "analyze", "plot"):
         command = commands.add_parser(action)
         command.add_argument("--config", type=Path, default=Path("configs/study.yaml"))
+        command.add_argument(
+            "--profile",
+            choices=("primary", "seed_replication"),
+            default="primary",
+            help="Synthetic study settings stored in the shared configuration",
+        )
         if action in {"predict", "analyze"}:
             command.add_argument("--paired", action="store_true", help="Secondary renderer study")
         if action in {"analyze", "plot"}:
@@ -26,7 +32,7 @@ def main() -> None:
 
     development = commands.add_parser("develop")
     development.add_argument("stage", choices=("reference", "weights", "tune", "review"))
-    development.add_argument("--config", type=Path, default=Path("configs/development.yaml"))
+    development.add_argument("--config", type=Path, default=Path("configs/study.yaml"))
 
     generation = commands.add_parser("generate")
     generation.add_argument("--role", choices=("source_train", "source_development"))
@@ -79,9 +85,12 @@ def main() -> None:
         develop(args.stage, args.config)
         return
 
+    if getattr(args, "paired", False) and args.profile != "primary":
+        parser.error("--profile applies to the primary C/G/R workflow, not --paired")
+
     from src.ml.artifacts import load_config
 
-    config = load_config(args.config)
+    config = load_config(args.config, profile=args.profile)
     if args.action == "train":
         from src.ml.train import fit
 

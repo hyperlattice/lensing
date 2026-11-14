@@ -6,7 +6,7 @@ accuracy or change the existing synthetic experiment.
 
 ## Fixed sample and independence
 
-[The manifest](../configs/hst_compatibility_pilot.json) fixes five Dinos-I systems:
+[The manifest](../data/manifests/hst_compatibility_pilot_v1.json) fixes five Dinos-I systems:
 three SLACS, one SL2S, and one BELLS. Selection uses catalogue order and optical
 band availability, includes the previously inspected example, and precedes any
 CNN prediction. This is a convenience sample for diagnosing compatibility, not a

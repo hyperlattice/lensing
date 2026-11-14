@@ -64,6 +64,6 @@ Resolving the historical/v2 suite interface belongs to the follow-up refactor.
   The previous ZIP differs only in line endings and was preserved locally
   under ignored `archive/private/submission_aaai27/`.
 
-Mappings and hashes are in [cleanup_v1.json](cleanup_v1.json). Temporary
+Mappings and hashes are in [cleanup_v1.json](../../maintenance/cleanup_v1.json). Temporary
 test/baseline/export files are under ignored `.pytest-work*` directories.
 No files were staged, committed or pushed.

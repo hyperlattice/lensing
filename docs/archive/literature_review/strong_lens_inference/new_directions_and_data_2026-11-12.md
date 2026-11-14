@@ -8,7 +8,7 @@ The strongest next question is **whether robustness to individual observing chan
 
 None is a verified first-of-kind method. These are narrower candidate contributions than another shortcut injection/removal study. Generic compound-shift robustness, experimental interactions and simulation-budget allocation are established concepts. The proposed value is an interpretable lensing result with explicit physical controls and a small-data decision problem.
 
-The [master matrix](evidence_matrix.csv) now has **92 works**, after five additions. The [search/extraction record](directions_search_2026-11-12.json) records assessed sources, search strings and access limits. This is a bounded AI-assisted, single-reviewer scoping exercise, not exhaustive ADS/Scopus screening. No independent second reviewer was used. Query strings were transcribed during the session rather than exported from a bibliographic service; the log identifies missing exact variants. Earlier bibliography/PDF exports remain dated snapshots.
+The [master matrix](../../../literature_review/strong_lens_inference/evidence_matrix.csv) now has **92 works**, after five additions. The [search/extraction record](../../../literature_review/strong_lens_inference/directions_search_2026-11-12.json) records assessed sources, search strings and access limits. This is a bounded AI-assisted, single-reviewer scoping exercise, not exhaustive ADS/Scopus screening. No independent second reviewer was used. Query strings were transcribed during the session rather than exported from a bibliographic service; the log identifies missing exact variants. Earlier bibliography/PDF exports remain dated snapshots.
 
 ## What changed after reading the limitations?
 

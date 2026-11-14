@@ -1,13 +1,17 @@
 # Configuration
 
-- `study.yaml`: fixed primary C/G/R experiment, including existing artifact paths.
-- `simulation.yaml`: original engineering population/observation proposal, unchanged.
-- `development.yaml`: source-only v4 reference fits and hyperparameter sweeps.
-- `hst_compatibility_pilot.json`: five fixed Dinos-I HST development systems and
-  commit-pinned file identities; reserved from subsequent confirmation data.
-- `hst_study.yaml`: staged HST preparation, development validation and paired transfer;
-  numerical tolerances and scientific qualification rules require development evidence.
+- `study.yaml` is the shared synthetic-study configuration. Its `profiles.primary`
+  and `profiles.seed_replication` sections keep their separate seeds, outputs, and
+  experiment IDs while sharing the C/G/R matrix and training controls. The
+  `development` section uses those same shared controls.
+- `simulation.yaml` defines the physical parameter proposal used by simulation
+  generation and renderer comparisons.
+- `hst_study.yaml` configures the separate observational preparation and transfer
+  workflow.
 
-Each YAML is explicit and self-contained; there is no registry or inheritance.
-The secondary comparison retains its existing frozen design and artifact identities.
-See [migration](../docs/migration.md) for old configurations and reproduction boundaries.
+The fixed five-system HST compatibility sample is a provenance manifest, not a
+run configuration. It lives at
+[`data/manifests/hst_compatibility_pilot_v1.json`](../data/manifests/hst_compatibility_pilot_v1.json)
+and remains reserved from HST confirmation.
+
+See [reproduction](../docs/reproduction.md) for commands and output identities.

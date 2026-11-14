@@ -84,7 +84,7 @@ def test_unreviewed_mask_is_preserved_without_assigning_semantics(native_pair, t
 
 
 def test_manifest_rejects_duplicate_systems_and_confirmation_role(tmp_path):
-    document = load_manifest(Path("configs/hst_compatibility_pilot.json"))
+    document = load_manifest(Path("data/manifests/hst_compatibility_pilot_v1.json"))
     path = tmp_path / "manifest.json"
     changed = copy.deepcopy(document)
     changed["systems"].append(changed["systems"][0])
@@ -98,7 +98,7 @@ def test_manifest_rejects_duplicate_systems_and_confirmation_role(tmp_path):
 
 
 def test_offline_cache_tampering_is_detected(tmp_path):
-    document = load_manifest(Path("configs/hst_compatibility_pilot.json"))
+    document = load_manifest(Path("data/manifests/hst_compatibility_pilot_v1.json"))
     first = document["systems"][0]
     asset = first["assets"]["image"]
     folder = tmp_path / first["system_id"]

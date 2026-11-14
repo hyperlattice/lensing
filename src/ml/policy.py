@@ -223,12 +223,11 @@ def develop(stage: str, config_path: str | Path) -> None:
     earlier development study. Review is descriptive and does not freeze a
     method or inspect final data.
     """
-    import yaml
-
     from src.data.dataset import ObservationBank
+    from src.ml.artifacts import load_development_config
     from src.ml.train import checked_fit
 
-    config = yaml.safe_load(Path(config_path).read_text(encoding="utf-8"))
+    config = load_development_config(config_path)
     if config["stage"] != "development_only_no_final_access":
         raise ValueError("Development requires a source-only configuration")
     root = Path(config["output"])

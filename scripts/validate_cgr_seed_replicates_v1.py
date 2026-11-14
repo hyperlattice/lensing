@@ -14,27 +14,22 @@ import numpy as np
 import pandas as pd
 import torch
 
-from src.ml.artifacts import sha256
+from src.ml.artifacts import load_config, sha256
 from src.ml.data import grouped_forward
 from src.ml.model import build_model
 
-ROOT = Path("results/ml/equal-budget-final-v1")
-HOLDOUT = Path("data/simulations/reliability-blind-holdout-v1/splits/holdout.csv")
+STUDY_CONFIG = load_config(profile="primary")
+ROOT = Path(STUDY_CONFIG["output"])
+HOLDOUT = Path(STUDY_CONFIG["holdout"])
 OUTPUT = Path("results/reports/cgr_seed_validation_v1")
-ARMS = ("C", "G", "R")
-SEEDS = tuple(range(730001, 730011))
-CONDITIONS = (
-    "canonical",
-    "pixel-scale-004",
-    "pixel-scale-006",
-    "exposure-half",
-    "read-noise-double",
-)
+ARMS = tuple(STUDY_CONFIG["arms"])
+SEEDS = tuple(STUDY_CONFIG["seeds"])
+CONDITIONS = tuple(STUDY_CONFIG["conditions"])
 STRESS = CONDITIONS[1:]
-UPDATES = 880
-BATCH_SIZE = 16
-BOOTSTRAP_DRAWS = 10000
-BOOTSTRAP_SEED = 8731
+UPDATES = STUDY_CONFIG["training"]["optimizer_updates"]
+BATCH_SIZE = STUDY_CONFIG["training"]["batch_size"]
+BOOTSTRAP_DRAWS = STUDY_CONFIG["bootstrap"]["resamples"]
+BOOTSTRAP_SEED = STUDY_CONFIG["bootstrap"]["stress_seed"]
 
 
 def predict_all() -> tuple[pd.DataFrame, dict[str, str]]:
@@ -147,16 +142,12 @@ def assemble_metrics(joined: pd.DataFrame) -> dict:
     contrasts = {}
     rng = np.random.default_rng(BOOTSTRAP_SEED)
     indices = rng.integers(0, len(parent_ids), size=(BOOTSTRAP_DRAWS, len(parent_ids)))
-    for contrast_index, (candidate, comparator) in enumerate(
-        (("G", "C"), ("R", "G"), ("R", "C"))
-    ):
+    for contrast_index, (candidate, comparator) in enumerate((("G", "C"), ("R", "G"), ("R", "C"))):
         difference = errors[candidate][:, :, 1:] - errors[comparator][:, :, 1:]
         by_seed = difference.mean(axis=(1, 2))
         bootstrap = difference[:, indices, :].mean(axis=(0, 2, 3))
         seed_rng = np.random.default_rng(BOOTSTRAP_SEED + 1 + contrast_index)
-        seed_indices = seed_rng.integers(
-            0, len(SEEDS), size=(BOOTSTRAP_DRAWS, len(SEEDS))
-        )
+        seed_indices = seed_rng.integers(0, len(SEEDS), size=(BOOTSTRAP_DRAWS, len(SEEDS)))
         seed_bootstrap = by_seed[seed_indices].mean(axis=1)
         contrasts[f"{candidate}_minus_{comparator}"] = {
             "mean_difference_arcsec": float(difference.mean()),
@@ -227,8 +218,7 @@ def write_markdown(report: dict, prediction_sha256: str, checkpoint_hashes: dict
     contrast_map = report["four_stress_paired_contrasts"]
     for seed in SEEDS:
         values = {
-            arm: report["metrics_by_seed"][arm][str(seed)]["four_stress_mae_arcsec"]
-            for arm in ARMS
+            arm: report["metrics_by_seed"][arm][str(seed)]["four_stress_mae_arcsec"] for arm in ARMS
         }
         diffs = {
             "G-C": contrast_map["G_minus_C"]["seed_differences_arcsec"][str(seed)],

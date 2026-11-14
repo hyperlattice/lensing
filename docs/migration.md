@@ -18,7 +18,7 @@ inventory is in [migration_inventory.json](migration_inventory.json).
 | Source/paired bank interfaces | `data/dataset.py`; lineage/path contracts in `data/schema.py` |
 | Archived v4 source generator | `simulation/generate.py` with self-contained source helpers |
 | Archived paired generation/evaluation | `simulation/paired.py`, `ml/predict.py` and `ml/analysis.py` |
-| Many configuration directories | Three flat YAML files |
+| Many configuration directories | Three active YAML files: shared study profiles, simulation settings, and HST settings |
 | Submission checks and exporter | `scripts/submission.py` |
 
 Original reliability phases, metadata/CASTLES preprocessing, scale-aware variants,

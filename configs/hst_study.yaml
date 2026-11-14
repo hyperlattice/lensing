@@ -4,7 +4,7 @@ schema_version: 1
 study_config: configs/study.yaml
 observations: data/manifests/hst-study-v1/observations.json
 references: data/manifests/hst-study-v1/references.json
-reserved_manifest: configs/hst_compatibility_pilot.json
+reserved_manifest: data/manifests/hst_compatibility_pilot_v1.json
 pilot_audit: results/reports/hst_compatibility_pilot/audit.json
 prepared_root: data/releases/hst-study-v1
 output: results/ml/hst-transfer-v1

@@ -1,11 +1,12 @@
 # Reproduction
 
 Run commands from the repository root after installing the project as described
-in the README. `configs/study.yaml`, `configs/simulation.yaml` and
-`configs/development.yaml` define the maintained synthetic configuration surface.
-The separate [HST workflow](hst_study.md) uses `configs/hst_study.yaml` and reviewed
-observation/reference ledgers; its default scientific qualification choices are unresolved.
-There is no experiment registry or YAML inheritance.
+in the README. `configs/study.yaml` holds the primary and seed-replication C/G/R
+profiles plus source-only development settings. Shared model and optimizer
+controls are declared once. `configs/simulation.yaml` holds the distinct
+physical simulation proposal. The separate [HST workflow](hst_study.md) uses
+`configs/hst_study.yaml` and reviewed observation/reference ledgers; its default
+scientific qualification choices are unresolved.
 
 ## Existing input/output identities
 
@@ -35,6 +36,25 @@ python -m scripts.study train --config configs/study.yaml
 python -m scripts.study predict --config configs/study.yaml
 python -m scripts.study analyze --config configs/study.yaml
 python -m scripts.study plot --config configs/study.yaml
+```
+
+The additional five-seed replication uses the same configuration file and a
+separate profile, output directory, and policy identity:
+
+```powershell
+python -m scripts.study train --profile seed_replication
+python -m scripts.study predict --profile seed_replication
+python -m scripts.study analyze --profile seed_replication
+python -m scripts.study plot --profile seed_replication
+```
+
+Source-only development uses the shared `development` section:
+
+```powershell
+python -m scripts.study develop reference
+python -m scripts.study develop weights
+python -m scripts.study develop tune
+python -m scripts.study develop review
 ```
 
 Qualification is an explicit expensive numerical workflow; see [rendering](rendering.md).

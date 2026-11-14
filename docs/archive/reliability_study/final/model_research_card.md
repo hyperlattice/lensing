@@ -34,11 +34,11 @@ The standard deviation across three seed predictions is retained as an ensemble-
 ## Known failure modes and limits
 
 - Pixel-scale 0.04 produced the largest randomized-ensemble holdout MAE (0.1158 arcsec); 67/150 errors exceeded 0.10 arcsec.
-- Error distributions have substantial tails; see [`failure_case_catalog.csv`](../../../results/reports/final_v1/tables/failure_case_catalog.csv).
+- Error distributions have substantial tails; see [`failure_case_catalog.csv`](../../../../results/reports/final_v1/tables/failure_case_catalog.csv).
 - The holdout uses the same synthetic prior and renderer; the CASTLES study was descriptive and did not score labels.
 - The tested cross-implementation path shared source-light, PSF, detector, and preprocessing components.
 - The point-image classical comparator is a limited geometry fit with fallback behavior, not a pixel-likelihood lens model.
 
 ## Data and provenance
 
-The frozen inputs, release hashes, exact-once marker, bootstrap seed, environment, and build procedure are recorded in [`reproducibility_statement.md`](reproducibility_statement.md) and [`package_manifest.json`](../../../results/reports/final_v1/package_manifest.json).
+The frozen inputs, release hashes, exact-once marker, bootstrap seed, environment, and build procedure are recorded in [`reproducibility_statement.md`](reproducibility_statement.md) and [`package_manifest.json`](../../../../results/reports/final_v1/package_manifest.json).

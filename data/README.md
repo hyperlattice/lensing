@@ -14,6 +14,7 @@ auditable and reproducible.
 | `simulations/<release>/` | Self-contained generated simulation releases and their split manifests. | Simulated observations |
 | `manifests/sim-eng1000-v1/` | Tracked audit mirror for the ignored engineering simulation release. | Simulated observations |
 | `manifests/legacy/` | Older development split artifacts retained for traceability. | Actual observations |
+| `manifests/hst_compatibility_pilot_v1.json` | Pinned five-system HST development sample and confirmation-reservation record. | Actual observations |
 
 The current canonical training split is inside
 `data/simulations/sim-eng1000-v1/splits/`. It has 700 train, 150 validation,
